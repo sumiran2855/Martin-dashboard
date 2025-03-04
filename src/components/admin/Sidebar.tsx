@@ -133,7 +133,7 @@ export default function AdminSidebar() {
 
       {/* User Profile at Bottom */}
       <div className="p-4 border-t border-gray-200 mt-auto">
-        <div className="flex items-center">
+        <div className="flex items-center cursor-pointer">
           <div className="flex items-center justify-center w-10 h-10 mr-3 text-white bg-blue-700 rounded">
             CN
           </div>

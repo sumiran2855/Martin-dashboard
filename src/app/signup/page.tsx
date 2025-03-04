@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function Signup() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -30,7 +32,7 @@ export default function Signup() {
       setSuccess("");
 
       try {
-        const response = await fetch("http://192.168.2.43:3000/api/signup", {
+        const response = await fetch(`${apiUrl}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

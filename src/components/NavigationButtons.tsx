@@ -4,6 +4,7 @@ interface NavigationButtonsProps {
   prevStep: () => void;
   isNextDisabled?: boolean;
   saveForLater?: () => void;
+  handleSubscription:()=>void;
 }
 
 export default function NavigationButtons({
@@ -12,6 +13,7 @@ export default function NavigationButtons({
   // prevStep,
   isNextDisabled,
   saveForLater,
+  handleSubscription
 }: NavigationButtonsProps) {
   return (
     <div className="flex justify-end w-full max-w-7xl mt-6">
@@ -33,7 +35,7 @@ export default function NavigationButtons({
           </button>
         )}
         <button
-          onClick={nextStep}
+          onClick={step===4 ? handleSubscription : nextStep}
           disabled={isNextDisabled}
           className={`${
             isNextDisabled

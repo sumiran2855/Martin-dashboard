@@ -1,5 +1,6 @@
 "use client";
 
+import withAuth from "@/components/Auth/authUtils";
 import AdminSidebar from "@/components/admin/Sidebar";
 import Facilities from "@/components/admin/facilities";
 const FacilityDetailPage = ({ facilityId = "XRGI #567898340011" }) => {
@@ -11,4 +12,4 @@ const FacilityDetailPage = ({ facilityId = "XRGI #567898340011" }) => {
   );
 };
 
-export default FacilityDetailPage;
+export default withAuth(FacilityDetailPage);

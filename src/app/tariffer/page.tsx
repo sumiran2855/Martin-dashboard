@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Trash2, Plus } from "lucide-react";
+import withAuth from "@/components/Auth/authUtils";
 
 interface Tariff {
   id: number;
@@ -14,7 +15,7 @@ interface Tariff {
 const tariffTypes = ["Consumption Tariff", "Environmental Tariff"];
 const years = ["2023", "2024"];
 
-export default function Tariffs() {
+function Tariffs() {
   const [tariffs, setTariffs] = useState<Tariff[]>([
     {
       id: 1,
@@ -243,3 +244,5 @@ export default function Tariffs() {
     </div>
   );
 }
+
+export default withAuth(Tariffs);

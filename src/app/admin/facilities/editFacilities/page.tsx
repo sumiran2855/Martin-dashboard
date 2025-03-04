@@ -1,5 +1,6 @@
 "use client";
 
+import withAuth from "@/components/Auth/authUtils";
 import AdminSidebar from "@/components/admin/Sidebar";
 import EditFacilities from "@/components/admin/editFacilities";
 const EditFacilitiesPage = () => {
@@ -13,4 +14,4 @@ const EditFacilitiesPage = () => {
   );
 };
 
-export default EditFacilitiesPage;
+export default withAuth(EditFacilitiesPage);
