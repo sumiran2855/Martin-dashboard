@@ -5,50 +5,48 @@ import * as Yup from "yup";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-interface LoginValues {
-  email: string;
-  password: string;
-}
-
-export default function Login() {
+export default function Signup() {
   const [error, setError] = useState("");
-  const router = useRouter();
+  const [success, setSuccess] = useState("");
 
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email address")
-      .matches(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Invalid email format"
-      )
       .required("Email is required"),
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
       .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), ""], "Passwords must match")
+      .required("Confirm Password is required"),
   });
 
-  const formik = useFormik<LoginValues>({
-    initialValues: { email: "", password: "" },
+  const formik = useFormik({
+    initialValues: { email: "", password: "", confirmPassword: "" },
     validationSchema,
     onSubmit: async (values) => {
       setError("");
+      setSuccess("");
 
       try {
-        const response = await fetch("http://192.168.2.43:3000/api/login", {
+        const response = await fetch("http://192.168.2.43:3000/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password,
+          }),
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.message || "Login failed");
+          throw new Error(data.message || "Signup failed");
         }
-        localStorage.setItem("token", data.token);
-        router.push("/dashboard");
+
+        setSuccess("Signup successful! Redirecting...");
+        setTimeout(() => (window.location.href = "/"), 2000);
       } catch (err: any) {
         setError(err.message);
       }
@@ -58,16 +56,20 @@ export default function Login() {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="w-full md:w-1/3 flex flex-col justify-center px-6 md:px-12 bg-white">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Login</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Signup</h2>
 
         {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+        {success && <p className="text-green-500 text-sm mb-3">{success}</p>}
 
-        <form onSubmit={formik.handleSubmit} noValidate>
+        <form onSubmit={formik.handleSubmit}>
           <input
             type="email"
+            name="email"
             placeholder="Email"
             className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            {...formik.getFieldProps("email")}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
           />
           {formik.touched.email && formik.errors.email && (
             <p className="text-red-500 text-sm mb-3">{formik.errors.email}</p>
@@ -75,9 +77,12 @@ export default function Login() {
 
           <input
             type="password"
+            name="password"
             placeholder="Password"
             className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            {...formik.getFieldProps("password")}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
           />
           {formik.touched.password && formik.errors.password && (
             <p className="text-red-500 text-sm mb-3">
@@ -85,31 +90,37 @@ export default function Login() {
             </p>
           )}
 
-          <div className="flex items-center justify-between text-sm mb-6">
-            <label className="flex items-center cursor-pointer">
-              <input type="checkbox" className="mr-2" /> Remember me
-            </label>
-            <a href="#" className="text-blue-600 hover:underline">
-              Forgot password?
-            </a>
-          </div>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.confirmPassword}
+          />
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <p className="text-red-500 text-sm mb-3">
+              {formik.errors.confirmPassword}
+            </p>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer"
+            className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer mt-4"
             disabled={!formik.isValid || formik.isSubmitting}
           >
-            Login
+            Signup
           </button>
         </form>
 
         <p className="text-sm text-gray-600 mt-4">
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <Link
-            href="/signup"
+            href="/"
             className="text-blue-700 font-semibold hover:underline"
           >
-            Create an account
+            Login
           </Link>
         </p>
       </div>
@@ -118,7 +129,7 @@ export default function Login() {
         <div className="w-[80%] h-[80%] relative">
           <Image
             src="/Green Industry.png"
-            alt="Login Illustration"
+            alt="Signup Illustration"
             layout="fill"
             objectFit="contain"
             className="rounded-lg"

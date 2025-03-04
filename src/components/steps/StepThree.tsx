@@ -1,0 +1,86 @@
+import { useState } from "react";
+
+export default function StepThree() {
+  const [selectedOption, setSelectedOption] = useState("");
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-[#082351DE] mb-2">Installation</h2>
+      <p className="text-gray-600 mb-6">
+        To start saving money on electricity, new software needs to be installed
+        on your system. This software is developed by EC Power and ensures
+        optimal performance while providing explanations on its benefits. The
+        pricing for this service may vary depending on the plan. See the price
+        overview here.
+      </p>
+      <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+        <div className="p-6 rounded-lg mb-6">
+          <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
+            Setup of the SuperSaverX Solution
+          </h2>
+          <div className="space-y-4">
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="installation"
+                value="service_check"
+                checked={selectedOption === "service_check"}
+                onChange={(e) => setSelectedOption(e.target.value)}
+                className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
+              />
+              <span className="text-gray-700">At next service check</span>
+            </label>
+
+            <div className="space-y-2">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="installation"
+                  value="local_partner"
+                  checked={selectedOption === "local_partner"}
+                  onChange={(e) => setSelectedOption(e.target.value)}
+                  className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
+                />
+                <span className="text-gray-700">Local partner</span>
+              </label>
+
+              {selectedOption === "local_partner" && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-300 p-4 rounded-lg">
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    className="p-2 border rounded-md w-full"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Mobile"
+                    className="p-2 border rounded-md w-full"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="p-2 border rounded-md w-full col-span-2"
+                  />
+                </div>
+              )}
+            </div>
+
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="installation"
+                value="self_install"
+                checked={selectedOption === "self_install"}
+                onChange={(e) => setSelectedOption(e.target.value)}
+                className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
+              />
+              <span className="text-gray-700">
+                We will install it ourselves
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
