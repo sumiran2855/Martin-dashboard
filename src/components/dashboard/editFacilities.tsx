@@ -13,7 +13,7 @@ export default function EditFacilities() {
         <div className=" px-6 py-4">
           <div className="flex flex-col">
             <Link
-              href="/admin/facilities"
+              href="/dashboard/facilities"
               className="flex items-center gap-2 text-lg font-medium text-blue-600 no-underline transition-all duration-200 hover:text-blue-800 mb-4"
             >
               <div className="p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition">
@@ -326,7 +326,7 @@ export default function EditFacilities() {
                 <button
                   onClick={() => {
                     setIsOpen(false);
-                    router.push("/admin/facilities");
+                    router.push("/dashboard/facilities");
                   }}
                   className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition"
                 >

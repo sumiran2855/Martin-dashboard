@@ -74,7 +74,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                 <td className="px-6 py-2 text-right">
                   <button
                     className="text-gray-500 hover:text-gray-700"
-                    onClick={() => router.push("/admin/facilities")}
+                    onClick={() => router.push("/dashboard/facilities")}
                   >
                     ➝
                   </button>

@@ -1,8 +1,8 @@
 "use client";
 
 import withAuth from "@/components/Auth/authUtils";
-import AdminSidebar from "@/components/admin/Sidebar";
-import EditFacilities from "@/components/admin/editFacilities";
+import AdminSidebar from "@/components/dashboard/Sidebar";
+import EditFacilities from "@/components/dashboard/editFacilities";
 const EditFacilitiesPage = () => {
   return (
     <>

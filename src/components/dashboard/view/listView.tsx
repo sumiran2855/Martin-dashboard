@@ -14,7 +14,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
       {/* Inactive Section */}
       <div
         className="cursor-pointer"
-        onClick={() => router.push("/admin/facilities")}
+        onClick={() => router.push("/dashboard/facilities")}
       >
         <h2 className="text-gray-600 text-lg font-semibold mb-3">Inactive</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -62,7 +62,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
       {/* Active Section */}
       <div
         className="cursor-pointer"
-        onClick={() => router.push("/admin/facilities")}
+        onClick={() => router.push("/dashboard/facilities")}
       >
         <h2 className="text-gray-600 text-lg font-semibold mb-3">Active</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

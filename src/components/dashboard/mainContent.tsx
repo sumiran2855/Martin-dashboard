@@ -1,7 +1,7 @@
 import { Search, Filter, Grid, List, ChevronDown } from "lucide-react";
 import { useState } from "react";
-import GridView from "@/components/admin/view/gridView";
-import ListView from "@/components/admin/view/listView";
+import GridView from "@/components/dashboard/view/gridView";
+import ListView from "@/components/dashboard/view/listView";
 import facilitiesData from "./staticData/facilitiesData";
 
 const statusOptions = [

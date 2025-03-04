@@ -11,7 +11,7 @@ export default function facilities({ facilityId = "XRGI #567898340011" }) {
         <div className=" px-6 py-4">
           <div className="flex flex-col">
             <Link
-              href="/admin"
+              href="/dashboard"
               className="flex items-center gap-2 text-lg font-medium text-blue-600 no-underline transition-all duration-200 hover:text-blue-800 mb-4"
             >
               <div className="p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition">
@@ -55,7 +55,7 @@ export default function facilities({ facilityId = "XRGI #567898340011" }) {
             <div className="bg-white rounded-lg border p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-medium">Basic Data</h2>
-                <button className="text-blue-600 border border-blue-600 rounded px-3 py-1 text-sm" onClick={() => router.push("/admin/facilities/editFacilities")}>
+                <button className="text-blue-600 border border-blue-600 rounded px-3 py-1 text-sm" onClick={() => router.push("/dashboard/facilities/editFacilities")}>
                   Edit
                 </button>
               </div>

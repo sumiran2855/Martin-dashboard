@@ -1,6 +1,16 @@
 import { ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function AdminSidebar() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    localStorage.clear();
+    router.push("/");
+  };
+
   return (
     <div className="w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col h-screen">
       <div className="flex-1">
@@ -12,7 +22,7 @@ export default function AdminSidebar() {
           <div className="space-y-1">
             <a
               href="#"
-              className="flex items-center p-3 text-white bg-blue-900 rounded-md"
+              className="flex items-center p-3 text-white bg-blue-900 rounded-md no-underline"
             >
               <div className="w-6 h-6 mr-3 flex items-center justify-center">
                 <svg
@@ -23,12 +33,12 @@ export default function AdminSidebar() {
                   <path d="M13 9h5.5L13 3.5V9M6 2h8l6 6v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2h9m3-4v-2H6v2h12z" />
                 </svg>
               </div>
-              <span className="font-medium">Facilities</span>
+              <span className="font-medium">Plants</span>
             </a>
 
             <a
               href="#"
-              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md no-underline"
             >
               <div className="w-6 h-6 mr-3 flex items-center justify-center text-gray-600">
                 <svg
@@ -46,7 +56,7 @@ export default function AdminSidebar() {
 
             <a
               href="#"
-              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md no-underline"
             >
               <div className="w-6 h-6 mr-3 flex items-center justify-center text-gray-600">
                 <svg
@@ -65,7 +75,7 @@ export default function AdminSidebar() {
 
             <a
               href="#"
-              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md no-underline"
             >
               <div className="w-6 h-6 mr-3 flex items-center justify-center text-gray-600">
                 <svg
@@ -84,7 +94,7 @@ export default function AdminSidebar() {
         </nav>
 
         {/* Preferences Section */}
-        <div className="mt-8 p-4 ml-5 border-t border-gray-200 mt-10">
+        <div className="mt-10 p-4 ml-5 border-t border-gray-200">
           <h2 className="text-sm text-gray-500 mb-[-10]">Præferencer</h2>
         </div>
 
@@ -92,7 +102,7 @@ export default function AdminSidebar() {
           <div className="space-y-1">
             <a
               href="#"
-              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md no-underline"
             >
               <div className="w-6 h-6 mr-3 flex items-center justify-center text-gray-600">
                 <svg
@@ -111,7 +121,7 @@ export default function AdminSidebar() {
 
             <a
               href="#"
-              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-md no-underline"
             >
               <div className="w-6 h-6 mr-3 flex items-center justify-center text-gray-600">
                 <svg
@@ -132,8 +142,15 @@ export default function AdminSidebar() {
       </div>
 
       {/* User Profile at Bottom */}
-      <div className="p-4 border-t border-gray-200 mt-auto">
-        <div className="flex items-center cursor-pointer">
+      <div
+        className={`p-4 border-t border-gray-200 transition-all duration-300 ${
+          isDropdownOpen ? "mb-2" : ""
+        }`}
+      >
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
           <div className="flex items-center justify-center w-10 h-10 mr-3 text-white bg-blue-700 rounded">
             CN
           </div>
@@ -145,6 +162,20 @@ export default function AdminSidebar() {
             <ChevronDown size={16} />
           </button>
         </div>
+
+        {isDropdownOpen && (
+          <div className="mt-2 bg-white py-2">
+            <button className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
+              Profile
+            </button>
+            <button
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200 rounded"
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

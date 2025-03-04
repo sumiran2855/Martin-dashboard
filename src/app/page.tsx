@@ -49,7 +49,7 @@ export default function Login() {
           throw new Error(data.message || "Login failed");
         }
         localStorage.setItem("token", data.token);
-        router.push("/dashboard");
+        router.push("/createProfile");
       } catch (err: any) {
         setError(err.message);
       }
@@ -90,9 +90,9 @@ export default function Login() {
             <label className="flex items-center cursor-pointer">
               <input type="checkbox" className="mr-2" /> Remember me
             </label>
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link href="/forgetPassword" className="text-blue-600 hover:underline">
               Forgot password?
-            </a>
+            </Link>
           </div>
 
           <button
