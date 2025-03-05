@@ -16,9 +16,6 @@ function Dashboard() {
   const [isStep1Valid, setIsStep1Valid] = useState(false);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
-  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
-
   const router = useRouter();
   const [formData, setFormData] = useState({
     companyName: "",
@@ -52,6 +49,108 @@ function Dashboard() {
   const handleSubscription = () => {
     setIsSubscribed(true);
   };
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const fetchProfile = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const IdToken = localStorage.getItem("IdToken");
+
+      if (!token || !IdToken) {
+        console.error("Authorization token missing.");
+        return false;
+      }
+  
+      const response = await fetch(`${apiUrl}/get-customer`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "x-id-token": IdToken,
+        },
+      });
+  
+      if (!response.ok) throw new Error("Failed to fetch profile");
+  
+      const result = await response.json();
+      setFormData({
+        companyName: result.companyInfo?.name || "",
+        cvrNumber: result.companyInfo?.cvr_number || "",
+        address: result.companyInfo?.address || "",
+        postnr: result.companyInfo?.postal_code || "",
+        city: result.companyInfo?.city || "",
+        email: result.companyInfo?.email || "",
+        phone: result.companyInfo?.phone || "",
+        firstName: result.contactPerson?.firstName || "",
+        lastName: result.contactPerson?.lastName || "",
+        contactEmail: result.contactPerson?.email || "",
+        contactPhone: result.contactPerson?.phone || "",
+      });
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+  
+  const handleSubmit = async () => {
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+    if (!token || !IdToken) {
+      console.error("Authorization token missing.");
+      return false;
+    }
+    const APIUrl = `${apiUrl}/create-Profile`;
+    const payload = {
+      companyInfo: {
+        name: formData.companyName,
+        cvr_number: formData.cvrNumber,
+        address: formData.address,
+        city: formData.city,
+        postal_code: formData.postnr,
+        email: formData.email,
+        phone: formData.phone,
+      },
+      contactPerson: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.contactEmail,
+        phone: formData.contactPhone,
+      },
+    };
+
+    try {
+      const response = await fetch(APIUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          "x-id-token":`${IdToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create profile");
+      }
+
+      const result = await response.json();
+      console.log("Profile created successfully:", result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const nextStep = async () => {
+    if (step === 1) {
+      await handleSubmit();
+    }
+    setStep((prev) => Math.min(prev + 1, 4));
+  };
+
+  const prevStep = () => {
+    if (step === 2) fetchProfile(); 
+    setStep((prev) => Math.max(prev - 1, 1));
+  };
+  
 
   return (
     <div className="flex bg-gray-50">

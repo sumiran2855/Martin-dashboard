@@ -48,7 +48,8 @@ export default function Login() {
         if (!response.ok) {
           throw new Error(data.message || "Login failed");
         }
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.accessToken);
+        localStorage.setItem("IdToken", data.idToken);
         router.push("/createProfile");
       } catch (err: any) {
         setError(err.message);

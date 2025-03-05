@@ -231,6 +231,3 @@ export default function StepOne({ validateForm, formData, setFormData}: Validate
     </>
   );
 }
-
-
-
