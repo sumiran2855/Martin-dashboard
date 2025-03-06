@@ -1,6 +1,6 @@
 "use client";
 
-import withAuth from "@/components/Auth/authUtils";
+import withAuth from "@/components/auth/authUtils";
 import AdminSidebar from "@/components/dashboard/Sidebar";
 import Facilities from "@/components/dashboard/facilities";
 const FacilityDetailPage = ({ facilityId = "XRGI #567898340011" }) => {

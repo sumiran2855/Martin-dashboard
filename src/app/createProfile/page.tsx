@@ -8,89 +8,66 @@ import StepTwo from "@/components/steps/StepTwo";
 import StepThree from "@/components/steps/StepThree";
 import StepFour from "@/components/steps/StepFour";
 import NavigationButtons from "@/components/NavigationButtons";
-import withAuth from "@/components/Auth/authUtils";
+import withAuth from "@/components/auth/authUtils";
 import { useRouter } from "next/navigation";
+import useFormPersistence from "@/components/utils/useFormPersistence";
+
 function Dashboard() {
-  const [step, setStep] = useState(1);
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const router = useRouter();
+  const [step, setStep] = useState(() => {
+    return Number(localStorage.getItem("currentStep")) || 1;
+  });
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isStep1Valid, setIsStep1Valid] = useState(false);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
 
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    companyName: "",
-    cvrNumber: "",
-    address: "",
-    postnr: "",
-    city: "",
-    email: "",
-    phone: "",
-    firstName: "",
-    lastName: "",
-    contactEmail: "",
-    contactPhone: "",
+  const [formData, setFormData] = useState(() => {
+    const storedData = localStorage.getItem("formData");
+    return storedData
+      ? JSON.parse(storedData)
+      : {
+          companyName: "",
+          cvrNumber: "",
+          address: "",
+          postnr: "",
+          city: "",
+          email: "",
+          phone: "",
+          firstName: "",
+          lastName: "",
+          contactEmail: "",
+          contactPhone: "",
+        };
   });
-  const [stepTwoFormData, setStepTwoFormData] = useState({
-    systemName: "",
-    XRGINumber: "",
-    address: "",
-    postalCode: "",
-    city: "",
-    serviceCost: "5.75",
-    vat: "12",
-    m3: "",
-    independentDKK: "",
-    dependentDKK: "",
-    kWh: "",
-    electricityIndependentDKK: "",
-    electricityDependentDKK: "",
+
+  const [stepTwoFormData, setStepTwoFormData] = useState(() => {
+    const storedData = localStorage.getItem("stepTwoFormData");
+    return storedData
+      ? JSON.parse(storedData)
+      : {
+          systemName: "",
+          XRGINumber: "",
+          address: "",
+          postalCode: "",
+          city: "",
+          serviceCost: "5.75",
+          vat: "12",
+          m3: "",
+          independentDKK: "",
+          dependentDKK: "",
+          kWh: "",
+          electricityIndependentDKK: "",
+          electricityDependentDKK: "",
+        };
   });
 
   const handleSubscription = () => {
     setIsSubscribed(true);
   };
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const { clearFormData } = useFormPersistence(step, formData, stepTwoFormData);
 
-  const fetchProfile = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const IdToken = localStorage.getItem("IdToken");
-
-      if (!token || !IdToken) {
-        console.error("Authorization token missing.");
-        return false;
-      }
-  
-      const response = await fetch(`${apiUrl}/get-customer`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "x-id-token": IdToken,
-        },
-      });
-  
-      if (!response.ok) throw new Error("Failed to fetch profile");
-  
-      const result = await response.json();
-      setFormData({
-        companyName: result.companyInfo?.name || "",
-        cvrNumber: result.companyInfo?.cvr_number || "",
-        address: result.companyInfo?.address || "",
-        postnr: result.companyInfo?.postal_code || "",
-        city: result.companyInfo?.city || "",
-        email: result.companyInfo?.email || "",
-        phone: result.companyInfo?.phone || "",
-        firstName: result.contactPerson?.firstName || "",
-        lastName: result.contactPerson?.lastName || "",
-        contactEmail: result.contactPerson?.email || "",
-        contactPhone: result.contactPerson?.phone || "",
-      });
-    } catch (error) {
-      console.error("Error fetching profile:", error);
-    }
-  };
-  
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
@@ -123,7 +100,7 @@ function Dashboard() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          "x-id-token":`${IdToken}`,
+          "x-id-token": `${IdToken}`,
         },
         body: JSON.stringify(payload),
       });
@@ -147,10 +124,8 @@ function Dashboard() {
   };
 
   const prevStep = () => {
-    if (step === 2) fetchProfile(); 
     setStep((prev) => Math.max(prev - 1, 1));
   };
-  
 
   return (
     <div className="flex bg-gray-50">
@@ -173,7 +148,10 @@ function Dashboard() {
               <div className="mt-6">
                 <button
                   className="bg-blue-900 text-white px-6 py-3 rounded-md hover:bg-blue-800 transition"
-                  onClick={() => router.push("/dashboard")}
+                  onClick={() => {
+                    clearFormData();
+                    router.push("/dashboard");
+                  }}
                 >
                   Go to Dashboard
                 </button>

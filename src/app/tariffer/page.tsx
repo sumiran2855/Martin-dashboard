@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Trash2, Plus } from "lucide-react";
-import withAuth from "@/components/Auth/authUtils";
+import withAuth from "@/components/auth/authUtils";
 
 interface Tariff {
   id: number;
