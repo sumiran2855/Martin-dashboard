@@ -1,4 +1,4 @@
-import { facilityData } from "./staticData/facilitiesData";
+import { facilityData } from "./staticData/Data";
 import { ArrowLeft, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import BarChart from "@/components/barChart";

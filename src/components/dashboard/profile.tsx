@@ -1,5 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Modal from "../modals/modal";
+import ChangePassword from "../modals/changePassword";
 
 export default function profileDetail() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +13,6 @@ export default function profileDetail() {
       <div className="flex-1 overflow-auto">
         <div className="p-8">
           <div className="bg-white shadow-md rounded-lg">
-            {/* Page Header */}
             <div className="p-6 border-b flex justify-between items-center">
               <h1 className="text-2xl font-semibold text-gray-800">Profile</h1>
               <button
@@ -206,98 +207,21 @@ export default function profileDetail() {
           </div>
         </div>
 
-        {isOpen && (
-          <div className="fixed inset-0 bg-opacity-30 flex backdrop-blur-sm items-center justify-center">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-96 text-center">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Do you want to save the changes?
-              </h2>
-              <p className="text-gray-600 mt-2">
-                Changes have been made to your profile. Do you want to save or
-                discard them?
-              </p>
-
-              <div className="flex justify-between mt-6">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="border border-gray-400 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-100 transition"
-                >
-                  Discard
-                </button>
-                <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    router.push("/profile");
-                  }}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        <Modal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          title="Do you want to save the changes?"
+          message="Changes have been made to your profile. Do you want to save or
+                discard them?"
+          primaryButton="Save"
+          onPrimaryClick={() => router.push("/profile")}
+          secondaryButton="Discard"
+          onSecondaryClick={() => router.push("/profile")}
+        />
 
         {changePassword && (
-          <div className="fixed inset-0 bg-opacity-30 flex backdrop-blur-sm items-center justify-center">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-96 text-center">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Change Password
-              </h2>
-              <p className="text-gray-600 mt-2">
-                Enter your current password and set a new one.
-              </p>
-
-              <div className="mt-4 text-left">
-                <label className="block text-gray-700 text-sm font-medium">
-                  Old Password
-                </label>
-                <input
-                  type="password"
-                  className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter old password"
-                />
-
-                <label className="block text-gray-700 text-sm font-medium mt-3">
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter new password"
-                />
-
-                <label className="block text-gray-700 text-sm font-medium mt-3">
-                  Confirm New Password
-                </label>
-                <input
-                  type="password"
-                  className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Confirm new password"
-                />
-              </div>
-
-              <div className="flex justify-between mt-6">
-                <button
-                  onClick={() => setChangePassword(false)}
-                  className="border border-gray-400 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-100 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                    setChangePassword(false);
-                    // Handle password change logic
-                  }}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
+          <ChangePassword setChangePassword={setChangePassword} />
         )}
-        
       </div>
     </>
   );

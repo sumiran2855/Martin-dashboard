@@ -14,4 +14,6 @@ const EditFacilitiesPage = () => {
   );
 };
 
-export default withAuth(EditFacilitiesPage);
+// export default withAuth(EditFacilitiesPage);
+export default EditFacilitiesPage;
+

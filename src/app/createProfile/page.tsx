@@ -11,6 +11,7 @@ import NavigationButtons from "@/components/NavigationButtons";
 import withAuth from "@/components/auth/authUtils";
 import { useRouter } from "next/navigation";
 import useFormPersistence from "@/components/utils/useFormPersistence";
+import Modal from "@/components/modals/modal";
 
 function Dashboard() {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -21,6 +22,7 @@ function Dashboard() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isStep1Valid, setIsStep1Valid] = useState(false);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [formData, setFormData] = useState(() => {
     const storedData = localStorage.getItem("formData");
@@ -64,6 +66,7 @@ function Dashboard() {
 
   const handleSubscription = () => {
     setIsSubscribed(true);
+    setIsOpen(true);
   };
 
   const { clearFormData } = useFormPersistence(step, formData, stepTwoFormData);
@@ -136,28 +139,18 @@ function Dashboard() {
         } p-10 flex flex-col items-center`}
       >
         {isSubscribed ? (
-          <div className="flex items-center justify-center min-h-screen bg-gray-50 p-10">
-            <div className="bg-white px-8 py-20 rounded-lg shadow w-full max-w-7xl text-center">
-              <h2 className="text-3xl font-semibold text-gray-800">
-                Subscription Activated! 🎉
-              </h2>
-              <p className="text-gray-600 mt-4">
-                Your subscription has been successfully started. You now have
-                access to all premium features.
-              </p>
-              <div className="mt-6">
-                <button
-                  className="bg-blue-900 text-white px-6 py-3 rounded-md hover:bg-blue-800 transition"
-                  onClick={() => {
-                    clearFormData();
-                    router.push("/dashboard");
-                  }}
-                >
-                  Go to Dashboard
-                </button>
-              </div>
-            </div>
-          </div>
+          <Modal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            title="Subscription Activated! 🎉"
+            message="Your subscription has been successfully started. You now have
+               access to all premium features."
+            primaryButton="Go to Dashboard"
+            onPrimaryClick={() => {
+              clearFormData();
+              router.push("/dashboard");
+            }}
+          />
         ) : (
           <>
             <Stepper step={step} />
@@ -193,4 +186,5 @@ function Dashboard() {
   );
 }
 
-export default withAuth(Dashboard);
+// export default withAuth(Dashboard);
+export default Dashboard;

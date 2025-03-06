@@ -96,3 +96,11 @@ const facilities = [
       { label: "Annual electricity consumption", value: "2,500,000 kr." },
     ],
   };
+
+
+  export const countryCodes = [
+    { code: "+45", flag: "🇩🇰" },
+    { code: "+1", flag: "🇺🇸" },
+    { code: "+44", flag: "🇬🇧" },
+    { code: "+91", flag: "🇮🇳" },
+  ]; 

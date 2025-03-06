@@ -2,9 +2,9 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Image from "next/image";
-// import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Modal from "@/components/modals/modal";
 
 interface Values {
   password: string;
@@ -96,25 +96,17 @@ export default function changePassword() {
           />
         </div>
       </div>
-      {isOpen && (
-        <div className="fixed inset-0 bg-opacity-30 flex backdrop-blur-sm items-center justify-center">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96 text-center">
-            <h3 className="text-lg font-semibold">Password Changed</h3>
-            <p className="text-gray-600 mt-2">
-              Your password has been successfully changed.
-            </p>
-            <button
-              className="mt-4 w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition"
-              onClick={() => {
-                setIsOpen(false);
-                router.push("/");
-              }}
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
+
+      
+       <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Password Changed"
+        message="Your password has been successfully changed."
+        primaryButton="Ok"
+        onPrimaryClick={() => router.push("/")}
+        />
+
     </div>
   );
 }

@@ -5,14 +5,21 @@ import * as Yup from "yup";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { countryCodes } from "@/components/dashboard/staticData/Data";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function Signup() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [countryCode, setCountryCode] = useState("+45");
 
   const validationSchema = Yup.object({
+    firstname: Yup.string().required("firstname is required"),
+    lastname: Yup.string().required("lastname is required"),
+    phoneNumber: Yup.string()
+      .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+      .required("Phone number is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
@@ -25,7 +32,14 @@ export default function Signup() {
   });
 
   const formik = useFormik({
-    initialValues: { email: "", password: "", confirmPassword: "" },
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      phoneNumber: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
     validationSchema,
     onSubmit: async (values) => {
       setError("");
@@ -36,6 +50,8 @@ export default function Signup() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            name: values.firstname + " " + values.lastname,
+            phoneNumber: countryCode + values.phoneNumber,
             email: values.email,
             password: values.password,
           }),
@@ -64,6 +80,39 @@ export default function Signup() {
         {success && <p className="text-green-500 text-sm mb-3">{success}</p>}
 
         <form onSubmit={formik.handleSubmit}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+            <div>
+              <input
+                type="text"
+                name="firstname"
+                placeholder="First Name"
+                className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.firstname}
+              />
+              {formik.touched.firstname && formik.errors.firstname && (
+                <p className="text-red-500 text-sm">
+                  {formik.errors.firstname}
+                </p>
+              )}
+            </div>
+            <div>
+              <input
+                type="text"
+                name="lastname"
+                placeholder="Last Name"
+                className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.lastname}
+              />
+              {formik.touched.lastname && formik.errors.lastname && (
+                <p className="text-red-500 text-sm">{formik.errors.lastname}</p>
+              )}
+            </div>
+          </div>
+
           <input
             type="email"
             name="email"
@@ -75,6 +124,42 @@ export default function Signup() {
           />
           {formik.touched.email && formik.errors.email && (
             <p className="text-red-500 text-sm mb-3">{formik.errors.email}</p>
+          )}
+          <div className="flex items-center w-full gap-2 mb-2">
+            <div className="relative w-1/5">
+              <select
+                className="p-3 w-full border rounded-md outline-none bg-white cursor-pointer appearance-none pr-6"
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value)}
+              >
+                {countryCodes.map((country) => (
+                  <option
+                    key={country.code}
+                    className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                    value={country.code}
+                  >
+                    {country.flag} {country.code}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="w-4/5">
+              <input
+                type="phoneNumber"
+                name="phoneNumber"
+                placeholder="Phone Number"
+                className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.phoneNumber}
+              />
+            </div>
+          </div>
+          {formik.touched.phoneNumber && formik.errors.phoneNumber && (
+            <p className="text-red-500 text-sm mt-1">
+              {formik.errors.phoneNumber}
+            </p>
           )}
 
           <input

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import BarChart from "../barChart";
 import { useRouter } from "next/navigation";
+import Modal from "../modals/modal";
 
 export default function EditFacilities() {
   const [isOpen, setIsOpen] = useState(false);
@@ -305,38 +306,20 @@ export default function EditFacilities() {
           Save Changes
         </button>
 
-        {isOpen && (
-          <div className="fixed inset-0 bg-opacity-30 flex backdrop-blur-sm items-center justify-center">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-96 text-center">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Do you want to save the changes?
-              </h2>
-              <p className="text-gray-600 mt-2">
-                Changes have been made to this facility. Do you want to save or
-                discard them?
-              </p>
-
-              <div className="flex justify-between mt-6">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="border border-gray-400 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-100 transition"
-                >
-                  Discard
-                </button>
-                <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    router.push("/dashboard/facilities");
-                  }}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+        <Modal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          title="Do you want to save the changes?"
+          message="Changes have been made to this facility. Do you want to save or
+                discard them?"
+          primaryButton="Save"
+          onPrimaryClick={() => router.push("/dashboard/facilities")}
+          secondaryButton="Discard"
+          onSecondaryClick={() =>
+            router.push("/dashboard/facilities/editFacilities")
+          }
+        />
+     </div>
     </>
   );
 }
