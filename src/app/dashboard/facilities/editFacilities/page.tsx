@@ -6,14 +6,12 @@ import EditFacilities from "@/components/dashboard/editFacilities";
 const EditFacilitiesPage = () => {
   return (
     <>
-    <div className="flex h-screen bg-gray-50">
-      <AdminSidebar />
-      <EditFacilities />
-    </div>
+      <div className="flex h-screen bg-gray-50">
+        <AdminSidebar />
+        <EditFacilities />
+      </div>
     </>
   );
 };
 
-// export default withAuth(EditFacilitiesPage);
-export default EditFacilitiesPage;
-
+export default withAuth(EditFacilitiesPage);
