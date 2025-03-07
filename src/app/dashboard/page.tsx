@@ -1,5 +1,5 @@
 "use client";
-import withAuth from "@/components/auth/authUtils";
+import withAuth from "@/auth/authUtils";
 import AdminSidebar from "@/components/dashboard/Sidebar";
 import MainContent from "@/components/dashboard/mainContent";
 

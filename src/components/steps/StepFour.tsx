@@ -1,9 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { countryCodes } from "@/components/dashboard/staticData/Data";
+import { getCustomer } from "@/services/stepperServices";
 
 export default function StepFour() {
   const [isYearly, setIsYearly] = useState(true);
   const [selectedOption, setSelectedOption] = useState("");
+  const [billingInfo, setBillingInfo] = useState({
+    companyName: "",
+    cvrNumber: "",
+    address: "",
+    postCode: "",
+    city: "",
+    email: "",
+    countryCode: "",
+    phone: "",
+  });
+
+  useEffect(() => {
+    async function fetchCustomer() {
+      try {
+        const token = localStorage.getItem("token");
+        const IdToken = localStorage.getItem("IdToken");
+
+        if (!token || !IdToken) {
+          console.error("Authorization token missing.");
+          return;
+        }
+
+        const data = await getCustomer(token, IdToken);
+
+        if (data) {
+          setBillingInfo((prev) => ({
+            ...prev,
+            companyName: data.companyName || "",
+            cvrNumber: data.cvrNumber || "",
+            address: data.address || "",
+            postCode: data.postCode || "",
+            city: data.city || "",
+            email: data.email || "",
+            countryCode: data.countryCode || "",
+            phone: data.phone || "",
+          }));
+        } else {
+          console.warn("No customer data returned.");
+        }
+      } catch (error) {
+        console.error("Error fetching customer data:", error);
+      }
+    }
+
+    fetchCustomer();
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setBillingInfo((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-[#082351DE] mb-2">
@@ -170,6 +223,8 @@ export default function StepFour() {
             <input
               type="text"
               placeholder="EC Power"
+              value={billingInfo.companyName}
+              onChange={handleInputChange}
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -180,6 +235,8 @@ export default function StepFour() {
             <input
               type="text"
               placeholder="19228509"
+              value={billingInfo.cvrNumber}
+              onChange={handleInputChange}
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -191,6 +248,8 @@ export default function StepFour() {
             <input
               type="text"
               placeholder="Samsøvej 25"
+              value={billingInfo.address}
+              onChange={handleInputChange}
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -202,6 +261,8 @@ export default function StepFour() {
               <input
                 type="text"
                 placeholder="8382"
+                value={billingInfo.postCode}
+              onChange={handleInputChange}
                 className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -210,6 +271,8 @@ export default function StepFour() {
               <input
                 type="text"
                 placeholder="Hinnerup"
+                value={billingInfo.city}
+              onChange={handleInputChange}
                 className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -222,6 +285,8 @@ export default function StepFour() {
             <input
               type="email"
               placeholder="example123@gmail.eu"
+              value={billingInfo.email}
+              onChange={handleInputChange}
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -247,6 +312,8 @@ export default function StepFour() {
               <input
                 type="text"
                 placeholder="87 43 41 00"
+                value={billingInfo.phone}
+              onChange={handleInputChange}
                 className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>

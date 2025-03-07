@@ -8,20 +8,18 @@ import StepTwo from "@/components/steps/StepTwo";
 import StepThree from "@/components/steps/StepThree";
 import StepFour from "@/components/steps/StepFour";
 import NavigationButtons from "@/components/NavigationButtons";
-import withAuth from "@/components/auth/authUtils";
+import withAuth from "@/auth/authUtils";
 import { useRouter } from "next/navigation";
 import useFormPersistence from "@/components/utils/useFormPersistence";
 import Modal from "@/components/modals/modal";
+import { createFacility, createProfile } from "@/services/stepperServices";
 
 function Dashboard() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
   const [step, setStep] = useState(() => {
     return Number(localStorage.getItem("currentStep")) || 1;
   });
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [isStep1Valid, setIsStep1Valid] = useState(false);
-  const [isStep2Valid, setIsStep2Valid] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const [formData, setFormData] = useState(() => {
@@ -50,12 +48,15 @@ function Dashboard() {
       : {
           systemName: "",
           XRGINumber: "",
+          model: "",
           address: "",
           postalCode: "",
           city: "",
           serviceCost: "5.75",
           vat: "12",
+          VATDeduction: "",
           m3: "",
+          gasType: "",
           independentDKK: "",
           dependentDKK: "",
           kWh: "",
@@ -71,14 +72,14 @@ function Dashboard() {
 
   const { clearFormData } = useFormPersistence(step, formData, stepTwoFormData);
 
-  const handleSubmit = async () => {
+  const handleCreateProfile = async () => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
     if (!token || !IdToken) {
       console.error("Authorization token missing.");
       return false;
     }
-    const APIUrl = `${apiUrl}/create-Profile`;
+
     const payload = {
       companyInfo: {
         name: formData.companyName,
@@ -98,30 +99,68 @@ function Dashboard() {
     };
 
     try {
-      const response = await fetch(APIUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          "x-id-token": `${IdToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create profile");
-      }
-
-      const result = await response.json();
-      console.log("Profile created successfully:", result);
+      await createProfile(token, IdToken, payload);
+      console.log("Step 1 submitted successfully");
+      return true;
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error submitting step 1:", error);
+      return false;
+    }
+  };
+
+  const handleCreateFacility = async () => {
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+    if (!token || !IdToken) {
+      console.error("Authorization token missing.");
+      return false;
+    }
+
+    const payload = {
+      name: "newFacility",
+      registerSystem: {
+        systemName: stepTwoFormData.systemName,
+        XRGINumber: stepTwoFormData.XRGINumber,
+        model: stepTwoFormData.model,
+      },
+      location: {
+        address: stepTwoFormData.address,
+        postalCode: stepTwoFormData.postalCode,
+        city: stepTwoFormData.city,
+      },
+      systemCost: {
+        serviceCost: stepTwoFormData.serviceCost,
+        vat: stepTwoFormData.vat,
+        VATDeduction: stepTwoFormData.VATDeduction,
+      },
+      gasConsumption: {
+        m3: stepTwoFormData.m3,
+        gasType: stepTwoFormData.gasType,
+        independentDKK: stepTwoFormData.independentDKK,
+        dependentDKK: stepTwoFormData.dependentDKK,
+      },
+      electricityConsumption: {
+        kWh: stepTwoFormData.kWh,
+        electricityIndependentDKK: stepTwoFormData.electricityIndependentDKK,
+        electricityDependentDKK: stepTwoFormData.electricityDependentDKK,
+      },
+    };
+
+    try {
+      await createFacility(token, IdToken, payload);
+      console.log("Step 2 submitted successfully");
+      return true;
+    } catch (error) {
+      console.error("Error submitting step 2:", error);
+      return false;
     }
   };
 
   const nextStep = async () => {
     if (step === 1) {
-      await handleSubmit();
+      await handleCreateProfile();
+    } else if (step == 2) {
+      await handleCreateFacility();
     }
     setStep((prev) => Math.min(prev + 1, 4));
   };
@@ -156,15 +195,10 @@ function Dashboard() {
             <Stepper step={step} />
             <div className="bg-white p-6 rounded-lg shadow w-full max-w-7xl ">
               {step === 1 && (
-                <StepOne
-                  validateForm={setIsStep1Valid}
-                  formData={formData}
-                  setFormData={setFormData}
-                />
+                <StepOne formData={formData} setFormData={setFormData} />
               )}
               {step === 2 && (
                 <StepTwo
-                  validateForm={setIsStep2Valid}
                   stepTwoFormData={stepTwoFormData}
                   setStepTwoFormData={setStepTwoFormData}
                 />
@@ -176,7 +210,6 @@ function Dashboard() {
               step={step}
               nextStep={nextStep}
               prevStep={prevStep}
-              isNextDisabled={step === 1 && isStep1Valid}
               handleSubscription={handleSubscription}
             />
           </>

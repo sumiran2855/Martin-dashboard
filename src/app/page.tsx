@@ -6,12 +6,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { login } from "@/services/authService";
+import { InputField } from "@/components/form/InputField";
 
 interface LoginValues {
   email: string;
   password: string;
 }
-const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function Login() {
   const [error, setError] = useState("");
@@ -36,24 +37,14 @@ export default function Login() {
     onSubmit: async (values) => {
       setError("");
 
-      try {
-        const response = await fetch(`${apiUrl}/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
+      const result = await login(values.email, values.password);
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Login failed");
-        }
-        localStorage.setItem("token", data.accessToken);
-        localStorage.setItem("IdToken", data.idToken);
-        router.push("/createProfile");
-      } catch (err: any) {
-        setError(err.message);
+      if (!result.success) {
+        setError(result.message);
+        return;
       }
+
+      router.push("/createProfile");
     },
   });
 
@@ -65,33 +56,27 @@ export default function Login() {
         {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
         <form onSubmit={formik.handleSubmit} noValidate>
-          <input
+          <InputField
+            label="Email"
             type="email"
-            placeholder="Email"
-            className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            {...formik.getFieldProps("email")}
+            formikKey="email"
+            formikProps={formik}
           />
-          {formik.touched.email && formik.errors.email && (
-            <p className="text-red-500 text-sm mb-3">{formik.errors.email}</p>
-          )}
-
-          <input
+          <InputField
+            label="Password"
             type="password"
-            placeholder="Password"
-            className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            {...formik.getFieldProps("password")}
+            formikKey="password"
+            formikProps={formik}
           />
-          {formik.touched.password && formik.errors.password && (
-            <p className="text-red-500 text-sm mb-3">
-              {formik.errors.password}
-            </p>
-          )}
 
           <div className="flex items-center justify-between text-sm mb-6">
             <label className="flex items-center cursor-pointer">
               <input type="checkbox" className="mr-2" /> Remember me
             </label>
-            <Link href="/forgetPassword" className="text-blue-600 hover:underline">
+            <Link
+              href="/forgetPassword"
+              className="text-blue-600 hover:underline"
+            >
               Forgot password?
             </Link>
           </div>

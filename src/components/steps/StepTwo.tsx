@@ -1,107 +1,41 @@
-import GenericModal from "@/components/genericPopup";
-import { useEffect, useState } from "react";
+import GenericModal from "@/components/modals/genericPopup";
+import { useState } from "react";
 import BarChart from "../barChart";
 
 interface ValidateFormProps {
-  validateForm: (isValid: boolean) => void;
   stepTwoFormData: any;
   setStepTwoFormData: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function StepTwo({
-  validateForm,
   stepTwoFormData,
   setStepTwoFormData,
 }: ValidateFormProps) {
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(stepTwoFormData.model);
+  const [VATDeduction, setVATDeduction] = useState(
+    stepTwoFormData.VATDeduction
+  );
+  const [selectGasType, setSelectGasType] = useState(stepTwoFormData.model);
 
-  const [errors, setErrors] = useState({
-    systemName: "",
-    XRGINumber: "",
-    address: "",
-    postalCode: "",
-    city: "",
-    serviceCost: "",
-    vat: "",
-    m3: "",
-    independentDKK: "",
-    dependentDKK: "",
-    kWh: "",
-    electricityIndependentDKK: "",
-    electricityDependentDKK: "",
-  });
-
-  const validateFields = () => {
-    let newErrors = {
-      systemName: stepTwoFormData.systemName.trim()
-        ? ""
-        : "System Name is required",
-      XRGINumber:
-        stepTwoFormData.XRGINumber.length >= 8
-          ? ""
-          : "XRGI Number must be at least 8 characters",
-      address: stepTwoFormData.address.trim() ? "" : "Address is required",
-      postalCode: /^\d{4}$/.test(stepTwoFormData.postalCode)
-        ? ""
-        : "Postal Code must be exactly 4 digits",
-      city: stepTwoFormData.city.trim() ? "" : "City is required",
-      serviceCost:
-        stepTwoFormData.serviceCost &&
-        !isNaN(Number(stepTwoFormData.serviceCost))
-          ? ""
-          : "Service Cost must be a valid number",
-      vat:
-        stepTwoFormData.vat && !isNaN(Number(stepTwoFormData.vat))
-          ? ""
-          : "VAT must be a valid number",
-      m3:
-        stepTwoFormData.m3 && !isNaN(Number(stepTwoFormData.m3))
-          ? ""
-          : "M³ must be a valid number",
-      independentDKK:
-        stepTwoFormData.independentDKK &&
-        !isNaN(Number(stepTwoFormData.independentDKK))
-          ? ""
-          : "Independent DKK must be a valid number",
-      dependentDKK:
-        stepTwoFormData.dependentDKK &&
-        !isNaN(Number(stepTwoFormData.dependentDKK))
-          ? ""
-          : "Dependent DKK must be a valid number",
-      kWh:
-        stepTwoFormData.kWh && !isNaN(Number(stepTwoFormData.kWh))
-          ? ""
-          : "kWh must be a valid number",
-      electricityIndependentDKK:
-        stepTwoFormData.electricityIndependentDKK &&
-        !isNaN(Number(stepTwoFormData.electricityIndependentDKK))
-          ? ""
-          : "Electricity Independent DKK must be a valid number",
-      electricityDependentDKK:
-        stepTwoFormData.electricityDependentDKK &&
-        !isNaN(Number(stepTwoFormData.electricityDependentDKK))
-          ? ""
-          : "Electricity Dependent DKK must be a valid number",
-    };
-
-    setErrors(newErrors);
-
-    return (
-      Object.values(newErrors).every((error) => error === "") &&
-      Object.values(stepTwoFormData).every(
-        (field) => typeof field === "string" && field.trim() !== ""
-      )
-    );
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setSelectedModel(e.target.value);
+    setVATDeduction(e.target.value);
+    setSelectGasType(e.target.value);
     setStepTwoFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
-  useEffect(() => {
-    validateForm(validateFields());
-  }, [stepTwoFormData]);
+  const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const model = e.target.value;
+    const VATDeduction = e.target.value;
+    const gasType = e.target.value;
+    setSelectGasType(gasType)
+    setVATDeduction(VATDeduction);
+    setSelectedModel(model);
+    setStepTwoFormData((prev: any) => ({ ...prev, model, VATDeduction,gasType }));
+  };
 
   return (
     <div>
@@ -134,8 +68,15 @@ export default function StepTwo({
 
             <div>
               <div className="relative">
-                <select className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer">
-                  <option>Select model</option>
+                <select
+                  value={selectedModel}
+                  onChange={handleChangeSelect}
+                  className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
+                >
+                  <option value="">Select a Model</option>
+                  <option>model 1</option>
+                  <option>model 2</option>
+                  <option>model 3</option>
                 </select>
                 <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none ">
                   <svg
@@ -339,7 +280,11 @@ export default function StepTwo({
                   Select if VAT can be Deducted
                 </label>
                 <div className="relative">
-                  <select className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer">
+                  <select
+                    value={VATDeduction}
+                    onChange={handleChangeSelect}
+                    className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
+                  >
                     <option>Yes</option>
                     <option>No</option>
                   </select>
@@ -374,8 +319,13 @@ export default function StepTwo({
                 What type of gas is supplied to the XRGI system?
               </label>
               <div className="relative">
-                <select className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer">
+                <select value={selectGasType}
+                  onChange={handleChangeSelect} className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer">
                   <option>Select gas type</option>
+                  <option>gas type 1</option>
+                  <option>gas type 2</option>
+                  <option>gas type 3</option>
+
                 </select>
                 <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                   <svg
@@ -404,7 +354,7 @@ export default function StepTwo({
                 placeholder="m³"
                 className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
                 value={stepTwoFormData.m3}
-                  onChange={handleChange}             
+                onChange={handleChange}
               />
             </div>
           </div>

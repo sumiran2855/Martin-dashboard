@@ -1,71 +1,14 @@
 import { useEffect, useState } from "react";
 import { countryCodes } from "@/components/dashboard/staticData/Data";
 interface ValidateFormProps {
-  validateForm: (isValid: boolean) => void;
   formData: any;
   setFormData: React.Dispatch<React.SetStateAction<any>>;
 }
-export default function StepOne({
-  validateForm,
-  formData,
-  setFormData,
-}: ValidateFormProps) {
-  const [errors, setErrors] = useState({
-    companyName: "",
-    cvrNumber: "",
-    postnr: "",
-    phone: "",
-    contactPhone: "",
-    city: "",
-    email: "",
-    contactEmail: "",
-  });
-
-  const validateFields = () => {
-    let newErrors = {
-      companyName:
-        formData.companyName.length <= 0 ? "" : "Please enter Company name",
-      cvrNumber:
-        formData.cvrNumber.length >= 8
-          ? ""
-          : "CVR Number must be at least 8 digits",
-      postnr:
-        formData.postnr.length >= 6 ? "" : "Postnr must be at least 4 digits",
-      city: formData.city.length <= 0 ? "" : "Please enter city name",
-      phone:
-        formData.phone.length >= 10
-          ? ""
-          : "Phone number must be at least 10 digits",
-      contactPhone:
-        formData.contactPhone.length >= 10
-          ? ""
-          : "Contact phone must be at least 10 digits",
-      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
-        ? ""
-        : "Invalid email format",
-      contactEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contactEmail)
-        ? ""
-        : "Invalid email format",
-    };
-
-    setErrors(newErrors);
-
-    return (
-      Object.values(newErrors).every((error) => error === "") &&
-      Object.values(formData).every(
-        (field) => typeof field === "string" && field.trim() !== ""
-      )
-    );
-  };
-
+export default function StepOne({ formData, setFormData }: ValidateFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
-
-  useEffect(() => {
-    validateForm(validateFields());
-  }, [formData]);
 
   return (
     <>

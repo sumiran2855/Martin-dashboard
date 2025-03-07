@@ -6,8 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { countryCodes } from "@/components/dashboard/staticData/Data";
-
-const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+import {
+  resendVerificationCode,
+  signup,
+  verifyEmail,
+} from "@/services/authService";
+import { InputField } from "@/components/form/InputField";
 
 export default function Signup() {
   const [error, setError] = useState("");
@@ -50,31 +54,22 @@ export default function Signup() {
       setSuccess("");
       setEmail(values.email);
 
-      try {
-        const response = await fetch(`${apiUrl}/signup`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: values.firstname + " " + values.lastname,
-            phone_number: countryCode + values.phone_number,
-            email: values.email,
-            password: values.password,
-          }),
-        });
+      const result = await signup(
+        values.firstname,
+        values.lastname,
+        countryCode,
+        values.phone_number,
+        values.email,
+        values.password
+      );
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Signup failed");
-        }
-
-        setSuccess(
-          "Signup successful! Please check your email for the verification code."
-        );
-        setIsVerificationStep(true);
-      } catch (err: any) {
-        setError(err.message);
+      if (!result.success) {
+        setError(result.message);
+        return;
       }
+
+      setSuccess(result.message);
+      setIsVerificationStep(true);
     },
   });
 
@@ -82,52 +77,29 @@ export default function Signup() {
     setError("");
     setSuccess("");
 
-    try {
-      console.log(
-        "🚀 ~ handleVerifyCode ~ verificationCode:",
-        verificationCode
-      );
-      console.log("🚀 ~ handleVerifyCode ~ email:", email);
-      const response = await fetch(`${apiUrl}/verifyEmail`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code: verificationCode }),
-      });
+    const result = await verifyEmail(email, verificationCode);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Verification failed");
-      }
-
-      setSuccess("Verification successful! Redirecting...");
-      setTimeout(() => (window.location.href = "/"), 2000);
-    } catch (err: any) {
-      setError(err.message);
+    if (!result.success) {
+      setError(result.message);
+      return;
     }
+
+    setSuccess(result.message);
+    setTimeout(() => (window.location.href = "/"), 2000);
   };
 
   const handleResendCode = async () => {
     setResendMessage("");
     setError("");
 
-    try {
-      const response = await fetch(`${apiUrl}/resendEmailVerificationCode`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+    const result = await resendVerificationCode(email);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to resend verification code");
-      }
-
-      setResendMessage("A new verification code has been sent to your email.");
-    } catch (err: any) {
-      setError(err.message);
+    if (!result.success) {
+      setError(result.message);
+      return;
     }
+
+    setResendMessage(result.message);
   };
 
   return (
@@ -147,53 +119,31 @@ export default function Signup() {
             <form onSubmit={formik.handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
                 <div>
-                  <input
+                  <InputField
+                    label="First Name"
                     type="text"
                     name="firstname"
-                    placeholder="First Name"
-                    className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.firstname}
+                    formikKey="firstname"
+                    formikProps={formik}
                   />
-                  {formik.touched.firstname && formik.errors.firstname && (
-                    <p className="text-red-500 text-sm">
-                      {formik.errors.firstname}
-                    </p>
-                  )}
                 </div>
                 <div>
-                  <input
+                  <InputField
+                    label="Last Name"
                     type="text"
                     name="lastname"
-                    placeholder="Last Name"
-                    className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.lastname}
+                    formikKey="lastname"
+                    formikProps={formik}
                   />
-                  {formik.touched.lastname && formik.errors.lastname && (
-                    <p className="text-red-500 text-sm">
-                      {formik.errors.lastname}
-                    </p>
-                  )}
                 </div>
               </div>
-
-              <input
+              <InputField
+                label="Email"
                 type="email"
                 name="email"
-                placeholder="Email"
-                className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
+                formikKey="email"
+                formikProps={formik}
               />
-              {formik.touched.email && formik.errors.email && (
-                <p className="text-red-500 text-sm mb-3">
-                  {formik.errors.email}
-                </p>
-              )}
               <div className="flex items-center w-full gap-2 mb-2">
                 <div className="relative w-1/5">
                   <select
@@ -231,36 +181,20 @@ export default function Signup() {
                 </p>
               )}
 
-              <input
+              <InputField
+                label="Password"
                 type="password"
                 name="password"
-                placeholder="Password"
-                className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
+                formikKey="password"
+                formikProps={formik}
               />
-              {formik.touched.password && formik.errors.password && (
-                <p className="text-red-500 text-sm mb-3">
-                  {formik.errors.password}
-                </p>
-              )}
-
-              <input
+              <InputField
+                label="Confirm Password"
                 type="password"
                 name="confirmPassword"
-                placeholder="Confirm Password"
-                className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.confirmPassword}
+                formikKey="confirmPassword"
+                formikProps={formik}
               />
-              {formik.touched.confirmPassword &&
-                formik.errors.confirmPassword && (
-                  <p className="text-red-500 text-sm mb-3">
-                    {formik.errors.confirmPassword}
-                  </p>
-                )}
 
               <button
                 type="submit"
@@ -290,7 +224,9 @@ export default function Signup() {
             {success && (
               <p className="text-green-500 text-sm mb-3">{success}</p>
             )}
-            {resendMessage && <p className="text-green-500 text-sm mb-3">{resendMessage}</p>}
+            {resendMessage && (
+              <p className="text-green-500 text-sm mb-3">{resendMessage}</p>
+            )}
 
             <input
               type="text"
