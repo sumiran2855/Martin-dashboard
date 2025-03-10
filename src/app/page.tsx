@@ -38,13 +38,19 @@ export default function Login() {
       setError("");
 
       const result = await login(values.email, values.password);
+      const journeyStatus = result.data.userData.journeyStatus;
+      localStorage.setItem("journeyStatus", journeyStatus);
 
       if (!result.success) {
         setError(result.message);
         return;
       }
-
-      router.push("/createProfile");
+      
+      if (journeyStatus === "completed") {
+        router.push("/dashboard");
+      } else {
+        router.push("/createProfile");
+      }
     },
   });
 

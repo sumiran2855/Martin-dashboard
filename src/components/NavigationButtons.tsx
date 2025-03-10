@@ -29,10 +29,12 @@ export default function NavigationButtons({ step, nextStep, prevStep, saveForLat
           </button>
         )}
         <button
-          onClick={step === 4 ? handleSubscription : nextStep}
+          onClick={step === 3 ? handleSubscription : nextStep}
           className="bg-blue-500 hover:bg-blue-800 text-white px-6 py-3 rounded-md transition ml-auto"
         >
-          {step === 4 ? "Start Subscription" : "Next"}
+          {/* {step === 3 ? "Start Subscription" : "Next"} */}
+          {step === 3 ? "Save" : "Next"}
+
         </button>
       </div>
     </div>

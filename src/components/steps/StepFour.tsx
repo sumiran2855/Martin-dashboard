@@ -9,7 +9,7 @@ export default function StepFour() {
     companyName: "",
     cvrNumber: "",
     address: "",
-    postCode: "",
+    postal_code: "",
     city: "",
     email: "",
     countryCode: "",
@@ -35,7 +35,7 @@ export default function StepFour() {
             companyName: data.companyName || "",
             cvrNumber: data.cvrNumber || "",
             address: data.address || "",
-            postCode: data.postCode || "",
+            postCode: data.postal_code || "",
             city: data.city || "",
             email: data.email || "",
             countryCode: data.countryCode || "",
@@ -261,7 +261,7 @@ export default function StepFour() {
               <input
                 type="text"
                 placeholder="8382"
-                value={billingInfo.postCode}
+                value={billingInfo.postal_code}
               onChange={handleInputChange}
                 className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />

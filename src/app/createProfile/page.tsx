@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Stepper from "@/components/Stepper";
 import StepOne from "@/components/steps/StepOne";
@@ -12,15 +12,31 @@ import withAuth from "@/auth/authUtils";
 import { useRouter } from "next/navigation";
 import useFormPersistence from "@/components/utils/useFormPersistence";
 import Modal from "@/components/modals/modal";
-import { createFacility, createProfile } from "@/services/stepperServices";
+import {
+  createFacility,
+  createProfile,
+  getCustomer,
+  getFacility,
+} from "@/services/stepperServices";
 
 function Dashboard() {
   const router = useRouter();
-  const [step, setStep] = useState(() => {
-    return Number(localStorage.getItem("currentStep")) || 1;
-  });
+  const [step, setStep] = useState(1);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const journeyStatus = localStorage.getItem("journeyStatus");
+    if (journeyStatus === "profileInfo") {
+      setStep(1);
+    } else if (journeyStatus === "facilityInfo") {
+      setStep(2);
+    } else if (journeyStatus === "installationInfo") {
+      setStep(3);
+    } else {
+      router.push("/dashboard");
+    }
+  }, []);
 
   const [formData, setFormData] = useState(() => {
     const storedData = localStorage.getItem("formData");
@@ -30,14 +46,14 @@ function Dashboard() {
           companyName: "",
           cvrNumber: "",
           address: "",
-          postnr: "",
+          postal_code: "",
           city: "",
           email: "",
           phone: "",
           firstName: "",
           lastName: "",
-          contactEmail: "",
-          contactPhone: "",
+          personalEmail: "",
+          personalPhone: "",
         };
   });
 
@@ -72,7 +88,7 @@ function Dashboard() {
 
   const { clearFormData } = useFormPersistence(step, formData, stepTwoFormData);
 
-  const handleCreateProfile = async () => {
+  const handleCreateProfile = async (updateOnly = false) => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
     if (!token || !IdToken) {
@@ -80,27 +96,41 @@ function Dashboard() {
       return false;
     }
 
-    const payload = {
-      companyInfo: {
-        name: formData.companyName,
-        cvr_number: formData.cvrNumber,
-        address: formData.address,
-        city: formData.city,
-        postal_code: formData.postnr,
-        email: formData.email,
-        phone: formData.phone,
-      },
-      contactPerson: {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.contactEmail,
-        phone: formData.contactPhone,
-      },
-    };
+    const journeyStatus = localStorage.getItem("journeyStatus");
+
+    const payload = updateOnly
+      ? { journeyStatus }
+      : {
+          companyInfo: {
+            name: formData.companyName,
+            cvr_number: formData.cvrNumber,
+            address: formData.address,
+            city: formData.city,
+            postal_code: formData.postnr,
+            email: formData.email,
+            phone: formData.phone,
+          },
+          contactPerson: {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            personalEmail: formData.contactEmail,
+            personalPhone: formData.contactPhone,
+          },
+          journeyStatus,
+        };
 
     try {
-      await createProfile(token, IdToken, payload);
-      console.log("Step 1 submitted successfully");
+      const response = await createProfile(token, IdToken, payload);
+      console.log("create profile success:", response);
+
+      if (!updateOnly) {
+        localStorage.setItem("journeyStatus", "facilityInfo");
+      } else if (journeyStatus === "facilityInfo") {
+        localStorage.setItem("journeyStatus", "installationInfo");
+      } else if (journeyStatus === "installationInfo") {
+        localStorage.setItem("journeyStatus", "completed");
+      }
+
       return true;
     } catch (error) {
       console.error("Error submitting step 1:", error);
@@ -147,25 +177,77 @@ function Dashboard() {
     };
 
     try {
-      await createFacility(token, IdToken, payload);
-      console.log("Step 2 submitted successfully");
+      const response = await createFacility(token, IdToken, payload);
+      console.log("create facility success",response);
+
+      await handleCreateProfile(true);
       return true;
     } catch (error) {
-      console.error("Error submitting step 2:", error);
+      console.error("Error submitting creating facility:", error);
       return false;
     }
   };
 
+  const handleGetCustomer = async () => {
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+    if (!token || !IdToken) {
+      console.error("Authorization token missing.");
+      return;
+    }
+
+    try {
+      const customerData = await getCustomer(token, IdToken);
+      if (customerData) {
+        setFormData((prev: any) => ({
+          ...prev,
+          ...customerData,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching customer data:", error);
+    }
+  };
+
+  const handleGetFacility = async () => {
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+  
+    if (!token || !IdToken) {
+      console.error("Authorization token missing.");
+      return;
+    }
+  
+    try {
+      const facilityData = await getFacility(token, IdToken);
+      if (facilityData) {
+        setStepTwoFormData((prev: any) => ({
+          ...prev,
+          ...facilityData,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching facility data:", error);
+    }
+  };
+  
   const nextStep = async () => {
     if (step === 1) {
       await handleCreateProfile();
-    } else if (step == 2) {
+    } else if (step === 2) {
+      await handleCreateFacility();
+    } else if (step === 3) {
       await handleCreateFacility();
     }
     setStep((prev) => Math.min(prev + 1, 4));
   };
 
-  const prevStep = () => {
+  const prevStep = async () => {
+    if (step === 2) {
+      await handleGetCustomer();
+    }else {
+      await handleGetFacility();
+    }
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
@@ -204,7 +286,7 @@ function Dashboard() {
                 />
               )}
               {step === 3 && <StepThree />}
-              {step === 4 && <StepFour />}
+              {/* {step === 4 && <StepFour />} */}
             </div>
             <NavigationButtons
               step={step}

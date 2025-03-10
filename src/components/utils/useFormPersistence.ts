@@ -36,10 +36,6 @@ const useFormPersistence = (
   stepTwoFormData: StepTwoFormData
 ) => {
   useEffect(() => {
-    localStorage.setItem("currentStep", step.toString());
-  }, [step]);
-
-  useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
   }, [formData]);
 
@@ -50,7 +46,6 @@ const useFormPersistence = (
   const clearFormData = () => {
     localStorage.removeItem("formData");
     localStorage.removeItem("stepTwoFormData");
-    localStorage.removeItem("currentStep");
   };
 
   return { clearFormData };

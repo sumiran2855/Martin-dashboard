@@ -55,10 +55,10 @@ export default function StepOne({ formData, setFormData }: ValidateFormProps) {
           <div className="flex items-center w-full gap-2">
             <input
               type="text"
-              name="postnr"
+              name="postal_code"
               placeholder="Postnr"
               className="p-3 border rounded outline-none w-1/6"
-              value={formData.postnr}
+              value={formData.postal_code}
               onChange={handleChange}
             />
             <input
@@ -132,10 +132,10 @@ export default function StepOne({ formData, setFormData }: ValidateFormProps) {
           />
           <input
             type="text"
-            name="contactEmail"
+            name="personalEmail"
             placeholder="Email"
             className="border p-3 rounded w-full"
-            value={formData.contactEmail}
+            value={formData.personalEmail}
             onChange={handleChange}
           />
           <div className="flex items-center w-full gap-2">
@@ -155,10 +155,10 @@ export default function StepOne({ formData, setFormData }: ValidateFormProps) {
 
             <input
               type="text"
-              name="contactPhone"
+              name="personalPhone"
               placeholder="Phone"
               className="p-3 w-5/6 border rounded outline-none"
-              value={formData.contactPhone}
+              value={formData.personalPhone}
               onChange={handleChange}
             />
           </div>
