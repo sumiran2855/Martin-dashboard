@@ -7,34 +7,39 @@ interface ValidateFormProps {
   setStepTwoFormData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export default function StepTwo({
+export default function CreateFacility({
   stepTwoFormData,
   setStepTwoFormData,
 }: ValidateFormProps) {
   const [isPopupOpen, setPopupOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState(stepTwoFormData.model);
-  const [VATDeduction, setVATDeduction] = useState(
-    stepTwoFormData.VATDeduction
+  const [selectedModel, setSelectedModel] = useState(
+    stepTwoFormData.model || ""
   );
-  const [selectGasType, setSelectGasType] = useState(stepTwoFormData.model);
-
+  const [VATDeduction, setVATDeduction] = useState(
+    stepTwoFormData.VATDeduction || "Yes"
+  );
+  const [selectGasType, setSelectGasType] = useState(
+    stepTwoFormData.gasType || ""
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setSelectedModel(e.target.value);
-    setVATDeduction(e.target.value);
-    setSelectGasType(e.target.value);
     setStepTwoFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const model = e.target.value;
-    const VATDeduction = e.target.value;
-    const gasType = e.target.value;
-    setSelectGasType(gasType)
-    setVATDeduction(VATDeduction);
-    setSelectedModel(model);
-    setStepTwoFormData((prev: any) => ({ ...prev, model, VATDeduction,gasType }));
+    const { name, value } = e.target;
+
+    if (name === "model") {
+      setSelectedModel(value);
+      setStepTwoFormData((prev: any) => ({ ...prev, model: value }));
+    } else if (name === "VATDeduction") {
+      setVATDeduction(value);
+      setStepTwoFormData((prev: any) => ({ ...prev, VATDeduction: value }));
+    } else if (name === "gasType") {
+      setSelectGasType(value);
+      setStepTwoFormData((prev: any) => ({ ...prev, gasType: value }));
+    }
   };
 
   return (
@@ -69,6 +74,7 @@ export default function StepTwo({
             <div>
               <div className="relative">
                 <select
+                  name="model"
                   value={selectedModel}
                   onChange={handleChangeSelect}
                   className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
@@ -281,6 +287,7 @@ export default function StepTwo({
                 </label>
                 <div className="relative">
                   <select
+                    name="VATDeduction"
                     value={VATDeduction}
                     onChange={handleChangeSelect}
                     className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
@@ -319,13 +326,16 @@ export default function StepTwo({
                 What type of gas is supplied to the XRGI system?
               </label>
               <div className="relative">
-                <select value={selectGasType}
-                  onChange={handleChangeSelect} className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer">
+                <select
+                  name="gasType"
+                  value={selectGasType}
+                  onChange={handleChangeSelect}
+                  className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
+                >
                   <option>Select gas type</option>
                   <option>gas type 1</option>
                   <option>gas type 2</option>
                   <option>gas type 3</option>
-
                 </select>
                 <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                   <svg

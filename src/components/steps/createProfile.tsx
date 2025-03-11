@@ -4,7 +4,7 @@ interface ValidateFormProps {
   formData: any;
   setFormData: React.Dispatch<React.SetStateAction<any>>;
 }
-export default function StepOne({ formData, setFormData }: ValidateFormProps) {
+export default function createProfile({ formData, setFormData }: ValidateFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev: any) => ({ ...prev, [name]: value }));

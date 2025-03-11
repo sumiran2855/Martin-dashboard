@@ -3,16 +3,16 @@
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Stepper from "@/components/Stepper";
-import StepOne from "@/components/steps/StepOne";
-import StepTwo from "@/components/steps/StepTwo";
-import StepThree from "@/components/steps/StepThree";
-import StepFour from "@/components/steps/StepFour";
+import CreateProfile from "@/components/steps/createProfile";
+import CreateFacility from "@/components/steps/createFacility";
+import Installation from "@/components/steps/Installation";
+// import StepFour from "@/components/steps/PaymentInfo";
 import NavigationButtons from "@/components/NavigationButtons";
 import withAuth from "@/auth/authUtils";
 import { useRouter } from "next/navigation";
-import useFormPersistence from "@/components/utils/useFormPersistence";
 import Modal from "@/components/modals/modal";
 import {
+  addFeature,
   createFacility,
   createProfile,
   getCustomer,
@@ -24,6 +24,12 @@ function Dashboard() {
   const [step, setStep] = useState(1);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [partnerDetails, setPartnerDetails] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+  });
 
   useEffect(() => {
     const journeyStatus = localStorage.getItem("journeyStatus");
@@ -70,7 +76,7 @@ function Dashboard() {
           city: "",
           serviceCost: "5.75",
           vat: "12",
-          VATDeduction: "",
+          VATDeduction: "Yes",
           m3: "",
           gasType: "",
           independentDKK: "",
@@ -81,12 +87,16 @@ function Dashboard() {
         };
   });
 
-  const handleSubscription = () => {
+  const handleSubscription = async () => {
     setIsSubscribed(true);
     setIsOpen(true);
-  };
 
-  const { clearFormData } = useFormPersistence(step, formData, stepTwoFormData);
+    if (selectedOption) {
+      await handleAddFeature();
+    }
+    localStorage.setItem("journeyStatus", "completed");
+    await handleCreateProfile(true);
+  };
 
   const handleCreateProfile = async (updateOnly = false) => {
     const token = localStorage.getItem("token");
@@ -106,15 +116,15 @@ function Dashboard() {
             cvr_number: formData.cvrNumber,
             address: formData.address,
             city: formData.city,
-            postal_code: formData.postnr,
+            postal_code: formData.postal_code,
             email: formData.email,
             phone: formData.phone,
           },
           contactPerson: {
             firstName: formData.firstName,
             lastName: formData.lastName,
-            personalEmail: formData.contactEmail,
-            personalPhone: formData.contactPhone,
+            personalEmail: formData.personalEmail,
+            personalPhone: formData.personalPhone,
           },
           journeyStatus,
         };
@@ -127,9 +137,10 @@ function Dashboard() {
         localStorage.setItem("journeyStatus", "facilityInfo");
       } else if (journeyStatus === "facilityInfo") {
         localStorage.setItem("journeyStatus", "installationInfo");
-      } else if (journeyStatus === "installationInfo") {
-        localStorage.setItem("journeyStatus", "completed");
       }
+      // else if (journeyStatus === "installationInfo") {
+      //   localStorage.setItem("journeyStatus", "completed");
+      // }
 
       return true;
     } catch (error) {
@@ -178,7 +189,7 @@ function Dashboard() {
 
     try {
       const response = await createFacility(token, IdToken, payload);
-      console.log("create facility success",response);
+      console.log("create facility success", response);
 
       await handleCreateProfile(true);
       return true;
@@ -212,31 +223,80 @@ function Dashboard() {
   const handleGetFacility = async () => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
-  
+
     if (!token || !IdToken) {
       console.error("Authorization token missing.");
       return;
     }
-  
+
     try {
       const facilityData = await getFacility(token, IdToken);
+      console.log("🚀 ~ handleGetFacility ~ facilityData:", facilityData);
       if (facilityData) {
-        setStepTwoFormData((prev: any) => ({
-          ...prev,
-          ...facilityData,
-        }));
+        setStepTwoFormData({
+          systemName: facilityData.registerSystem.systemName || "",
+          XRGINumber: facilityData.registerSystem.XRGINumber || "",
+          model: facilityData.registerSystem.model || "",
+
+          address: facilityData.location.address || "",
+          postalCode: facilityData.location.postalCode || "",
+          city: facilityData.location.city || "",
+
+          serviceCost: facilityData.systemCost.serviceCost || "5.75",
+          vat: facilityData.systemCost.vat || "12",
+          VATDeduction: facilityData.systemCost.VATDeduction || "",
+
+          m3: facilityData.gasConsumption.m3 || "",
+          gasType: facilityData.gasConsumption.gasType || "",
+          independentDKK: facilityData.gasConsumption.independentDKK || "",
+          dependentDKK: facilityData.gasConsumption.dependentDKK || "",
+
+          kWh: facilityData.electricityConsumption.kWh || "",
+          electricityIndependentDKK:
+            facilityData.electricityConsumption.electricityIndependentDKK || "",
+          electricityDependentDKK:
+            facilityData.electricityConsumption.electricityDependentDKK || "",
+        });
       }
     } catch (error) {
       console.error("Error fetching facility data:", error);
     }
   };
-  
+
+  const handleAddFeature = async () => {
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !IdToken || !userId) {
+      console.error("Authorization token or user ID missing.");
+      return;
+    }
+
+    const payload = {
+      name: "super saver",
+      userID: userId,
+      type: selectedOption,
+      ...(selectedOption === "local_partner" && {
+        partner_details: { ...partnerDetails },
+      }),
+    };
+
+    try {
+      const response = await addFeature(token, IdToken, payload);
+      console.log("Feature added successfully:", response);
+
+      return true;
+    } catch (error) {
+      console.error("Error adding feature:", error);
+      return false;
+    }
+  };
+
   const nextStep = async () => {
     if (step === 1) {
       await handleCreateProfile();
     } else if (step === 2) {
-      await handleCreateFacility();
-    } else if (step === 3) {
       await handleCreateFacility();
     }
     setStep((prev) => Math.min(prev + 1, 4));
@@ -245,7 +305,7 @@ function Dashboard() {
   const prevStep = async () => {
     if (step === 2) {
       await handleGetCustomer();
-    }else {
+    } else if (step === 3) {
       await handleGetFacility();
     }
     setStep((prev) => Math.max(prev - 1, 1));
@@ -268,7 +328,6 @@ function Dashboard() {
                access to all premium features."
             primaryButton="Go to Dashboard"
             onPrimaryClick={() => {
-              clearFormData();
               router.push("/dashboard");
             }}
           />
@@ -277,15 +336,22 @@ function Dashboard() {
             <Stepper step={step} />
             <div className="bg-white p-6 rounded-lg shadow w-full max-w-7xl ">
               {step === 1 && (
-                <StepOne formData={formData} setFormData={setFormData} />
+                <CreateProfile formData={formData} setFormData={setFormData} />
               )}
               {step === 2 && (
-                <StepTwo
+                <CreateFacility
                   stepTwoFormData={stepTwoFormData}
                   setStepTwoFormData={setStepTwoFormData}
                 />
               )}
-              {step === 3 && <StepThree />}
+              {step === 3 && (
+                <Installation
+                  selectedOption={selectedOption}
+                  setSelectedOption={setSelectedOption}
+                  partnerDetails={partnerDetails}
+                  setPartnerDetails={setPartnerDetails}
+                />
+              )}
               {/* {step === 4 && <StepFour />} */}
             </div>
             <NavigationButtons

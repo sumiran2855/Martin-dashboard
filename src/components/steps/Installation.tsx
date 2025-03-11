@@ -1,7 +1,14 @@
 import { useState } from "react";
 
-export default function StepThree() {
-  const [selectedOption, setSelectedOption] = useState("");
+interface addFeature{
+  selectedOption:string,
+  setSelectedOption:any,
+  partnerDetails:any,
+  setPartnerDetails:any
+}
+
+export default function StepThree({ selectedOption, setSelectedOption, partnerDetails, setPartnerDetails }:addFeature) {
+  // const [selectedOption, setSelectedOption] = useState("");
 
   return (
     <div>
@@ -49,16 +56,22 @@ export default function StepThree() {
                   <input
                     type="text"
                     placeholder="Name"
+                    value={partnerDetails.name}
+                    onChange={(e) => setPartnerDetails({ ...partnerDetails, name: e.target.value })}
                     className="p-2 border rounded-md w-full"
                   />
                   <input
                     type="text"
                     placeholder="Mobile"
+                    value={partnerDetails.mobile}
+                    onChange={(e) => setPartnerDetails({ ...partnerDetails, mobile: e.target.value })}
                     className="p-2 border rounded-md w-full"
                   />
                   <input
                     type="email"
                     placeholder="Email"
+                    value={partnerDetails.email}
+                    onChange={(e) => setPartnerDetails({ ...partnerDetails, email: e.target.value })}
                     className="p-2 border rounded-md w-full col-span-2"
                   />
                 </div>
