@@ -8,14 +8,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/services/authService";
 import { InputField } from "@/components/form/InputField";
+import { setCookie, removeCookie } from "@/utils/cookies";
+import { encryptData } from "@/utils/encryption";
+import { useRememberMe } from "@/controller/rememberMe";
 
 interface LoginValues {
   email: string;
   password: string;
+  rememberMe: boolean;
 }
 
 export default function Login() {
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
 
   const validationSchema = Yup.object({
@@ -29,30 +34,41 @@ export default function Login() {
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
       .required("Password is required"),
+    rememberMe: Yup.boolean(),
   });
 
   const formik = useFormik<LoginValues>({
-    initialValues: { email: "", password: "" },
+    initialValues: { email: "", password: "", rememberMe: false },
     validationSchema,
     onSubmit: async (values) => {
       setError("");
+      setSuccessMessage("");
 
       const result = await login(values.email, values.password);
-      const journeyStatus = result.data.userData.journeyStatus;
-      localStorage.setItem("journeyStatus", journeyStatus);
-
       if (!result.success) {
-        setError(result.message);
+        setError(result.message || "Invalid email or password.");
         return;
       }
-      
-      if (journeyStatus === "completed") {
-        router.push("/dashboard");
+
+      const journeyStatus = result.data.userData.journeyStatus;
+      localStorage.setItem("journeyStatus", journeyStatus);
+      setSuccessMessage("Login successful! Redirecting...");
+
+      if (values.rememberMe) {
+        setCookie("rememberedEmail", values.email, 1);
+        setCookie("rememberedPassword", encryptData(values.password), 1);
       } else {
-        router.push("/createProfile");
+        removeCookie("rememberedEmail");
+        removeCookie("rememberedPassword");
       }
+
+      router.push(
+        journeyStatus === "completed" ? "/dashboard" : "/createProfile"
+      );
     },
   });
+
+  useRememberMe(formik.setValues);
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
@@ -60,6 +76,9 @@ export default function Login() {
         <h2 className="text-2xl font-semibold text-gray-800 mb-6">Login</h2>
 
         {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+        {successMessage && (
+          <p className="text-green-600 text-sm mb-3">{successMessage}</p>
+        )}
 
         <form onSubmit={formik.handleSubmit} noValidate>
           <InputField
@@ -77,7 +96,15 @@ export default function Login() {
 
           <div className="flex items-center justify-between text-sm mb-6">
             <label className="flex items-center cursor-pointer">
-              <input type="checkbox" className="mr-2" /> Remember me
+              <input
+                checked={formik.values.rememberMe}
+                onChange={(e) =>
+                  formik.setFieldValue("rememberMe", e.target.checked)
+                }
+                type="checkbox"
+                className="mr-2"
+              />{" "}
+              Remember me
             </label>
             <Link
               href="/forgetPassword"

@@ -7,7 +7,7 @@ export const login = async (email: string, password: string) => {
   if (result.success) {
     localStorage.setItem("token", result.data.tokens.accessToken);
     localStorage.setItem("IdToken", result.data.tokens.idToken);
-    localStorage.setItem("userId",result.data.userData.id)
+    localStorage.setItem("userId", result.data.userData.id);
   }
 
   return result;
@@ -44,5 +44,15 @@ export const resendVerificationCode = async (email: string) => {
 };
 
 // forget password
+export const forget_Password = async (email: string) => {
+  return await apiRequest("forgot-password", "POST", { email });
+};
 
-// change password
+// reset password
+export const resetPassword = async (
+  email: string,
+  password: string,
+  code: string
+) => {
+  return await apiRequest("reset-password", "POST", { email, password, code });
+};

@@ -1,90 +1,61 @@
 "use client";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import Image from "next/image";
-// import Link from "next/link";
+
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import ForgetPasswordForm from "@/components/authForm/ForgetPasswordForm";
+import ChangePasswordForm from "@/components/authForm/ChangePasswordForm";
 import Modal from "@/components/modals/modal";
+import { useRouter } from "next/navigation";
 
-interface Values {
-  email: string;
-}
-
-export default function forgetPassword() {
-  const [error, setError] = useState("");
+export default function AuthPage() {
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [email, setEmail] = useState("");
+  const [modalContent, setModalContent] = useState({ title: "", message: "", action: () => {} });
   const router = useRouter();
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email address")
-      .matches(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Invalid email format"
-      )
-      .required("Email is required"),
-  });
+  const handleModal = (title: string, message: string, action: () => void) => {
+    setModalContent({ title, message,  action: action || (() => {}) });
+    setIsOpen(true);
+  };
 
-  const formik = useFormik<Values>({
-    initialValues: { email: "" },
-    validationSchema,
-    onSubmit: async (values) => {
-      setError("");
-      setIsOpen(true);
-    },
-  });
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="w-full md:w-1/3 flex flex-col justify-center px-6 md:px-12 bg-white">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-          Forget Password
-        </h2>
-
-        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-
-        <form onSubmit={formik.handleSubmit} noValidate>
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            {...formik.getFieldProps("email")}
+        {isChangingPassword ? (
+          <ChangePasswordForm  email={email} onSuccess={() => handleModal("Password Changed", "Your password has been successfully changed.", () => router.push("/") )} />
+        ) : (
+          <ForgetPasswordForm
+            onSuccess={(enteredEmail) =>{setEmail(enteredEmail); handleModal("Email Sent", "An email has been sent to reset your password.", () => setIsChangingPassword(true))}}
           />
-          {formik.touched.email && formik.errors.email && (
-            <p className="text-red-500 text-sm mb-3">{formik.errors.email}</p>
-          )}
-
-          <button
-            type="submit"
-            className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer mt-3"
-            disabled={!formik.isValid || formik.isSubmitting}
-            onClick={() => setIsOpen(true)}
-          >
-            Forget Password
-          </button>
-        </form>
+        )}
       </div>
 
       <div className="hidden md:flex w-2/3 items-center justify-center bg-gray-100 relative">
         <div className="w-[80%] h-[80%] relative">
           <Image
             src="/Green Industry.png"
-            alt="Login Illustration"
+            alt="Illustration"
             layout="fill"
             objectFit="contain"
             className="rounded-lg"
           />
         </div>
+        
       </div>
 
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title="Email Sent"
-        message="An email has been sent to you to reset your password."
+        title={modalContent.title}
+        message={modalContent.message}
         primaryButton="Ok"
-        onPrimaryClick={() => router.push("/")}
-        />
+        onPrimaryClick={() => {
+          modalContent.action();
+          setIsOpen(false);
+        }}
+      />
     </div>
   );
 }
+
+

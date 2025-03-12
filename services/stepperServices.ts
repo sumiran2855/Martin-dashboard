@@ -93,7 +93,6 @@ export const getCustomer = async (token: string, IdToken: string) => {
     }
     const { companyInfo, contactPerson, email, phone_number, name } =
       result.data;
-    console.log("🚀 ~ getCustomer ~ result.data:", result.data);
     return {
       companyName: companyInfo?.name || "",
       cvrNumber: companyInfo?.cvr_number || "",
