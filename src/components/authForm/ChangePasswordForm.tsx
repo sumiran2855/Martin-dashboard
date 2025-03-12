@@ -15,22 +15,22 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
   const [error, setError] = useState("");
   const router = useRouter();
   const formik = useFormik({
-    initialValues: { code: "", password: "", confirmPassword: "" },
+    initialValues: { code: "", newPassword: "", confirmPassword: "" },
     validationSchema: Yup.object({
       code: Yup.string()
         .min(6, "Code must be at least 6 characters")
         .required("Code is required"),
-      password: Yup.string()
+        newPassword: Yup.string()
         .min(8, "Password must be at least 8 characters")
         .required("Password is required"),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), ""], "Passwords must match")
+        .oneOf([Yup.ref("newPassword"), ""], "Passwords must match")
         .required("Confirm Password is required"),
     }),
     onSubmit: async (values) => {
       setError("");
       try {
-        const response = await resetPassword(email, values.password, values.code);
+        const response = await resetPassword(email, values.newPassword, values.code);
         
         if (!response.success) {
           setError(response.message || "Failed to reset password. Try again.");
@@ -64,12 +64,12 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
         <input
           type="password"
         //   name="password"
-          placeholder="Password"
+          placeholder="newPassword"
           className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          {...formik.getFieldProps("password")}
+          {...formik.getFieldProps("newPassword")}
         />
-        {formik.touched.password && formik.errors.password && (
-          <p className="text-red-500 text-sm mb-3">{formik.errors.password}</p>
+        {formik.touched.newPassword && formik.errors.newPassword && (
+          <p className="text-red-500 text-sm mb-3">{formik.errors.newPassword}</p>
         )}
 
         <input

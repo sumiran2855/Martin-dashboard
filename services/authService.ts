@@ -51,8 +51,8 @@ export const forget_Password = async (email: string) => {
 // reset password
 export const resetPassword = async (
   email: string,
-  password: string,
+  newPassword: string,
   code: string
 ) => {
-  return await apiRequest("reset-password", "POST", { email, password, code });
+  return await apiRequest("reset-password", "POST", { email, newPassword, code });
 };
