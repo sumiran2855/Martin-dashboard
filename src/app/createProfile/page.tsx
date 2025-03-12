@@ -18,6 +18,7 @@ import {
   getCustomer,
   getFacility,
 } from "@/services/stepperServices";
+import { getProfile } from "@/controller/createProfile";
 
 function Dashboard() {
   const router = useRouter();
@@ -35,8 +36,10 @@ function Dashboard() {
     const journeyStatus = localStorage.getItem("journeyStatus");
     if (journeyStatus === "profileInfo") {
       setStep(1);
+      handleGetCustomer();
     } else if (journeyStatus === "facilityInfo") {
       setStep(2);
+      handleGetFacility();
     } else if (journeyStatus === "installationInfo") {
       setStep(3);
     } else {
@@ -44,47 +47,39 @@ function Dashboard() {
     }
   }, []);
 
-  const [formData, setFormData] = useState(() => {
-    const storedData = localStorage.getItem("formData");
-    return storedData
-      ? JSON.parse(storedData)
-      : {
-          companyName: "",
-          cvrNumber: "",
-          address: "",
-          postal_code: "",
-          city: "",
-          email: "",
-          phone: "",
-          firstName: "",
-          lastName: "",
-          personalEmail: "",
-          personalPhone: "",
-        };
+  const [formData, setFormData] = useState({
+    companyName: "",
+    cvrNumber: "",
+    address: "",
+    postal_code: "",
+    city: "",
+    email: "",
+    countryCode: "",
+    phone: "",
+    firstName: "",
+    lastName: "",
+    personalEmail: "",
+    personalPhone: "",
+    personalCountryCode: "",
   });
 
-  const [stepTwoFormData, setStepTwoFormData] = useState(() => {
-    const storedData = localStorage.getItem("stepTwoFormData");
-    return storedData
-      ? JSON.parse(storedData)
-      : {
-          systemName: "",
-          XRGINumber: "",
-          model: "",
-          address: "",
-          postalCode: "",
-          city: "",
-          serviceCost: "5.75",
-          vat: "12",
-          VATDeduction: "Yes",
-          m3: "",
-          gasType: "",
-          independentDKK: "",
-          dependentDKK: "",
-          kWh: "",
-          electricityIndependentDKK: "",
-          electricityDependentDKK: "",
-        };
+  const [stepTwoFormData, setStepTwoFormData] = useState({
+    systemName: "",
+    XRGINumber: "",
+    model: "",
+    address: "",
+    postalCode: "",
+    city: "",
+    serviceCost: "5.75",
+    vat: "12",
+    VATDeduction: "Yes",
+    m3: "",
+    gasType: "",
+    independentDKK: "",
+    dependentDKK: "",
+    kWh: "",
+    electricityIndependentDKK: "",
+    electricityDependentDKK: "",
   });
 
   const handleSubscription = async () => {
@@ -108,6 +103,10 @@ function Dashboard() {
 
     const journeyStatus = localStorage.getItem("journeyStatus");
 
+    const formatPhoneNumber = (phone: string, countryCode: string) => {
+      return countryCode + phone;
+    };
+
     const payload = updateOnly
       ? { journeyStatus }
       : {
@@ -118,13 +117,16 @@ function Dashboard() {
             city: formData.city,
             postal_code: formData.postal_code,
             email: formData.email,
-            phone: formData.phone,
+            phone: formatPhoneNumber(formData.phone, formData.countryCode),
           },
           contactPerson: {
             firstName: formData.firstName,
             lastName: formData.lastName,
             personalEmail: formData.personalEmail,
-            personalPhone: formData.personalPhone,
+            personalPhone: formatPhoneNumber(
+              formData.personalPhone,
+              formData.personalCountryCode
+            ),
           },
           journeyStatus,
         };
@@ -138,10 +140,6 @@ function Dashboard() {
       } else if (journeyStatus === "facilityInfo") {
         localStorage.setItem("journeyStatus", "installationInfo");
       }
-      // else if (journeyStatus === "installationInfo") {
-      //   localStorage.setItem("journeyStatus", "completed");
-      // }
-
       return true;
     } catch (error) {
       console.error("Error submitting step 1:", error);
@@ -207,12 +205,29 @@ function Dashboard() {
       return;
     }
 
+    const splitPhoneNumber = (fullPhoneNumber: string) => {
+      if (!fullPhoneNumber) return { phone: "", countryCode: "" };
+      const phone = fullPhoneNumber.slice(-10);
+      const countryCode = fullPhoneNumber.slice(0, -10);
+      return { phone, countryCode };
+    };
+
     try {
       const customerData = await getCustomer(token, IdToken);
+      console.log("🚀 ~ handleGetCustomer ~ customerData:", customerData);
       if (customerData) {
+        const { phone, countryCode } = splitPhoneNumber(
+          customerData.phone
+        );
+        const { phone: personalPhone, countryCode: personalCountryCode } =
+          splitPhoneNumber(customerData.personalPhone);
         setFormData((prev: any) => ({
           ...prev,
           ...customerData,
+          phone,
+          countryCode,
+          personalPhone,
+          personalCountryCode,
         }));
       }
     } catch (error) {
@@ -231,7 +246,6 @@ function Dashboard() {
 
     try {
       const facilityData = await getFacility(token, IdToken);
-      console.log("🚀 ~ handleGetFacility ~ facilityData:", facilityData);
       if (facilityData) {
         setStepTwoFormData({
           systemName: facilityData.registerSystem.systemName || "",
@@ -296,6 +310,7 @@ function Dashboard() {
   const nextStep = async () => {
     if (step === 1) {
       await handleCreateProfile();
+      await handleGetFacility();
     } else if (step === 2) {
       await handleCreateFacility();
     }

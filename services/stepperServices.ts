@@ -28,7 +28,6 @@ export const createFacility = async (
   payload: any
 ) => {
   const existingFacility = await getFacility(token, IdToken);
-  console.log("🚀 ~ existingFacility:", existingFacility);
 
   if (existingFacility?.facilityId) {
     const result = await apiRequest(
@@ -38,7 +37,6 @@ export const createFacility = async (
       token,
       IdToken
     );
-    console.log("🚀 ~ result if:", result);
     if (result.success) {
       return result.data;
     }
@@ -51,7 +49,6 @@ export const createFacility = async (
       token,
       IdToken
     );
-    console.log("🚀 ~ result else:", result);
 
     if (result.success) {
       return result.data;
@@ -111,7 +108,7 @@ export const getCustomer = async (token: string, IdToken: string) => {
       lastName: contactPerson?.lastName || "",
       personalPhone: contactPerson?.personalPhone || "",
       personalEmail: contactPerson?.personalEmail || "",
-
+      
       name: name || "",
       email_verified: result.data.email_verified || false,
     };
@@ -132,14 +129,12 @@ export const getFacility = async (token: string, IdToken: string) => {
       token,
       IdToken
     );
-    console.log("🚀 ~ getFacility ~ result:", result.data);
 
     if (!result || !result.success || !result.data) {
       throw new Error("Failed to fetch facility data");
     }
 
     const facilityData = result.data[0];
-    // console.log("🚀 ~ getFacility ~ facilityData:", facilityData.id);
 
     return {
       facilityId: facilityData.id || "",

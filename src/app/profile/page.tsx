@@ -1,7 +1,8 @@
 "use client"
+import withAuth from "@/auth/authUtils";
 import AdminSidebar from "@/components/dashboard/Sidebar";
 import ProfileDetail from "@/components/dashboard/profile"
-export default function profile() {
+function profile() {
   return (
     <div className="flex h-screen bg-gray-50">
       <AdminSidebar />
@@ -9,3 +10,5 @@ export default function profile() {
     </div>
   );
 }
+
+export default withAuth(profile);

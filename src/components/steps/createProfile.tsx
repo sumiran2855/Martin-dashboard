@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
 import { countryCodes } from "@/components/dashboard/staticData/Data";
 interface ValidateFormProps {
   formData: any;
   setFormData: React.Dispatch<React.SetStateAction<any>>;
 }
 export default function createProfile({ formData, setFormData }: ValidateFormProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
@@ -81,7 +80,7 @@ export default function createProfile({ formData, setFormData }: ValidateFormPro
           />
           <div className="flex items-center w-full gap-2">
             <div className="relative w-1/6">
-              <select className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6">
+              <select name="countryCode" value={formData.countryCode} onChange={handleChange} className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6">
                 {countryCodes.map((country) => (
                   <option
                     key={country.code}
@@ -140,7 +139,7 @@ export default function createProfile({ formData, setFormData }: ValidateFormPro
           />
           <div className="flex items-center w-full gap-2">
             <div className="relative w-1/6">
-              <select className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6">
+              <select name="personalCountryCode" value={formData.personalCountryCode} onChange={handleChange} className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6">
                 {countryCodes.map((country) => (
                   <option
                     key={country.code}

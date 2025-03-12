@@ -1,11 +1,56 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../modals/modal";
 import ChangePassword from "../modals/changePassword";
+import { createProfile, getCustomer } from "@/services/stepperServices";
+import { getProfile } from "@/controller/createProfile";
+import { countryCodes } from "./staticData/Data";
 
 export default function profileDetail() {
   const [isOpen, setIsOpen] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+
+  const { formData, setFormData } = getProfile();
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const updateProfile = async () => {
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+    if (!token || !IdToken) {
+      console.error("Authorization token missing.");
+      return;
+    }
+
+    const payload = {
+      companyInfo: {
+        name: formData.companyName,
+        cvr_number: formData.cvrNumber,
+        address: formData.address,
+        city: formData.city,
+        postal_code: formData.postal_code,
+        email: formData.email,
+        phone: formData.phone,
+      },
+      contactPerson: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        personalEmail: formData.personalEmail,
+        personalPhone: formData.personalPhone,
+      },
+    };
+
+    try {
+      await createProfile(token, IdToken, payload);
+      console.log("Profile updated successfully");
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+  };
 
   const router = useRouter();
   return (
@@ -35,6 +80,9 @@ export default function profileDetail() {
                   </label>
                   <input
                     type="text"
+                    name="companyName"
+                    value={formData.companyName}
+                    onChange={handleChange}
                     placeholder="Enter business name"
                     className="w-full px-3 py-2 border rounded-md"
                   />
@@ -45,6 +93,9 @@ export default function profileDetail() {
                   </label>
                   <input
                     type="text"
+                    name="cvrNumber"
+                    value={formData.cvrNumber}
+                    onChange={handleChange}
                     placeholder="Enter CVR number"
                     className="w-full px-3 py-2 border rounded-md"
                   />
@@ -55,61 +106,41 @@ export default function profileDetail() {
                   </label>
                   <input
                     type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
                     placeholder="Enter address"
                     className="w-full px-3 py-2 border rounded-md"
                   />
                 </div>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-1">
                       Postal Code
                     </label>
                     <input
                       type="text"
+                      name="postal_code"
+                      value={formData.postal_code}
+                      onChange={handleChange}
                       placeholder="Enter postal code"
                       className="w-full px-3 py-2 border rounded-md"
                     />
                   </div>
+
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-1">
-                      House Number
+                      City
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter house number"
+                      name="city"
+                      placeholder="Enter city"
+                      value={formData.city}
+                      onChange={handleChange}
                       className="w-full px-3 py-2 border rounded-md"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1">
-                      Floor
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter floor number"
-                      className="w-full px-3 py-2 border rounded-md"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    City
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter city"
-                    className="w-full px-3 py-2 border rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Country
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter country"
-                    className="w-full px-3 py-2 border rounded-md"
-                  />
                 </div>
               </div>
             </div>
@@ -126,6 +157,9 @@ export default function profileDetail() {
                   </label>
                   <input
                     type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
                     placeholder="Enter first name"
                     className="w-full px-3 py-2 border rounded-md"
                   />
@@ -136,6 +170,9 @@ export default function profileDetail() {
                   </label>
                   <input
                     type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
                     placeholder="Enter last name"
                     className="w-full px-3 py-2 border rounded-md"
                   />
@@ -146,6 +183,9 @@ export default function profileDetail() {
                   </label>
                   <input
                     type="text"
+                    name="personalEmail"
+                    value={formData.personalEmail}
+                    onChange={handleChange}
                     placeholder="Enter email"
                     className="w-full px-3 py-2 border rounded-md"
                   />
@@ -156,37 +196,30 @@ export default function profileDetail() {
                       Mobile
                     </label>
                     <div className="relative">
-                      <select className="w-full h-10 md:h-12 px-3 border rounded-md bg-white cursor-pointer appearance-none">
-                        <option
-                          className="p-2 text-gray-700 bg-white"
-                          value="+45"
-                        >
-                          🇩🇰 +45
-                        </option>
-                        <option
-                          className="p-2 text-gray-700 bg-white"
-                          value="+1"
-                        >
-                          🇺🇸 +1
-                        </option>
-                        <option
-                          className="p-2 text-gray-700 bg-white"
-                          value="+44"
-                        >
-                          🇬🇧 +44
-                        </option>
-                        <option
-                          className="p-2 text-gray-700 bg-white"
-                          value="+91"
-                        >
-                          🇮🇳 +91
-                        </option>
+                      <select
+                        name="personalCountryCode"
+                        value={formData.personalCountryCode}
+                        onChange={handleChange}
+                        className="w-full h-10 md:h-12 px-3 border rounded-md bg-white cursor-pointer appearance-none"
+                      >
+                        {countryCodes.map((country) => (
+                          <option
+                            key={country.code}
+                            className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                            value={country.code}
+                          >
+                            {country.flag} {country.code}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
                   <div className="flex-1">
                     <input
                       type="text"
+                      name="personalPhone"
+                      value={formData.personalPhone}
+                      onChange={handleChange}
                       placeholder="Enter mobile number"
                       className="w-full h-10 md:h-12 px-3 border rounded-md"
                     />
@@ -214,7 +247,7 @@ export default function profileDetail() {
           message="Changes have been made to your profile. Do you want to save or
                 discard them?"
           primaryButton="Save"
-          onPrimaryClick={() => router.push("/profile")}
+          onPrimaryClick={updateProfile}
           secondaryButton="Discard"
           onSecondaryClick={() => router.push("/profile")}
         />

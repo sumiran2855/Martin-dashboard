@@ -1,7 +1,9 @@
+import { getCustomer } from "@/services/stepperServices";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {getProfile} from "@/controller/createProfile";
 
 export default function AdminSidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -14,20 +16,7 @@ export default function AdminSidebar() {
 
   const pathname = usePathname();
 
-  const menuItems = [
-    {
-      name: "Plants",
-      href: "/dashboard",
-      icon: "M13 9h5.5L13 3.5V9M6 2h8l6 6v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2h9m3-4v-2H6v2h12z",
-    },
-    { name: "Usage", href: "/usage", icon: "M2 22h20V2M22 16L12 6l-8 8" },
-    { name: "Subscription", href: "/subscription", icon: "M12 7v5l3 3" },
-    {
-      name: "Service",
-      href: "/service",
-      icon: "M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z",
-    },
-  ];
+  const {formData,setFormData} = getProfile();
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col h-screen">
@@ -214,11 +203,18 @@ export default function AdminSidebar() {
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <div className="flex items-center justify-center w-10 h-10 mr-3 text-white bg-blue-700 rounded">
-            CN
+            {formData.firstName && formData.lastName
+              ? `${formData.firstName[0]}${formData.lastName[0]}`.toUpperCase()
+              : "?"}
           </div>
           <div className="mt-2">
-            <span className="text-sm font-medium">Christian Neve</span>
-            <p className="text-xs text-gray-500 mt-[-2]">EC Power</p>
+            <span className="text-sm font-medium">
+              {" "}
+              {formData.firstName} {formData.lastName}
+            </span>
+            <p className="text-xs text-gray-500 mt-[-2]">
+              {formData.companyName}
+            </p>
           </div>
           <button className="ml-auto text-gray-400">
             <ChevronDown size={16} />
