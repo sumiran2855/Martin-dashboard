@@ -1,9 +1,8 @@
-import { getCustomer } from "@/services/stepperServices";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import {getProfile} from "@/controller/createProfile";
+import { useState } from "react";
+import { getProfile } from "@/controller/createProfile";
 
 export default function AdminSidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -16,7 +15,7 @@ export default function AdminSidebar() {
 
   const pathname = usePathname();
 
-  const {formData,setFormData} = getProfile();
+  const { formData } = getProfile();
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col h-screen">
@@ -30,7 +29,12 @@ export default function AdminSidebar() {
             <Link
               href="/dashboard"
               className={`flex items-center p-3 rounded-md no-underline ${
-                pathname === "/dashboard"
+                [
+                  "/dashboard",
+                  "/dashboard/addFacility",
+                  "/dashboard/facilities/editFacilities",
+                  "/dashboard/facilities",
+                ].includes(pathname)
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
               }`}
@@ -38,7 +42,12 @@ export default function AdminSidebar() {
               <div className="w-6 h-6 mr-3 flex items-center justify-center">
                 <svg
                   className={`w-6 h-6 ${
-                    pathname === "/dashboard"
+                    [
+                      "/dashboard",
+                      "/dashboard/addFacility",
+                      "/dashboard/facilities/editFacilities",
+                      "/dashboard/facilities",
+                    ].includes(pathname)
                       ? "text-yellow-400"
                       : "text-gray-600"
                   }`}

@@ -38,6 +38,7 @@ export default function profileDetail() {
       contactPerson: {
         firstName: formData.firstName,
         lastName: formData.lastName,
+        personalCountryCode:formData.personalCountryCode,
         personalEmail: formData.personalEmail,
         personalPhone: formData.personalPhone,
       },

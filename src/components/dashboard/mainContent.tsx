@@ -3,6 +3,7 @@ import { useState } from "react";
 import GridView from "@/components/dashboard/view/gridView";
 import ListView from "@/components/dashboard/view/listView";
 import facilitiesData from "./staticData/Data";
+import { useRouter } from "next/navigation";
 
 const statusOptions = [
   "All",
@@ -13,6 +14,7 @@ const statusOptions = [
 ];
 
 export default function mainContent() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [view, setView] = useState("grid");
   const [isOpen, setIsOpen] = useState(false);
@@ -122,7 +124,7 @@ export default function mainContent() {
                 </div>
               </div>
 
-              <button className="px-4 py-2 text-sm text-white bg-blue-800 rounded-md hover:bg-blue-900">
+              <button onClick={()=>router.push("/dashboard/addFacility")} className="px-4 py-2 text-sm text-white bg-blue-800 rounded-md hover:bg-blue-900">
                 Register more facilities
               </button>
             </div>
