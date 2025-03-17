@@ -6,7 +6,6 @@ import Stepper from "@/components/Stepper";
 import CreateProfile from "@/components/steps/createProfile";
 import CreateFacility from "@/components/steps/createFacility";
 import Installation from "@/components/steps/Installation";
-// import StepFour from "@/components/steps/PaymentInfo";
 import NavigationButtons from "@/components/NavigationButtons";
 import withAuth from "@/auth/authUtils";
 import { useRouter } from "next/navigation";
@@ -18,7 +17,6 @@ import {
   getCustomer,
   getFacility,
 } from "@/services/stepperServices";
-import { getProfile } from "@/controller/createProfile";
 
 function Dashboard() {
   const router = useRouter();

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFacility } from "@/services/stepperServices";
+import { addFacility } from "@/services/stepperServices";
 
 export function useCreateFacility() {
   const [stepTwoFormData, setStepTwoFormData] = useState({
@@ -61,7 +61,7 @@ export function useCreateFacility() {
     };
 
     try {
-      await createFacility(token, IdToken, payload);
+      await addFacility(token, IdToken, payload);
       console.log("Facility created successfully!");
       return true;
     } catch (err) {

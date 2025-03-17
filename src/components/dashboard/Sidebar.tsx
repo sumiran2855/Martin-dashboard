@@ -2,7 +2,7 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { getProfile } from "@/controller/createProfile";
+import { getProfile } from "@/controller/companyProfile/createProfile";
 
 export default function AdminSidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

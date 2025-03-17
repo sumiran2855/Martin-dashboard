@@ -5,7 +5,7 @@ import { createFacility } from "@/services/stepperServices";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { useCreateFacility } from "@/controller/createFacility";
+import { useCreateFacility } from "@/controller/facility/createFacility";
 
 function AddFacility() {
   const router = useRouter();
