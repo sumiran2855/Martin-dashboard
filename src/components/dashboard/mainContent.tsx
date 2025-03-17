@@ -2,8 +2,8 @@ import { Search, Filter, Grid, List, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import GridView from "@/components/dashboard/view/gridView";
 import ListView from "@/components/dashboard/view/listView";
-import facilitiesData from "./staticData/Data";
 import { useRouter } from "next/navigation";
+import { useGetFacility } from "@/controller/facility/getFacility";
 
 const statusOptions = [
   "All",
@@ -31,9 +31,11 @@ export default function mainContent() {
     setSortDropdownOpen(false);
   };
 
+  const {facilities:facilitiesData} = useGetFacility()
+
   const filteredData = facilitiesData
     .filter((facility) =>
-      facility.name.toLowerCase().includes(searchTerm.toLowerCase())
+      facility.name?.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter(
       (facility) =>

@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 
 interface Facility {
   id?: number;
-  name: string;
-  xrgi: string;
-  model: string;
-  status: string;
+  name?: string;
+  xrgi?: string;
+  model?: string;
+  status?: string;
 }
 
 export default function GridView({ facilities }: { facilities: Facility[] }) {

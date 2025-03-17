@@ -97,8 +97,8 @@ export default function EditFacilities() {
                         className="appearance-none p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                         defaultValue="Ja"
                       >
-                        <option>Ja</option>
-                        <option>Nej</option>
+                        <option>Yes</option>
+                        <option>No</option>
                       </select>
                       <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                         <svg
