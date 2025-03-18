@@ -56,3 +56,23 @@ export const resetPassword = async (
 ) => {
   return await apiRequest("reset-password", "POST", { email, newPassword, code });
 };
+
+// change password
+export const change_Password = async (
+  token: string,
+  IdToken: string,
+  payload: { oldPassword: string; newPassword: string }
+) => {
+  const result = await apiRequest(
+    "change-password",
+    "POST",
+    payload,
+    token,
+    IdToken
+  );
+
+  if (result.success) {
+    return result.data;
+  }
+  throw new Error("Failed to change Password");
+};

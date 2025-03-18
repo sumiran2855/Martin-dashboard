@@ -9,19 +9,27 @@ import { apiRequest } from "@/utils/apiClient";
 interface Facility {
   facilityId?: string;
   location?: { address: string };
-  registerSystem?: { model: string; systemName: string };
-  systemCost?: { serviceCost: string; vat: string; VATDeduction: string };
-  gasConsumption?: {
-    m3: string;
-    gasType: string;
-    independentDKK: string;
-    dependentDKK: string;
+  name: string;
+  modelNumber: string;
+  xrgiID: string;
+  SystemCostsInfo?: {
+    service_Costs: string;
+    VAT_Deduction_Percent: string;
+    VAT_Deduction: string;
   };
-  electricityConsumption?: {
-    kWh: string;
-    electricityIndependentDKK: string;
-    electricityDependentDKK: string;
+  gas_Consumption?: {
+    annual_gas_consumption_m3: string;
+    xrgi_gas_type: string;
+    gas_fixed_costs_dkk: string;
+    gas_variable_costs_dkk: string;
   };
+  electircity_Consumption?: {
+    annual_grid_consumption_kwh: string;
+    fixed_costs_dkk: string;
+    variable_costs_dkk: string;
+  };
+  isInstalled:false,
+  DaSigned:true
 }
 
 export default function EditFacilities({ facilityId }: { facilityId: string }) {
@@ -55,30 +63,30 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     }
   }, [facilityId]);
 
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-  
+    
+
     setFacility((prev) => {
       if (!prev) return prev;
-  
+
       const keys = name.split(".");
       let updatedFacility = { ...prev };
       let current: any = updatedFacility;
-  
+
       for (let i = 0; i < keys.length - 1; i++) {
         if (!current[keys[i]]) current[keys[i]] = {};
         current = current[keys[i]];
       }
-  
+
       current[keys[keys.length - 1]] = value;
-  
+
       return updatedFacility;
     });
   };
-  
+
   async function handleSave() {
     const token = localStorage.getItem("token") || "";
     const IdToken = localStorage.getItem("IdToken") || "";
@@ -134,9 +142,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   <div className="relative">
                     <input
                       type="text"
-                      name="systemCost.serviceCost"
-                      // defaultValue="5.75"
-                      value={facility?.systemCost?.serviceCost || ""}
+                      name="SystemCostsInfo.service_Costs"
+                      // defaultValue="5.75" 
+                      value={facility?.SystemCostsInfo?.service_Costs ?? ""}
                       onChange={handleChange}
                       className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                     />
@@ -177,9 +185,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     </label>
                     <input
                       type="text"
-                      name="vat"
+                      name="SystemCostsInfo.VAT_Deduction_Percent"
                       // defaultValue="0.0765"
-                      value={facility?.systemCost?.vat}
+                      value={facility?.SystemCostsInfo?.VAT_Deduction_Percent ?? ""} 
                       onChange={handleChange}
                       className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                     />
@@ -193,8 +201,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       <select
                         className="appearance-none p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                         // defaultValue="Ja"
-                        name="vatDeductible"
-                        value={facility?.systemCost?.VATDeduction}
+                        name="SystemCostsInfo.VAT_Deduction"
+                        value={facility?.SystemCostsInfo?.VAT_Deduction}
                         onChange={handleChange}
                       >
                         <option>Yes</option>
@@ -232,8 +240,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   </label>
                   <div className="relative">
                     <select
-                      name="gasType"
-                      value={facility?.gasConsumption?.gasType}
+                      name="gas_Consumption.xrgi_gas_type"
+                      value={facility?.gas_Consumption?.xrgi_gas_type ?? ""}
                       onChange={handleChange}
                       className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                     >
@@ -264,8 +272,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   </label>
                   <input
                     type="text"
-                    name="annualGasConsumption"
-                    value={facility?.gasConsumption?.m3}
+                    name="gas_Consumption.annual_gas_consumption_m3"
+                    value={facility?.gas_Consumption?.annual_gas_consumption_m3 ?? ""}
                     onChange={handleChange}
                     placeholder="m³"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
@@ -280,8 +288,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   </label>
                   <input
                     type="text"
-                    name="independentGasCost"
-                    value={facility?.gasConsumption?.independentDKK}
+                    name="gas_Consumption.gas_fixed_costs_dkk"
+                    value={facility?.gas_Consumption?.gas_fixed_costs_dkk}
                     onChange={handleChange}
                     placeholder="DKK"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
@@ -293,8 +301,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   </label>
                   <input
                     type="text"
-                    name="dependentGasCost"
-                    value={facility?.gasConsumption?.dependentDKK}
+                    name="gas_Consumption.gas_variable_costs_dkk"
+                    value={facility?.gas_Consumption?.gas_variable_costs_dkk}
                     onChange={handleChange}
                     placeholder="DKK"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
@@ -318,8 +326,11 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   </label>
                   <input
                     type="text"
-                    name="dependentGasCost"
-                    value={facility?.electricityConsumption?.kWh}
+                    name="electircity_Consumption.annual_grid_consumption_kwh"
+                    value={
+                      facility?.electircity_Consumption
+                        ?.annual_grid_consumption_kwh
+                    }
                     onChange={handleChange}
                     placeholder="kWh"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
@@ -334,11 +345,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   </label>
                   <input
                     type="text"
-                    name="electricityIndependentDKK"
-                    value={
-                      facility?.electricityConsumption
-                        ?.electricityIndependentDKK
-                    }
+                    name="electircity_Consumption.fixed_costs_dkk"
+                    value={facility?.electircity_Consumption?.fixed_costs_dkk}
                     onChange={handleChange}
                     placeholder="DKK"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
@@ -351,9 +359,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   </label>
                   <input
                     type="text"
-                    name="electricityDependentDKK"
+                    name="electircity_Consumption.variable_costs_dkk"
                     value={
-                      facility?.electricityConsumption?.electricityDependentDKK
+                      facility?.electircity_Consumption?.variable_costs_dkk
                     }
                     onChange={handleChange}
                     placeholder="DKK"

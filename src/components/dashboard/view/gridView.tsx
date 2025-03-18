@@ -8,14 +8,12 @@ interface Facility {
   status?: string;
 }
 export default function GridView({ facilities }: { facilities: Facility[] }) {
-  console.log("🚀 ~ GridView ~ facilities:", facilities);
   const router = useRouter();
   return (
     <div className="space-y-6">
       {/* Inactive Section */}
       <div
         className="cursor-pointer"
-        onClick={() => router.push("/dashboard/facilities")}
       >
         <h2 className="text-gray-600 text-lg font-semibold mb-3">Inactive</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -25,6 +23,9 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
               <div
                 key={index}
                 className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
+                onClick={() =>
+                  router.push(`/dashboard/facilities/${facility.id}`)
+                }
               >
                 <div>
                   <h3 className="text-gray-800 text-sm font-semibold">
@@ -34,7 +35,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                   <div className="flex items-center space-x-2 mt-2">
                     <img
                       src={
-                        facility.status === "Missing Data"
+                        facility.status === "Data Missing"
                           ? "/Missing.png"
                           : facility.status === "Inactive"
                           ? "/Inactive.png"

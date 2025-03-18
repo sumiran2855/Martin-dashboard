@@ -9,6 +9,7 @@ export function useCreateFacility() {
     address: "",
     postalCode: "",
     city: "",
+    status: "",
     serviceCost: "5.75",
     vat: "12",
     VATDeduction: "Yes",
@@ -19,6 +20,9 @@ export function useCreateFacility() {
     kWh: "",
     electricityIndependentDKK: "",
     electricityDependentDKK: "",
+    serviceProviderName: "",
+    serviceProviderMail: "",
+    serviceProviderPhone: "",
   });
 
   const handleCreateFacility = async () => {
@@ -31,12 +35,9 @@ export function useCreateFacility() {
     }
 
     const payload = {
-      name: "newFacility",
-      registerSystem: {
-        systemName: stepTwoFormData.systemName,
-        XRGINumber: stepTwoFormData.XRGINumber,
-        model: stepTwoFormData.model,
-      },
+      name: stepTwoFormData.systemName,
+      xrgiID: stepTwoFormData.XRGINumber,
+      modelNumber: stepTwoFormData.model,
       location: {
         address: stepTwoFormData.address,
         postalCode: stepTwoFormData.postalCode,
@@ -58,6 +59,8 @@ export function useCreateFacility() {
         fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
         variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
+      isInstalled: false,
+      DaSigned: true,
     };
 
     try {

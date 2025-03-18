@@ -56,7 +56,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
                 <td className="px-6 py-3 whitespace-nowrap flex items-center space-x-2">
                   <img
                     src={
-                      facility.status === "Missing Data"
+                      facility.status === "Data Missing"
                         ? "/Missing.png"
                         : facility.status === "Inactive"
                         ? "/Inactive.png"

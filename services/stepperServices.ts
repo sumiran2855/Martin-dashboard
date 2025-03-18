@@ -138,7 +138,10 @@ export const getFacility = async (token: string, IdToken: string) => {
     return {
       facilityId: facilityData.id || "",
       name: facilityData.name || "",
+      modelNumber:facilityData.modelNumber || "",
+      xrgiID:facilityData.xrgiID || "",
       userID: facilityData.userID || "",
+      status:facilityData.status || "",
       createdAt: facilityData.createdAt || "",
       updatedAt: facilityData.updatedAt || "",
 
@@ -154,11 +157,6 @@ export const getFacility = async (token: string, IdToken: string) => {
         VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
       },
 
-      registerSystem: {
-        systemName: facilityData.registerSystem?.systemName || "",
-        model: facilityData.registerSystem?.model || "",
-        XRGINumber: facilityData.registerSystem?.XRGINumber || "",
-      },
 
       gas_Consumption: {
         m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
@@ -174,6 +172,11 @@ export const getFacility = async (token: string, IdToken: string) => {
         electricityDependentDKK:
           facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
+      serviceProviderInfo:{
+        name:facilityData.serviceProviderInfo.name,
+        mailAddress:facilityData.serviceProviderInfo.mailAddress,
+        phone:facilityData.serviceProviderInfo.phone
+      }
     };
   } catch (error) {
     console.error("Error fetching facility data:", error);
@@ -218,12 +221,14 @@ export const getAllFacility = async (token: string, IdToken: string) => {
       throw new Error("No facility data available");
     }
 
-    console.log("🚀 ~ getFacility ~ facilityData:", result.data);
 
     return result.data.map((facilityData: any) => ({
       facilityId: facilityData.id || "",
       name: facilityData.name || "",
+      modelNumber:facilityData.modelNumber || "",
+      xrgiID:facilityData.xrgiID || "",
       userID: facilityData.userID || "",
+      status:facilityData.status || "",
       createdAt: facilityData.createdAt || "",
       updatedAt: facilityData.updatedAt || "",
 
@@ -237,12 +242,6 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         vat: facilityData.SystemCostsInfo?.VAT_Deduction_Percent || "",
         serviceCost: facilityData.SystemCostsInfo?.service_Costs || "",
         VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
-      },
-
-      registerSystem: {
-        systemName: facilityData.registerSystem?.systemName || "",
-        model: facilityData.registerSystem?.model || "",
-        XRGINumber: facilityData.registerSystem?.XRGINumber || "",
       },
 
       gas_Consumption: {

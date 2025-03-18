@@ -10,7 +10,7 @@ const FacilityDetailPage = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <AdminSidebar />
+      <AdminSidebar facilityId={facilityId}/>
       <Facilities facilityId={facilityId} />
     </div>
   );

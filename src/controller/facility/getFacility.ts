@@ -8,7 +8,7 @@ interface Facility {
   name?: string;
   xrgi?: string;
   model?: string;
-  status?: "Active";
+  status?: string;
 }
 
 export function useGetFacility() {
@@ -30,10 +30,10 @@ export function useGetFacility() {
       if (Array.isArray(facilityData) && facilityData.length > 0) {
         const formattedFacilities = facilityData.map((facility) => ({
           id: facility.facilityId,
-          name: facility?.registerSystem.systemName || "",
-          xrgi: facility?.registerSystem?.XRGINumber || "",
-          model: facility?.registerSystem?.model || "",
-          status: facility?.status || "Active",
+          name: facility?.name|| "",
+          xrgi: facility?.xrgiID || "",
+          model: facility?.modelNumber || "",
+          status: facility?.status || "",
         }));
 
         setFacilities(formattedFacilities);

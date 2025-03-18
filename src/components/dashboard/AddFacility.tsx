@@ -1,7 +1,6 @@
 import { useState } from "react";
 import BarChart from "../barChart";
 import GenericModal from "../modals/genericPopup";
-import { createFacility } from "@/services/stepperServices";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -232,6 +231,51 @@ function AddFacility() {
             </div>
           </div>
         </div>
+        
+        <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+        <div className="p-6 rounded-lg mb-6">
+          <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+            Service Provider
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <input
+                type="text"
+                name="serviceProviderName"
+                placeholder="Name of service provider"
+                className="p-3 border rounded-lg w-full"
+                value={stepTwoFormData.serviceProviderName}
+                onChange={handleChange}
+              />
+              <label className="text-gray-500 text-sm mt-1 block ml-3">
+                Enter the name of the service provider
+              </label>
+            </div>
+
+            <div>
+              <input
+                type="text"
+                name="serviceProviderMail"
+                placeholder="Email Address"
+                className="p-3 border rounded-lg w-full"
+                value={stepTwoFormData.serviceProviderMail}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="md:col-span-1">
+              <input
+                type="text"
+                name="serviceProviderPhone"
+                placeholder="Phone Number"
+                className="p-3 border rounded-lg w-full"
+                value={stepTwoFormData.serviceProviderPhone}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
         <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
           <div className=" p-6 rounded-lg mb-6">

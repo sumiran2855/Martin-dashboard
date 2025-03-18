@@ -1,12 +1,42 @@
-import { Dispatch, SetStateAction } from "react";
+import { change_Password } from "@/services/authService";
+import { useState } from "react";
 
 interface ChangePasswordProps {
-  setChangePassword: Dispatch<SetStateAction<boolean>>;
+  setChangePassword: (value: boolean) => void;
+  changePassword: (value: boolean) => void;
 }
 
 export default function changePassword({
   setChangePassword,
 }: ChangePasswordProps) {
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleChangePassword = async () => {
+    const payload = {
+      oldPassword,
+      newPassword,
+    };
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+    if (!token || !IdToken) {
+      console.error("Authorization token missing.");
+      return false;
+    }
+
+    try {
+      const response = await change_Password(token, IdToken, payload);
+      if (!response) {
+        console.log("error in change password");
+      }
+      console.log("Password changed successfully");
+      setChangePassword(false);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-blur bg-opacity-40 flex items-center justify-center px-4 backdrop-blur-sm">
       <div className="bg-white rounded-lg shadow-xl p-6 sm:p-8 max-w-md w-full">
@@ -24,6 +54,8 @@ export default function changePassword({
             </label>
             <input
               type="password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
               className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter old password"
             />
@@ -35,6 +67,8 @@ export default function changePassword({
             </label>
             <input
               type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter new password"
             />
@@ -46,6 +80,8 @@ export default function changePassword({
             </label>
             <input
               type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Confirm new password"
             />
@@ -60,10 +96,7 @@ export default function changePassword({
             Cancel
           </button>
           <button
-            onClick={() => {
-              setChangePassword(false);
-              // Handle password change logic
-            }}
+            onClick={handleChangePassword}
             className="w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition"
           >
             Save

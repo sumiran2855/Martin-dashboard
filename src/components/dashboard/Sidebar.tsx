@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { getProfile } from "@/controller/companyProfile/createProfile";
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ facilityId }: { facilityId: string }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
@@ -32,8 +32,8 @@ export default function AdminSidebar() {
                 [
                   "/dashboard",
                   "/dashboard/addFacility",
-                  "/dashboard/facilities/editFacilities",
-                  "/dashboard/facilities",
+                  `/dashboard/facilities/editFacilities/${facilityId}`,
+                  `/dashboard/facilities/${facilityId}`,
                 ].includes(pathname)
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
@@ -45,8 +45,8 @@ export default function AdminSidebar() {
                     [
                       "/dashboard",
                       "/dashboard/addFacility",
-                      "/dashboard/facilities/editFacilities",
-                      "/dashboard/facilities",
+                      `/dashboard/facilities/editFacilities/${facilityId}`,
+                      `/dashboard/facilities/${facilityId}`,
                     ].includes(pathname)
                       ? "text-yellow-400"
                       : "text-gray-600"

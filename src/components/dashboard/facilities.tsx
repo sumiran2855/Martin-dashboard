@@ -9,18 +9,20 @@ import { apiRequest } from "@/utils/apiClient";
 interface Facility {
   facilityId?: string;
   location?: { address: string };
-  registerSystem?: { model: string; systemName: string };
-  systemCost?: { serviceCost: string };
-  gasConsumption?: {
-    m3: string;
-    gasType: string;
-    independentDKK: string;
-    dependentDKK: string;
+  name: string;
+  modelNumber: string;
+  xrgiID: string;
+  SystemCostsInfo?: { service_Costs: string ,VAT_Deduction_Percent:string};
+  gas_Consumption?: {
+    annual_gas_consumption_m3: string;
+    xrgi_gas_type: string;
+    gas_fixed_costs_dkk: string;
+    gas_variable_costs_dkk: string;
   };
-  electricityConsumption?: {
-    kWh: string;
-    electricityIndependentDKK: string;
-    electricityDependentDKK: string;
+  electircity_Consumption?: {
+    annual_grid_consumption_kwh: string;
+    fixed_costs_dkk: string;
+    variable_costs_dkk: string;
   };
 }
 
@@ -61,33 +63,37 @@ export default function facilities({ facilityId }: { facilityId: string }) {
   const facilityDetails = [
     {
       label: "Service costs per operating hour",
-      value: facility?.systemCost?.serviceCost,
+      value: facility?.SystemCostsInfo?.service_Costs,
     },
-    { label: "Gas supply", value: facility?.gasConsumption?.gasType },
+    {
+      label: "VAT Deduction Percentage",
+      value: facility?.SystemCostsInfo?.VAT_Deduction_Percent,
+    },
+    { label: "Gas supply", value: facility?.gas_Consumption?.xrgi_gas_type },
     {
       label: "Consumption-dependent costs, gas",
-      value: facility?.gasConsumption?.dependentDKK + " m³",
+      value: facility?.gas_Consumption?.gas_variable_costs_dkk + " m³",
     },
     {
       label: "Consumption-Independent costs, gas",
-      value: facility?.gasConsumption?.independentDKK + " m³",
+      value: facility?.gas_Consumption?.gas_fixed_costs_dkk + " m³",
     },
     {
       label: "Annual gas consumption",
-      value: facility?.gasConsumption?.m3 + " m³",
+      value: facility?.gas_Consumption?.annual_gas_consumption_m3 + " m³",
     },
     {
       label: "Consumption-dependent costs, electricity",
-      value: facility?.electricityConsumption?.electricityDependentDKK + " kWh",
+      value: facility?.electircity_Consumption?.variable_costs_dkk + " kWh",
     },
     {
       label: "Consumption-Independent costs, electricity",
       value:
-        facility?.electricityConsumption?.electricityIndependentDKK + " kWh",
+        facility?.electircity_Consumption?.fixed_costs_dkk + " kWh",
     },
     {
       label: "Annual electricity consumption",
-      value: facility?.electricityConsumption?.kWh + " kWh",
+      value: facility?.electircity_Consumption?.annual_grid_consumption_kwh + " kWh",
     },
   ];
 
@@ -114,7 +120,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
           <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-4 ml-6">
             <div>
               <p className="text-sm text-gray-500">Name</p>
-              <p>{facility?.registerSystem?.systemName}</p>
+              <p>{facility?.name}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Address</p>
@@ -127,7 +133,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg border p-6">
               <h2 className="text-lg font-medium mb-4">
-                Model {facility?.registerSystem?.model}
+                Model {facility?.modelNumber}
               </h2>
               <div className="flex justify-center">
                 <img
@@ -144,7 +150,9 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                 <button
                   className="text-blue-600 border border-blue-600 rounded px-3 py-1 text-sm"
                   onClick={() =>
-                    router.push(`/dashboard/facilities/editFacilities/${facilityId}`)
+                    router.push(
+                      `/dashboard/facilities/editFacilities/${facilityId}`
+                    )
                   }
                 >
                   Edit

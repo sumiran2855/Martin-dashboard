@@ -65,6 +65,7 @@ function Dashboard() {
     systemName: "",
     XRGINumber: "",
     model: "",
+    status:"",
     address: "",
     postalCode: "",
     city: "",
@@ -78,6 +79,9 @@ function Dashboard() {
     kWh: "",
     electricityIndependentDKK: "",
     electricityDependentDKK: "",
+    serviceProviderName: "",
+    serviceProviderMail: "",
+    serviceProviderPhone: "",
   });
 
   const handleSubscription = async () => {
@@ -154,16 +158,18 @@ function Dashboard() {
     }
 
     const payload = {
-      name: "newFacility",
-      registerSystem: {
-        systemName: stepTwoFormData.systemName,
-        XRGINumber: stepTwoFormData.XRGINumber,
-        model: stepTwoFormData.model,
-      },
+      name: stepTwoFormData.systemName,
+      xrgiID: stepTwoFormData.XRGINumber,
+      modelNumber: stepTwoFormData.model,
       location: {
         address: stepTwoFormData.address,
         postalCode: stepTwoFormData.postalCode,
         city: stepTwoFormData.city,
+      },
+      serviceProviderInfo: {
+        name: stepTwoFormData.serviceProviderName,
+        mailAddress: stepTwoFormData.serviceProviderMail,
+        phone: stepTwoFormData.serviceProviderPhone,
       },
       SystemCostsInfo: {
         service_Costs: parseFloat(stepTwoFormData.serviceCost),
@@ -181,6 +187,8 @@ function Dashboard() {
         fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
         variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
+      isInstalled:false,
+      DaSigned:true
     };
 
     try {
@@ -212,11 +220,8 @@ function Dashboard() {
 
     try {
       const customerData = await getCustomer(token, IdToken);
-      console.log("🚀 ~ handleGetCustomer ~ customerData:", customerData);
       if (customerData) {
-        const { phone, countryCode } = splitPhoneNumber(
-          customerData.phone
-        );
+        const { phone, countryCode } = splitPhoneNumber(customerData.phone);
         const { phone: personalPhone, countryCode: personalCountryCode } =
           splitPhoneNumber(customerData.personalPhone);
         setFormData((prev: any) => ({
@@ -246,10 +251,10 @@ function Dashboard() {
       const facilityData = await getFacility(token, IdToken);
       if (facilityData) {
         setStepTwoFormData({
-          systemName: facilityData.registerSystem.systemName || "",
-          XRGINumber: facilityData.registerSystem.XRGINumber || "",
-          model: facilityData.registerSystem.model || "",
-
+          systemName: facilityData.name || "",
+          XRGINumber: facilityData.xrgiID || "",
+          model: facilityData.modelNumber || "",
+status:facilityData.status || "",
           address: facilityData.location.address || "",
           postalCode: facilityData.location.postalCode || "",
           city: facilityData.location.city || "",
@@ -265,9 +270,13 @@ function Dashboard() {
 
           kWh: facilityData.electircity_Consumption.kWh || "",
           electricityIndependentDKK:
-            facilityData.electircity_Consumption.electricityIndependentDKK || "",
+            facilityData.electircity_Consumption.electricityIndependentDKK ||
+            "",
           electricityDependentDKK:
             facilityData.electircity_Consumption.electricityDependentDKK || "",
+            serviceProviderName:facilityData.serviceProviderInfo.name || "",
+            serviceProviderMail:facilityData.serviceProviderInfo.mailAddress || "",
+            serviceProviderPhone:facilityData.serviceProviderInfo.phone || "",
         });
       }
     } catch (error) {
