@@ -43,10 +43,15 @@ export function useCreateFacility() {
         postalCode: stepTwoFormData.postalCode,
         city: stepTwoFormData.city,
       },
-      SystemCostsInfo: {
+      systemCosts: {
         service_Costs: parseFloat(stepTwoFormData.serviceCost),
         VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat),
         VAT_Deduction: stepTwoFormData.VATDeduction === "Yes",
+      },
+      serviceProvider: {
+        name: stepTwoFormData.serviceProviderName,
+        mailAddress: stepTwoFormData.serviceProviderMail,
+        phone: stepTwoFormData.serviceProviderPhone,
       },
       gas_Consumption: {
         annual_gas_consumption_m3: parseFloat(stepTwoFormData.m3),
@@ -59,7 +64,7 @@ export function useCreateFacility() {
         fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
         variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
-      isInstalled: false,
+      isInstalled: true,
       DaSigned: true,
     };
 

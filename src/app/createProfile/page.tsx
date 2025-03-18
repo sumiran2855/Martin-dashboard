@@ -166,12 +166,12 @@ function Dashboard() {
         postalCode: stepTwoFormData.postalCode,
         city: stepTwoFormData.city,
       },
-      serviceProviderInfo: {
+      serviceProvider: {
         name: stepTwoFormData.serviceProviderName,
         mailAddress: stepTwoFormData.serviceProviderMail,
         phone: stepTwoFormData.serviceProviderPhone,
       },
-      SystemCostsInfo: {
+      systemCosts: {
         service_Costs: parseFloat(stepTwoFormData.serviceCost),
         VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat),
         VAT_Deduction: stepTwoFormData.VATDeduction === "Yes",
@@ -187,8 +187,8 @@ function Dashboard() {
         fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
         variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
-      isInstalled:false,
-      DaSigned:true
+      isInstalled: true,
+      DaSigned: true,
     };
 
     try {
@@ -254,7 +254,7 @@ function Dashboard() {
           systemName: facilityData.name || "",
           XRGINumber: facilityData.xrgiID || "",
           model: facilityData.modelNumber || "",
-status:facilityData.status || "",
+          status: facilityData.status || "",
           address: facilityData.location.address || "",
           postalCode: facilityData.location.postalCode || "",
           city: facilityData.location.city || "",
@@ -274,9 +274,10 @@ status:facilityData.status || "",
             "",
           electricityDependentDKK:
             facilityData.electircity_Consumption.electricityDependentDKK || "",
-            serviceProviderName:facilityData.serviceProviderInfo.name || "",
-            serviceProviderMail:facilityData.serviceProviderInfo.mailAddress || "",
-            serviceProviderPhone:facilityData.serviceProviderInfo.phone || "",
+          serviceProviderName: facilityData.serviceProviderInfo.name || "",
+          serviceProviderMail:
+            facilityData.serviceProviderInfo.mailAddress || "",
+          serviceProviderPhone: facilityData.serviceProviderInfo.phone || "",
         });
       }
     } catch (error) {

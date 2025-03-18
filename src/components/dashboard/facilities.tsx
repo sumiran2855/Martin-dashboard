@@ -19,17 +19,25 @@ interface Facility {
     gas_fixed_costs_dkk: string;
     gas_variable_costs_dkk: string;
   };
+  serviceProvider?: {
+    name: string;
+    mailAddress: string;
+    phone: string;
+  };
   electircity_Consumption?: {
     annual_grid_consumption_kwh: string;
     fixed_costs_dkk: string;
     variable_costs_dkk: string;
   };
+  isInstalled:true,
+  DaSigned:true
 }
 
 export default function facilities({ facilityId }: { facilityId: string }) {
   const router = useRouter();
 
   const [facility, setFacility] = useState<Facility | null>(null);
+  console.log("🚀 ~ facilities ~ facility:", facility);
 
   useEffect(() => {
     async function fetchFacility() {
@@ -44,6 +52,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
           token,
           IdToken
         );
+        console.log("🚀 ~ fetchFacility ~ response:", response);
 
         if (!response.success || !response.data) {
           throw new Error("Failed to fetch facility data");

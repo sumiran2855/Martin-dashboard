@@ -12,10 +12,15 @@ interface Facility {
   name: string;
   modelNumber: string;
   xrgiID: string;
-  SystemCostsInfo?: {
+  systemCosts?: {
     service_Costs: string;
     VAT_Deduction_Percent: string;
     VAT_Deduction: string;
+  };
+  serviceProvider?: {
+    name: string;
+    mailAddress: string;
+    phone: string;
   };
   gas_Consumption?: {
     annual_gas_consumption_m3: string;
@@ -28,8 +33,8 @@ interface Facility {
     fixed_costs_dkk: string;
     variable_costs_dkk: string;
   };
-  isInstalled:false,
-  DaSigned:true
+  isInstalled: true;
+  DaSigned: true;
 }
 
 export default function EditFacilities({ facilityId }: { facilityId: string }) {
@@ -67,7 +72,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    
 
     setFacility((prev) => {
       if (!prev) return prev;
@@ -95,7 +99,16 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
       const response = await apiRequest(
         `create-facility?id=${facilityId}`,
         "POST",
-        facility ?? undefined,
+        {
+          facility,
+          isInstalled: "true",
+          DaSigned: "true",
+          systemCosts: {
+            service_Costs: 22,
+            VAT_Deduction_Percent: 22,
+            VAT_Deduction: true,
+          },
+        },
         token,
         IdToken
       );
@@ -142,9 +155,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   <div className="relative">
                     <input
                       type="text"
-                      name="SystemCostsInfo.service_Costs"
-                      // defaultValue="5.75" 
-                      value={facility?.SystemCostsInfo?.service_Costs ?? ""}
+                      name="systemCosts.service_Costs"
+                      // defaultValue="5.75"
+                      value={facility?.systemCosts?.service_Costs }
                       onChange={handleChange}
                       className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                     />
@@ -185,9 +198,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     </label>
                     <input
                       type="text"
-                      name="SystemCostsInfo.VAT_Deduction_Percent"
+                      name="systemCosts.VAT_Deduction_Percent"
                       // defaultValue="0.0765"
-                      value={facility?.SystemCostsInfo?.VAT_Deduction_Percent ?? ""} 
+                      value={facility?.systemCosts?.VAT_Deduction_Percent }
                       onChange={handleChange}
                       className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                     />
@@ -201,8 +214,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       <select
                         className="appearance-none p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                         // defaultValue="Ja"
-                        name="SystemCostsInfo.VAT_Deduction"
-                        value={facility?.SystemCostsInfo?.VAT_Deduction}
+                        name="systemCosts.VAT_Deduction"
+                        value={facility?.systemCosts?.VAT_Deduction ?? "Yes"}
                         onChange={handleChange}
                       >
                         <option>Yes</option>
@@ -224,6 +237,51 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       </span>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+            <div className="p-6 rounded-lg mb-6">
+              <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                Service Provider
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <input
+                    type="text"
+                    name="serviceProvider.name"
+                    placeholder="Name of service provider"
+                    className="p-3 border rounded-lg w-full"
+                    value={facility?.serviceProvider?.name ?? ""}
+                    onChange={handleChange}
+                  />
+                  <label className="text-gray-500 text-sm mt-1 block ml-3">
+                    Enter the name of the service provider
+                  </label>
+                </div>
+
+                <div>
+                  <input
+                    type="text"
+                    name="serviceProvider.mailAddress"
+                    placeholder="Email Address"
+                    className="p-3 border rounded-lg w-full"
+                    value={facility?.serviceProvider?.mailAddress ?? ""}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="md:col-span-1">
+                  <input
+                    type="text"
+                    name="serviceProvider.phone"
+                    placeholder="Phone Number"
+                    className="p-3 border rounded-lg w-full"
+                    value={facility?.serviceProvider?.phone}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
@@ -273,7 +331,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   <input
                     type="text"
                     name="gas_Consumption.annual_gas_consumption_m3"
-                    value={facility?.gas_Consumption?.annual_gas_consumption_m3 ?? ""}
+                    value={
+                      facility?.gas_Consumption?.annual_gas_consumption_m3 ?? ""
+                    }
                     onChange={handleChange}
                     placeholder="m³"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
