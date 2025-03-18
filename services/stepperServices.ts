@@ -107,7 +107,7 @@ export const getCustomer = async (token: string, IdToken: string) => {
       lastName: contactPerson?.lastName || "",
       personalPhone: contactPerson?.personalPhone || "",
       personalEmail: contactPerson?.personalEmail || "",
-      
+
       name: name || "",
       email_verified: result.data.email_verified || false,
     };
@@ -148,10 +148,10 @@ export const getFacility = async (token: string, IdToken: string) => {
         city: facilityData.location?.city || "",
       },
 
-      systemCost: {
-        vat: facilityData.systemCost?.vat || "",
-        serviceCost: facilityData.systemCost?.serviceCost || "",
-        VATDeduction: facilityData.systemCost?.VATDeduction || "",
+      SystemCostsInfo: {
+        vat: facilityData.SystemCostsInfo?.VAT_Deduction_Percent || "",
+        serviceCost: facilityData.SystemCostsInfo?.service_Costs || "",
+        VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
       },
 
       registerSystem: {
@@ -160,19 +160,19 @@ export const getFacility = async (token: string, IdToken: string) => {
         XRGINumber: facilityData.registerSystem?.XRGINumber || "",
       },
 
-      gasConsumption: {
-        m3: facilityData.gasConsumption?.m3 || "",
-        gasType: facilityData.gasConsumption?.gasType || "",
-        independentDKK: facilityData.gasConsumption?.independentDKK || "",
-        dependentDKK: facilityData.gasConsumption?.dependentDKK || "",
+      gas_Consumption: {
+        m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
+        gasType: facilityData.gas_Consumption?.xrgi_gas_type || "",
+        independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
+        dependentDKK: facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
       },
 
-      electricityConsumption: {
-        kWh: facilityData.electricityConsumption?.kWh || "",
+      electircity_Consumption: {
+        kWh: facilityData.electircity_Consumption?.annual_grid_consumption_kwh || "",
         electricityIndependentDKK:
-          facilityData.electricityConsumption?.electricityIndependentDKK || "",
+          facilityData.electircity_Consumption?.fixed_costs_dkk || "",
         electricityDependentDKK:
-          facilityData.electricityConsumption?.electricityDependentDKK || "",
+          facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
     };
   } catch (error) {
@@ -187,34 +187,34 @@ export const addFacility = async (
   IdToken: string,
   payload: any
 ) => {
-    const result = await apiRequest(
-      "create-facility",
-      "POST",
-      payload,
-      token,
-      IdToken
-    );
+  const result = await apiRequest(
+    "create-facility",
+    "POST",
+    payload,
+    token,
+    IdToken
+  );
 
-    if (result.success) {
-      return result.data;
-    }
-    throw new Error("Failed to create facility");
+  if (result.success) {
+    return result.data;
+  }
+  throw new Error("Failed to create facility");
 };
 
 // get all facility
 export const getAllFacility = async (token: string, IdToken: string) => {
   const userId = localStorage.getItem("userId");
-  
+
   try {
     const result = await apiRequest(
-      `get-user-facility?id=${userId}`, 
+      `get-user-facility?id=${userId}`,
       "GET",
       undefined,
       token,
       IdToken
     );
 
-    if (!result || !result.success || !result.data ) {
+    if (!result || !result.success || !result.data) {
       throw new Error("No facility data available");
     }
 
@@ -233,10 +233,10 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         city: facilityData.location?.city || "",
       },
 
-      systemCost: {
-        vat: facilityData.systemCost?.vat || "",
-        serviceCost: facilityData.systemCost?.serviceCost || "",
-        VATDeduction: facilityData.systemCost?.VATDeduction || "",
+      SystemCostsInfo: {
+        vat: facilityData.SystemCostsInfo?.VAT_Deduction_Percent || "",
+        serviceCost: facilityData.SystemCostsInfo?.service_Costs || "",
+        VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
       },
 
       registerSystem: {
@@ -245,19 +245,19 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         XRGINumber: facilityData.registerSystem?.XRGINumber || "",
       },
 
-      gasConsumption: {
-        m3: facilityData.gasConsumption?.m3 || "",
-        gasType: facilityData.gasConsumption?.gasType || "",
-        independentDKK: facilityData.gasConsumption?.independentDKK || "",
-        dependentDKK: facilityData.gasConsumption?.dependentDKK || "",
+      gas_Consumption: {
+        m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
+        gasType: facilityData.gas_Consumption?.xrgi_gas_type || "",
+        independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
+        dependentDKK: facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
       },
 
-      electricityConsumption: {
-        kWh: facilityData.electricityConsumption?.kWh || "",
+      electircity_Consumption: {
+        kWh: facilityData.electircity_Consumption?.annual_grid_consumption_kwh || "",
         electricityIndependentDKK:
-          facilityData.electricityConsumption?.electricityIndependentDKK || "",
+          facilityData.electircity_Consumption?.fixed_costs_dkk || "",
         electricityDependentDKK:
-          facilityData.electricityConsumption?.electricityDependentDKK || "",
+          facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
     }));
   } catch (error) {

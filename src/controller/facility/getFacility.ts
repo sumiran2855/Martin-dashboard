@@ -29,8 +29,8 @@ export function useGetFacility() {
 
       if (Array.isArray(facilityData) && facilityData.length > 0) {
         const formattedFacilities = facilityData.map((facility) => ({
-          id: facility.id,
-          name: facility?.location?.address || "",
+          id: facility.facilityId,
+          name: facility?.registerSystem.systemName || "",
           xrgi: facility?.registerSystem?.XRGINumber || "",
           model: facility?.registerSystem?.model || "",
           status: facility?.status || "Active",
@@ -50,7 +50,7 @@ export function useGetFacility() {
   useEffect(() => {
     handleGetFacility();
   }, []);
-
+  
   return {
     facilities,
     handleGetFacility,

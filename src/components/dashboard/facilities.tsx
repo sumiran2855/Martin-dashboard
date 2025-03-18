@@ -3,8 +3,94 @@ import { ArrowLeft, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import BarChart from "@/components/barChart";
 import { useRouter } from "next/navigation";
-export default function facilities({ facilityId = "XRGI #567898340011" }) {
+import { useEffect, useState } from "react";
+import { apiRequest } from "@/utils/apiClient";
+
+interface Facility {
+  facilityId?: string;
+  location?: { address: string };
+  registerSystem?: { model: string; systemName: string };
+  systemCost?: { serviceCost: string };
+  gasConsumption?: {
+    m3: string;
+    gasType: string;
+    independentDKK: string;
+    dependentDKK: string;
+  };
+  electricityConsumption?: {
+    kWh: string;
+    electricityIndependentDKK: string;
+    electricityDependentDKK: string;
+  };
+}
+
+export default function facilities({ facilityId }: { facilityId: string }) {
   const router = useRouter();
+
+  const [facility, setFacility] = useState<Facility | null>(null);
+
+  useEffect(() => {
+    async function fetchFacility() {
+      const token = localStorage.getItem("token") || "";
+      const IdToken = localStorage.getItem("IdToken") || "";
+
+      try {
+        const response = await apiRequest(
+          `get-facility?id=${facilityId}`,
+          "GET",
+          undefined,
+          token,
+          IdToken
+        );
+
+        if (!response.success || !response.data) {
+          throw new Error("Failed to fetch facility data");
+        }
+
+        setFacility(response.data);
+      } catch (error) {
+        console.error("Error fetching facility details:", error);
+      }
+    }
+
+    if (facilityId) {
+      fetchFacility();
+    }
+  }, [facilityId]);
+
+  const facilityDetails = [
+    {
+      label: "Service costs per operating hour",
+      value: facility?.systemCost?.serviceCost,
+    },
+    { label: "Gas supply", value: facility?.gasConsumption?.gasType },
+    {
+      label: "Consumption-dependent costs, gas",
+      value: facility?.gasConsumption?.dependentDKK + " m³",
+    },
+    {
+      label: "Consumption-Independent costs, gas",
+      value: facility?.gasConsumption?.independentDKK + " m³",
+    },
+    {
+      label: "Annual gas consumption",
+      value: facility?.gasConsumption?.m3 + " m³",
+    },
+    {
+      label: "Consumption-dependent costs, electricity",
+      value: facility?.electricityConsumption?.electricityDependentDKK + " kWh",
+    },
+    {
+      label: "Consumption-Independent costs, electricity",
+      value:
+        facility?.electricityConsumption?.electricityIndependentDKK + " kWh",
+    },
+    {
+      label: "Annual electricity consumption",
+      value: facility?.electricityConsumption?.kWh + " kWh",
+    },
+  ];
+
   return (
     <>
       <div className="flex-1 overflow-auto">
@@ -21,18 +107,18 @@ export default function facilities({ facilityId = "XRGI #567898340011" }) {
             </Link>
 
             <h1 className="text-2xl font-semibold text-gray-800 ml-6">
-              {facilityId}
+              {facility?.facilityId || "Facility Details"}
             </h1>
           </div>
 
           <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-4 ml-6">
             <div>
               <p className="text-sm text-gray-500">Name</p>
-              <p>{facilityData.name}</p>
+              <p>{facility?.registerSystem?.systemName}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Address</p>
-              <p>{facilityData.address}</p>
+              <p>{facility?.location?.address}</p>
             </div>
           </div>
         </div>
@@ -41,7 +127,7 @@ export default function facilities({ facilityId = "XRGI #567898340011" }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg border p-6">
               <h2 className="text-lg font-medium mb-4">
-                Model {facilityData.model}
+                Model {facility?.registerSystem?.model}
               </h2>
               <div className="flex justify-center">
                 <img
@@ -55,18 +141,25 @@ export default function facilities({ facilityId = "XRGI #567898340011" }) {
             <div className="bg-white rounded-lg border p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-medium">Basic Data</h2>
-                <button className="text-blue-600 border border-blue-600 rounded px-3 py-1 text-sm" onClick={() => router.push("/dashboard/facilities/editFacilities")}>
+                <button
+                  className="text-blue-600 border border-blue-600 rounded px-3 py-1 text-sm"
+                  onClick={() =>
+                    router.push(`/dashboard/facilities/editFacilities/${facilityId}`)
+                  }
+                >
                   Edit
                 </button>
               </div>
               <div className="space-y-2">
-                {facilityData.data.map((item, index) => (
+                {facilityDetails.map((item, index) => (
                   <div
                     key={index}
                     className="flex justify-between py-2 border-b border-gray-100"
                   >
                     <span className="text-gray-600">{item.label}</span>
-                    <span className="font-medium">{item.value}</span>
+                    <span className="font-medium text-gray-800">
+                      {item.value}
+                    </span>
                   </div>
                 ))}
               </div>

@@ -346,9 +346,8 @@ export default function CreateFacility({
                   className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                 >
                   <option>Select gas type</option>
-                  <option>gas type 1</option>
-                  <option>gas type 2</option>
-                  <option>gas type 3</option>
+                  <option>Naturel Gas</option>
+                  <option>Hydrogen</option>
                 </select>
                 <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                   <svg

@@ -42,21 +42,21 @@ export function useCreateFacility() {
         postalCode: stepTwoFormData.postalCode,
         city: stepTwoFormData.city,
       },
-      systemCost: {
-        serviceCost: stepTwoFormData.serviceCost,
-        vat: stepTwoFormData.vat,
-        VATDeduction: stepTwoFormData.VATDeduction,
+      SystemCostsInfo: {
+        service_Costs: parseFloat(stepTwoFormData.serviceCost),
+        VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat),
+        VAT_Deduction: stepTwoFormData.VATDeduction === "Yes",
       },
-      gasConsumption: {
-        m3: stepTwoFormData.m3,
-        gasType: stepTwoFormData.gasType,
-        independentDKK: stepTwoFormData.independentDKK,
-        dependentDKK: stepTwoFormData.dependentDKK,
+      gas_Consumption: {
+        annual_gas_consumption_m3: parseFloat(stepTwoFormData.m3),
+        xrgi_gas_type: stepTwoFormData.gasType,
+        gas_fixed_costs_dkk: stepTwoFormData.independentDKK,
+        gas_variable_costs_dkk: stepTwoFormData.dependentDKK,
       },
-      electricityConsumption: {
-        kWh: stepTwoFormData.kWh,
-        electricityIndependentDKK: stepTwoFormData.electricityIndependentDKK,
-        electricityDependentDKK: stepTwoFormData.electricityDependentDKK,
+      electircity_Consumption: {
+        annual_grid_consumption_kwh: stepTwoFormData.kWh,
+        fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
+        variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
     };
 

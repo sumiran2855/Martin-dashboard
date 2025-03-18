@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface Facility {
@@ -9,157 +7,108 @@ interface Facility {
   model?: string;
   status?: string;
 }
-
 export default function GridView({ facilities }: { facilities: Facility[] }) {
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(facilities.length / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const endIndex = startIndex + rowsPerPage;
-  const displayedFacilities = facilities.slice(startIndex, endIndex);
+  console.log("🚀 ~ GridView ~ facilities:", facilities);
   const router = useRouter();
-
   return (
-    <div className="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead>
-          <tr className="bg-gray-50">
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Name
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              XRGi Facility
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Model
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Status
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {displayedFacilities.length > 0 ? (
-            displayedFacilities.map((facility, index) => (
-              <tr key={index} className="hover:bg-gray-50 transition">
-                <td className="px-6 py-3 whitespace-nowrap flex items-center space-x-3">
-                  <img src="/Box.png" alt="folder" className="w-7 h-7" />
-                  <span className="text-gray-800 text-sm">{facility.name}</span>
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                  {facility.xrgi}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                  {facility.model}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap flex items-center space-x-2">
-                  <img
-                    src={
-                      facility.status === "Missing Data"
-                        ? "/Missing.png"
-                        : facility.status === "Inactive"
-                        ? "/Inactive.png"
-                        : facility.status === "Maintenance"
-                        ? "/Maintenance.jpg"
-                        : "/Active.png"
-                    }
-                    alt={facility.status}
-                    className="w-5 h-5"
-                  />
-                  <span className="text-sm text-gray-700">
-                    {facility.status}
-                  </span>
-                </td>
-                <td className="px-6 py-2 text-right">
-                  <button
-                    className="text-gray-500 hover:text-gray-700"
-                    onClick={() => router.push("/dashboard/facilities")}
-                  >
-                    ➝
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={4} className="px-6 py-16 text-center">
-                <div className="flex flex-col items-center justify-center">
-                  <div className="relative w-64 h-32 mb-4">
-                    <div className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
-                      <img
-                        src="/Folder Not Found.png"
-                        alt=""
-                        className="w-64 h-32"
-                      />
-                    </div>
+    <div className="space-y-6">
+      {/* Inactive Section */}
+      <div
+        className="cursor-pointer"
+        onClick={() => router.push("/dashboard/facilities")}
+      >
+        <h2 className="text-gray-600 text-lg font-semibold mb-3">Inactive</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {facilities
+            .filter((facility) => facility.status !== "Active")
+            .map((facility, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
+              >
+                <div>
+                  <h3 className="text-gray-800 text-sm font-semibold">
+                    {facility.name}
+                  </h3>
+                  <p className="text-gray-600 text-xs">{facility.xrgi}</p>
+                  <div className="flex items-center space-x-2 mt-2">
+                    <img
+                      src={
+                        facility.status === "Missing Data"
+                          ? "/Missing.png"
+                          : facility.status === "Inactive"
+                          ? "/Inactive.png"
+                          : facility.status === "Maintenance"
+                          ? "/Maintenance.jpg"
+                          : "/warning.png"
+                      }
+                      alt={facility.status}
+                      className="w-5 h-5"
+                    />
+                    <span className="text-sm text-gray-700">
+                      {facility.status}
+                    </span>
                   </div>
-                  <p className="text-gray-500">No registered facilities</p>
                 </div>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      <div className="flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200">
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-700">Rows per page:</span>
-          <div className="relative">
-            <select
-              className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"
-              value={rowsPerPage}
-              onChange={(e) => {
-                setRowsPerPage(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-            >
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-            </select>
-            <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-              ▼
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center">
-          <span className="text-sm text-gray-700 mr-4">
-            {facilities.length === 0
-              ? "0-0 of 0"
-              : `${startIndex + 1}-${Math.min(
-                  endIndex,
-                  facilities.length
-                )} of ${facilities.length}`}
-          </span>
-          <div className="flex">
-            <button
-              className={`p-1 rounded-md ${
-                currentPage === 1
-                  ? "text-gray-400 cursor-not-allowed"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-            >
-              <ArrowLeft size={16} />
-            </button>
-
-            <button
-              className={`p-1 rounded-md ${
-                currentPage === totalPages || facilities.length === 0
-                  ? "text-gray-400 cursor-not-allowed"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-              disabled={currentPage === totalPages || facilities.length === 0}
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-            >
-              <ArrowRight size={16} />
-            </button>
-          </div>
+                <img
+                  src="/Rectangle 137.png"
+                  alt="facility"
+                  className="w-16 h-16 object-contain"
+                />
+              </div>
+            ))}
         </div>
       </div>
+
+      {/* Active Section */}
+      <div className="cursor-pointer">
+        <h2 className="text-gray-600 text-lg font-semibold mb-3">Active</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {facilities
+            .filter((facility) => facility.status === "Active")
+            .map((facility, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
+                onClick={() =>
+                  router.push(`/dashboard/facilities/${facility.id}`)
+                }
+              >
+                <div>
+                  <h3 className="text-gray-800 text-sm font-semibold">
+                    {facility.name}
+                  </h3>
+                  <p className="text-gray-600 text-xs">{facility.xrgi}</p>
+                  <div className="flex items-center space-x-2 mt-2">
+                    <img src="/Active.png" alt="Active" className="w-5 h-5" />
+                    <span className="text-sm text-gray-700">
+                      {facility.status}
+                    </span>
+                  </div>
+                </div>
+                <img
+                  src="/Rectangle 137.png"
+                  alt="facility"
+                  className="w-16 h-16 object-contain"
+                />
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {/* No Data Message */}
+      {facilities.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-16">
+          <img
+            src="/Folder Not Found.png"
+            alt="No Data"
+            className="w-48 h-48 md:w-64 md:h-64 object-contain"
+          />
+          <p className="text-gray-500 text-sm md:text-base mt-2">
+            No registered facilities
+          </p>
+        </div>
+      )}
     </div>
   );
 }

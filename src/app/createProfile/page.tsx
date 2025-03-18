@@ -165,21 +165,21 @@ function Dashboard() {
         postalCode: stepTwoFormData.postalCode,
         city: stepTwoFormData.city,
       },
-      systemCost: {
-        serviceCost: stepTwoFormData.serviceCost,
-        vat: stepTwoFormData.vat,
-        VATDeduction: stepTwoFormData.VATDeduction,
+      SystemCostsInfo: {
+        service_Costs: parseFloat(stepTwoFormData.serviceCost),
+        VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat),
+        VAT_Deduction: stepTwoFormData.VATDeduction === "Yes",
       },
-      gasConsumption: {
-        m3: stepTwoFormData.m3,
-        gasType: stepTwoFormData.gasType,
-        independentDKK: stepTwoFormData.independentDKK,
-        dependentDKK: stepTwoFormData.dependentDKK,
+      gas_Consumption: {
+        annual_gas_consumption_m3: parseFloat(stepTwoFormData.m3),
+        xrgi_gas_type: stepTwoFormData.gasType,
+        gas_fixed_costs_dkk: stepTwoFormData.independentDKK,
+        gas_variable_costs_dkk: stepTwoFormData.dependentDKK,
       },
-      electricityConsumption: {
-        kWh: stepTwoFormData.kWh,
-        electricityIndependentDKK: stepTwoFormData.electricityIndependentDKK,
-        electricityDependentDKK: stepTwoFormData.electricityDependentDKK,
+      electircity_Consumption: {
+        annual_grid_consumption_kwh: stepTwoFormData.kWh,
+        fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
+        variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
     };
 
@@ -254,20 +254,20 @@ function Dashboard() {
           postalCode: facilityData.location.postalCode || "",
           city: facilityData.location.city || "",
 
-          serviceCost: facilityData.systemCost.serviceCost || "5.75",
-          vat: facilityData.systemCost.vat || "12",
-          VATDeduction: facilityData.systemCost.VATDeduction || "",
+          serviceCost: facilityData.SystemCostsInfo.serviceCost || "5.75",
+          vat: facilityData.SystemCostsInfo.vat || "12",
+          VATDeduction: facilityData.SystemCostsInfo.VATDeduction || "",
 
-          m3: facilityData.gasConsumption.m3 || "",
-          gasType: facilityData.gasConsumption.gasType || "",
-          independentDKK: facilityData.gasConsumption.independentDKK || "",
-          dependentDKK: facilityData.gasConsumption.dependentDKK || "",
+          m3: facilityData.gas_Consumption.m3 || "",
+          gasType: facilityData.gas_Consumption.gasType || "",
+          independentDKK: facilityData.gas_Consumption.independentDKK || "",
+          dependentDKK: facilityData.gas_Consumption.dependentDKK || "",
 
-          kWh: facilityData.electricityConsumption.kWh || "",
+          kWh: facilityData.electircity_Consumption.kWh || "",
           electricityIndependentDKK:
-            facilityData.electricityConsumption.electricityIndependentDKK || "",
+            facilityData.electircity_Consumption.electricityIndependentDKK || "",
           electricityDependentDKK:
-            facilityData.electricityConsumption.electricityDependentDKK || "",
+            facilityData.electircity_Consumption.electricityDependentDKK || "",
         });
       }
     } catch (error) {

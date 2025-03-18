@@ -1,20 +1,113 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BarChart from "../barChart";
 import { useRouter } from "next/navigation";
 import Modal from "../modals/modal";
+import { apiRequest } from "@/utils/apiClient";
 
-export default function EditFacilities() {
+interface Facility {
+  facilityId?: string;
+  location?: { address: string };
+  registerSystem?: { model: string; systemName: string };
+  systemCost?: { serviceCost: string; vat: string; VATDeduction: string };
+  gasConsumption?: {
+    m3: string;
+    gasType: string;
+    independentDKK: string;
+    dependentDKK: string;
+  };
+  electricityConsumption?: {
+    kWh: string;
+    electricityIndependentDKK: string;
+    electricityDependentDKK: string;
+  };
+}
+
+export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const [facility, setFacility] = useState<Facility | null>(null);
+
+  useEffect(() => {
+    async function fetchFacility() {
+      const token = localStorage.getItem("token") || "";
+      const IdToken = localStorage.getItem("IdToken") || "";
+      try {
+        const response = await apiRequest(
+          `get-facility?id=${facilityId}`,
+          "GET",
+          undefined,
+          token,
+          IdToken
+        );
+        if (!response.success || !response.data) {
+          throw new Error("Failed to fetch facility data");
+        }
+        setFacility(response.data);
+      } catch (error) {
+        console.error("Error fetching facility details:", error);
+      }
+    }
+
+    if (facilityId) {
+      fetchFacility();
+    }
+  }, [facilityId]);
+
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+  
+    setFacility((prev) => {
+      if (!prev) return prev;
+  
+      const keys = name.split(".");
+      let updatedFacility = { ...prev };
+      let current: any = updatedFacility;
+  
+      for (let i = 0; i < keys.length - 1; i++) {
+        if (!current[keys[i]]) current[keys[i]] = {};
+        current = current[keys[i]];
+      }
+  
+      current[keys[keys.length - 1]] = value;
+  
+      return updatedFacility;
+    });
+  };
+  
+  async function handleSave() {
+    const token = localStorage.getItem("token") || "";
+    const IdToken = localStorage.getItem("IdToken") || "";
+
+    try {
+      const response = await apiRequest(
+        `create-facility?id=${facilityId}`,
+        "POST",
+        facility ?? undefined,
+        token,
+        IdToken
+      );
+
+      if (!response.success)
+        throw new Error("Failed to update facility details");
+
+      router.push(`/dashboard/facilities/${facilityId}`);
+    } catch (error) {
+      console.error("Error updating facility:", error);
+    }
+  }
+
   return (
     <>
       <div className="flex-1 overflow-auto">
         <div className=" px-6 py-4">
           <div className="flex flex-col">
             <Link
-              href="/dashboard/facilities"
+              href={`/dashboard/facilities/${facilityId}`}
               className="flex items-center gap-2 text-lg font-medium text-blue-600 no-underline transition-all duration-200 hover:text-blue-800 mb-4"
             >
               <div className="p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition">
@@ -41,8 +134,10 @@ export default function EditFacilities() {
                   <div className="relative">
                     <input
                       type="text"
-                      name="serviceCost"
-                      defaultValue="5.75"
+                      name="systemCost.serviceCost"
+                      // defaultValue="5.75"
+                      value={facility?.systemCost?.serviceCost || ""}
+                      onChange={handleChange}
                       className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                     />
                     <span className="absolute inset-y-0 right-3 flex items-center text-blue-500 cursor-pointer">
@@ -83,7 +178,9 @@ export default function EditFacilities() {
                     <input
                       type="text"
                       name="vat"
-                      defaultValue="0.0765"
+                      // defaultValue="0.0765"
+                      value={facility?.systemCost?.vat}
+                      onChange={handleChange}
                       className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                     />
                   </div>
@@ -95,7 +192,10 @@ export default function EditFacilities() {
                     <div className="relative">
                       <select
                         className="appearance-none p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
-                        defaultValue="Ja"
+                        // defaultValue="Ja"
+                        name="vatDeductible"
+                        value={facility?.systemCost?.VATDeduction}
+                        onChange={handleChange}
                       >
                         <option>Yes</option>
                         <option>No</option>
@@ -131,8 +231,15 @@ export default function EditFacilities() {
                     What type of gas is supplied to the XRGI system?
                   </label>
                   <div className="relative">
-                    <select className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer">
+                    <select
+                      name="gasType"
+                      value={facility?.gasConsumption?.gasType}
+                      onChange={handleChange}
+                      className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
+                    >
                       <option>Select gas type</option>
+                      <option>Naturel Gas</option>
+                      <option>Hydrogen</option>
                     </select>
                     <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                       <svg
@@ -157,7 +264,9 @@ export default function EditFacilities() {
                   </label>
                   <input
                     type="text"
-                    name="m3"
+                    name="annualGasConsumption"
+                    value={facility?.gasConsumption?.m3}
+                    onChange={handleChange}
                     placeholder="m³"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
                   />
@@ -171,7 +280,9 @@ export default function EditFacilities() {
                   </label>
                   <input
                     type="text"
-                    name="independentDKK"
+                    name="independentGasCost"
+                    value={facility?.gasConsumption?.independentDKK}
+                    onChange={handleChange}
                     placeholder="DKK"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
                   />
@@ -182,7 +293,9 @@ export default function EditFacilities() {
                   </label>
                   <input
                     type="text"
-                    name="dependentDKK"
+                    name="dependentGasCost"
+                    value={facility?.gasConsumption?.dependentDKK}
+                    onChange={handleChange}
                     placeholder="DKK"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
                   />
@@ -205,7 +318,9 @@ export default function EditFacilities() {
                   </label>
                   <input
                     type="text"
-                    name="kWh"
+                    name="dependentGasCost"
+                    value={facility?.electricityConsumption?.kWh}
+                    onChange={handleChange}
                     placeholder="kWh"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
                   />
@@ -220,6 +335,11 @@ export default function EditFacilities() {
                   <input
                     type="text"
                     name="electricityIndependentDKK"
+                    value={
+                      facility?.electricityConsumption
+                        ?.electricityIndependentDKK
+                    }
+                    onChange={handleChange}
                     placeholder="DKK"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
                   />
@@ -232,6 +352,10 @@ export default function EditFacilities() {
                   <input
                     type="text"
                     name="electricityDependentDKK"
+                    value={
+                      facility?.electricityConsumption?.electricityDependentDKK
+                    }
+                    onChange={handleChange}
                     placeholder="DKK"
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
                   />
@@ -301,7 +425,9 @@ export default function EditFacilities() {
 
         <button
           className="bg-blue-500 text-white hover:bg-blue-800 px-6 py-2 rounded-md transition ml-auto block mb-10 mr-4 sm:mr-6 md:mr-12 w-full sm:w-auto"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+          }}
         >
           Save Changes
         </button>
@@ -313,13 +439,16 @@ export default function EditFacilities() {
           message="Changes have been made to this facility. Do you want to save or
                 discard them?"
           primaryButton="Save"
-          onPrimaryClick={() => router.push("/dashboard/facilities")}
+          onPrimaryClick={() => {
+            handleSave();
+            router.push("/dashboard/facilities/${facilityId}");
+          }}
           secondaryButton="Discard"
           onSecondaryClick={() =>
             router.push("/dashboard/facilities/editFacilities")
           }
         />
-     </div>
+      </div>
     </>
   );
 }

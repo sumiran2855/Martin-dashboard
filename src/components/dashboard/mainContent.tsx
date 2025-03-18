@@ -132,7 +132,7 @@ export default function mainContent() {
             </div>
           </div>
 
-          {view == "list" ? (
+          {view == "grid" ? (
             <GridView facilities={filteredData} />
           ) : (
             <ListView facilities={filteredData} />
