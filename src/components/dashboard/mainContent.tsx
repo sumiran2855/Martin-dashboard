@@ -1,15 +1,14 @@
 import { Search, Filter, Grid, List, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GridView from "@/components/dashboard/view/gridView";
 import ListView from "@/components/dashboard/view/listView";
 import { useRouter } from "next/navigation";
-import { useGetFacility } from "@/controller/facility/getFacility";
+import { getAllFacility } from "@/services/stepperServices";
 
 const statusOptions = [
   "All",
   "Active",
-  "Maintenance",
-  "Missing Data",
+  "Data Missing",
   "Inactive",
 ];
 
@@ -20,6 +19,8 @@ export default function mainContent() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
+  const [facilitiesData, setFacilitiesData] = useState([]);
+
 
   const handleSelect = (selectedView: string) => {
     setView(selectedView);
@@ -31,8 +32,18 @@ export default function mainContent() {
     setSortDropdownOpen(false);
   };
 
-  const {facilities:facilitiesData} = useGetFacility()
-
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      const token = localStorage.getItem("token");
+      const IdToken = localStorage.getItem("IdToken");
+      if (token && IdToken) {
+        const data = await getAllFacility(token, IdToken);
+        setFacilitiesData(data);
+      }
+    };
+    fetchFacilities();
+  }, []);
+  
   const filteredData = facilitiesData
     .filter((facility) =>
       facility.name?.toLowerCase().includes(searchTerm.toLowerCase())

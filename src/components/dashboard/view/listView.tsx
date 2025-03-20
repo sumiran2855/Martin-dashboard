@@ -3,10 +3,10 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface Facility {
-  id?: number;
+  facilityId?: number;
   name?: string;
-  xrgi?: string;
-  model?: string;
+  xrgiID?: string;
+  modelNumber?: string;
   status?: string;
 }
 
@@ -48,10 +48,10 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
                   <span className="text-gray-800 text-sm">{facility.name}</span>
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                  {facility.xrgi}
+                  {facility.xrgiID}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                  {facility.model}
+                  {facility.modelNumber}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap flex items-center space-x-2">
                   <img
@@ -75,7 +75,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
                   <button
                     className="text-gray-500 hover:text-gray-700"
                     onClick={() =>
-                      router.push(`/dashboard/facilities/${facility.id}`)
+                      router.push(`/dashboard/facilities/${facility.facilityId}`)
                     }
                   >
                     ➝

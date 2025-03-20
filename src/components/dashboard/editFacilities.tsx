@@ -8,7 +8,7 @@ import { apiRequest } from "@/utils/apiClient";
 
 interface Facility {
   facilityId?: string;
-  location?: { address: string };
+  location?: { address: string; postalCode: string; city: string };
   name: string;
   modelNumber: string;
   xrgiID: string;
@@ -33,8 +33,6 @@ interface Facility {
     fixed_costs_dkk: string;
     variable_costs_dkk: string;
   };
-  isInstalled: true;
-  DaSigned: true;
 }
 
 export default function EditFacilities({ facilityId }: { facilityId: string }) {
@@ -85,42 +83,76 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         current = current[keys[i]];
       }
 
-      current[keys[keys.length - 1]] = value;
+      // current[keys[keys.length - 1]] = value;
+      current[keys[keys.length - 1]] =
+      name === "systemCosts.VAT_Deduction" ? value === "Yes" : value;
 
       return updatedFacility;
     });
   };
 
-  async function handleSave() {
-    const token = localStorage.getItem("token") || "";
-    const IdToken = localStorage.getItem("IdToken") || "";
-
+  const handleSave = async () => {
     try {
-      const response = await apiRequest(
+      const token = localStorage.getItem("token") || "";
+      const IdToken = localStorage.getItem("IdToken") || "";
+
+      if (!token || !IdToken) {
+        throw new Error("❌ Authentication tokens are missing.");
+      }
+      const payload = {
+        name: facility?.name,
+        xrgiID: facility?.xrgiID,
+        modelNumber: facility?.modelNumber,
+        location: {
+          address: facility?.location?.address,
+          postalCode: facility?.location?.postalCode,
+          city: facility?.location?.city,
+        },
+        serviceProvider: {
+          name: facility?.serviceProvider?.name,
+          mailAddress: facility?.serviceProvider?.mailAddress,
+          phone: facility?.serviceProvider?.phone,
+        },
+        systemCosts: {
+          service_Costs: facility?.systemCosts?.service_Costs,
+          VAT_Deduction_Percent: facility?.systemCosts?.VAT_Deduction_Percent,
+          VAT_Deduction: facility?.systemCosts?.VAT_Deduction,
+        },
+        gas_Consumption: {
+          annual_gas_consumption_m3:
+            facility?.gas_Consumption?.annual_gas_consumption_m3,
+          xrgi_gas_type: facility?.gas_Consumption?.xrgi_gas_type,
+          gas_fixed_costs_dkk: facility?.gas_Consumption?.gas_fixed_costs_dkk,
+          gas_variable_costs_dkk:
+            facility?.gas_Consumption?.gas_variable_costs_dkk,
+        },
+        electircity_Consumption: {
+          annual_grid_consumption_kwh:
+            facility?.electircity_Consumption?.annual_grid_consumption_kwh,
+          fixed_costs_dkk: facility?.electircity_Consumption?.fixed_costs_dkk,
+          variable_costs_dkk:
+            facility?.electircity_Consumption?.variable_costs_dkk,
+        },
+        isInstalled: true,
+        DaSigned: true,
+      };
+
+      const updatedFacility = await apiRequest(
         `create-facility?id=${facilityId}`,
         "POST",
-        {
-          facility,
-          isInstalled: "true",
-          DaSigned: "true",
-          systemCosts: {
-            service_Costs: 22,
-            VAT_Deduction_Percent: 22,
-            VAT_Deduction: true,
-          },
-        },
+        payload,
         token,
         IdToken
       );
-
-      if (!response.success)
-        throw new Error("Failed to update facility details");
-
-      router.push(`/dashboard/facilities/${facilityId}`);
+      if (updatedFacility) {
+        router.push(`/dashboard/facilities/${facilityId}`);
+      } else {
+        throw new Error("❌ Failed to update facility");
+      }
     } catch (error) {
-      console.error("Error updating facility:", error);
+      console.error("❌ Error saving facility:", error);
     }
-  }
+  };
 
   return (
     <>
@@ -156,8 +188,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <input
                       type="text"
                       name="systemCosts.service_Costs"
-                      // defaultValue="5.75"
-                      value={facility?.systemCosts?.service_Costs }
+                      value={facility?.systemCosts?.service_Costs}
                       onChange={handleChange}
                       className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                     />
@@ -199,8 +230,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <input
                       type="text"
                       name="systemCosts.VAT_Deduction_Percent"
-                      // defaultValue="0.0765"
-                      value={facility?.systemCosts?.VAT_Deduction_Percent }
+                      value={facility?.systemCosts?.VAT_Deduction_Percent}
                       onChange={handleChange}
                       className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                     />
@@ -213,9 +243,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <div className="relative">
                       <select
                         className="appearance-none p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
-                        // defaultValue="Ja"
                         name="systemCosts.VAT_Deduction"
-                        value={facility?.systemCosts?.VAT_Deduction ?? "Yes"}
+                        value={facility?.systemCosts?.VAT_Deduction ? "Yes" : "No"}
                         onChange={handleChange}
                       >
                         <option>Yes</option>

@@ -1,4 +1,3 @@
-import { facilityData } from "./staticData/Data";
 import { ArrowLeft, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import BarChart from "@/components/barChart";
@@ -12,7 +11,7 @@ interface Facility {
   name: string;
   modelNumber: string;
   xrgiID: string;
-  SystemCostsInfo?: { service_Costs: string ,VAT_Deduction_Percent:string};
+  systemCosts?: { service_Costs: string ,VAT_Deduction_Percent:string};
   gas_Consumption?: {
     annual_gas_consumption_m3: string;
     xrgi_gas_type: string;
@@ -29,15 +28,12 @@ interface Facility {
     fixed_costs_dkk: string;
     variable_costs_dkk: string;
   };
-  isInstalled:true,
-  DaSigned:true
 }
 
 export default function facilities({ facilityId }: { facilityId: string }) {
   const router = useRouter();
 
   const [facility, setFacility] = useState<Facility | null>(null);
-  console.log("🚀 ~ facilities ~ facility:", facility);
 
   useEffect(() => {
     async function fetchFacility() {
@@ -72,11 +68,11 @@ export default function facilities({ facilityId }: { facilityId: string }) {
   const facilityDetails = [
     {
       label: "Service costs per operating hour",
-      value: facility?.SystemCostsInfo?.service_Costs,
+      value: facility?.systemCosts?.service_Costs,
     },
     {
       label: "VAT Deduction Percentage",
-      value: facility?.SystemCostsInfo?.VAT_Deduction_Percent,
+      value: facility?.systemCosts?.VAT_Deduction_Percent,
     },
     { label: "Gas supply", value: facility?.gas_Consumption?.xrgi_gas_type },
     {

@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation";
 
 interface Facility {
-  id?: number;
+  facilityId?: number;
   name?: string;
-  xrgi?: string;
-  model?: string;
+  xrgiID?: string;
+  modelNumber?: string;
   status?: string;
 }
 export default function GridView({ facilities }: { facilities: Facility[] }) {
@@ -24,14 +24,14 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                 key={index}
                 className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
                 onClick={() =>
-                  router.push(`/dashboard/facilities/${facility.id}`)
+                  router.push(`/dashboard/facilities/${facility.facilityId}`)
                 }
               >
                 <div>
                   <h3 className="text-gray-800 text-sm font-semibold">
                     {facility.name}
                   </h3>
-                  <p className="text-gray-600 text-xs">{facility.xrgi}</p>
+                  <p className="text-gray-600 text-xs">{facility.xrgiID}</p>
                   <div className="flex items-center space-x-2 mt-2">
                     <img
                       src={
@@ -72,14 +72,14 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                 key={index}
                 className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
                 onClick={() =>
-                  router.push(`/dashboard/facilities/${facility.id}`)
+                  router.push(`/dashboard/facilities/${facility.facilityId}`)
                 }
               >
                 <div>
                   <h3 className="text-gray-800 text-sm font-semibold">
                     {facility.name}
                   </h3>
-                  <p className="text-gray-600 text-xs">{facility.xrgi}</p>
+                  <p className="text-gray-600 text-xs">{facility.xrgiID}</p>
                   <div className="flex items-center space-x-2 mt-2">
                     <img src="/Active.png" alt="Active" className="w-5 h-5" />
                     <span className="text-sm text-gray-700">

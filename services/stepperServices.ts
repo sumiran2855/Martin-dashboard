@@ -256,9 +256,9 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         city: facilityData.location?.city || "",
       },
       systemCosts: {
-        vat: facilityData.SystemCostsInfo?.VAT_Deduction_Percent || "",
-        serviceCost: facilityData.SystemCostsInfo?.service_Costs || "",
-        VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
+        vat: facilityData.systemCosts?.VAT_Deduction_Percent || "",
+        serviceCost: facilityData.systemCosts?.service_Costs || "",
+        VATDeduction: facilityData.systemCosts?.VAT_Deduction || "",
       },
 
       gas_Consumption: {
@@ -275,9 +275,9 @@ export const getAllFacility = async (token: string, IdToken: string) => {
           facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
       serviceProvider:{
-        name:facilityData.serviceProviderInfo.name,
-        mailAddress:facilityData.serviceProviderInfo.mailAddress,
-        phone:facilityData.serviceProviderInfo.phone
+        name:facilityData.serviceProvider.name,
+        mailAddress:facilityData.serviceProvider.mailAddress,
+        phone:facilityData.serviceProvider.phone
       }
     }));
   } catch (error) {
