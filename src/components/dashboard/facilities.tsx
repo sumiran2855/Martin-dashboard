@@ -11,7 +11,7 @@ interface Facility {
   name: string;
   modelNumber: string;
   xrgiID: string;
-  systemCosts?: { service_Costs: string ,VAT_Deduction_Percent:string};
+  systemCosts?: { service_Costs: string; VAT_Deduction_Percent: string };
   gas_Consumption?: {
     annual_gas_consumption_m3: string;
     xrgi_gas_type: string;
@@ -32,11 +32,12 @@ interface Facility {
 
 export default function facilities({ facilityId }: { facilityId: string }) {
   const router = useRouter();
-
   const [facility, setFacility] = useState<Facility | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchFacility() {
+      setLoading(true);
       const token = localStorage.getItem("token") || "";
       const IdToken = localStorage.getItem("IdToken") || "";
 
@@ -56,6 +57,8 @@ export default function facilities({ facilityId }: { facilityId: string }) {
         setFacility(response.data);
       } catch (error) {
         console.error("Error fetching facility details:", error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -73,53 +76,72 @@ export default function facilities({ facilityId }: { facilityId: string }) {
       label: "VAT Deduction Percentage",
       value: facility?.systemCosts?.VAT_Deduction_Percent ?? "-",
     },
-    { 
-      label: "Gas supply", 
-      value: facility?.gas_Consumption?.xrgi_gas_type === "Select gas type"
-        ? "-"
-        : facility?.gas_Consumption?.xrgi_gas_type ?? "-" 
+    {
+      label: "Gas supply",
+      value:
+        facility?.gas_Consumption?.xrgi_gas_type === "Select gas type"
+          ? "-"
+          : facility?.gas_Consumption?.xrgi_gas_type ?? "-",
     },
     {
       label: "Consumption-dependent costs, gas",
-      value: facility?.gas_Consumption?.gas_variable_costs_dkk != null
-        ? facility.gas_Consumption.gas_variable_costs_dkk + " m³"
-        : "-",
+      value:
+        facility?.gas_Consumption?.gas_variable_costs_dkk != null
+          ? facility.gas_Consumption.gas_variable_costs_dkk + " m³"
+          : "-",
     },
     {
       label: "Consumption-Independent costs, gas",
-      value: facility?.gas_Consumption?.gas_fixed_costs_dkk != null
-        ? facility.gas_Consumption.gas_fixed_costs_dkk + " m³"
-        : "-",
+      value:
+        facility?.gas_Consumption?.gas_fixed_costs_dkk != null
+          ? facility.gas_Consumption.gas_fixed_costs_dkk + " m³"
+          : "-",
     },
     {
       label: "Annual gas consumption",
-      value: facility?.gas_Consumption?.annual_gas_consumption_m3 != null
-        ? facility.gas_Consumption.annual_gas_consumption_m3 + " m³"
-        : "-",
+      value:
+        facility?.gas_Consumption?.annual_gas_consumption_m3 != null
+          ? facility.gas_Consumption.annual_gas_consumption_m3 + " m³"
+          : "-",
     },
     {
       label: "Consumption-dependent costs, electricity",
-      value: facility?.electircity_Consumption?.variable_costs_dkk != null
-        ? facility.electircity_Consumption.variable_costs_dkk + " kWh"
-        : "-",
+      value:
+        facility?.electircity_Consumption?.variable_costs_dkk != null
+          ? facility.electircity_Consumption.variable_costs_dkk + " kWh"
+          : "-",
     },
     {
       label: "Consumption-Independent costs, electricity",
-      value: facility?.electircity_Consumption?.fixed_costs_dkk != null
-        ? facility.electircity_Consumption.fixed_costs_dkk + " kWh"
-        : "-",
+      value:
+        facility?.electircity_Consumption?.fixed_costs_dkk != null
+          ? facility.electircity_Consumption.fixed_costs_dkk + " kWh"
+          : "-",
     },
     {
       label: "Annual electricity consumption",
-      value: facility?.electircity_Consumption?.annual_grid_consumption_kwh != null
-        ? facility.electircity_Consumption.annual_grid_consumption_kwh + " kWh"
-        : "-",
+      value:
+        facility?.electircity_Consumption?.annual_grid_consumption_kwh != null
+          ? facility.electircity_Consumption.annual_grid_consumption_kwh +
+            " kWh"
+          : "-",
     },
   ];
-  
 
   return (
     <>
+
+{loading && (
+        <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+          <div
+            className="loader animate-spin rounded-full border-4 border-gray-300 border-t-gray-900 h-12 w-12"
+            role="status"
+            aria-hidden="true"
+          ></div>
+        </div>
+      )}
+      {!loading && (
+
       <div className="flex-1 overflow-auto">
         <div className=" px-6 py-4">
           <div className="flex flex-col">
@@ -222,6 +244,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
           </div>
         </div>
       </div>
+       )}
     </>
   );
 }
