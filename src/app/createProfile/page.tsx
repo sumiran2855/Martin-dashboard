@@ -34,7 +34,7 @@ function Dashboard() {
   });
 
   const [isChecked, setIsChecked] = useState(false);
-const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
     const journeyStatus = localStorage.getItem("journeyStatus");
@@ -322,8 +322,8 @@ const [isInstalled, setIsInstalled] = useState(false);
   };
 
   const handleAcceptTerms = async () => {
-    setIsTermsOpen(false); 
-  
+    setIsTermsOpen(false);
+
     const success = await handleCreateFacility();
     if (success) {
       setStep(3);
@@ -338,7 +338,6 @@ const [isInstalled, setIsInstalled] = useState(false);
     } else if (step === 2) {
       setIsTermsOpen(true);
     }
-    // setStep((prev) => Math.min(prev + 1, 4));
   };
 
   const prevStep = async () => {
@@ -396,6 +395,7 @@ const [isInstalled, setIsInstalled] = useState(false);
               step={step}
               nextStep={nextStep}
               prevStep={prevStep}
+              saveForLater={handleCreateFacility}
               handleSubscription={handleSubscription}
             />
           </>

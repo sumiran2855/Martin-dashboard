@@ -74,7 +74,6 @@ export function useCreateFacility() {
       return true;
     } catch (err) {
       console.log("Error creating facility.");
-      console.error("Error:", err);
       return false;
     }
   };

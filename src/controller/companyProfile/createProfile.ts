@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getCustomer } from "@/services/stepperServices";
 
 export function getProfile() {
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     companyName: "",
     cvrNumber: "",
@@ -20,10 +21,12 @@ export function getProfile() {
 
   useEffect(() => {
     const fetchCustomer = async () => {
+      setLoading(true);
       const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
     if (!token || !IdToken) {
       console.error("Authorization token missing.");
+      setLoading(false);
       return;
     }
 
@@ -53,11 +56,13 @@ export function getProfile() {
       }
     } catch (error) {
       console.error("Error fetching customer data:", error);
+    } finally {
+      setLoading(false);
     }
     };
 
     fetchCustomer();
   }, []);
 
-  return {formData,setFormData};
+  return {formData,setFormData,loading};
 }
