@@ -5,9 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useCreateFacility } from "@/controller/facility/createFacility";
+import TermsModal from "../modals/acceptTerms";
+import { termsText } from "./staticData/Data";
 
 function AddFacility() {
   const router = useRouter();
+  const [isChecked, setIsChecked] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const { stepTwoFormData, setStepTwoFormData, handleCreateFacility } =
     useCreateFacility();
@@ -42,8 +46,20 @@ function AddFacility() {
     }
   };
 
+  // term and condition 
+  const [isTermsOpen, setTermsOpen] = useState(false);
   const onSubmit = async () => {
-    const success = await handleCreateFacility();
+    setTermsOpen(true); 
+  };
+
+  const handleAcceptTerms = async () => {
+    setTermsOpen(false);
+
+    const DaSigned = isChecked;
+    const installed = isInstalled;
+    
+
+    const success = await handleCreateFacility(DaSigned,installed);
     if (success) {
       router.push("/dashboard");
     }
@@ -600,6 +616,18 @@ function AddFacility() {
           </button>
         </div>
       </div>
+
+      <TermsModal
+        isOpen={isTermsOpen}
+        onClose={() => setTermsOpen(false)}
+        title="Terms and Conditions"
+        termsContent={termsText}
+        onAccept={handleAcceptTerms}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
+        isInstalled={isInstalled}
+        setIsInstalled={setIsInstalled}
+      />
     </div>
   );
 }

@@ -48,7 +48,6 @@ export default function facilities({ facilityId }: { facilityId: string }) {
           token,
           IdToken
         );
-        console.log("🚀 ~ fetchFacility ~ response:", response);
 
         if (!response.success || !response.data) {
           throw new Error("Failed to fetch facility data");
@@ -68,39 +67,56 @@ export default function facilities({ facilityId }: { facilityId: string }) {
   const facilityDetails = [
     {
       label: "Service costs per operating hour",
-      value: facility?.systemCosts?.service_Costs,
+      value: facility?.systemCosts?.service_Costs ?? "-",
     },
     {
       label: "VAT Deduction Percentage",
-      value: facility?.systemCosts?.VAT_Deduction_Percent,
+      value: facility?.systemCosts?.VAT_Deduction_Percent ?? "-",
     },
-    { label: "Gas supply", value: facility?.gas_Consumption?.xrgi_gas_type },
+    { 
+      label: "Gas supply", 
+      value: facility?.gas_Consumption?.xrgi_gas_type === "Select gas type"
+        ? "-"
+        : facility?.gas_Consumption?.xrgi_gas_type ?? "-" 
+    },
     {
       label: "Consumption-dependent costs, gas",
-      value: facility?.gas_Consumption?.gas_variable_costs_dkk + " m³",
+      value: facility?.gas_Consumption?.gas_variable_costs_dkk != null
+        ? facility.gas_Consumption.gas_variable_costs_dkk + " m³"
+        : "-",
     },
     {
       label: "Consumption-Independent costs, gas",
-      value: facility?.gas_Consumption?.gas_fixed_costs_dkk + " m³",
+      value: facility?.gas_Consumption?.gas_fixed_costs_dkk != null
+        ? facility.gas_Consumption.gas_fixed_costs_dkk + " m³"
+        : "-",
     },
     {
       label: "Annual gas consumption",
-      value: facility?.gas_Consumption?.annual_gas_consumption_m3 + " m³",
+      value: facility?.gas_Consumption?.annual_gas_consumption_m3 != null
+        ? facility.gas_Consumption.annual_gas_consumption_m3 + " m³"
+        : "-",
     },
     {
       label: "Consumption-dependent costs, electricity",
-      value: facility?.electircity_Consumption?.variable_costs_dkk + " kWh",
+      value: facility?.electircity_Consumption?.variable_costs_dkk != null
+        ? facility.electircity_Consumption.variable_costs_dkk + " kWh"
+        : "-",
     },
     {
       label: "Consumption-Independent costs, electricity",
-      value:
-        facility?.electircity_Consumption?.fixed_costs_dkk + " kWh",
+      value: facility?.electircity_Consumption?.fixed_costs_dkk != null
+        ? facility.electircity_Consumption.fixed_costs_dkk + " kWh"
+        : "-",
     },
     {
       label: "Annual electricity consumption",
-      value: facility?.electircity_Consumption?.annual_grid_consumption_kwh + " kWh",
+      value: facility?.electircity_Consumption?.annual_grid_consumption_kwh != null
+        ? facility.electircity_Consumption.annual_grid_consumption_kwh + " kWh"
+        : "-",
     },
   ];
+  
 
   return (
     <>

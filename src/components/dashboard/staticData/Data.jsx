@@ -22,3 +22,23 @@ export const countryCodes = [
     { code: "+44", flag: "🇬🇧" },
     { code: "+91", flag: "🇮🇳" },
 ]; 
+
+
+export const termsText = `
+1. Introduction
+These Terms and Conditions govern your use of our application and services.
+
+2. User Responsibilities
+Users must provide accurate information and maintain confidentiality of their credentials.
+
+3. Privacy Policy
+We collect and process personal data as outlined in our Privacy Policy.
+
+4. Intellectual Property
+All content and designs within the application are protected by copyright laws.
+
+5. Limitation of Liability
+We are not liable for any direct or indirect damages arising from your use of our services.
+
+... additional terms would continue here ...
+`;

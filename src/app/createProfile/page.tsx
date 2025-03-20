@@ -17,6 +17,8 @@ import {
   getCustomer,
   getFacility,
 } from "@/services/stepperServices";
+import { termsText } from "@/components/dashboard/staticData/Data";
+import TermsModal from "@/components/modals/acceptTerms";
 
 function Dashboard() {
   const router = useRouter();
@@ -24,11 +26,15 @@ function Dashboard() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
     email: "",
   });
+
+  const [isChecked, setIsChecked] = useState(false);
+const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
     const journeyStatus = localStorage.getItem("journeyStatus");
@@ -187,8 +193,8 @@ function Dashboard() {
         fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
         variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
-      isInstalled: true,
-      DaSigned: true,
+      isInstalled: isInstalled,
+      DaSigned: isChecked,
     };
 
     try {
@@ -315,14 +321,23 @@ function Dashboard() {
     }
   };
 
+  const handleAcceptTerms = async () => {
+    setIsTermsOpen(false); 
+  
+    const success = await handleCreateFacility();
+    if (success) {
+      setStep(3);
+    }
+  };
+
   const nextStep = async () => {
     if (step === 1) {
       await handleCreateProfile();
       await handleGetFacility();
     } else if (step === 2) {
-      await handleCreateFacility();
+      setIsTermsOpen(true);
     }
-    setStep((prev) => Math.min(prev + 1, 4));
+    // setStep((prev) => Math.min(prev + 1, 4));
   };
 
   const prevStep = async () => {
@@ -375,7 +390,6 @@ function Dashboard() {
                   setPartnerDetails={setPartnerDetails}
                 />
               )}
-              {/* {step === 4 && <StepFour />} */}
             </div>
             <NavigationButtons
               step={step}
@@ -386,6 +400,18 @@ function Dashboard() {
           </>
         )}
       </div>
+
+      <TermsModal
+        isOpen={isTermsOpen}
+        onClose={() => setIsTermsOpen(false)}
+        title="Terms and Conditions"
+        termsContent={termsText}
+        onAccept={handleAcceptTerms}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
+        isInstalled={isInstalled}
+        setIsInstalled={setIsInstalled}
+      />
     </div>
   );
 }

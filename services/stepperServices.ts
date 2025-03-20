@@ -25,7 +25,7 @@ export const createProfile = async (
 export const getFacility = async (token: string, IdToken: string) => {
   const userId = localStorage.getItem("userId");
   if (!userId) {
-    console.error("❌ No userId found in localStorage.");
+    console.error(" No userId found in localStorage.");
     return null;
   }
 
@@ -37,16 +37,15 @@ export const getFacility = async (token: string, IdToken: string) => {
       token,
       IdToken
     );
-    console.log("🚀 ~ getFacility ~ result:", result)
 
     if (!result || !result.success || !result.data || result.data.length === 0) {
-      console.error("❌ No valid facility data found.");
+      console.error(" No valid facility data found.");
       return null;
     }
 
     const facilityData = result.data[0];
     if (!facilityData || !facilityData.id) {
-      console.error("❌ Facility ID is missing in API response.");
+      console.error(" Facility ID is missing in API response.");
       return null;
     }
 
@@ -94,7 +93,7 @@ export const getFacility = async (token: string, IdToken: string) => {
       }
     };
   } catch (error) {
-    console.error("❌ Error fetching facility data:", error);
+    console.error(" Error fetching facility data:", error);
     return null;
   }
 };
@@ -121,7 +120,7 @@ export const createFacility = async (
         return result.data;
       }
 
-      throw new Error("❌ Failed to update facility");
+      throw new Error(" Failed to update facility");
     }
 
     const result = await apiRequest(
@@ -136,9 +135,9 @@ export const createFacility = async (
       return result.data;
     }
 
-    throw new Error("❌ Failed to create facility");
+    throw new Error(" Failed to create facility");
   } catch (error) {
-    console.error("❌ Error in createFacility:", error);
+    console.error(" Error in createFacility:", error);
     return null;
   }
 };

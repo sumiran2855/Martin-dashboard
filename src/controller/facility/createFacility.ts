@@ -25,7 +25,7 @@ export function useCreateFacility() {
     serviceProviderPhone: "",
   });
 
-  const handleCreateFacility = async () => {
+  const handleCreateFacility = async (DaSigned: boolean, isInstalled:boolean) => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
 
@@ -64,8 +64,8 @@ export function useCreateFacility() {
         fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
         variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
-      isInstalled: true,
-      DaSigned: true,
+      isInstalled: isInstalled,
+      DaSigned: !DaSigned,
     };
 
     try {
