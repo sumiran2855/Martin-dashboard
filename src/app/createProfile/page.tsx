@@ -334,6 +334,7 @@ const [isInstalled, setIsInstalled] = useState(false);
     if (step === 1) {
       await handleCreateProfile();
       await handleGetFacility();
+      setStep((prev) => Math.min(prev + 1, 4));
     } else if (step === 2) {
       setIsTermsOpen(true);
     }
