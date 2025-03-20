@@ -259,9 +259,9 @@ function Dashboard() {
           postalCode: facilityData.location.postalCode || "",
           city: facilityData.location.city || "",
 
-          serviceCost: facilityData.SystemCostsInfo.serviceCost || "5.75",
-          vat: facilityData.SystemCostsInfo.vat || "12",
-          VATDeduction: facilityData.SystemCostsInfo.VATDeduction || "",
+          serviceCost: facilityData.systemCosts.serviceCost || "5.75",
+          vat: facilityData.systemCosts.vat || "12",
+          VATDeduction: facilityData.systemCosts.VATDeduction || "",
 
           m3: facilityData.gas_Consumption.m3 || "",
           gasType: facilityData.gas_Consumption.gasType || "",
@@ -274,10 +274,10 @@ function Dashboard() {
             "",
           electricityDependentDKK:
             facilityData.electircity_Consumption.electricityDependentDKK || "",
-          serviceProviderName: facilityData.serviceProviderInfo.name || "",
+          serviceProviderName: facilityData.serviceProvider.name || "",
           serviceProviderMail:
-            facilityData.serviceProviderInfo.mailAddress || "",
-          serviceProviderPhone: facilityData.serviceProviderInfo.phone || "",
+            facilityData.serviceProvider.mailAddress || "",
+          serviceProviderPhone: facilityData.serviceProvider.phone || "",
         });
       }
     } catch (error) {

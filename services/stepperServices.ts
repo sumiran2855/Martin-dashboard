@@ -21,27 +21,109 @@ export const createProfile = async (
   throw new Error("Failed to create profile");
 };
 
-// create facility (step 2)
+// get facility 
+export const getFacility = async (token: string, IdToken: string) => {
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    console.error("❌ No userId found in localStorage.");
+    return null;
+  }
+
+  try {
+    const result = await apiRequest(
+      `get-user-facility?id=${userId}`,
+      "GET",
+      undefined,
+      token,
+      IdToken
+    );
+    console.log("🚀 ~ getFacility ~ result:", result)
+
+    if (!result || !result.success || !result.data || result.data.length === 0) {
+      console.error("❌ No valid facility data found.");
+      return null;
+    }
+
+    const facilityData = result.data[0];
+    if (!facilityData || !facilityData.id) {
+      console.error("❌ Facility ID is missing in API response.");
+      return null;
+    }
+
+    return {
+      facilityId: facilityData.id,
+      name: facilityData.name || "",
+      modelNumber: facilityData.modelNumber || "",
+      xrgiID: facilityData.xrgiID || "",
+      userID: facilityData.userID || "",
+      status: facilityData.status || "",
+      createdAt: facilityData.createdAt || "",
+      updatedAt: facilityData.updatedAt || "",
+
+      location: {
+        address: facilityData.location?.address || "",
+        postalCode: facilityData.location?.postalCode || "",
+        city: facilityData.location?.city || "",
+      },
+
+      systemCosts: {
+        vat: facilityData.SystemCostsInfo?.VAT_Deduction_Percent || "",
+        serviceCost: facilityData.SystemCostsInfo?.service_Costs || "",
+        VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
+      },
+
+      gas_Consumption: {
+        m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
+        gasType: facilityData.gas_Consumption?.xrgi_gas_type || "",
+        independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
+        dependentDKK: facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
+      },
+
+      electircity_Consumption: {
+        kWh: facilityData.electircity_Consumption?.annual_grid_consumption_kwh || "",
+        electricityIndependentDKK:
+          facilityData.electircity_Consumption?.fixed_costs_dkk || "",
+        electricityDependentDKK:
+          facilityData.electircity_Consumption?.variable_costs_dkk || "",
+      },
+
+      serviceProvider: {
+        name: facilityData.serviceProvider?.name || "",
+        mailAddress: facilityData.serviceProvider?.mailAddress || "",
+        phone: facilityData.serviceProvider?.phone || "",
+      }
+    };
+  } catch (error) {
+    console.error("❌ Error fetching facility data:", error);
+    return null;
+  }
+};
+
+// create facility
 export const createFacility = async (
   token: string,
   IdToken: string,
   payload: any
 ) => {
-  const existingFacility = await getFacility(token, IdToken);
+  try {
+    const existingFacility = await getFacility(token, IdToken);
 
-  if (existingFacility?.facilityId) {
-    const result = await apiRequest(
-      `create-facility?id=${existingFacility?.facilityId}`,
-      "POST",
-      payload,
-      token,
-      IdToken
-    );
-    if (result.success) {
-      return result.data;
+    if (existingFacility && existingFacility.facilityId) {
+      const result = await apiRequest(
+        `create-facility?id=${existingFacility.facilityId}`, 
+        "POST",
+        payload,
+        token,
+        IdToken
+      );
+
+      if (result?.success) {
+        return result.data;
+      }
+
+      throw new Error("❌ Failed to update facility");
     }
-    throw new Error("Failed to create facility");
-  } else {
+
     const result = await apiRequest(
       "create-facility",
       "POST",
@@ -50,10 +132,14 @@ export const createFacility = async (
       IdToken
     );
 
-    if (result.success) {
+    if (result?.success) {
       return result.data;
     }
-    throw new Error("Failed to create facility");
+
+    throw new Error("❌ Failed to create facility");
+  } catch (error) {
+    console.error("❌ Error in createFacility:", error);
+    return null;
   }
 };
 
@@ -117,73 +203,6 @@ export const getCustomer = async (token: string, IdToken: string) => {
   }
 };
 
-// get facility
-export const getFacility = async (token: string, IdToken: string) => {
-  const userId = localStorage.getItem("userId");
-  try {
-    const result = await apiRequest(
-      `get-user-facility?id=${userId}`,
-      "GET",
-      undefined,
-      token,
-      IdToken
-    );
-
-    if (!result || !result.success || !result.data) {
-      throw new Error("Failed to fetch facility data");
-    }
-
-    const facilityData = result.data[0];
-
-    return {
-      facilityId: facilityData.id || "",
-      name: facilityData.name || "",
-      modelNumber:facilityData.modelNumber || "",
-      xrgiID:facilityData.xrgiID || "",
-      userID: facilityData.userID || "",
-      status:facilityData.status || "",
-      createdAt: facilityData.createdAt || "",
-      updatedAt: facilityData.updatedAt || "",
-
-      location: {
-        address: facilityData.location?.address || "",
-        postalCode: facilityData.location?.postalCode || "",
-        city: facilityData.location?.city || "",
-      },
-
-      SystemCostsInfo: {
-        vat: facilityData.SystemCostsInfo?.VAT_Deduction_Percent || "",
-        serviceCost: facilityData.SystemCostsInfo?.service_Costs || "",
-        VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
-      },
-
-
-      gas_Consumption: {
-        m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
-        gasType: facilityData.gas_Consumption?.xrgi_gas_type || "",
-        independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
-        dependentDKK: facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
-      },
-
-      electircity_Consumption: {
-        kWh: facilityData.electircity_Consumption?.annual_grid_consumption_kwh || "",
-        electricityIndependentDKK:
-          facilityData.electircity_Consumption?.fixed_costs_dkk || "",
-        electricityDependentDKK:
-          facilityData.electircity_Consumption?.variable_costs_dkk || "",
-      },
-      serviceProviderInfo:{
-        name:facilityData.serviceProviderInfo.name,
-        mailAddress:facilityData.serviceProviderInfo.mailAddress,
-        phone:facilityData.serviceProviderInfo.phone
-      }
-    };
-  } catch (error) {
-    console.error("Error fetching facility data:", error);
-    return null;
-  }
-};
-
 // add facility
 export const addFacility = async (
   token: string,
@@ -231,14 +250,12 @@ export const getAllFacility = async (token: string, IdToken: string) => {
       status:facilityData.status || "",
       createdAt: facilityData.createdAt || "",
       updatedAt: facilityData.updatedAt || "",
-
       location: {
         address: facilityData.location?.address || "",
         postalCode: facilityData.location?.postalCode || "",
         city: facilityData.location?.city || "",
       },
-
-      SystemCostsInfo: {
+      systemCosts: {
         vat: facilityData.SystemCostsInfo?.VAT_Deduction_Percent || "",
         serviceCost: facilityData.SystemCostsInfo?.service_Costs || "",
         VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
@@ -250,7 +267,6 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
         dependentDKK: facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
       },
-
       electircity_Consumption: {
         kWh: facilityData.electircity_Consumption?.annual_grid_consumption_kwh || "",
         electricityIndependentDKK:
@@ -258,6 +274,11 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         electricityDependentDKK:
           facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
+      serviceProvider:{
+        name:facilityData.serviceProviderInfo.name,
+        mailAddress:facilityData.serviceProviderInfo.mailAddress,
+        phone:facilityData.serviceProviderInfo.phone
+      }
     }));
   } catch (error) {
     console.error("Error fetching facility data:", error);
