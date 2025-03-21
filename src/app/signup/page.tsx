@@ -9,6 +9,7 @@ import { countryCodes } from "@/components/dashboard/staticData/Data";
 import { signup } from "@/services/authService";
 import { InputField } from "@/components/form/InputField";
 import EmailVarification from "@/components/emailVarification";
+import { PasswordField } from "@/components/form/passwordField";
 
 export default function Signup() {
   const [error, setError] = useState("");
@@ -147,14 +148,14 @@ export default function Signup() {
                 </p>
               )}
 
-              <InputField
+              <PasswordField
                 label="Password"
                 type="password"
                 name="password"
                 formikKey="password"
                 formikProps={formik}
               />
-              <InputField
+              <PasswordField
                 label="Confirm Password"
                 type="password"
                 name="confirmPassword"

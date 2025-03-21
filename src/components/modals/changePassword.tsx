@@ -1,11 +1,49 @@
 import { change_Password } from "@/services/authService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 interface ChangePasswordProps {
   setChangePassword: (value: boolean) => void;
   changePassword: (value: boolean) => void;
 }
+
+const PasswordInput = ({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <div>
+      <label className="block text-gray-700 text-sm font-medium">{label}</label>
+      <div className="relative">
+        <input
+          type={showPassword ? "text" : "password"}
+          value={value}
+          onChange={onChange}
+          className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder={placeholder}
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+          aria-label={showPassword ? "Hide password" : "Show password"}
+        >
+          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default function ChangePassword({
   setChangePassword,
@@ -53,7 +91,7 @@ export default function ChangePassword({
       localStorage.removeItem("token");
       localStorage.removeItem("IdToken");
       setTimeout(() => {
-          router.push("/");
+        router.push("/");
       }, 3000);
     } catch (err: any) {
       setError("An error occurred. Please try again.");
@@ -72,49 +110,38 @@ export default function ChangePassword({
         </p>
 
         {error && (
-          <p className="text-red-600 text-sm text-center mt-3">{error}</p>
+          <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-red-600 text-sm text-center">{error}</p>
+          </div>
         )}
-        {success && <p className="text-green-600 text-sm text-center mt-3">{success}</p>}
+
+        {success && (
+          <div className="mt-3 p-2 bg-green-50 border border-green-200 rounded-md">
+            <p className="text-green-600 text-sm text-center">{success}</p>
+          </div>
+        )}
 
         <div className="mt-5 space-y-4">
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">
-              Old Password
-            </label>
-            <input
-              type="password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter old password"
-            />
-          </div>
+          <PasswordInput
+            label="Old Password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            placeholder="Enter old password"
+          />
 
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">
-              New Password
-            </label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter new password"
-            />
-          </div>
+          <PasswordInput
+            label="New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="Enter new password"
+          />
 
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">
-              Confirm New Password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Confirm new password"
-            />
-          </div>
+          <PasswordInput
+            label="Confirm New Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm new password"
+          />
         </div>
 
         <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 mt-6">

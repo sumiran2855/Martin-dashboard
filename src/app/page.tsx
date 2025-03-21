@@ -11,6 +11,7 @@ import { InputField } from "@/components/form/InputField";
 import { setCookie, removeCookie } from "@/utils/cookies";
 import { encryptData } from "@/utils/encryption";
 import { useRememberMe } from "@/controller/rememberMe";
+import { PasswordField } from "@/components/form/passwordField";
 
 interface LoginValues {
   email: string;
@@ -87,7 +88,7 @@ export default function Login() {
             formikKey="email"
             formikProps={formik}
           />
-          <InputField
+          <PasswordField
             label="Password"
             type="password"
             formikKey="password"

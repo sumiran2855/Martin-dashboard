@@ -6,13 +6,17 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { resendVerificationCode, resetPassword } from "@/services/authService";
 import Link from "next/link";
+import { PasswordField } from "../form/passwordField";
 
 interface ChangePasswordFormProps {
   email: string;
   onSuccess: () => void;
 }
 
-export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordFormProps) {
+export default function ChangePasswordForm({
+  email,
+  onSuccess,
+}: ChangePasswordFormProps) {
   const [error, setError] = useState("");
   const router = useRouter();
   const formik = useFormik({
@@ -31,7 +35,11 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
     onSubmit: async (values) => {
       setError("");
       try {
-        const response = await resetPassword(email, values.newPassword, values.code);
+        const response = await resetPassword(
+          email,
+          values.newPassword,
+          values.code
+        );
 
         if (!response.success) {
           setError(response.message || "Failed to reset password. Try again.");
@@ -63,7 +71,9 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
 
   return (
     <>
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Change Password</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+        Change Password
+      </h2>
       {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
       <form onSubmit={formik.handleSubmit} noValidate>
@@ -78,27 +88,20 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
           <p className="text-red-500 text-sm mb-3">{formik.errors.code}</p>
         )}
 
-        <input
+        <PasswordField
+          label="newPassword"
           type="password"
-          //   name="password"
-          placeholder="newPassword"
-          className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          {...formik.getFieldProps("newPassword")}
+          name="password"
+          formikKey="newPassword"
+          formikProps={formik}
         />
-        {formik.touched.newPassword && formik.errors.newPassword && (
-          <p className="text-red-500 text-sm mb-3">{formik.errors.newPassword}</p>
-        )}
-
-        <input
+        <PasswordField
+          label="Confirm Password"
           type="password"
-          //   name="confirmPassword"
-          placeholder="Confirm Password"
-          className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          {...formik.getFieldProps("confirmPassword")}
+          name="confirmPassword"
+          formikKey="confirmPassword"
+          formikProps={formik}
         />
-        {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-          <p className="text-red-500 text-sm mb-3">{formik.errors.confirmPassword}</p>
-        )}
 
         <button
           type="submit"
@@ -108,14 +111,14 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
           Change Password
         </button>
       </form>
-{/* need to fix */}
+      {/* need to fix */}
       <p className="text-sm text-gray-600 mt-4">
         Didn’t receive the code?{" "}
         <button
           onClick={handleResendCode}
           className="text-blue-700 font-semibold hover:underline focus:outline-none"
         >
-           Resend Code
+          Resend Code
         </button>
       </p>
     </>
