@@ -4,7 +4,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { resetPassword } from "@/services/authService";
+import { resendVerificationCode, resetPassword } from "@/services/authService";
+import Link from "next/link";
 
 interface ChangePasswordFormProps {
   email: string;
@@ -20,7 +21,7 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
       code: Yup.string()
         .min(6, "Code must be at least 6 characters")
         .required("Code is required"),
-        newPassword: Yup.string()
+      newPassword: Yup.string()
         .min(8, "Password must be at least 8 characters")
         .required("Password is required"),
       confirmPassword: Yup.string()
@@ -31,7 +32,7 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
       setError("");
       try {
         const response = await resetPassword(email, values.newPassword, values.code);
-        
+
         if (!response.success) {
           setError(response.message || "Failed to reset password. Try again.");
           return;
@@ -44,15 +45,31 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
     },
   });
 
+  // need to fix
+  const handleResendCode = async () => {
+    setError("");
+
+    try {
+      const response = await resendVerificationCode(email);
+      if (response.success) {
+        console.log("A new verification code has been sent to your email.");
+      } else {
+        setError(response.message || "Failed to resend code. Try again.");
+      }
+    } catch (err) {
+      setError("An error occurred while resending the code. Please try again.");
+    }
+  };
+
   return (
     <>
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Change Password</h2>
       {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-      
+
       <form onSubmit={formik.handleSubmit} noValidate>
         <input
           type="text"
-        //   name="code"
+          //   name="code"
           placeholder="Verification code"
           className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           {...formik.getFieldProps("code")}
@@ -63,7 +80,7 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
 
         <input
           type="password"
-        //   name="password"
+          //   name="password"
           placeholder="newPassword"
           className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           {...formik.getFieldProps("newPassword")}
@@ -74,7 +91,7 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
 
         <input
           type="password"
-        //   name="confirmPassword"
+          //   name="confirmPassword"
           placeholder="Confirm Password"
           className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           {...formik.getFieldProps("confirmPassword")}
@@ -91,6 +108,16 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
           Change Password
         </button>
       </form>
+{/* need to fix */}
+      <p className="text-sm text-gray-600 mt-4">
+        Didn’t receive the code?{" "}
+        <button
+          onClick={handleResendCode}
+          className="text-blue-700 font-semibold hover:underline focus:outline-none"
+        >
+           Resend Code
+        </button>
+      </p>
     </>
   );
 }

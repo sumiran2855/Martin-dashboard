@@ -26,6 +26,7 @@ export default function emailVarification({ email }: { email: string }) {
     setResendMessage("");
     setError("");
 
+    //change the api for reset-code for forget password
     const result = await resendVerificationCode(email);
 
     if (!result.success) {

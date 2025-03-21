@@ -51,7 +51,8 @@ export default function facilities({ facilityId }: { facilityId: string }) {
         );
 
         if (!response.success || !response.data) {
-          throw new Error("Failed to fetch facility data");
+          // throw new Error("Failed to fetch facility data");
+          return;
         }
 
         setFacility(response.data);
