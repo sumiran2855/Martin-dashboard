@@ -5,16 +5,22 @@ import BarChart from "../barChart";
 interface ValidateFormProps {
   stepTwoFormData: any;
   setStepTwoFormData: React.Dispatch<React.SetStateAction<any>>;
+  isInstalled:boolean;
+  setIsInstalled:React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function CreateFacility({
   stepTwoFormData,
   setStepTwoFormData,
+  isInstalled,
+  setIsInstalled,
 }: ValidateFormProps) {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(
     stepTwoFormData.model || ""
   );
+  // const [isInstalled, setIsInstalled] = useState(false);
+
   const [VATDeduction, setVATDeduction] = useState(
     stepTwoFormData.VATDeduction || "Yes"
   );
@@ -512,6 +518,24 @@ export default function CreateFacility({
               </span>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
+        <div className="flex items-center gap-4 ">
+          <input
+            type="checkbox"
+            id="installSystem"
+            checked={isInstalled}
+            onChange={() => setIsInstalled(!isInstalled)}
+            className="w-5 h-5 text-blue-600 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          />
+          <label
+            htmlFor="installSystem"
+            className="text-gray-800 text-sm font-medium"
+          >
+            Is your system installed?
+          </label>
         </div>
       </div>
 

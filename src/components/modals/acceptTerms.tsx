@@ -8,8 +8,6 @@ interface TermsModalProps {
   onAccept: () => void;
   isChecked: boolean;
   setIsChecked: (value: boolean) => void;
-  isInstalled: boolean;
-  setIsInstalled: (value: boolean) => void;
 }
 
 const TermsModal: React.FC<TermsModalProps> = ({
@@ -20,8 +18,6 @@ const TermsModal: React.FC<TermsModalProps> = ({
   onAccept,
   isChecked,
   setIsChecked,
-  isInstalled,
-  setIsInstalled,
 }) => {
 
   if (!isOpen) return null;
@@ -77,18 +73,6 @@ const TermsModal: React.FC<TermsModalProps> = ({
             </label>
           </div>
 
-          <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              id="installSystem"
-              checked={isInstalled}
-              onChange={() => setIsInstalled(!isInstalled)}
-              className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-            />
-            <label htmlFor="installSystem" className="text-gray-700 text-sm">
-              Install system
-            </label>
-          </div>
         </div>
 
         <div className="mt-6 flex justify-end gap-3">

@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import Modal from "../modals/modal";
 import { apiRequest } from "@/utils/apiClient";
 import GenericModal from "../modals/genericPopup";
-import TermsModal from "../modals/acceptTerms";
-import { termsText } from "./staticData/Data";
 
 interface Facility {
   facilityId?: string;
@@ -43,9 +41,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const router = useRouter();
   const [facility, setFacility] = useState<Facility | null>(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
-  const [isTermsOpen, setTermsOpen] = useState(false);
 
   useEffect(() => {
     async function fetchFacility() {
@@ -140,7 +136,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
             facility?.electircity_Consumption?.variable_costs_dkk,
         },
         isInstalled: isInstalled,
-        DaSigned: isChecked,
+        DaSigned: true,
       };
 
       const updatedFacility = await apiRequest(
@@ -637,6 +633,24 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           </div>
 
           <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
+            <div className="flex items-center gap-4 ">
+              <input
+                type="checkbox"
+                id="installSystem"
+                checked={isInstalled}
+                onChange={() => setIsInstalled(!isInstalled)}
+                className="w-5 h-5 text-blue-600 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              />
+              <label
+                htmlFor="installSystem"
+                className="text-gray-800 text-sm font-medium"
+              >
+                Is your system installed?
+              </label>
+            </div>
+          </div>
+
+          <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg text-[#082351DE] font-semibold">
                 Operation Example
@@ -694,7 +708,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
 
         <button
           className="bg-blue-500 text-white hover:bg-blue-800 px-6 py-2 rounded-md transition ml-auto block mb-10 mr-4 sm:mr-6 md:mr-12 w-full sm:w-auto"
-          onClick={() => setTermsOpen(true)}
+          onClick={() => setIsOpen(true)}
         >
           Save Changes
         </button>
@@ -714,21 +728,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           onSecondaryClick={() =>
             router.push("/dashboard/facilities/editFacilities")
           }
-        />
-
-        <TermsModal
-          isOpen={isTermsOpen}
-          onClose={() => setTermsOpen(false)}
-          title="Terms and Conditions"
-          termsContent={termsText}
-          onAccept={() => {
-            setTermsOpen(false); 
-            setIsOpen(true); 
-          }}
-          isChecked={isChecked}
-          setIsChecked={setIsChecked}
-          isInstalled={isInstalled}
-          setIsInstalled={setIsInstalled}
         />
       </div>
     </>

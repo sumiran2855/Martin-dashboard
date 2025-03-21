@@ -46,10 +46,10 @@ function AddFacility() {
     }
   };
 
-  // term and condition 
+  // term and condition
   const [isTermsOpen, setTermsOpen] = useState(false);
   const onSubmit = async () => {
-    setTermsOpen(true); 
+    setTermsOpen(true);
   };
 
   const handleAcceptTerms = async () => {
@@ -57,7 +57,7 @@ function AddFacility() {
 
     const DaSigned = isChecked;
     const installed = isInstalled;
-    
+
 
     const success = await handleCreateFacility(DaSigned,installed);
     if (success) {
@@ -247,51 +247,51 @@ function AddFacility() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
-        <div className="p-6 rounded-lg mb-6">
-          <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-            Service Provider
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <input
-                type="text"
-                name="serviceProviderName"
-                placeholder="Name of service provider"
-                className="p-3 border rounded-lg w-full"
-                value={stepTwoFormData.serviceProviderName}
-                onChange={handleChange}
-              />
-              <label className="text-gray-500 text-sm mt-1 block ml-3">
-                Enter the name of the service provider
-              </label>
-            </div>
+          <div className="p-6 rounded-lg mb-6">
+            <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+              Service Provider
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <input
+                  type="text"
+                  name="serviceProviderName"
+                  placeholder="Name of service provider"
+                  className="p-3 border rounded-lg w-full"
+                  value={stepTwoFormData.serviceProviderName}
+                  onChange={handleChange}
+                />
+                <label className="text-gray-500 text-sm mt-1 block ml-3">
+                  Enter the name of the service provider
+                </label>
+              </div>
 
-            <div>
-              <input
-                type="text"
-                name="serviceProviderMail"
-                placeholder="Email Address"
-                className="p-3 border rounded-lg w-full"
-                value={stepTwoFormData.serviceProviderMail}
-                onChange={handleChange}
-              />
-            </div>
+              <div>
+                <input
+                  type="text"
+                  name="serviceProviderMail"
+                  placeholder="Email Address"
+                  className="p-3 border rounded-lg w-full"
+                  value={stepTwoFormData.serviceProviderMail}
+                  onChange={handleChange}
+                />
+              </div>
 
-            <div className="md:col-span-1">
-              <input
-                type="text"
-                name="serviceProviderPhone"
-                placeholder="Phone Number"
-                className="p-3 border rounded-lg w-full"
-                value={stepTwoFormData.serviceProviderPhone}
-                onChange={handleChange}
-              />
+              <div className="md:col-span-1">
+                <input
+                  type="text"
+                  name="serviceProviderPhone"
+                  placeholder="Phone Number"
+                  className="p-3 border rounded-lg w-full"
+                  value={stepTwoFormData.serviceProviderPhone}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
         <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
           <div className=" p-6 rounded-lg mb-6">
@@ -553,6 +553,24 @@ function AddFacility() {
         </div>
 
         <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
+          <div className="flex items-center gap-4 ">
+            <input
+              type="checkbox"
+              id="installSystem"
+              checked={isInstalled}
+              onChange={() => setIsInstalled(!isInstalled)}
+              className="w-5 h-5 text-blue-600 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            />
+            <label
+              htmlFor="installSystem"
+              className="text-gray-800 text-sm font-medium"
+            >
+              Is your system installed?
+            </label>
+          </div>
+        </div>
+
+        <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg text-[#082351DE] font-semibold">
               Operation Example
@@ -625,8 +643,6 @@ function AddFacility() {
         onAccept={handleAcceptTerms}
         isChecked={isChecked}
         setIsChecked={setIsChecked}
-        isInstalled={isInstalled}
-        setIsInstalled={setIsInstalled}
       />
     </div>
   );

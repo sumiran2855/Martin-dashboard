@@ -380,6 +380,8 @@ function Dashboard() {
                 <CreateFacility
                   stepTwoFormData={stepTwoFormData}
                   setStepTwoFormData={setStepTwoFormData}
+                  isInstalled={isInstalled}
+                  setIsInstalled={setIsInstalled}
                 />
               )}
               {step === 3 && (
@@ -410,8 +412,6 @@ function Dashboard() {
         onAccept={handleAcceptTerms}
         isChecked={isChecked}
         setIsChecked={setIsChecked}
-        isInstalled={isInstalled}
-        setIsInstalled={setIsInstalled}
       />
     </div>
   );
