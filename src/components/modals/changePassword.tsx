@@ -4,7 +4,6 @@ import { useState } from "react";
 
 interface ChangePasswordProps {
   setChangePassword: (value: boolean) => void;
-  changePassword: (value: boolean) => void;
 }
 
 export default function ChangePassword({
