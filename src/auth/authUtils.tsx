@@ -1,11 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { decodeAccessToken } from "@/utils/encryption";
 
-export default function withAuth(Component: React.FC) {
+const restrictedForAdmin = [
+  "/createProfile",
+  "/dashboard",
+  "/dashboard/addFacility",
+  "/dashboard/facility",
+  "/dashboard/editFacility",
+];
+
+export default function withAuth(
+  Component: React.FC,
+  requiresAdmin: boolean = false
+) {
   return function ProtectedRoute(props: any) {
     const router = useRouter();
+    const pathname = usePathname();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
@@ -13,6 +26,25 @@ export default function withAuth(Component: React.FC) {
 
       if (!token) {
         router.replace("/");
+        return;
+      }
+
+      const decodedToken = decodeAccessToken(token);
+
+      // Redirect admin if accessing a restricted page
+      if (
+        decodedToken?.["cognito:groups"]?.includes("ServiceTechnician") &&
+        restrictedForAdmin.includes(pathname)
+      ) {
+        router.replace("/admin");
+        return;
+      }
+
+      if (
+        requiresAdmin &&
+        !decodedToken?.["cognito:groups"]?.includes("ServiceTechnician")
+      ) {
+        router.replace("/dashboard");
         return;
       }
 

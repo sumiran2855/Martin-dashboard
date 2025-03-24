@@ -284,3 +284,45 @@ export const getAllFacility = async (token: string, IdToken: string) => {
     return [];
   }
 };
+
+
+export const getAllCustomers = async (token: string, IdToken: string) => {
+  try {
+    const result = await apiRequest(
+      "customers",
+      "GET",
+      undefined,
+      token,
+      IdToken
+    );
+
+
+    if (!result || !result.success || !Array.isArray(result.data)) {
+      throw new Error("Failed to fetch customer data");
+    }
+
+    return result.data.map((customer) => {
+      const { companyInfo, contactPerson, email, phone_number, name } = customer;
+      return {
+        companyName: companyInfo?.name || "",
+        cvrNumber: companyInfo?.cvr_number || "",
+        address: companyInfo?.address || "",
+        postal_code: companyInfo?.postal_code || "",
+        city: companyInfo?.city || "",
+        email: companyInfo?.email || email || "",
+        countryCode: phone_number?.slice(0, 3) || "",
+        phone: companyInfo?.phone || contactPerson?.phone || phone_number || "",
+        firstName: contactPerson?.firstName || "",
+        lastName: contactPerson?.lastName || "",
+        personalPhone: contactPerson?.personalPhone || "",
+        personalEmail: contactPerson?.personalEmail || "",
+        status: companyInfo?.status || "Inactive",
+        name: name || "",
+        email_verified: customer.email_verified || false,
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching customer data:", error);
+    return [];
+  }
+};

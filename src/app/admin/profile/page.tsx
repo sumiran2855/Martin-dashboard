@@ -16,4 +16,4 @@ function profile() {
   );
 }
 
-export default withAuth(profile);
+export default withAuth(profile,true);

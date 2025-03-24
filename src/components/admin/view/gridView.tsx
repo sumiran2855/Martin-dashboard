@@ -4,13 +4,13 @@ interface Users {
   userId?: number;
   companyName?: string;
   cvrNumber?: string;
-  status?: "Active" | "Inactive";
+  status?: string;
 }
 
 export default function GridView({ users }: { users: Users[] }) {
   const router = useRouter();
 
-  const inactiveUsers = users.filter((user) => user.status === "Inactive");
+  const inactiveUsers = users.filter((user) => user.status !== "Active");
   const activeUsers = users.filter((user) => user.status === "Active");
 
   return (

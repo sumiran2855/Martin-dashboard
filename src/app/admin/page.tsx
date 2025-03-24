@@ -16,4 +16,4 @@ function AdminDashboard() {
   );
 }
 
-export default withAuth(AdminDashboard);
+export default withAuth(AdminDashboard,true);

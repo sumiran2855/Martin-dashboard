@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import GridView from "@/components/admin/view/gridView";
 import ListView from "@/components/admin/view/listView";
 import { useRouter } from "next/navigation";
-import { getCustomer } from "@/services/stepperServices";
+import { getAllCustomers } from "@/services/stepperServices";
 
 const statusOptions = ["All", "Active", "Inactive"];
 
@@ -32,17 +32,24 @@ export default function MainContent() {
       setLoading(true);
       const token = localStorage.getItem("token");
       const IdToken = localStorage.getItem("IdToken");
+      const loggedInUserId = localStorage.getItem("userId");
 
       if (token && IdToken) {
         try {
-          const customer = await getCustomer(token, IdToken);
-          if (customer) {
-            setCustomerData([customer]);
+          const customers = await getAllCustomers(token, IdToken);
+
+          if (customers && Array.isArray(customers)) {
+            const filteredCustomers = customers.filter(
+              (user) => user.userId !== loggedInUserId
+            );
+            setCustomerData(filteredCustomers);
           } else {
             console.error("Failed to fetch customer data");
+            setCustomerData([]);
           }
         } catch (error) {
-          console.error("Error fetching customer", error);
+          console.error("Error fetching customers", error);
+          setCustomerData([]);
         } finally {
           setLoading(false);
         }
@@ -78,7 +85,7 @@ export default function MainContent() {
         <div className="flex-1 overflow-auto">
           <div className="p-8">
             <h1 className="text-2xl font-medium text-gray-800 mb-2">
-              All USERS
+              All Users
             </h1>
             <p className="text-gray-600 mb-6">
               This section provides an overview of all users on your platform.

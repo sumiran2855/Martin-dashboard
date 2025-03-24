@@ -11,6 +11,7 @@ import { InputField } from "@/components/form/InputField";
 import { setCookie, removeCookie } from "@/utils/cookies";
 import { encryptData } from "@/utils/encryption";
 import { useRememberMe } from "@/controller/rememberMe";
+import { decodeAccessToken } from "@/utils/encryption";
 
 interface LoginValues {
   email: string;
@@ -62,9 +63,15 @@ export default function Login() {
         removeCookie("rememberedPassword");
       }
 
-      router.push(
-        journeyStatus === "completed" ? "/dashboard" : "/createProfile"
-      );
+      const accessToken = result.data.tokens.accessToken;
+      const decodedToken = decodeAccessToken(accessToken);
+      if (decodedToken?.["cognito:groups"]?.includes("ServiceTechnician")) {
+        router.push("/admin");
+      } else {
+        router.push(
+          journeyStatus === "completed" ? "/dashboard" : "/createProfile"
+        );
+      }
     },
   });
 
