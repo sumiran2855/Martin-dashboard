@@ -5,8 +5,8 @@ import BarChart from "../barChart";
 interface ValidateFormProps {
   stepTwoFormData: any;
   setStepTwoFormData: React.Dispatch<React.SetStateAction<any>>;
-  isInstalled:boolean;
-  setIsInstalled:React.Dispatch<React.SetStateAction<any>>;
+  isInstalled: boolean;
+  setIsInstalled: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function CreateFacility({
@@ -19,7 +19,7 @@ export default function CreateFacility({
   const [selectedModel, setSelectedModel] = useState(
     stepTwoFormData.model || ""
   );
-  // const [isInstalled, setIsInstalled] = useState(false);
+  const [hasServiceProvider, setHasServiceProvider] = useState(false);
 
   const [VATDeduction, setVATDeduction] = useState(
     stepTwoFormData.VATDeduction || "Yes"
@@ -27,6 +27,10 @@ export default function CreateFacility({
   const [selectGasType, setSelectGasType] = useState(
     stepTwoFormData.gasType || ""
   );
+
+  const handleRadioChange = () => {
+    setHasServiceProvider((prev) => !prev);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -219,48 +223,67 @@ export default function CreateFacility({
       </div>
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
-        <div className="p-6 rounded-lg mb-6">
-          <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-            Service Provider
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <input
-                type="text"
-                name="serviceProviderName"
-                placeholder="Name of service provider"
-                className="p-3 border rounded-lg w-full"
-                value={stepTwoFormData.serviceProviderName}
-                onChange={handleChange}
-              />
-              <label className="text-gray-500 text-sm mt-1 block ml-3">
-                Enter the name of the service provider
-              </label>
-            </div>
+        <div className="flex items-center space-x-3 py-4">
+          <input
+            type="checkbox"
+            id="serviceProvider"
+            name="serviceProvider"
+            checked={hasServiceProvider}
+            onChange={handleRadioChange}
+            className="w-5 h-5 cursor-pointer"
+          />
+          <label
+            htmlFor="serviceProvider"
+            className="text-[#082351DE] text-lg font-semibold"
+          >
+            I want to add my service provider
+          </label>
+        </div>
 
-            <div>
-              <input
-                type="text"
-                name="serviceProviderMail"
-                placeholder="Email Address"
-                className="p-3 border rounded-lg w-full"
-                value={stepTwoFormData.serviceProviderMail}
-                onChange={handleChange}
-              />
-            </div>
+        {hasServiceProvider && (
+          <div className="p-6 rounded-lg mb-6">
+            <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+              Service Provider
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <input
+                  type="text"
+                  name="serviceProviderName"
+                  placeholder="Name of service provider"
+                  className="p-3 border rounded-lg w-full"
+                  value={stepTwoFormData.serviceProviderName}
+                  onChange={handleChange}
+                />
+                <label className="text-gray-500 text-sm mt-1 block ml-3">
+                  Enter the name of the service provider
+                </label>
+              </div>
 
-            <div className="md:col-span-1">
-              <input
-                type="text"
-                name="serviceProviderPhone"
-                placeholder="Phone Number"
-                className="p-3 border rounded-lg w-full"
-                value={stepTwoFormData.serviceProviderPhone}
-                onChange={handleChange}
-              />
+              <div>
+                <input
+                  type="text"
+                  name="serviceProviderMail"
+                  placeholder="Email Address"
+                  className="p-3 border rounded-lg w-full"
+                  value={stepTwoFormData.serviceProviderMail}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="md:col-span-1">
+                <input
+                  type="text"
+                  name="serviceProviderPhone"
+                  placeholder="Phone Number"
+                  className="p-3 border rounded-lg w-full"
+                  value={stepTwoFormData.serviceProviderPhone}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
