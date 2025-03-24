@@ -192,7 +192,7 @@ export const getCustomer = async (token: string, IdToken: string) => {
       lastName: contactPerson?.lastName || "",
       personalPhone: contactPerson?.personalPhone || "",
       personalEmail: contactPerson?.personalEmail || "",
-
+      status:companyInfo?.status || "Active",
       name: name || "",
       email_verified: result.data.email_verified || false,
     };
