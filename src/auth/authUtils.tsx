@@ -8,8 +8,8 @@ const restrictedForAdmin = [
   "/createProfile",
   "/dashboard",
   "/dashboard/addFacility",
-  "/dashboard/facility",
-  "/dashboard/editFacility",
+  "/dashboard/facilities/editFacilities",
+  "/profile",
 ];
 
 export default function withAuth(
