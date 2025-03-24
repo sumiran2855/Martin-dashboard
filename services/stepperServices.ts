@@ -304,6 +304,7 @@ export const getAllCustomers = async (token: string, IdToken: string) => {
     return result.data.map((customer) => {
       const { companyInfo, contactPerson, email, phone_number, name } = customer;
       return {
+        id:customer.id || "",
         companyName: companyInfo?.name || "",
         cvrNumber: companyInfo?.cvr_number || "",
         address: companyInfo?.address || "",

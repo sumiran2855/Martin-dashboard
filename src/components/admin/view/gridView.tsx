@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 
 interface Users {
-  userId?: number;
+  id?: number;
   companyName?: string;
   cvrNumber?: string;
   status?: string;
@@ -23,7 +23,7 @@ export default function GridView({ users }: { users: Users[] }) {
               <div
                 key={index}
                 className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
-                onClick={() => router.push(`/admin/user/${user.userId}`)}
+                onClick={() => router.push(`/admin/user/${user.id}`)}
               >
                 <div>
                   <h3 className="text-gray-800 text-sm font-semibold">
@@ -54,7 +54,7 @@ export default function GridView({ users }: { users: Users[] }) {
               <div
                 key={index}
                 className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
-                onClick={() => router.push(`/admin/user/${user.userId}`)}
+                onClick={() => router.push(`/admin/user/${user.id}`)}
               >
                 <div>
                   <h3 className="text-gray-800 text-sm font-semibold">

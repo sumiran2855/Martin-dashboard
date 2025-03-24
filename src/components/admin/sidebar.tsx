@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { getProfile } from "@/controller/companyProfile/createProfile";
 
-export default function AdminSidebar({ facilityId }: { facilityId: string }) {
+export default function AdminSidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 

@@ -40,7 +40,7 @@ export default function MainContent() {
 
           if (customers && Array.isArray(customers)) {
             const filteredCustomers = customers.filter(
-              (user) => user.userId !== loggedInUserId
+              (user) => user.id !== loggedInUserId
             );
             setCustomerData(filteredCustomers);
           } else {
