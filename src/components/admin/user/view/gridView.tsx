@@ -31,7 +31,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                   key={index}
                   className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
                   onClick={() =>
-                    router.push(`/dashboard/facilities/${facility.facilityId}`)
+                    router.push(`/admin/user/plantDetail/${facility.facilityId}`)
                   }
                 >
                   <div>
@@ -81,7 +81,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                   key={index}
                   className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
                   onClick={() =>
-                    router.push(`/dashboard/facilities/${facility.facilityId}`)
+                    router.push(`/admin/user/plantDetail/${facility.facilityId}`)
                   }
                 >
                   <div>

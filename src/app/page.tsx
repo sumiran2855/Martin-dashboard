@@ -11,6 +11,9 @@ import { InputField } from "@/components/form/InputField";
 import { setCookie, removeCookie } from "@/utils/cookies";
 import { encryptData } from "@/utils/encryption";
 import { useRememberMe } from "@/controller/rememberMe";
+import { decodeAccessToken } from "@/utils/encryption";
+import Modal from "@/components/modals/modal";
+import EmailVarification from "@/components/emailVarification";
 import { PasswordField } from "@/components/form/passwordField";
 
 interface LoginValues {
@@ -22,6 +25,9 @@ interface LoginValues {
 export default function Login() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isVerificationStep, setIsVerificationStep] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState("");
   const router = useRouter();
 
   const validationSchema = Yup.object({
@@ -47,6 +53,14 @@ export default function Login() {
 
       const result = await login(values.email, values.password);
       if (!result.success) {
+        if (
+          result.message ===
+          "User is not confirmed. Please verify your account."
+        ) {
+          setUnverifiedEmail(values.email);
+          setIsOpen(true);
+          return;
+        }
         setError(result.message || "Invalid email or password.");
         return;
       }
@@ -63,9 +77,15 @@ export default function Login() {
         removeCookie("rememberedPassword");
       }
 
-      router.push(
-        journeyStatus === "completed" ? "/dashboard" : "/createProfile"
-      );
+      const accessToken = result.data.tokens.accessToken;
+      const decodedToken = decodeAccessToken(accessToken);
+      if (decodedToken?.["cognito:groups"]?.includes("ServiceTechnician")) {
+        router.push("/admin");
+      } else {
+        router.push(
+          journeyStatus === "completed" ? "/dashboard" : "/createProfile"
+        );
+      }
     },
   });
 
@@ -74,65 +94,71 @@ export default function Login() {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="w-full md:w-1/3 flex flex-col justify-center px-6 md:px-12 bg-white">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Login</h2>
+        {!isVerificationStep ? (
+          <>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Login</h2>
 
-        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-        {successMessage && (
-          <p className="text-green-600 text-sm mb-3">{successMessage}</p>
+            {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+            {successMessage && (
+              <p className="text-green-600 text-sm mb-3">{successMessage}</p>
+            )}
+
+            <form onSubmit={formik.handleSubmit} noValidate>
+              <InputField
+                label="Email"
+                type="email"
+                formikKey="email"
+                formikProps={formik}
+              />
+              <PasswordField
+                label="Password"
+                type="password"
+                formikKey="password"
+                formikProps={formik}
+              />
+
+              <div className="flex items-center justify-between text-sm mb-6">
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    checked={formik.values.rememberMe}
+                    onChange={(e) =>
+                      formik.setFieldValue("rememberMe", e.target.checked)
+                    }
+                    type="checkbox"
+                    className="mr-2"
+                  />{" "}
+                  Remember me
+                </label>
+                <Link
+                  href="/forgetPassword"
+                  className="text-blue-600 hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer"
+                disabled={!formik.isValid || formik.isSubmitting}
+              >
+                Login
+              </button>
+            </form>
+
+            <p className="text-sm text-gray-600 mt-4">
+              Don't have an account?{" "}
+              <Link
+                href="/signup"
+                className="text-blue-700 font-semibold hover:underline"
+              >
+                Create an account
+              </Link>
+            </p>
+          </>
+        ) : (
+          <EmailVarification email={unverifiedEmail} />
         )}
-
-        <form onSubmit={formik.handleSubmit} noValidate>
-          <InputField
-            label="Email"
-            type="email"
-            formikKey="email"
-            formikProps={formik}
-          />
-          <PasswordField
-            label="Password"
-            type="password"
-            formikKey="password"
-            formikProps={formik}
-          />
-
-          <div className="flex items-center justify-between text-sm mb-6">
-            <label className="flex items-center cursor-pointer">
-              <input
-                checked={formik.values.rememberMe}
-                onChange={(e) =>
-                  formik.setFieldValue("rememberMe", e.target.checked)
-                }
-                type="checkbox"
-                className="mr-2"
-              />{" "}
-              Remember me
-            </label>
-            <Link
-              href="/forgetPassword"
-              className="text-blue-600 hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer"
-            disabled={!formik.isValid || formik.isSubmitting}
-          >
-            Login
-          </button>
-        </form>
-
-        <p className="text-sm text-gray-600 mt-4">
-          Don't have an account?{" "}
-          <Link
-            href="/signup"
-            className="text-blue-700 font-semibold hover:underline"
-          >
-            Create an account
-          </Link>
-        </p>
       </div>
 
       <div className="hidden md:flex w-2/3 items-center justify-center bg-gray-100 relative">
@@ -146,6 +172,15 @@ export default function Login() {
           />
         </div>
       </div>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Verify Your Email"
+        message="Your account is not verified. Please verify your email to continue."
+        primaryButton="Verify email"
+        onPrimaryClick={() => setIsVerificationStep(true)}
+      />
     </div>
   );
 }

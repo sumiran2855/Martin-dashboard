@@ -1,5 +1,10 @@
 import CryptoJS from "crypto-js";
+import { jwtDecode } from "jwt-decode";
 
+interface DecodedToken {
+  scope?: string;
+  [key: string]: any;
+}
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "";
 
 export const encryptData = (data: string): string => {
@@ -12,5 +17,14 @@ export const decryptData = (cipherText: string): string => {
   } catch (err) {
     console.error("Error decrypting data:", err);
     return "";
+  }
+};
+
+export const decodeAccessToken = (token: string): DecodedToken | null => {
+  try {
+    return jwtDecode<DecodedToken>(token);
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return null;
   }
 };

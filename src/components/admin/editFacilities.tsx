@@ -34,9 +34,14 @@ interface Facility {
     fixed_costs_dkk: string;
     variable_costs_dkk: string;
   };
+  isInstalled:boolean;
 }
 
-export default function EditFacilities({ facilityId }: { facilityId: string }) {
+export default function EditFacilities({
+  facilityId,
+}: {
+  facilityId: string[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [facility, setFacility] = useState<Facility | null>(null);
@@ -148,7 +153,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         IdToken
       );
       if (updatedFacility) {
-        router.push(`/dashboard/facilities/${facilityId}`);
+        router.push(`/admin/user/plantDetail/${facilityId}`);
       } else {
         throw new Error(" Failed to update facility");
       }
@@ -163,7 +168,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         <div className=" px-6 py-4">
           <div className="flex flex-col">
             <Link
-              href={`/dashboard/facilities/${facilityId}`}
+              href={`/admin/user/plantDetail/${facilityId}`}
               className="flex items-center gap-2 text-lg font-medium text-blue-600 no-underline transition-all duration-200 hover:text-blue-800 mb-4"
             >
               <div className="p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition">

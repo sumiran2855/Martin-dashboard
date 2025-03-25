@@ -4,7 +4,7 @@ import Modal from "../modals/modal";
 import ChangePassword from "../modals/changePassword";
 import { createProfile } from "@/services/stepperServices";
 import { getProfile } from "@/controller/companyProfile/createProfile";
-import { countryCodes } from "./staticData/Data";
+import { countryCodes } from "@/components/dashboard/staticData/Data";
 
 export default function profileDetail() {
   const [isOpen, setIsOpen] = useState(false);
@@ -256,7 +256,7 @@ export default function profileDetail() {
             primaryButton="Save"
             onPrimaryClick={updateProfile}
             secondaryButton="Discard"
-            onSecondaryClick={() => router.push("/profile")}
+            onSecondaryClick={() => router.push("/admin/profile")}
           />
 
           {changePassword && (

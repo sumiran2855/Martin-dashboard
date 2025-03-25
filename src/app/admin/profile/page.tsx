@@ -1,21 +1,19 @@
 "use client";
-
-import AddFacility from "@/components/dashboard/AddFacility";
-import AdminSidebar from "@/components/dashboard/Sidebar";
 import withAuth from "@/auth/authUtils";
+import Sidebar from "@/components/admin/sidebar";
+import ProfileDetail from "@/components/admin/profileDetail";
 import { useParams } from "next/navigation";
-
-function addFacility() {
+function profile() {
   const params = useParams();
   const facilityId = Array.isArray(params.facilityId)
     ? params.facilityId[0]
     : params.facilityId || "";
   return (
     <div className="flex h-screen bg-gray-50">
-      <AdminSidebar facilityId={facilityId} />
-      <AddFacility />
+      <Sidebar facilityId={facilityId} />
+      <ProfileDetail />
     </div>
   );
 }
 
-export default withAuth(addFacility);
+export default withAuth(profile,true);
