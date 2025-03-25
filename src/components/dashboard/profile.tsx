@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Modal from "../modals/modal";
 import ChangePassword from "../modals/changePassword";
-import { createProfile, getCustomer } from "@/services/stepperServices";
+import { createProfile } from "@/services/stepperServices";
 import { getProfile } from "@/controller/companyProfile/createProfile";
 import { countryCodes } from "./staticData/Data";
 

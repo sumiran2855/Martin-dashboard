@@ -285,7 +285,7 @@ export const getAllFacility = async (token: string, IdToken: string) => {
   }
 };
 
-
+// get all customer
 export const getAllCustomers = async (token: string, IdToken: string) => {
   try {
     const result = await apiRequest(
@@ -317,13 +317,75 @@ export const getAllCustomers = async (token: string, IdToken: string) => {
         lastName: contactPerson?.lastName || "",
         personalPhone: contactPerson?.personalPhone || "",
         personalEmail: contactPerson?.personalEmail || "",
-        status: companyInfo?.status || "Inactive",
+        status: customer.email_verified ? "Active" : "Inactive",
         name: name || "",
         email_verified: customer.email_verified || false,
       };
     });
   } catch (error) {
     console.error("Error fetching customer data:", error);
+    return [];
+  }
+};
+
+// get all user facility
+export const getAllUserFacility = async (token: string, IdToken: string,userId:string) => {
+
+  try {
+    const result = await apiRequest(
+      `get-user-facility?id=${userId}`,
+      "GET",
+      undefined,
+      token,
+      IdToken
+    );
+
+    if (!result || !result.success || !result.data) {
+      throw new Error("No facility data available");
+    }
+
+
+    return result.data.map((facilityData: any) => ({
+      facilityId: facilityData.id || "",
+      name: facilityData.name || "",
+      modelNumber:facilityData.modelNumber || "",
+      xrgiID:facilityData.xrgiID || "",
+      userID: facilityData.userID || "",
+      status:facilityData.status || "",
+      createdAt: facilityData.createdAt || "",
+      updatedAt: facilityData.updatedAt || "",
+      location: {
+        address: facilityData.location?.address || "",
+        postalCode: facilityData.location?.postalCode || "",
+        city: facilityData.location?.city || "",
+      },
+      systemCosts: {
+        vat: facilityData.systemCosts?.VAT_Deduction_Percent || "",
+        serviceCost: facilityData.systemCosts?.service_Costs || "",
+        VATDeduction: facilityData.systemCosts?.VAT_Deduction || "",
+      },
+
+      gas_Consumption: {
+        m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
+        gasType: facilityData.gas_Consumption?.xrgi_gas_type || "",
+        independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
+        dependentDKK: facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
+      },
+      electircity_Consumption: {
+        kWh: facilityData.electircity_Consumption?.annual_grid_consumption_kwh || "",
+        electricityIndependentDKK:
+          facilityData.electircity_Consumption?.fixed_costs_dkk || "",
+        electricityDependentDKK:
+          facilityData.electircity_Consumption?.variable_costs_dkk || "",
+      },
+      serviceProvider:{
+        name:facilityData.serviceProvider.name,
+        mailAddress:facilityData.serviceProvider.mailAddress,
+        phone:facilityData.serviceProvider.phone
+      }
+    }));
+  } catch (error) {
+    console.error("Error fetching facility data:", error);
     return [];
   }
 };

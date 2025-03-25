@@ -8,7 +8,7 @@ const restrictedForAdmin = [
   "/createProfile",
   "/dashboard",
   "/dashboard/addFacility",
-  "/dashboard/facilities/editFacilities",
+  "/dashboard/facilities/editFacilities/",
   "/profile",
 ];
 
@@ -31,10 +31,16 @@ export default function withAuth(
 
       const decodedToken = decodeAccessToken(token);
 
+      const isRestrictedPath = restrictedForAdmin.some(
+        (restricted) =>
+          pathname.startsWith(restricted) ||
+          pathname.startsWith("/dashboard/facilities/editFacilities/")
+      );
+
       // Redirect admin if accessing a restricted page
       if (
         decodedToken?.["cognito:groups"]?.includes("ServiceTechnician") &&
-        restrictedForAdmin.includes(pathname)
+        isRestrictedPath
       ) {
         router.replace("/admin");
         return;

@@ -1,10 +1,16 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { getProfile } from "@/controller/companyProfile/createProfile";
+interface User {
+  userId: string[];
+}
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ userId = [] }: User) {
+  const params = useParams();
+  const facilityId = params.facilityId || "";
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
@@ -31,6 +37,9 @@ export default function AdminSidebar() {
               className={`flex items-center p-3 rounded-md no-underline ${
                 [
                   "/admin",
+                  `/admin/user/${userId}`,
+                  `/admin/user/plantDetail/${facilityId}`,
+                  `/admin/user/editFacilities/${facilityId}`
                 ].includes(pathname)
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
@@ -41,6 +50,9 @@ export default function AdminSidebar() {
                   className={`w-6 h-6 ${
                     [
                       "/admin",
+                      `/admin/user/${userId}`,
+                      `/admin/user/plantDetail/${facilityId}`,
+                      `/admin/user/editFacilities/${facilityId}`
                     ].includes(pathname)
                       ? "text-yellow-400"
                       : "text-gray-600"

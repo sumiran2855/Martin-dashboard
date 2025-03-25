@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { resendVerificationCode, resetPassword } from "@/services/authService";
+import { forget_Password, resetPassword } from "@/services/authService";
 import Link from "next/link";
 
 interface ChangePasswordFormProps {
@@ -50,7 +50,7 @@ export default function ChangePasswordForm({ email, onSuccess }: ChangePasswordF
     setError("");
 
     try {
-      const response = await resendVerificationCode(email);
+      const response = await forget_Password(email);
       if (response.success) {
         console.log("A new verification code has been sent to your email.");
       } else {
