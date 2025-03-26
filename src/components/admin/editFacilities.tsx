@@ -34,15 +34,19 @@ interface Facility {
     fixed_costs_dkk: string;
     variable_costs_dkk: string;
   };
+  isInstalled:boolean;
 }
 
-export default function EditFacilities({ facilityId }: { facilityId: string }) {
+export default function EditFacilities({
+  facilityId,
+}: {
+  facilityId: string[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [facility, setFacility] = useState<Facility | null>(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
-  const [hasServiceProvider, setHasServiceProvider] = useState(false);
 
   useEffect(() => {
     async function fetchFacility() {
@@ -70,10 +74,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
       fetchFacility();
     }
   }, [facilityId]);
-
-  const handleRadioChange = () => {
-    setHasServiceProvider((prev) => !prev);
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -153,7 +153,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         IdToken
       );
       if (updatedFacility) {
-        router.push(`/dashboard/facilities/${facilityId}`);
+        router.push(`/admin/user/plantDetail/${facilityId}`);
       } else {
         throw new Error(" Failed to update facility");
       }
@@ -168,7 +168,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         <div className=" px-6 py-4">
           <div className="flex flex-col">
             <Link
-              href={`/dashboard/facilities/${facilityId}`}
+              href={`/admin/user/plantDetail/${facilityId}`}
               className="flex items-center gap-2 text-lg font-medium text-blue-600 no-underline transition-all duration-200 hover:text-blue-800 mb-4"
             >
               <div className="p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition">
@@ -446,67 +446,48 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           </div>
 
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
-            <div className="flex items-center space-x-3 py-4">
-              <input
-                type="checkbox"
-                id="serviceProvider"
-                name="serviceProvider"
-                checked={hasServiceProvider}
-                onChange={handleRadioChange}
-                className="w-5 h-5 cursor-pointer"
-              />
-              <label
-                htmlFor="serviceProvider"
-                className="text-[#082351DE] text-lg font-semibold"
-              >
-                I want to add my service provider
-              </label>
-            </div>
+            <div className="p-6 rounded-lg mb-6">
+              <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                Service Provider
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <input
+                    type="text"
+                    name="serviceProvider.name"
+                    placeholder="Name of service provider"
+                    className="p-3 border rounded-lg w-full"
+                    value={facility?.serviceProvider?.name ?? ""}
+                    onChange={handleChange}
+                  />
+                  <label className="text-gray-500 text-sm mt-1 block ml-3">
+                    Enter the name of the service provider
+                  </label>
+                </div>
 
-            {hasServiceProvider && (
-              <div className="p-6 rounded-lg mb-6">
-                <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                  Service Provider
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <input
-                      type="text"
-                      name="serviceProvider.name"
-                      placeholder="Name of service provider"
-                      className="p-3 border rounded-lg w-full"
-                      value={facility?.serviceProvider?.name ?? ""}
-                      onChange={handleChange}
-                    />
-                    <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      Enter the name of the service provider
-                    </label>
-                  </div>
+                <div>
+                  <input
+                    type="text"
+                    name="serviceProvider.mailAddress"
+                    placeholder="Email Address"
+                    className="p-3 border rounded-lg w-full"
+                    value={facility?.serviceProvider?.mailAddress ?? ""}
+                    onChange={handleChange}
+                  />
+                </div>
 
-                  <div>
-                    <input
-                      type="text"
-                      name="serviceProvider.mailAddress"
-                      placeholder="Email Address"
-                      className="p-3 border rounded-lg w-full"
-                      value={facility?.serviceProvider?.mailAddress ?? ""}
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  <div className="md:col-span-1">
-                    <input
-                      type="text"
-                      name="serviceProvider.mailAddress"
-                      placeholder="Phone Number"
-                      className="p-3 border rounded-lg w-full"
-                      value={facility?.serviceProvider?.mailAddress ?? ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                <div className="md:col-span-1">
+                  <input
+                    type="text"
+                    name="serviceProvider.phone"
+                    placeholder="Phone Number"
+                    className="p-3 border rounded-lg w-full"
+                    value={facility?.serviceProvider?.phone}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
