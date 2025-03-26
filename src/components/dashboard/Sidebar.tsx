@@ -62,13 +62,15 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
 
             <Link
               href="/usage"
-              className={`flex items-center p-3 rounded-md no-underline ${
+              aria-disabled="true"
+              onClick={(e) => e.preventDefault()}
+              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
                 pathname === "/usage"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
               }`}
             >
-              <div className="w-6 h-6 mr-3 flex items-center justify-center">
+              <div className="w-6 h-6 mr-3 flex items-center justify-center ">
                 <svg
                   className={`w-6 h-6 ${
                     pathname === "/usage" ? "text-yellow-400" : "text-gray-600"
@@ -86,7 +88,9 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
 
             <Link
               href="/subscription"
-              className={`flex items-center p-3 rounded-md no-underline ${
+              aria-disabled="true"
+              onClick={(e) => e.preventDefault()}
+              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
                 pathname === "/subscription"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
@@ -113,7 +117,9 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
 
             <Link
               href="/service"
-              className={`flex items-center p-3 rounded-md no-underline ${
+              aria-disabled="true"
+              onClick={(e) => e.preventDefault()}
+              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
                 pathname === "/service"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
@@ -148,7 +154,9 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
           <div className="space-y-1">
             <Link
               href="/setting"
-              className={`flex items-center p-3 rounded-md no-underline ${
+              aria-disabled="true"
+              onClick={(e) => e.preventDefault()}
+              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
                 pathname === "/setting"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
@@ -175,7 +183,9 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
 
             <Link
               href="/help"
-              className={`flex items-center p-3 rounded-md no-underline ${
+              aria-disabled="true"
+              onClick={(e) => e.preventDefault()}
+              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
                 pathname === "/help"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
