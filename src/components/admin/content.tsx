@@ -67,7 +67,7 @@ export default function MainContent() {
       (user) => selectedStatus === "All" || user.status === selectedStatus
     )
     .filter((user) =>
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      user.companyName?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   return (

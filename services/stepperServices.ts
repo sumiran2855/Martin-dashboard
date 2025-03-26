@@ -393,9 +393,9 @@ export const getAllUserFacility = async (token: string, IdToken: string,userId:s
           facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
       serviceProvider: {
-        name: facilityData.serviceProvider.name,
-        mailAddress: facilityData.serviceProvider.mailAddress,
-        phone: facilityData.serviceProvider.phone,
+        name: facilityData?.serviceProvider?.name,
+        mailAddress: facilityData?.serviceProvider?.mailAddress,
+        phone: facilityData?.serviceProvider?.phone,
       },
     }));
   } catch (error) {

@@ -10,6 +10,7 @@ interface User {
 export default function AdminSidebar({ userId = [] }: User) {
   const params = useParams();
   const facilityId = params.facilityId || "";
+  const id = params.id || "";
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
@@ -39,7 +40,7 @@ export default function AdminSidebar({ userId = [] }: User) {
                   "/admin",
                   `/admin/user/${userId}`,
                   `/admin/user/plantDetail/${facilityId}`,
-                  `/admin/user/editFacilities/${facilityId}`
+                  `/admin/user/editFacilities/${id}`
                 ].includes(pathname)
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
@@ -52,7 +53,7 @@ export default function AdminSidebar({ userId = [] }: User) {
                       "/admin",
                       `/admin/user/${userId}`,
                       `/admin/user/plantDetail/${facilityId}`,
-                      `/admin/user/editFacilities/${facilityId}`
+                      `/admin/user/editFacilities/${id}`
                     ].includes(pathname)
                       ? "text-yellow-400"
                       : "text-gray-600"
@@ -68,7 +69,9 @@ export default function AdminSidebar({ userId = [] }: User) {
 
             <Link
               href="/subscription"
-              className={`flex items-center p-3 rounded-md no-underline ${
+              aria-disabled="true"
+              onClick={(e) => e.preventDefault()}
+              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
                 pathname === "/subscription"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
@@ -95,7 +98,9 @@ export default function AdminSidebar({ userId = [] }: User) {
 
             <Link
               href="/service"
-              className={`flex items-center p-3 rounded-md no-underline ${
+              aria-disabled="true"
+              onClick={(e) => e.preventDefault()}
+              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
                 pathname === "/service"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"

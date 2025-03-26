@@ -22,7 +22,6 @@ interface User {
 }
 
 export default function MainContent({ userId = [] }: User) {
-  console.log("🚀 ~ MainContent ~ userId:", userId);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [view, setView] = useState("grid");
@@ -63,7 +62,6 @@ export default function MainContent({ userId = [] }: User) {
               }
             })
           );
-          console.log("🚀 ~ fetchFacilities ~ facilitiesArray:", facilitiesArray);
 
           setuserData(facilitiesArray.flat());
         } catch (error) {
