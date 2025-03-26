@@ -7,6 +7,8 @@ interface ValidateFormProps {
   setStepTwoFormData: React.Dispatch<React.SetStateAction<any>>;
   isInstalled: boolean;
   setIsInstalled: React.Dispatch<React.SetStateAction<any>>;
+  hasServiceProvider:boolean;
+  setHasServiceProvider:React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function CreateFacility({
@@ -14,12 +16,13 @@ export default function CreateFacility({
   setStepTwoFormData,
   isInstalled,
   setIsInstalled,
+  hasServiceProvider,
+  setHasServiceProvider,
 }: ValidateFormProps) {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(
     stepTwoFormData.model || ""
   );
-  const [hasServiceProvider, setHasServiceProvider] = useState(false);
 
   const [VATDeduction, setVATDeduction] = useState(
     stepTwoFormData.VATDeduction || "Yes"
@@ -29,7 +32,7 @@ export default function CreateFacility({
   );
 
   const handleRadioChange = () => {
-    setHasServiceProvider((prev) => !prev);
+    setHasServiceProvider((prev: boolean) => !prev);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -61,6 +61,15 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         }
         setFacility(response.data);
         setIsInstalled(response.data.isInstalled || false);
+        const { serviceProvider } = response.data;
+        if (
+          serviceProvider &&
+          serviceProvider.name &&
+          serviceProvider.mailAddress &&
+          serviceProvider.phone
+        ) {
+          setHasServiceProvider(true);
+        }
       } catch (error) {
         console.error("Error fetching facility details:", error);
       }
@@ -497,10 +506,10 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   <div className="md:col-span-1">
                     <input
                       type="text"
-                      name="serviceProvider.mailAddress"
+                      name="serviceProvider.phone"
                       placeholder="Phone Number"
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.serviceProvider?.mailAddress ?? ""}
+                      value={facility?.serviceProvider?.phone ?? ""}
                       onChange={handleChange}
                     />
                   </div>

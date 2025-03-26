@@ -21,7 +21,7 @@ export const createProfile = async (
   throw new Error("Failed to create profile");
 };
 
-// get facility 
+// get facility
 export const getFacility = async (token: string, IdToken: string) => {
   const userId = localStorage.getItem("userId");
   if (!userId) {
@@ -38,7 +38,12 @@ export const getFacility = async (token: string, IdToken: string) => {
       IdToken
     );
 
-    if (!result || !result.success || !result.data || result.data.length === 0) {
+    if (
+      !result ||
+      !result.success ||
+      !result.data ||
+      result.data.length === 0
+    ) {
       // console.error(" No valid facility data found.");
       return null;
     }
@@ -90,7 +95,16 @@ export const getFacility = async (token: string, IdToken: string) => {
         name: facilityData.serviceProvider?.name || "",
         mailAddress: facilityData.serviceProvider?.mailAddress || "",
         phone: facilityData.serviceProvider?.phone || "",
-      }
+      },
+
+      feature: {
+        method: facilityData.feature?.method || "",
+        partner_details: {
+          name: facilityData.feature?.partner_details?.name || "",
+          mobile: facilityData.feature?.partner_details?.mobile || "",
+          email: facilityData.feature?.partner_details?.email || "",
+        },
+      },
     };
   } catch (error) {
     console.error(" Error fetching facility data:", error);
@@ -109,7 +123,7 @@ export const createFacility = async (
 
     if (existingFacility && existingFacility.facilityId) {
       const result = await apiRequest(
-        `create-facility?id=${existingFacility.facilityId}`, 
+        `create-facility?id=${existingFacility.facilityId}`,
         "POST",
         payload,
         token,
@@ -378,11 +392,11 @@ export const getAllUserFacility = async (token: string, IdToken: string,userId:s
         electricityDependentDKK:
           facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
-      serviceProvider:{
-        name:facilityData.serviceProvider.name,
-        mailAddress:facilityData.serviceProvider.mailAddress,
-        phone:facilityData.serviceProvider.phone
-      }
+      serviceProvider: {
+        name: facilityData.serviceProvider.name,
+        mailAddress: facilityData.serviceProvider.mailAddress,
+        phone: facilityData.serviceProvider.phone,
+      },
     }));
   } catch (error) {
     console.error("Error fetching facility data:", error);

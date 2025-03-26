@@ -26,7 +26,9 @@ function Dashboard() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [setupSuperSaver, setSetupSuperSaver] = useState<boolean>(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [hasServiceProvider, setHasServiceProvider] = useState(false);
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -88,6 +90,10 @@ function Dashboard() {
     serviceProviderName: "",
     serviceProviderMail: "",
     serviceProviderPhone: "",
+    installationMethod : "",
+    partnerName:"",
+    partnerMobile:"",
+    partnerEmail:""
   });
 
   const handleSubscription = async () => {
@@ -95,7 +101,7 @@ function Dashboard() {
     setIsOpen(true);
 
     if (selectedOption) {
-      await handleAddFeature();
+      await handleCreateFacility();
     }
     localStorage.setItem("journeyStatus", "completed");
     await handleCreateProfile(true);
@@ -154,7 +160,7 @@ function Dashboard() {
       return false;
     }
   };
-
+  
   const handleCreateFacility = async () => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
@@ -195,6 +201,18 @@ function Dashboard() {
       },
       isInstalled: isInstalled,
       DaSigned: isChecked,
+      feature: {
+        method: selectedOption || "", 
+        partner_details:
+          selectedOption === "local_partner"
+            ? {
+                name: partnerDetails.name || "",
+                mobile: partnerDetails.mobile || "",
+                email: partnerDetails.email || "",
+              }
+            : {}, 
+      },
+
     };
 
     try {
@@ -281,43 +299,26 @@ function Dashboard() {
           electricityDependentDKK:
             facilityData.electircity_Consumption.electricityDependentDKK || "",
           serviceProviderName: facilityData.serviceProvider.name || "",
-          serviceProviderMail:
-            facilityData.serviceProvider.mailAddress || "",
+          serviceProviderMail: facilityData.serviceProvider.mailAddress || "",
           serviceProviderPhone: facilityData.serviceProvider.phone || "",
+          installationMethod:facilityData.feature.method || "",
+          partnerName:facilityData.feature.partner_details.name || "",
+          partnerMobile:facilityData.feature.partner_details.mobile || "",
+          partnerEmail:facilityData.feature.partner_details.email || "",
         });
+      }
+
+      const { serviceProvider } = facilityData;
+      if (
+        serviceProvider &&
+        serviceProvider.name &&
+        serviceProvider.mailAddress &&
+        serviceProvider.phone
+      ) {
+        setHasServiceProvider(true);
       }
     } catch (error) {
       console.error("Error fetching facility data:", error);
-    }
-  };
-
-  const handleAddFeature = async () => {
-    const token = localStorage.getItem("token");
-    const IdToken = localStorage.getItem("IdToken");
-    const userId = localStorage.getItem("userId");
-
-    if (!token || !IdToken || !userId) {
-      console.error("Authorization token or user ID missing.");
-      return;
-    }
-
-    const payload = {
-      name: "super saver",
-      userID: userId,
-      type: selectedOption,
-      ...(selectedOption === "local_partner" && {
-        partner_details: { ...partnerDetails },
-      }),
-    };
-
-    try {
-      const response = await addFeature(token, IdToken, payload);
-      console.log("Feature added successfully:", response);
-
-      return true;
-    } catch (error) {
-      console.error("Error adding feature:", error);
-      return false;
     }
   };
 
@@ -382,6 +383,8 @@ function Dashboard() {
                   setStepTwoFormData={setStepTwoFormData}
                   isInstalled={isInstalled}
                   setIsInstalled={setIsInstalled}
+                  hasServiceProvider={hasServiceProvider}
+                  setHasServiceProvider={setHasServiceProvider}
                 />
               )}
               {step === 3 && (
@@ -390,6 +393,9 @@ function Dashboard() {
                   setSelectedOption={setSelectedOption}
                   partnerDetails={partnerDetails}
                   setPartnerDetails={setPartnerDetails}
+                  setupSuperSaver={setupSuperSaver}
+                  setSetupSuperSaver={setSetupSuperSaver}
+
                 />
               )}
             </div>
