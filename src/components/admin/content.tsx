@@ -158,7 +158,7 @@ export default function MainContent() {
                   <input
                     type="text"
                     placeholder="Search"
-                    className="pl-10 pr-4 py-2 w-64 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="pl-10 pr-4 py-2 w-96 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -167,12 +167,12 @@ export default function MainContent() {
                   </div>
                 </div>
 
-                <button
+                {/* <button
                   onClick={() => router.push("/admin")}
                   className="px-4 py-2 text-sm text-white bg-blue-800 rounded-md hover:bg-blue-900"
                 >
                   Add Users
-                </button>
+                </button> */}
               </div>
             </div>
 
