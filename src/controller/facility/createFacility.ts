@@ -2,6 +2,7 @@ import { useState } from "react";
 import { addFacility } from "@/services/stepperServices";
 
 export function useCreateFacility() {
+  const [selectedOption, setSelectedOption] = useState("");
   const [stepTwoFormData, setStepTwoFormData] = useState({
     systemName: "",
     XRGINumber: "",
@@ -24,12 +25,21 @@ export function useCreateFacility() {
     serviceProviderName: "",
     serviceProviderMail: "",
     serviceProviderPhone: "",
+    installationMethod : "",
+    partnerName:"",
+    partnerMobile:"",
+    partnerEmail:""
+  });
+  const [partnerDetails, setPartnerDetails] = useState({
+    name: "",
+    mobile: "",
+    email: "",
   });
 
   const handleCreateFacility = async (
-    DaSigned: boolean,
-    isInstalled: boolean,
-    hasServiceProvider: boolean
+    DaSigned?: boolean,
+    isInstalled?: boolean,
+    hasServiceProvider?: boolean
   ) => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
@@ -67,6 +77,17 @@ export function useCreateFacility() {
       },
       isInstalled: isInstalled,
       DaSigned: DaSigned,
+      feature: {
+        method: selectedOption || "", 
+        partner_details:
+          selectedOption === "local_partner"
+            ? {
+                name: partnerDetails.name || "",
+                mobile: partnerDetails.mobile || "",
+                email: partnerDetails.email || "",
+              }
+            : {}, 
+      },
     };
 
     if (hasServiceProvider) {
@@ -91,5 +112,9 @@ export function useCreateFacility() {
     stepTwoFormData,
     setStepTwoFormData,
     handleCreateFacility,
+    selectedOption,
+    setSelectedOption,
+    partnerDetails,
+    setPartnerDetails
   };
 }
