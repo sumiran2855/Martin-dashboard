@@ -3,7 +3,7 @@ import Link from "next/link";
 import BarChart from "@/components/barChart";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { apiRequest } from "@/utils/apiClient";
+import { apiRequest } from "@/utils/authHelper";
 
 interface Facility {
   userID: string;

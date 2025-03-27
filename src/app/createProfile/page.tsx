@@ -10,13 +10,8 @@ import NavigationButtons from "@/components/NavigationButtons";
 import withAuth from "@/auth/authUtils";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/modals/modal";
-import {
-  addFeature,
-  createFacility,
-  createProfile,
-  getCustomer,
-  getFacility,
-} from "@/services/stepperServices";
+import { createProfile, getCustomer } from "@/services/customerServices";
+import { getFacility, createFacility } from "@/services/facilityServices";
 import { termsText } from "@/components/dashboard/staticData/Data";
 import TermsModal from "@/components/modals/acceptTerms";
 
@@ -160,7 +155,7 @@ function Dashboard() {
       return false;
     }
   };
-  
+
   const handleCreateFacility = async () => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
@@ -202,7 +197,7 @@ function Dashboard() {
       isInstalled: isInstalled,
       DaSigned: isChecked,
       feature: {
-        method: selectedOption || "", 
+        method: selectedOption || "",
         partner_details:
           selectedOption === "local_partner"
             ? {
@@ -210,7 +205,7 @@ function Dashboard() {
                 mobile: partnerDetails.mobile || "",
                 email: partnerDetails.email || "",
               }
-            : {}, 
+            : {},
       },
 
     };
@@ -301,10 +296,10 @@ function Dashboard() {
           serviceProviderName: facilityData.serviceProvider.name || "",
           serviceProviderMail: facilityData.serviceProvider.mailAddress || "",
           serviceProviderPhone: facilityData.serviceProvider.phone || "",
-          installationMethod:facilityData.feature.method || "",
-          partnerName:facilityData.feature.partner_details.name || "",
-          partnerMobile:facilityData.feature.partner_details.mobile || "",
-          partnerEmail:facilityData.feature.partner_details.email || "",
+          installationMethod: facilityData.feature.method || "",
+          partnerName: facilityData.feature.partner_details.name || "",
+          partnerMobile: facilityData.feature.partner_details.mobile || "",
+          partnerEmail: facilityData.feature.partner_details.email || "",
         });
       }
 

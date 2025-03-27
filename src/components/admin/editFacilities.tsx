@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import BarChart from "../barChart";
 import { useRouter } from "next/navigation";
 import Modal from "../modals/modal";
-import { apiRequest } from "@/utils/apiClient";
+import { apiRequest } from "@/utils/authHelper";
 import GenericModal from "../modals/genericPopup";
 
 interface Facility {

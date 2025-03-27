@@ -1,8 +1,8 @@
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../modals/modal";
 import ChangePassword from "../modals/changePassword";
-import { createProfile } from "@/services/stepperServices";
+import { createProfile } from "@/services/customerServices";
 import { getProfile } from "@/controller/companyProfile/createProfile";
 import { countryCodes } from "@/components/dashboard/staticData/Data";
 
@@ -16,7 +16,7 @@ export default function profileDetail() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const updateProfile = async () => {
+  const updateProfile:any = async () => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
     if (!token || !IdToken) {

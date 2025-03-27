@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import GridView from "@/components/dashboard/view/gridView";
 import ListView from "@/components/dashboard/view/listView";
 import { useRouter } from "next/navigation";
-import { getAllFacility } from "@/services/stepperServices";
+import { getAllFacility } from "@/services/facilityServices";
 
 const statusOptions = ["All", "Active", "Data Missing", "Inactive"];
 

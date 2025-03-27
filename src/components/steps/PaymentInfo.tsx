@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { countryCodes } from "@/components/dashboard/staticData/Data";
-import { getCustomer } from "@/services/stepperServices";
+import { getCustomer } from "@/services/customerServices";
 
 export default function StepFour() {
   const [isYearly, setIsYearly] = useState(true);

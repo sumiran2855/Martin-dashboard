@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCustomer } from "@/services/stepperServices";
+import { getCustomer } from "@/services/customerServices";
 
 export function getProfile() {
   const [loading, setLoading] = useState(true);

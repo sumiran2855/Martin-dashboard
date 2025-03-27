@@ -10,10 +10,8 @@ import { useEffect, useState } from "react";
 import GridView from "@/components/admin/user/view/gridView";
 import ListView from "@/components/admin/user/view/listView";
 import { useRouter } from "next/navigation";
-import {
-  getAllUserFacility,
-  getCustomerById,
-} from "@/services/stepperServices";
+import { getCustomerById } from "@/services/customerServices";
+import { getAllUserFacility } from "@/services/facilityServices";
 import Link from "next/link";
 
 const statusOptions = ["All", "Active", "Data Missing", "Inactive"];

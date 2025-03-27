@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addFacility } from "@/services/stepperServices";
+import { addFacility } from "@/services/facilityServices";
 
 export function useCreateFacility() {
   const [selectedOption, setSelectedOption] = useState("");
