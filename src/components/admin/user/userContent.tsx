@@ -10,7 +10,10 @@ import { useEffect, useState } from "react";
 import GridView from "@/components/admin/user/view/gridView";
 import ListView from "@/components/admin/user/view/listView";
 import { useRouter } from "next/navigation";
-import { getAllUserFacility } from "@/services/stepperServices";
+import {
+  getAllUserFacility,
+  getCustomerById,
+} from "@/services/stepperServices";
 import Link from "next/link";
 
 const statusOptions = ["All", "Active", "Data Missing", "Inactive"];
@@ -29,6 +32,7 @@ export default function MainContent({ userId = [] }: User) {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [userData, setuserData] = useState([]);
+  const [customerData, setCustomerData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const handleSelect = (selectedView: string) => {
@@ -40,6 +44,41 @@ export default function MainContent({ userId = [] }: User) {
     setSelectedStatus(status);
     setSortDropdownOpen(false);
   };
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const IdToken = localStorage.getItem("IdToken");
+
+      if (token && IdToken && userId.length > 0) {
+        try {
+          const customersArray = await Promise.all(
+            userId.map(async (id) => {
+              try {
+                return await getCustomerById(token, IdToken, id);
+              } catch (error) {
+                console.error(
+                  `Error fetching customer profile for user ${id}`,
+                  error
+                );
+                return null;
+              }
+            })
+          );
+          setCustomerData(customersArray.filter(Boolean));
+        } catch (error) {
+          console.error("Error fetching customer profiles", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
+    fetchCustomers();
+  }, [userId]);
 
   useEffect(() => {
     const fetchFacilities = async () => {
@@ -110,11 +149,12 @@ export default function MainContent({ userId = [] }: User) {
               <span className="text-xl">Back</span>
             </Link>
             <h1 className="text-2xl font-medium text-gray-800 mb-2">
-              Your Facilities
+              {customerData[0]?.companyName.toUpperCase()}
             </h1>
             <p className="text-gray-600 mb-6">
-              This is an overview of your XRGi facilities. Your facilities must
-              be added here in order to receive SuperXSaver service.
+              This is an overview of {customerData[0]?.companyName} XRGi
+              facilities. You can manage and monitor all your facilities from
+              this dashboard.
             </p>
 
             <div className="flex justify-between items-center mb-6">
