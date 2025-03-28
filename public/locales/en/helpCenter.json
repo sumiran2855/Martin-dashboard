@@ -1,0 +1,17 @@
+{
+    "subject": "Subject",
+    "selectSubject": "Select a subject",
+    "message": "Your Message",
+    "placeholder": "Please provide details about your inquiry...",
+    "sendMessage": "Send Message",
+    "alertSuccess": "Your message has been sent! We will get back to you soon.",
+    "alertError": "There was an error sending your message. Please try again.",
+    "subjects": {
+      "problemXRGi": "Problem with XRGi",
+      "problemAddingInfo": "Problem with Adding Information",
+      "questionSuperSaver": "Question about Super Saver",
+      "contactEC": "Get EC Power to Contact Me",
+      "otherInquiry": "Other Inquiry"
+    }
+  }
+  
