@@ -1,0 +1,10 @@
+{
+  "title": "Settings",
+  "languageSelector": {
+    "title": "Select Language",
+    "english": "English",
+    "danish": "Danish",
+    "german": "German"
+  }
+}
+

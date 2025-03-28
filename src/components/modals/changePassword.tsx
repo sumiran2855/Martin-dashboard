@@ -5,7 +5,6 @@ import { Eye, EyeOff } from "lucide-react";
 
 interface ChangePasswordProps {
   setChangePassword: (value: boolean) => void;
-  changePassword: (value: boolean) => void;
 }
 
 const PasswordInput = ({

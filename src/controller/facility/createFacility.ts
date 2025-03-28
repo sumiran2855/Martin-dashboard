@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { addFacility } from "@/services/stepperServices";
+import { addFacility } from "@/services/facilityServices";
 
 export function useCreateFacility() {
+  const [selectedOption, setSelectedOption] = useState("");
   const [stepTwoFormData, setStepTwoFormData] = useState({
     systemName: "",
     XRGINumber: "",
@@ -20,12 +21,26 @@ export function useCreateFacility() {
     kWh: "",
     electricityIndependentDKK: "",
     electricityDependentDKK: "",
+    hasServiceProvider: "",
     serviceProviderName: "",
     serviceProviderMail: "",
     serviceProviderPhone: "",
+    installationMethod : "",
+    partnerName:"",
+    partnerMobile:"",
+    partnerEmail:""
+  });
+  const [partnerDetails, setPartnerDetails] = useState({
+    name: "",
+    mobile: "",
+    email: "",
   });
 
-  const handleCreateFacility = async (DaSigned: boolean, isInstalled:boolean) => {
+  const handleCreateFacility = async (
+    DaSigned?: boolean,
+    isInstalled?: boolean,
+    hasServiceProvider?: boolean
+  ) => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
 
@@ -34,7 +49,7 @@ export function useCreateFacility() {
       return false;
     }
 
-    const payload = {
+    const payload: any = {
       name: stepTwoFormData.systemName,
       xrgiID: stepTwoFormData.XRGINumber,
       modelNumber: stepTwoFormData.model,
@@ -48,11 +63,7 @@ export function useCreateFacility() {
         VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat),
         VAT_Deduction: stepTwoFormData.VATDeduction === "Yes",
       },
-      serviceProvider: {
-        name: stepTwoFormData.serviceProviderName,
-        mailAddress: stepTwoFormData.serviceProviderMail,
-        phone: stepTwoFormData.serviceProviderPhone,
-      },
+      hasServiceProvider: hasServiceProvider,
       gas_Consumption: {
         annual_gas_consumption_m3: parseFloat(stepTwoFormData.m3),
         xrgi_gas_type: stepTwoFormData.gasType,
@@ -65,15 +76,34 @@ export function useCreateFacility() {
         variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
       isInstalled: isInstalled,
-      DaSigned: !DaSigned,
+      DaSigned: DaSigned,
+      feature: {
+        method: selectedOption || "", 
+        partner_details:
+          selectedOption === "local_partner"
+            ? {
+                name: partnerDetails.name || "",
+                mobile: partnerDetails.mobile || "",
+                email: partnerDetails.email || "",
+              }
+            : {}, 
+      },
     };
+
+    if (hasServiceProvider) {
+      payload.serviceProvider = {
+        name: stepTwoFormData.serviceProviderName,
+        mailAddress: stepTwoFormData.serviceProviderMail,
+        phone: stepTwoFormData.serviceProviderPhone,
+      };
+    }
 
     try {
       await addFacility(token, IdToken, payload);
       console.log("Facility created successfully!");
       return true;
     } catch (err) {
-      console.log("Error creating facility.");
+      console.log("Error creating facility:", err);
       return false;
     }
   };
@@ -82,5 +112,9 @@ export function useCreateFacility() {
     stepTwoFormData,
     setStepTwoFormData,
     handleCreateFacility,
+    selectedOption,
+    setSelectedOption,
+    partnerDetails,
+    setPartnerDetails
   };
 }
