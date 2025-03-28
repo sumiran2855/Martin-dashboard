@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Modal from "../modals/modal";
 import { apiRequest } from "@/utils/authHelper";
 import GenericModal from "../modals/genericPopup";
+import { useTranslation } from "react-i18next";
 
 interface Facility {
   facilityId?: string;
@@ -37,6 +38,7 @@ interface Facility {
 }
 
 export default function EditFacilities({ facilityId }: { facilityId: string }) {
+  const { t } = useTranslation("facilityForm");
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [facility, setFacility] = useState<Facility | null>(null);
@@ -57,7 +59,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           IdToken
         );
         if (!response.success || !response.data) {
-          throw new Error("Failed to fetch facility data");
+          console.log("Failed to fetch facility data");
         }
         setFacility(response.data);
         setIsInstalled(response.data.isInstalled || false);
@@ -114,8 +116,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
       const IdToken = localStorage.getItem("IdToken") || "";
 
       if (!token || !IdToken) {
-        throw new Error(" Authentication tokens are missing.");
+        console.log(" Authentication tokens are missing.");
       }
+      const hasServiceContract = hasServiceProvider ? true : false;
       const payload = {
         name: facility?.name,
         xrgiID: facility?.xrgiID,
@@ -125,11 +128,13 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           postalCode: facility?.location?.postalCode,
           city: facility?.location?.city,
         },
-        serviceProvider: {
-          name: facility?.serviceProvider?.name,
-          mailAddress: facility?.serviceProvider?.mailAddress,
-          phone: facility?.serviceProvider?.phone,
-        },
+        serviceProvider: hasServiceProvider
+        ? {
+            name: facility?.serviceProvider?.name || "",
+            mailAddress: facility?.serviceProvider?.mailAddress || "",
+            phone: facility?.serviceProvider?.phone || "",
+          }
+        : null,
         systemCosts: {
           service_Costs: facility?.systemCosts?.service_Costs,
           VAT_Deduction_Percent: facility?.systemCosts?.VAT_Deduction_Percent,
@@ -152,6 +157,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         },
         isInstalled: isInstalled,
         DaSigned: true,
+        hasServiceContract
       };
 
       const updatedFacility = await apiRequest(
@@ -183,31 +189,31 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
               <div className="p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition">
                 <ArrowLeft size={20} className="text-blue-600" />
               </div>
-              <span className="text-xl">Back</span>
+              <span className="text-xl">{t("back")}</span>
             </Link>
           </div>
           <h1 className="text-2xl font-semibold text-gray-800 ml-6">
-            Edit Facilities
+            {t("editFacilities")}
           </h1>
         </div>
         <div className="flex-1 overflow-auto px-6 py-2 mx-4">
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
             <div className="p-6 rounded-lg mb-6">
               <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
-                Register a System
+               {t("registerSystem")}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <input
                     type="text"
                     name="name"
-                    placeholder="Name the system"
+                    placeholder={t("nameSystem")}
                     className="p-3 border rounded-lg w-full"
                     value={facility?.name}
                     onChange={handleChange}
                   />
                   <label className="text-gray-500 text-sm mt-1 block ml-3">
-                    Example: “System in basement 01”
+                   {t("nameSystemExample")}
                   </label>
                 </div>
 
@@ -219,7 +225,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       onChange={handleChange}
                       className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                     >
-                      <option value="">Select a Model</option>
+                      <option value="">{t("selectModel")}</option>
                       <option>XRGI® 9-FORD</option>
                       <option>XRGI® 9</option>
                       <option>XRGI® 6 LOWNOX</option>
@@ -253,19 +259,19 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     </span>
                   </div>
                   <label className="text-gray-500 text-sm mt-1 block ml-3">
-                    Model name is on your registration form
+                    {t("modelNameHint")}
                   </label>
                 </div>
 
                 <div className="md:col-span-1 relative">
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    XRGI ID Number
+                    {t("xrgiIdNumber")}
                   </label>
                   <div className="relative">
                     <input
                       type="text"
                       name="xrgiID"
-                      placeholder="Enter XRGI ID number"
+                      placeholder={t("enterXrgiId")}
                       className="p-3 border border-gray-300 rounded-lg w-full pr-10  focus:ring-2 focus:ring-blue-300"
                       value={facility?.xrgiID}
                       onChange={handleChange}
@@ -298,8 +304,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     </span>
                   </div>
                   <p className="text-gray-500 text-sm mt-1">
-                    The ID number is 8 digits and located on the side of the
-                    machine.
+                    {t("xrgiIdHint")}
                   </p>
                 </div>
               </div>
@@ -313,20 +318,20 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
             <div className="p-6 rounded-lg mb-6">
               <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                System Location
+                {t("systemLocation")}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <input
                     type="text"
                     name="location.address"
-                    placeholder="Address"
+                    placeholder={t("address")}
                     className="p-3 border rounded-lg w-full"
                     value={facility?.location?.address}
                     onChange={handleChange}
                   />
                   <label className="text-gray-500 text-sm mt-1 block ml-3">
-                    Enter the address of this system's location
+                   {t("addressHint")}
                   </label>
                 </div>
 
@@ -334,7 +339,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   <input
                     type="text"
                     name="location.postalCode"
-                    placeholder="Postal Code"
+                    placeholder={t("postalCode")}
                     className="p-3 border rounded-lg w-full"
                     value={facility?.location?.postalCode}
                     onChange={handleChange}
@@ -345,7 +350,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                   <input
                     type="text"
                     name="location.city"
-                    placeholder="City"
+                    placeholder={t("city")}
                     className="p-3 border rounded-lg w-full"
                     value={facility?.location?.city}
                     onChange={handleChange}
@@ -358,12 +363,12 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
             <div className="p-6 rounded-lg mb-6">
               <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                System Costs
+                {t("systemCosts")}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-1">
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Service Costs for Operating XRGI®
+                    {t("serviceCosts")}
                   </label>
                   <div className="relative">
                     <input
@@ -398,15 +403,14 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     </span>
                   </div>
                   <p className="text-gray-500 text-sm mt-1 ml-3">
-                    Your service costs can be found in your contract for the
-                    system.
+                   {t("serviceCostsHint")}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:col-span-2">
                   <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Enter VAT Deduction Percentage
+                      {t("vatDeductionPercentage")}
                     </label>
                     <input
                       type="text"
@@ -419,7 +423,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
 
                   <div className="relative">
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Select if VAT can be Deducted
+                      {t("vatDeduction")}
                     </label>
                     <div className="relative">
                       <select
@@ -430,8 +434,8 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                         }
                         onChange={handleChange}
                       >
-                        <option>Yes</option>
-                        <option>No</option>
+                        <option>{t("yes")}</option>
+                        <option>{t("no")}</option>
                       </select>
                       <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                         <svg
@@ -468,27 +472,27 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                 htmlFor="serviceProvider"
                 className="text-[#082351DE] text-lg font-semibold"
               >
-                I want to add my service provider
+                {t("addServiceProvider")}
               </label>
             </div>
 
             {hasServiceProvider && (
               <div className="p-6 rounded-lg mb-6">
                 <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                  Service Provider
+                  {t("serviceProvider")}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <input
                       type="text"
                       name="serviceProvider.name"
-                      placeholder="Name of service provider"
+                      placeholder={t("serviceProviderName")}
                       className="p-3 border rounded-lg w-full"
                       value={facility?.serviceProvider?.name ?? ""}
                       onChange={handleChange}
                     />
                     <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      Enter the name of the service provider
+                      {t("enterServiceProviderName")}
                     </label>
                   </div>
 
@@ -496,7 +500,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <input
                       type="text"
                       name="serviceProvider.mailAddress"
-                      placeholder="Email Address"
+                      placeholder={t("serviceProviderEmail")}
                       className="p-3 border rounded-lg w-full"
                       value={facility?.serviceProvider?.mailAddress ?? ""}
                       onChange={handleChange}
@@ -507,7 +511,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <input
                       type="text"
                       name="serviceProvider.phone"
-                      placeholder="Phone Number"
+                      placeholder={t("serviceProviderPhone")}
                       className="p-3 border rounded-lg w-full"
                       value={facility?.serviceProvider?.phone ?? ""}
                       onChange={handleChange}
@@ -520,12 +524,12 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
 
           <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
             <div className="text-[#082351DE] rounded-lg mb-6">
-              <h2 className="text-lg font-semibold mb-4">Gas Consumption</h2>
+              <h2 className="text-lg font-semibold mb-4">{t("gasConsumption")}</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="relative">
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    What type of gas is supplied to the XRGI system?
+                    {t("gasType")}
                   </label>
                   <div className="relative">
                     <select
@@ -534,9 +538,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       onChange={handleChange}
                       className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                     >
-                      <option>Select gas type</option>
-                      <option>Naturel Gas</option>
-                      <option>Hydrogen</option>
+                      <option>{t("selectGasType")}</option>
+                      <option>{t("naturalGas")}</option>
+                      <option>{t("hydrogen")}</option>
                     </select>
                     <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                       <svg
@@ -557,7 +561,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    What is the annual gas consumption?
+                  {t("annualGasConsumption")}
                   </label>
                   <input
                     type="text"
@@ -575,7 +579,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the sum of consumption-independent costs
+                    {t("consumptionIndependentCosts")}
                   </label>
                   <input
                     type="text"
@@ -588,7 +592,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                 </div>
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the sum of consumption-dependent costs
+                    {t("consumptionDependentCosts")}
                   </label>
                   <input
                     type="text"
@@ -606,14 +610,13 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
             <div className="text-[#082351DE] rounded-lg mb-6">
               <h2 className="text-lg font-semibold mb-4">
-                Electricity Consumption
+                {t("electricityConsumption")}
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the annual electricity consumption when purchasing
-                    from the grid
+                    {t("annualGridConsumption")}
                   </label>
                   <input
                     type="text"
@@ -632,7 +635,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the sum of consumption-independent costs
+                    {t("fixedCosts")}
                   </label>
                   <input
                     type="text"
@@ -646,7 +649,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the sum of consumption-dependent costs
+                    {t("variableCosts")}
                   </label>
                   <input
                     type="text"
@@ -659,7 +662,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
                   />
                   <span className="text-gray-500 text-xs mt-1 block">
-                    Tariffs, taxes, etc., excl. flexible price
+                   {t("tariffHint")}
                   </span>
                 </div>
               </div>
@@ -679,7 +682,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                 htmlFor="installSystem"
                 className="text-gray-800 text-sm font-medium"
               >
-                Is your system installed?
+                {t("isSystemInstalled")}
               </label>
             </div>
           </div>
@@ -687,7 +690,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg text-[#082351DE] font-semibold">
-                Operation Example
+                {t("operationExample")}
               </h2>
               <span className="text-blue-500 cursor-pointer">
                 <svg
@@ -722,19 +725,19 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
             <div className="flex justify-center space-x-6 mt-4 text-sm">
               <div className="flex items-center">
                 <span className="w-3 h-3 bg-yellow-300 rounded-full inline-block mr-2"></span>
-                <span className="text-gray-700">XRGI</span>
+                <span className="text-gray-700">{t("xrgilabel")}</span>
               </div>
               <div className="flex items-center">
                 <span className="w-3 h-3 bg-blue-900 rounded-full inline-block mr-2"></span>
-                <span className="text-gray-700">Tariffs</span>
+                <span className="text-gray-700">{t("tariffsLabel")}</span>
               </div>
               <div className="flex items-center">
                 <span className="w-3 h-3 bg-blue-400 rounded-full inline-block mr-2"></span>
-                <span className="text-gray-700">Flex Price</span>
+                <span className="text-gray-700">{t("flexPriceLabel")}</span>
               </div>
               <div className="flex items-center">
                 <span className="w-3 h-3 bg-gray-300 rounded-full inline-block mr-2"></span>
-                <span className="text-gray-700">VAT</span>
+                <span className="text-gray-700">{t("vatLabel")}</span>
               </div>
             </div>
           </div>
@@ -744,21 +747,20 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           className="bg-blue-500 text-white hover:bg-blue-800 px-6 py-2 rounded-md transition ml-auto block mb-10 mr-4 sm:mr-6 md:mr-12 w-full sm:w-auto"
           onClick={() => setIsOpen(true)}
         >
-          Save Changes
+          {t("saveChanges")}
         </button>
 
         <Modal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          title="Do you want to save the changes?"
-          message="Changes have been made to this facility. Do you want to save or
-                discard them?"
-          primaryButton="Save"
+          title={t("modalTitle")}
+          message={t("modalMessage")}
+          primaryButton={t("save")}
           onPrimaryClick={() => {
             handleSave();
             router.push("/dashboard/facilities/${facilityId}");
           }}
-          secondaryButton="Discard"
+          secondaryButton={t("discard")}
           onSecondaryClick={() =>
             router.push("/dashboard/facilities/editFacilities")
           }

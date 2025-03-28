@@ -25,7 +25,7 @@ export function getProfile() {
       const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
     if (!token || !IdToken) {
-      console.error("Authorization token missing.");
+      console.log("Authorization token missing.");
       setLoading(false);
       return;
     }

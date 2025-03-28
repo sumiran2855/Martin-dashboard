@@ -1,14 +1,17 @@
+"use client";
 import { Search, Filter, Grid, List, ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import GridView from "@/components/dashboard/view/gridView";
 import ListView from "@/components/dashboard/view/listView";
 import { useRouter } from "next/navigation";
 import { getAllFacility } from "@/services/facilityServices";
+import { useTranslation } from "react-i18next";
 
 const statusOptions = ["All", "Active", "Data Missing", "Inactive"];
 
-export default function mainContent() {
+export default function MainContent() {
   const router = useRouter();
+  const { t } = useTranslation("dashboard");
   const [searchTerm, setSearchTerm] = useState("");
   const [view, setView] = useState("grid");
   const [isOpen, setIsOpen] = useState(false);
@@ -70,12 +73,9 @@ export default function mainContent() {
         <div className="flex-1 overflow-auto">
           <div className="p-8">
             <h1 className="text-2xl font-medium text-gray-800 mb-2">
-              Your Facilities
+              {t("facilitiesTitle")}
             </h1>
-            <p className="text-gray-600 mb-6">
-              This is an overview of your XRGi facilities. Your facilities must
-              be added here in order to receive SuperXSaver service.
-            </p>
+            <p className="text-gray-600 mb-6">{t("facilitiesDescription")}</p>
 
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center space-x-4">
@@ -85,7 +85,7 @@ export default function mainContent() {
                     onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
                   >
                     <Filter size={16} className="mr-2" />
-                    <span>Sort by</span>
+                    <span>{t("sortBy")}</span>
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                   {sortDropdownOpen && (
@@ -96,7 +96,7 @@ export default function mainContent() {
                           onClick={() => handleStatusSelect(status)}
                           className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
-                          {status}
+                          {t(`statusOptions.${status}`)}
                         </button>
                       ))}
                     </div>
@@ -113,7 +113,9 @@ export default function mainContent() {
                     ) : (
                       <Grid size={16} className="mr-2" />
                     )}
-                    <span>{view === "list" ? "List View" : "Grid View"}</span>
+                    <span>
+                      {view === "list" ? t("listView") : t("gridView")}
+                    </span>
                   </button>
 
                   {isOpen && (
@@ -122,13 +124,13 @@ export default function mainContent() {
                         onClick={() => handleSelect("list")}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        <List size={16} className="mr-2" /> List View
+                        <List size={16} className="mr-2" /> {t("listView")}
                       </button>
                       <button
                         onClick={() => handleSelect("grid")}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        <Grid size={16} className="mr-2" /> Grid View
+                        <Grid size={16} className="mr-2" /> {t("gridView")}
                       </button>
                     </div>
                   )}
@@ -139,7 +141,7 @@ export default function mainContent() {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("searchPlaceholder")}
                     className="pl-10 pr-4 py-2 w-64 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -153,12 +155,12 @@ export default function mainContent() {
                   onClick={() => router.push("/dashboard/addFacility")}
                   className="px-4 py-2 text-sm text-white bg-blue-800 rounded-md hover:bg-blue-900"
                 >
-                  Register more facilities
+                  {t("registerFacilities")}
                 </button>
               </div>
             </div>
 
-            {view == "grid" ? (
+            {view === "grid" ? (
               <GridView facilities={filteredData} />
             ) : (
               <ListView facilities={filteredData} />

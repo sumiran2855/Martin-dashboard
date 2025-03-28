@@ -1,5 +1,6 @@
 "use client";
 
+import { sendQuery } from "@/services/customerServices";
 import React, { useState, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -15,10 +16,18 @@ export default function HelpCenterForm() {
   const { t } = useTranslation("helpCenter");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  // const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!subject || !message) return alert(t("alertError"));
+
     try {
+      const token = localStorage.getItem("token") || undefined;
+      const IdToken = localStorage.getItem("IdToken") || undefined;
+
+      await sendQuery(subject, message, token, IdToken);
+
       alert(t("alertSuccess"));
       setSubject("");
       setMessage("");

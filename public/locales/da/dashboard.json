@@ -1,0 +1,25 @@
+{
+    "facilitiesTitle": "Dine Faciliteter",
+    "facilitiesDescription": "Dette er en oversigt over dine XRGi-faciliteter. Dine faciliteter skal tilføjes her for at modtage SuperXSaver-service.",
+    "sortBy": "Sorter efter",
+    "listView": "Listevisning",
+    "gridView": "Gittervisning",
+    "searchPlaceholder": "Søg",
+    "registerFacilities": "Registrer flere faciliteter",
+    "name": "Navn",
+    "xrgiFacility": "XRGi facilitet",
+    "model": "Model",
+    "status": "Status",
+    "statusOptions": {
+      "All": "Alle",
+      "Active": "Aktiv",
+      "Data Missing": "Data mangler",
+      "Inactive": "Inaktiv",
+      "Maintenance": "Vedligeholdelse"
+    },
+    "inactiveFacilities": "Inaktiv",
+    "activeFacilities": "Aktiv",
+    "noFacilities": "Ingen registrerede faciliteter",
+    "rowsPerPage": "Rækker per side:"
+  }
+  

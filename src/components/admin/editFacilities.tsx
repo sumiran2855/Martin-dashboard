@@ -66,7 +66,7 @@ export default function EditFacilities({
           IdToken
         );
         if (!response.success || !response.data) {
-          throw new Error("Failed to fetch facility data");
+          console.log("Failed to fetch facility data");
         }
         setFacility(response.data);
         setIsInstalled(response.data.isInstalled || false);
@@ -119,7 +119,7 @@ export default function EditFacilities({
       const IdToken = localStorage.getItem("IdToken") || "";
 
       if (!token || !IdToken) {
-        throw new Error(" Authentication tokens are missing.");
+        console.log(" Authentication tokens are missing.");
       }
       const payload = {
         name: facility?.name,

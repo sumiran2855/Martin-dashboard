@@ -1,0 +1,20 @@
+{
+    "back": "Tilbage",
+    "facilityDetails": "Facilitetsdetaljer",
+    "name": "Navn",
+    "address": "Adresse",
+    "model": "Model",
+    "basicData": "Grunddata",
+    "edit": "Rediger",
+    "serviceCosts": "Driftsomkostninger pr. time",
+    "vatDeduction": "Momsfradragsprocent",
+    "gasSupply": "Gasforsyning",
+    "gasVariableCosts": "Forbrugsafhængige omkostninger, gas",
+    "gasFixedCosts": "Forbrugsuafhængige omkostninger, gas",
+    "annualGasConsumption": "Årligt gasforbrug",
+    "electricityVariableCosts": "Forbrugsafhængige omkostninger, el",
+    "electricityFixedCosts": "Forbrugsuafhængige omkostninger, el",
+    "annualElectricityConsumption": "Årligt elforbrug",
+    "superSaverXConsumption": "SuperSaverX Forbrug"
+  }
+  

@@ -163,7 +163,10 @@ function Dashboard() {
       console.error("Authorization token missing.");
       return false;
     }
-
+  
+    const isPartnerDetailsFilled =
+      partnerDetails.name || partnerDetails.mobile || partnerDetails.email;
+  
     const payload = {
       name: stepTwoFormData.systemName,
       xrgiID: stepTwoFormData.XRGINumber,
@@ -194,26 +197,27 @@ function Dashboard() {
         fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
         variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
       },
-      isInstalled: isInstalled,
+      isInstalled,
       DaSigned: isChecked,
-      feature: {
-        method: selectedOption || "",
-        partner_details:
-          selectedOption === "local_partner"
-            ? {
+      hasServiceContract: setupSuperSaver ? true : false,
+      ...(setupSuperSaver && isPartnerDetailsFilled
+        ? {
+            feature: {
+              method: selectedOption || "",
+              partner_details:selectedOption === "local_partner" ? {
                 name: partnerDetails.name || "",
                 mobile: partnerDetails.mobile || "",
                 email: partnerDetails.email || "",
-              }
-            : {},
-      },
-
+              } : {},
+            },
+          }
+        : {}),
     };
-
+  
     try {
       const response = await createFacility(token, IdToken, payload);
       console.log("create facility success", response);
-
+  
       await handleCreateProfile(true);
       return true;
     } catch (error) {
@@ -303,7 +307,7 @@ function Dashboard() {
         });
       }
 
-      const { serviceProvider } = facilityData;
+      const { serviceProvider } = facilityData || {};
       if (
         serviceProvider &&
         serviceProvider.name &&
