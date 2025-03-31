@@ -79,7 +79,7 @@ export const getFacility = async (token: string, IdToken: string) => {
     }
 
     return {
-      facilityId: facilityData.id,
+      facilityId: facilityData.id || "",
       name: facilityData.name || "",
       modelNumber: facilityData.modelNumber || "",
       xrgiID: facilityData.xrgiID || "",
@@ -153,7 +153,7 @@ export const getAllFacility = async (token: string, IdToken: string) => {
     );
 
     if (!result || !result.success || !result.data) {
-      throw new Error("No facility data available");
+      console.log("No facility data available");
     }
 
     return result.data.map((facilityData: any) => ({
@@ -193,9 +193,9 @@ export const getAllFacility = async (token: string, IdToken: string) => {
           facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
       serviceProvider: {
-        name: facilityData.serviceProvider?.name,
-        mailAddress: facilityData.serviceProvider?.mailAddress,
-        phone: facilityData.serviceProvider?.phone,
+        name: facilityData.serviceProvider?.name || "",
+        mailAddress: facilityData.serviceProvider?.mailAddress || "",
+        phone: facilityData.serviceProvider?.phone || "",
       },
     }));
   } catch (error) {
@@ -220,7 +220,7 @@ export const getAllUserFacility = async (
     );
 
     if (!result || !result.success || !result.data) {
-      throw new Error("No facility data available");
+      console.log("No facility data available");
     }
 
     return result.data.map((facilityData: any) => ({
@@ -260,9 +260,9 @@ export const getAllUserFacility = async (
           facilityData.electircity_Consumption?.variable_costs_dkk || "",
       },
       serviceProvider: {
-        name: facilityData?.serviceProvider?.name,
-        mailAddress: facilityData?.serviceProvider?.mailAddress,
-        phone: facilityData?.serviceProvider?.phone,
+        name: facilityData?.serviceProvider?.name || "",
+        mailAddress: facilityData?.serviceProvider?.mailAddress || "",
+        phone: facilityData?.serviceProvider?.phone || "",
       },
     }));
   } catch (error) {

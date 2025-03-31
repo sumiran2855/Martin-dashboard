@@ -25,11 +25,12 @@ export function useCreateFacility() {
     serviceProviderName: "",
     serviceProviderMail: "",
     serviceProviderPhone: "",
-    installationMethod : "",
-    partnerName:"",
-    partnerMobile:"",
-    partnerEmail:""
+    installationMethod: "",
+    partnerName: "",
+    partnerMobile: "",
+    partnerEmail: "",
   });
+
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -49,52 +50,52 @@ export function useCreateFacility() {
       return false;
     }
 
-    const payload: any = {
-      name: stepTwoFormData.systemName,
-      xrgiID: stepTwoFormData.XRGINumber,
-      modelNumber: stepTwoFormData.model,
+    const payload: Record<string, any> = {
+      name: stepTwoFormData.systemName || "",
+      xrgiID: stepTwoFormData.XRGINumber || "",
+      modelNumber: stepTwoFormData.model || "",
       location: {
-        address: stepTwoFormData.address,
-        postalCode: stepTwoFormData.postalCode,
-        city: stepTwoFormData.city,
+        address: stepTwoFormData.address || "",
+        postalCode: stepTwoFormData.postalCode || "",
+        city: stepTwoFormData.city || "",
       },
       systemCosts: {
-        service_Costs: parseFloat(stepTwoFormData.serviceCost),
-        VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat),
+        service_Costs: parseFloat(stepTwoFormData.serviceCost) || 0,
+        VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat) || 0,
         VAT_Deduction: stepTwoFormData.VATDeduction === "Yes",
       },
-      hasServiceProvider: hasServiceProvider,
       gas_Consumption: {
-        annual_gas_consumption_m3: parseFloat(stepTwoFormData.m3),
-        xrgi_gas_type: stepTwoFormData.gasType,
-        gas_fixed_costs_dkk: stepTwoFormData.independentDKK,
-        gas_variable_costs_dkk: stepTwoFormData.dependentDKK,
+        annual_gas_consumption_m3: parseFloat(stepTwoFormData.m3) || 0,
+        xrgi_gas_type: stepTwoFormData.gasType || "",
+        gas_fixed_costs_dkk: parseFloat(stepTwoFormData.independentDKK) || 0,
+        gas_variable_costs_dkk: parseFloat(stepTwoFormData.dependentDKK) || 0,
       },
-      electircity_Consumption: {
-        annual_grid_consumption_kwh: stepTwoFormData.kWh,
-        fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
-        variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
+      electricity_Consumption: {
+        annual_grid_consumption_kwh: parseFloat(stepTwoFormData.kWh) || 0,
+        fixed_costs_dkk: parseFloat(stepTwoFormData.electricityIndependentDKK) || 0,
+        variable_costs_dkk: parseFloat(stepTwoFormData.electricityDependentDKK) || 0,
       },
-      isInstalled: isInstalled,
-      DaSigned: DaSigned,
-      feature: {
-        method: selectedOption || "", 
-        partner_details:
-          selectedOption === "local_partner"
-            ? {
-                name: partnerDetails.name || "",
-                mobile: partnerDetails.mobile || "",
-                email: partnerDetails.email || "",
-              }
-            : {}, 
-      },
+      isInstalled: isInstalled || false,
+      DaSigned: DaSigned || false,
+      hasServiceProvider: hasServiceProvider || false,
     };
 
     if (hasServiceProvider) {
       payload.serviceProvider = {
-        name: stepTwoFormData.serviceProviderName,
-        mailAddress: stepTwoFormData.serviceProviderMail,
-        phone: stepTwoFormData.serviceProviderPhone,
+        name: stepTwoFormData.serviceProviderName || "",
+        mailAddress: stepTwoFormData.serviceProviderMail || "",
+        phone: stepTwoFormData.serviceProviderPhone || "",
+      };
+    }
+
+    if (selectedOption === "local_partner") {
+      payload.feature = {
+        method: selectedOption,
+        partner_details: {
+          name: partnerDetails.name || "",
+          mobile: partnerDetails.mobile || "",
+          email: partnerDetails.email || "",
+        },
       };
     }
 
@@ -115,6 +116,6 @@ export function useCreateFacility() {
     selectedOption,
     setSelectedOption,
     partnerDetails,
-    setPartnerDetails
+    setPartnerDetails,
   };
 }

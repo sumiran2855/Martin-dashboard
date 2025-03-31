@@ -7,8 +7,10 @@ import { ArrowLeft } from "lucide-react";
 import { useCreateFacility } from "@/controller/facility/createFacility";
 import TermsModal from "../modals/acceptTerms";
 import { termsText } from "./staticData/Data";
+import { useTranslation } from "react-i18next";
 
 function AddFacility() {
+  const { t } = useTranslation("facilityForm");
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -102,37 +104,34 @@ function AddFacility() {
             <div className="p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition">
               <ArrowLeft size={20} className="text-blue-600" />
             </div>
-            <span className="text-xl">Back</span>
+            <span className="text-xl">{t("back")}</span>
           </Link>
         </div>
 
         {!facilityAdded ? (
           <>
             <h2 className="text-2xl font-bold text-[#082351DE] mb-2">
-              Register Your XRGI System
+              {t("registerXrgiSystem")}
             </h2>
-            <p className="text-gray-600 mb-6">
-              We have now created a login for you and your company. If you do
-              not have the system details, you can always return later.
-            </p>
+            <p className="text-gray-600 mb-6">{t("loginCreatedMessage")}</p>
 
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
               <div className="p-6 rounded-lg mb-6">
                 <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
-                  Register a System
+                  {t("registerSystem")}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <input
                       type="text"
                       name="systemName"
-                      placeholder="Name the system"
+                      placeholder={t("nameSystem")}
                       className="p-3 border rounded-lg w-full"
                       value={stepTwoFormData.systemName}
                       onChange={handleChange}
                     />
                     <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      Example: “System in basement 01”
+                      {t("nameSystemExample")}
                     </label>
                   </div>
 
@@ -144,7 +143,7 @@ function AddFacility() {
                         onChange={handleChangeSelect}
                         className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                       >
-                        <option value="">Select a Model</option>
+                        <option value="">{t("selectModel")}</option>
                         <option>XRGI® 9-FORD</option>
                         <option>XRGI® 9</option>
                         <option>XRGI® 6 LOWNOX</option>
@@ -178,19 +177,19 @@ function AddFacility() {
                       </span>
                     </div>
                     <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      Model name is on your registration form
+                      {t("modelNameHint")}
                     </label>
                   </div>
 
                   <div className="md:col-span-1 relative">
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      XRGI ID Number
+                      {t("xrgiIdNumber")}
                     </label>
                     <div className="relative">
                       <input
                         type="text"
                         name="XRGINumber"
-                        placeholder="Enter XRGI ID number"
+                        placeholder={t("enterXrgiId")}
                         className="p-3 border border-gray-300 rounded-lg w-full pr-10  focus:ring-2 focus:ring-blue-300"
                         value={stepTwoFormData.XRGINumber}
                         onChange={handleChange}
@@ -223,8 +222,7 @@ function AddFacility() {
                       </span>
                     </div>
                     <p className="text-gray-500 text-sm mt-1">
-                      The ID number is 8 digits and located on the side of the
-                      machine.
+                      {t("xrgiIdHint")}
                     </p>
                   </div>
                 </div>
@@ -238,20 +236,20 @@ function AddFacility() {
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
               <div className="p-6 rounded-lg mb-6">
                 <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                  System Location
+                  {t("systemLocation")}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <input
                       type="text"
                       name="address"
-                      placeholder="Address"
+                      placeholder={t("address")}
                       className="p-3 border rounded-lg w-full"
                       value={stepTwoFormData.address}
                       onChange={handleChange}
                     />
                     <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      Enter the address of this system's location
+                      {t("addressHint")}
                     </label>
                   </div>
 
@@ -259,7 +257,7 @@ function AddFacility() {
                     <input
                       type="text"
                       name="postalCode"
-                      placeholder="Postal Code"
+                      placeholder={t("postalCode")}
                       className="p-3 border rounded-lg w-full"
                       value={stepTwoFormData.postalCode}
                       onChange={handleChange}
@@ -270,7 +268,7 @@ function AddFacility() {
                     <input
                       type="text"
                       name="city"
-                      placeholder="City"
+                      placeholder={t("city")}
                       className="p-3 border rounded-lg w-full"
                       value={stepTwoFormData.city}
                       onChange={handleChange}
@@ -294,27 +292,27 @@ function AddFacility() {
                   htmlFor="serviceProvider"
                   className="text-[#082351DE] text-lg font-semibold"
                 >
-                  I want to add my service provider
+                  {t("addServiceProvider")}
                 </label>
               </div>
 
               {hasServiceProvider && (
                 <div className="p-6 rounded-lg mb-6">
                   <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                    Service Provider
+                    {t("serviceProvider")}
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <input
                         type="text"
                         name="serviceProviderName"
-                        placeholder="Name of service provider"
+                        placeholder={t("serviceProviderName")}
                         className="p-3 border rounded-lg w-full"
                         value={stepTwoFormData.serviceProviderName}
                         onChange={handleChange}
                       />
                       <label className="text-gray-500 text-sm mt-1 block ml-3">
-                        Enter the name of the service provider
+                        {t("enterServiceProviderName")}
                       </label>
                     </div>
 
@@ -322,7 +320,7 @@ function AddFacility() {
                       <input
                         type="text"
                         name="serviceProviderMail"
-                        placeholder="Email Address"
+                        placeholder={t("serviceProviderEmail")}
                         className="p-3 border rounded-lg w-full"
                         value={stepTwoFormData.serviceProviderMail}
                         onChange={handleChange}
@@ -333,7 +331,7 @@ function AddFacility() {
                       <input
                         type="text"
                         name="serviceProviderPhone"
-                        placeholder="Phone Number"
+                        placeholder={t("serviceProviderPhone")}
                         className="p-3 border rounded-lg w-full"
                         value={stepTwoFormData.serviceProviderPhone}
                         onChange={handleChange}
@@ -347,7 +345,7 @@ function AddFacility() {
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
               <div className=" p-6 rounded-lg mb-6">
                 <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                  System Costs
+                  {t("systemCosts")}
                 </h2>
                 <div className="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-3 rounded-md flex items-start space-x-3 mb-4">
                   <svg
@@ -365,15 +363,14 @@ function AddFacility() {
                     />
                   </svg>
                   <p className="text-sm mb-[-5]">
-                    We have pre-filled some of the fields. You can edit them if
-                    the entries do not match your usage.
+                    {t("preFilledFieldsMessage")}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-1">
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Service Costs for Operating XRGI®
+                      {t("serviceCosts")}
                     </label>
                     <div className="relative">
                       <input
@@ -408,15 +405,14 @@ function AddFacility() {
                       </span>
                     </div>
                     <p className="text-gray-500 text-sm mt-1 ml-3">
-                      Your service costs can be found in your contract for the
-                      system.
+                      {t("serviceCostsHint")}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:col-span-2">
                     <div>
                       <label className="block text-gray-700 text-sm font-medium mb-1">
-                        Enter VAT Deduction Percentage
+                        {t("vatDeductionPercentage")}
                       </label>
                       <input
                         type="text"
@@ -429,7 +425,7 @@ function AddFacility() {
 
                     <div className="relative">
                       <label className="block text-gray-700 text-sm font-medium mb-1">
-                        Select if VAT can be Deducted
+                        {t("vatDeduction")}
                       </label>
                       <div className="relative">
                         <select
@@ -438,8 +434,8 @@ function AddFacility() {
                           onChange={handleChangeSelect}
                           className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                         >
-                          <option>Yes</option>
-                          <option>No</option>
+                          <option>{t("yes")}</option>
+                          <option>{t("no")}</option>
                         </select>
                         <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none ">
                           <svg
@@ -464,12 +460,14 @@ function AddFacility() {
 
             <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
               <div className="text-[#082351DE] rounded-lg mb-6">
-                <h2 className="text-lg font-semibold mb-4">Gas Consumption</h2>
+                <h2 className="text-lg font-semibold mb-4">
+                  {t("gasConsumption")}
+                </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="relative">
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      What type of gas is supplied to the XRGI system?
+                      {t("gasType")}
                     </label>
                     <div className="relative">
                       <select
@@ -478,9 +476,9 @@ function AddFacility() {
                         onChange={handleChangeSelect}
                         className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                       >
-                        <option>Select gas type</option>
-                        <option>Naturel Gas</option>
-                        <option>Hydrogen</option>
+                        <option>{t("selectGasType")}</option>
+                        <option>{t("naturalGas")}</option>
+                        <option>{t("hydrogen")}</option>
                       </select>
                       <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                         <svg
@@ -501,7 +499,7 @@ function AddFacility() {
 
                   <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      What is the annual gas consumption?
+                      {t("annualGasConsumption")}
                     </label>
                     <input
                       type="text"
@@ -517,7 +515,7 @@ function AddFacility() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                   <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Enter the sum of consumption-independent costs
+                      {t("consumptionIndependentCosts")}
                     </label>
                     <input
                       type="text"
@@ -530,7 +528,7 @@ function AddFacility() {
                   </div>
                   <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Enter the sum of consumption-dependent costs
+                      {t("consumptionDependentCosts")}
                     </label>
                     <input
                       type="text"
@@ -548,14 +546,13 @@ function AddFacility() {
             <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
               <div className="text-[#082351DE] rounded-lg mb-6">
                 <h2 className="text-lg font-semibold mb-4">
-                  Electricity Consumption
+                  {t("electricityConsumption")}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Enter the annual electricity consumption when purchasing
-                      from the grid
+                      {t("annualGridConsumption")}
                     </label>
                     <input
                       type="text"
@@ -571,7 +568,7 @@ function AddFacility() {
 
                   <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Enter the sum of consumption-independent costs
+                      {t("fixedCosts")}
                     </label>
                     <input
                       type="text"
@@ -585,7 +582,7 @@ function AddFacility() {
 
                   <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Enter the sum of consumption-dependent costs
+                      {t("variableCosts")}
                     </label>
                     <input
                       type="text"
@@ -616,7 +613,7 @@ function AddFacility() {
                   htmlFor="installSystem"
                   className="text-gray-800 text-sm font-medium"
                 >
-                  Is your system installed?
+                  {t("isSystemInstalled")}
                 </label>
               </div>
             </div>
@@ -624,7 +621,7 @@ function AddFacility() {
             <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg text-[#082351DE] font-semibold">
-                  Operation Example
+                  {t("operationExample")}
                 </h2>
                 <span className="text-blue-500 cursor-pointer">
                   <svg
@@ -659,19 +656,19 @@ function AddFacility() {
               <div className="flex justify-center space-x-6 mt-4 text-sm">
                 <div className="flex items-center">
                   <span className="w-3 h-3 bg-yellow-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">XRGI</span>
+                  <span className="text-gray-700">{t("xrgilabel")}</span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-3 h-3 bg-blue-900 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">Tariffs</span>
+                  <span className="text-gray-700">{t("tariffsLabel")}</span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-3 h-3 bg-blue-400 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">Flex Price</span>
+                  <span className="text-gray-700">{t("flexPriceLabel")}</span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-3 h-3 bg-gray-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">VAT</span>
+                  <span className="text-gray-700">{t("vatLabel")}</span>
                 </div>
               </div>
             </div>
@@ -681,22 +678,16 @@ function AddFacility() {
                 onClick={() => onSubmit()}
                 className="bg-blue-500 hover:bg-blue-800 text-white px-6 py-3 rounded-md transition ml-auto"
               >
-                Add Facility
+                {t("addFacility")}
               </button>
             </div>
           </>
         ) : (
           <div>
             <h2 className="text-2xl font-bold text-[#082351DE] mb-2">
-              Installation
+              {t("installation")}
             </h2>
-            <p className="text-gray-600 mb-6">
-              To start saving money on electricity, new software needs to be
-              installed on your system. This software is developed by EC Power
-              and ensures optimal performance while providing explanations on
-              its benefits. The pricing for this service may vary depending on
-              the plan. See the price overview here.
-            </p>
+            <p className="text-gray-600 mb-6">{t("installationDescription")}</p>
 
             <div className="flex items-center space-x-3 py-4">
               <input
@@ -706,7 +697,7 @@ function AddFacility() {
                 className="w-5 h-5 cursor-pointer"
               />
               <label className="text-[#082351DE] text-lg font-semibold">
-                Do you want to set up SuperSaverX?
+                {t("setupSuperSaverX")}
               </label>
             </div>
 
@@ -714,7 +705,7 @@ function AddFacility() {
               <div className="bg-white px-6 py-4 rounded-lg mb-6 border border-gray-200">
                 <div className="p-4 rounded-lg mb-4">
                   <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
-                    Setup of the SuperSaverX Solution
+                    {t("setupSuperSaverXSolution")}
                   </h2>
                   <div className="space-y-4">
                     <label className="flex items-center space-x-2 cursor-pointer">
@@ -726,9 +717,7 @@ function AddFacility() {
                         onChange={(e) => handleOptionChange(e.target.value)}
                         className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
                       />
-                      <span className="text-gray-700">
-                        At next service check
-                      </span>
+                      <span className="text-gray-700">{t("serviceCheck")}</span>
                     </label>
 
                     <div className="space-y-2">
@@ -741,14 +730,16 @@ function AddFacility() {
                           onChange={(e) => handleOptionChange(e.target.value)}
                           className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
                         />
-                        <span className="text-gray-700">Local partner</span>
+                        <span className="text-gray-700">
+                          {t("localPartner")}
+                        </span>
                       </label>
 
                       {selectedOption === "local_partner" && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-300 p-4 rounded-lg">
                           <input
                             type="text"
-                            placeholder="Name"
+                            placeholder={t("partnerName")}
                             value={partnerDetails.name}
                             onChange={(e) =>
                               setPartnerDetails({
@@ -760,7 +751,7 @@ function AddFacility() {
                           />
                           <input
                             type="text"
-                            placeholder="Mobile"
+                            placeholder={t("partnerMobile")}
                             value={partnerDetails.mobile}
                             onChange={(e) =>
                               setPartnerDetails({
@@ -772,7 +763,7 @@ function AddFacility() {
                           />
                           <input
                             type="email"
-                            placeholder="Email"
+                            placeholder={t("partnerEmail")}
                             value={partnerDetails.email}
                             onChange={(e) =>
                               setPartnerDetails({
@@ -794,7 +785,7 @@ function AddFacility() {
                 onClick={handleAddSuperSaverX}
                 className="bg-blue-500 hover:bg-blue-800 text-white px-6 py-3 rounded-md transition ml-auto"
               >
-                Add SuperSaverX
+                {t("addSuperSaverX")}
               </button>
             </div>
           </div>

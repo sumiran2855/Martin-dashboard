@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 interface Facility {
   facilityId?: number;
@@ -11,6 +12,7 @@ interface Facility {
 }
 
 export default function listView({ facilities }: { facilities: Facility[] }) {
+  const { t } = useTranslation("dashboard");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -26,16 +28,16 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
         <thead>
           <tr className="bg-gray-50">
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Name
+            {t("name")}
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              XRGi Facility
+            {t("xrgiFacility")}
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Model
+            {t("model")}
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Status
+            {t("status")}
             </th>
           </tr>
         </thead>
@@ -96,7 +98,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
                       />
                     </div>
                   </div>
-                  <p className="text-gray-500">No registered facilities</p>
+                  <p className="text-gray-500">{t("noFacilities")}</p>
                 </div>
               </td>
             </tr>
@@ -106,7 +108,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
 
       <div className="flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200">
         <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-700">Rows per page:</span>
+          <span className="text-sm text-gray-700">{t("rowsPerPage")}</span>
           <div className="relative">
             <select
               className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"

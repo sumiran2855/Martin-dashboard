@@ -1,0 +1,25 @@
+{
+    "facilitiesTitle": "Your Facilities",
+    "facilitiesDescription": "This is an overview of your XRGi facilities. Your facilities must be added here in order to receive SuperXSaver service.",
+    "sortBy": "Sort by",
+    "listView": "List View",
+    "gridView": "Grid View",
+    "searchPlaceholder": "Search",
+    "registerFacilities": "Register more facilities",
+    "name": "Name",
+    "xrgiFacility": "XRGi Facility",
+    "model": "Model",
+    "status": "Status",
+    "statusOptions": {
+      "All": "All",
+      "Active": "Active",
+      "Data Missing": "Data Missing",
+      "Inactive": "Inactive",
+      "Maintenance": "Maintenance"
+    },
+    "inactiveFacilities": "Inactive",
+    "activeFacilities": "Active",
+    "noFacilities": "No registered facilities",
+    "rowsPerPage": "Rows per page:"
+  }
+  

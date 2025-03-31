@@ -42,7 +42,7 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
               }`}
             >
               <div className="w-6 h-6 mr-3 flex items-center justify-center">
-                🌱
+                ⚡
               </div>
               <span className="font-medium">{t("plants")}</span>
             </Link>

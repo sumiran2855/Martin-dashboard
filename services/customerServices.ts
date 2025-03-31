@@ -54,7 +54,7 @@ export const getCustomer = async (token: string, IdToken: string) => {
       IdToken
     );
     if (!result || !result.success || !result.data) {
-      throw new Error("Failed to fetch customer data");
+      console.log("Failed to fetch customer data");
     }
     const { companyInfo, contactPerson, email, phone_number, name } =
       result.data;
@@ -97,7 +97,7 @@ export const getCustomerById = async (
       IdToken
     );
     if (!result || !result.success || !result.data) {
-      throw new Error("Failed to fetch customer data");
+      console.log("Failed to fetch customer data");
     }
     const { companyInfo, contactPerson, email, phone_number, name } =
       result.data;
@@ -137,10 +137,10 @@ export const getAllCustomers = async (token: string, IdToken: string) => {
     );
 
     if (!result || !result.success || !Array.isArray(result.data)) {
-      throw new Error("Failed to fetch customer data");
+      console.log("Failed to fetch customer data");
     }
 
-    return result.data.map((customer) => {
+    return result.data.map((customer:any) => {
       const { companyInfo, contactPerson, email, phone_number, name } =
         customer;
       return {
@@ -166,4 +166,22 @@ export const getAllCustomers = async (token: string, IdToken: string) => {
     console.error("Error fetching customer data:", error);
     return [];
   }
+};
+
+// send query 
+export const sendQuery = async (
+  subject: string,
+  message: string,
+  token?: string,
+  IdToken?: string
+) => {
+  const payload = { subject, body: message };
+
+  const result = await apiRequest("/send-queries", "POST", payload, token, IdToken);
+
+  if (result.success) {
+    return result.data;
+  }
+
+  throw new Error("Failed to send query");
 };
