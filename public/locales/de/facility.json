@@ -15,6 +15,10 @@
     "electricityVariableCosts": "Verbrauchsabhängige Kosten, Strom",
     "electricityFixedCosts": "Verbrauchsunabhängige Kosten, Strom",
     "annualElectricityConsumption": "Jährlicher Stromverbrauch",
-    "superSaverXConsumption": "SuperSaverX Verbrauch"
+    "superSaverXConsumption": "SuperSaverX Verbrauch",
+    "xrgI": "XRGI",
+    "tariffs": "Preise",
+    "flexPrice": "Flexpreis",
+    "vat": "Mehrwertsteuer"
   }
   

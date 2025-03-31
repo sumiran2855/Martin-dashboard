@@ -64,5 +64,12 @@
   "partnerName": "Name",
   "partnerMobile": "Mobil",
   "partnerEmail": "E-Mail",
-  "addSuperSaverX": "SuperSaverX hinzufügen"
+  "addSuperSaverX": "SuperSaverX hinzufügen",
+  "help": "Hilfe",
+  "next": "Weiter",
+  "modalConfirmation": "Möchten Sie fortfahren?",
+  "acceptTerms": "Bedingungen akzeptieren",
+  "facilityAdded": "Anlage hinzugefügt",
+  "termsAgreement": "Ich stimme den Bedingungen zu",
+  "proceed": "Weiter"
 }

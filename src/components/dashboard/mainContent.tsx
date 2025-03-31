@@ -8,6 +8,20 @@ import { getAllFacility } from "@/services/facilityServices";
 import { useTranslation } from "react-i18next";
 
 const statusOptions = ["All", "Active", "Data Missing", "Inactive"];
+interface Facility {
+  facilityId?: number;
+  name?: string;
+  xrgiID?: string;
+  modelNumber?: string;
+  status?: string;
+  hasServiceContract?: boolean;
+  featureAdded?: boolean;
+  serviceProvider?: {
+    name?: string;
+    mailAddress?: string;
+    phone?: string;
+  };
+}
 
 export default function MainContent() {
   const router = useRouter();
@@ -17,7 +31,7 @@ export default function MainContent() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
-  const [facilitiesData, setFacilitiesData] = useState([]);
+  const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleSelect = (selectedView: string) => {
