@@ -57,6 +57,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [setupSuperSaver, setSetupSuperSaver] = useState(facility?.hasServiceContract || false);
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -144,7 +145,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     });
   };
 
-  const [setupSuperSaver, setSetupSuperSaver] = useState(false);
 
   const handleCheckboxChange = () => {
     setSetupSuperSaver((prev) => !prev);
@@ -202,7 +202,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         DaSigned: true,
         hasServiceContract,
         feature:
-          setupSuperSaver || hasServiceContract
+          setupSuperSaver
             ? {
                 method: selectedOption || "",
                 partner_details:
@@ -819,7 +819,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
             <div className="flex items-center space-x-3 py-4">
               <input
                 type="checkbox"
-                checked={facility?.hasServiceContract}
+                checked={setupSuperSaver}
                 onChange={handleCheckboxChange}
                 className="w-5 h-5 cursor-pointer"
               />
@@ -828,7 +828,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
               </label>
             </div>
 
-            {facility?.hasServiceContract && (
+            {setupSuperSaver && (
               <div className="bg-white px-6 py-4 rounded-lg mb-6 border border-gray-200">
                 <div className="p-4 rounded-lg mb-4">
                   <h2 className="text-lg font-semibold text-[#082351DE] mb-4">

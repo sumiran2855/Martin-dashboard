@@ -20,6 +20,7 @@
     "inactiveFacilities": "Inaktiv",
     "activeFacilities": "Aktiv",
     "noFacilities": "Ingen registrerede faciliteter",
-    "rowsPerPage": "Rækker per side:"
+    "rowsPerPage": "Rækker per side:",
+    "facilitiesWithServices": "Faciliteter med service"
   }
   

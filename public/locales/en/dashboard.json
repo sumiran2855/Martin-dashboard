@@ -20,6 +20,7 @@
     "inactiveFacilities": "Inactive",
     "activeFacilities": "Active",
     "noFacilities": "No registered facilities",
-    "rowsPerPage": "Rows per page:"
+    "rowsPerPage": "Rows per page:",
+    "facilitiesWithServices": "Facilities with services"
   }
   
