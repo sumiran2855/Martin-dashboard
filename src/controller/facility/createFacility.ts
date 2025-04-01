@@ -73,12 +73,14 @@ export function useCreateFacility() {
       },
       electricity_Consumption: {
         annual_grid_consumption_kwh: parseFloat(stepTwoFormData.kWh) || 0,
-        fixed_costs_dkk: parseFloat(stepTwoFormData.electricityIndependentDKK) || 0,
-        variable_costs_dkk: parseFloat(stepTwoFormData.electricityDependentDKK) || 0,
+        fixed_costs_dkk:
+          parseFloat(stepTwoFormData.electricityIndependentDKK) || 0,
+        variable_costs_dkk:
+          parseFloat(stepTwoFormData.electricityDependentDKK) || 0,
       },
       isInstalled: isInstalled || false,
       DaSigned: DaSigned || false,
-      hasServiceProvider: hasServiceProvider || false,
+      hasServiceContract : hasServiceProvider || false,
       featureAdded: setupSuperSaver ? true : false,
     };
 

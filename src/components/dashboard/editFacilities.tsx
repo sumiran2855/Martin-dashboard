@@ -271,7 +271,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="name"
                       placeholder={t("nameSystem")}
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.name}
+                      value={facility?.name || ''}
                       onChange={handleChange}
                     />
                     <label className="text-gray-500 text-sm mt-1 block ml-3">
@@ -283,7 +283,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <div className="relative">
                       <select
                         name="modelNumber"
-                        value={facility?.modelNumber}
+                        value={facility?.modelNumber || ''}
                         onChange={handleChange}
                         className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                       >
@@ -335,7 +335,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                         name="xrgiID"
                         placeholder={t("enterXrgiId")}
                         className="p-3 border border-gray-300 rounded-lg w-full pr-10  focus:ring-2 focus:ring-blue-300"
-                        value={facility?.xrgiID}
+                        value={facility?.xrgiID || ''}
                         onChange={handleChange}
                       />
                       <span
@@ -389,7 +389,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="location.address"
                       placeholder={t("address")}
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.location?.address}
+                      value={facility?.location?.address || ''}
                       onChange={handleChange}
                     />
                     <label className="text-gray-500 text-sm mt-1 block ml-3">
@@ -403,7 +403,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="location.postalCode"
                       placeholder={t("postalCode")}
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.location?.postalCode}
+                      value={facility?.location?.postalCode || ''}
                       onChange={handleChange}
                     />
                   </div>
@@ -414,7 +414,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="location.city"
                       placeholder={t("city")}
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.location?.city}
+                      value={facility?.location?.city || ''}
                       onChange={handleChange}
                     />
                   </div>
@@ -436,7 +436,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       <input
                         type="text"
                         name="systemCosts.service_Costs"
-                        value={facility?.systemCosts?.service_Costs}
+                        value={facility?.systemCosts?.service_Costs || ''}
                         onChange={handleChange}
                         className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                       />
@@ -477,7 +477,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       <input
                         type="text"
                         name="systemCosts.VAT_Deduction_Percent"
-                        value={facility?.systemCosts?.VAT_Deduction_Percent}
+                        value={facility?.systemCosts?.VAT_Deduction_Percent || ''}
                         onChange={handleChange}
                         className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
                       />
@@ -649,7 +649,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <input
                       type="text"
                       name="gas_Consumption.gas_fixed_costs_dkk"
-                      value={facility?.gas_Consumption?.gas_fixed_costs_dkk}
+                      value={facility?.gas_Consumption?.gas_fixed_costs_dkk || ""}
                       onChange={handleChange}
                       placeholder="DKK"
                       className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
@@ -662,7 +662,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <input
                       type="text"
                       name="gas_Consumption.gas_variable_costs_dkk"
-                      value={facility?.gas_Consumption?.gas_variable_costs_dkk}
+                      value={facility?.gas_Consumption?.gas_variable_costs_dkk || ""}
                       onChange={handleChange}
                       placeholder="DKK"
                       className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
@@ -688,7 +688,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="electircity_Consumption.annual_grid_consumption_kwh"
                       value={
                         facility?.electircity_Consumption
-                          ?.annual_grid_consumption_kwh
+                          ?.annual_grid_consumption_kwh || ""
                       }
                       onChange={handleChange}
                       placeholder="kWh"
@@ -705,7 +705,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <input
                       type="text"
                       name="electircity_Consumption.fixed_costs_dkk"
-                      value={facility?.electircity_Consumption?.fixed_costs_dkk}
+                      value={facility?.electircity_Consumption?.fixed_costs_dkk || ""}
                       onChange={handleChange}
                       placeholder="DKK"
                       className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
@@ -720,7 +720,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       type="text"
                       name="electircity_Consumption.variable_costs_dkk"
                       value={
-                        facility?.electircity_Consumption?.variable_costs_dkk
+                        facility?.electircity_Consumption?.variable_costs_dkk || ""
                       }
                       onChange={handleChange}
                       placeholder="DKK"

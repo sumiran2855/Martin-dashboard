@@ -1,27 +1,29 @@
 {
-    "facilitiesTitle": "Ihre Einrichtungen",
-    "facilitiesDescription": "Dies ist eine Übersicht Ihrer XRGi-Einrichtungen. Ihre Einrichtungen müssen hier hinzugefügt werden, um den SuperXSaver-Service zu erhalten.",
-    "sortBy": "Sortieren nach",
-    "listView": "Listenansicht",
-    "gridView": "Rasteransicht",
-    "searchPlaceholder": "Suche",
-    "registerFacilities": "Weitere Einrichtungen registrieren",
-    "name": "Name",
-    "xrgiFacility": "XRGi Einrichtung",
-    "model": "Modell",
-    "status": "Status",
-    "statusOptions": {
-      "All": "Alle",
-      "Active": "Aktiv",
-      "Data Missing": "Daten fehlen",
-      "Inactive": "Inaktiv",
-      "Maintenance": "Wartung"
-    },
-    "inactiveFacilities": "Inaktiv",
-    "activeFacilities": "Aktiv",
-    "noFacilities": "Keine registrierten Einrichtungen",
-    "rowsPerPage": "Zeilen pro Seite:",
-    "facilitiesWithServices": "Einrichtungen mit Dienstleistungen"
-    
-  }
-  
+  "facilitiesTitle": "Ihre Einrichtungen",
+  "facilitiesDescription": "Dies ist eine Übersicht Ihrer XRGi-Einrichtungen. Ihre Einrichtungen müssen hier hinzugefügt werden, um den SuperXSaver-Service zu erhalten.",
+  "sortBy": "Sortieren nach",
+  "listView": "Listenansicht",
+  "gridView": "Rasteransicht",
+  "searchPlaceholder": "Suche",
+  "registerFacilities": "Weitere Einrichtungen registrieren",
+  "name": "Name",
+  "xrgiFacility": "XRGi Einrichtung",
+  "model": "Modell",
+  "status": "Status",
+  "superSaverX": "superSaverX",
+  "services": "Dienstleistungen",
+  "statusOptions": {
+    "All": "Alle",
+    "Active": "Aktiv",
+    "Data Missing": "Daten fehlen",
+    "Inactive": "Inaktiv",
+    "Maintenance": "Wartung"
+  },
+  "inactiveFacilities": "Inaktiv",
+  "activeFacilities": "Aktiv",
+  "noFacilities": "Keine registrierten Einrichtungen",
+  "rowsPerPage": "Zeilen pro Seite:",
+  "facilitiesWithServices": "Einrichtungen mit Dienstleistungen",
+  "Unavailable": "Nicht verfügbar",
+  "Available": "Verfügbar"
+}

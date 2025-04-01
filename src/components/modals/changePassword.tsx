@@ -2,6 +2,7 @@ import { change_Password } from "@/services/authService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ChangePasswordProps {
   setChangePassword: (value: boolean) => void;
@@ -47,6 +48,7 @@ const PasswordInput = ({
 export default function ChangePassword({
   setChangePassword,
 }: ChangePasswordProps) {
+  const { t } = useTranslation("profile");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -59,12 +61,12 @@ export default function ChangePassword({
     setSuccess(null);
 
     if (!oldPassword || !newPassword || !confirmPassword) {
-      setError("All fields are required.");
+      setError(t("allFieldsRequired"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("New password and confirm password must match.");
+      setError(t("passwordMismatch"));
       return;
     }
 
@@ -72,18 +74,17 @@ export default function ChangePassword({
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
     if (!token || !IdToken) {
-      setError("Authorization token missing.");
+      setError(t("authTokenMissing"));
       return;
     }
 
     try {
       const response = await change_Password(token, IdToken, payload);
       if (!response) {
-        setError("Error changing password. Please try again.");
+        setError(t("errorChangingPassword"));
         return;
       }
-      console.log("Password changed successfully");
-      setSuccess("Your password has been changed successfully. Logging out...");
+      setSuccess(t("passwordChanged"));
 
       setChangePassword(false);
 
@@ -93,7 +94,7 @@ export default function ChangePassword({
         router.push("/");
       }, 3000);
     } catch (err: any) {
-      setError("An error occurred. Please try again.");
+      setError(t("errorOccurred"));
       console.error(err);
     }
   };
@@ -102,14 +103,14 @@ export default function ChangePassword({
     <div className="fixed inset-0 bg-gray-900 bg-opacity-40 flex items-center justify-center px-4 backdrop-blur-sm">
       <div className="bg-white rounded-lg shadow-xl p-6 sm:p-8 max-w-md w-full">
         <h2 className="text-xl font-semibold text-gray-900 text-center">
-          Change Password
+          {t("changePassword")}
         </h2>
         <p className="text-gray-600 text-center text-sm mt-1">
-          Enter your current password and set a new one.
+          {t("enterCurrentAndNewPassword")}
         </p>
 
         {error && (
-          <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-md">
+          <div className="mt-3 p-2 bg-red-50 border border-red-100 rounded-md">
             <p className="text-red-600 text-sm text-center">{error}</p>
           </div>
         )}
@@ -122,24 +123,24 @@ export default function ChangePassword({
 
         <div className="mt-5 space-y-4">
           <PasswordInput
-            label="Old Password"
+            label={t("oldPassword")}
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
-            placeholder="Enter old password"
+            placeholder={t("enterOldPassword")}
           />
 
           <PasswordInput
-            label="New Password"
+            label={t("newPassword")}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Enter new password"
+            placeholder={t("enterNewPassword")}
           />
 
           <PasswordInput
-            label="Confirm New Password"
+            label={t("confirmNewPassword")}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm new password"
+            placeholder={t("confirmNewPassword")}
           />
         </div>
 
@@ -148,13 +149,13 @@ export default function ChangePassword({
             onClick={() => setChangePassword(false)}
             className="w-full sm:w-auto border border-gray-400 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-100 transition"
           >
-            Cancel
+            {t("cancel")}
           </button>
           <button
             onClick={handleChangePassword}
             className="w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition"
           >
-            Save
+            {t("save")}
           </button>
         </div>
       </div>
