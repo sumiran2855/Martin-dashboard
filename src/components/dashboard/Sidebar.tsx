@@ -44,17 +44,7 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
               <div className="w-6 h-6 mr-3 flex items-center justify-center">
                 ⚡
               </div>
-              <span className="font-medium">{t("plants")}</span>
-            </Link>
-
-            <Link
-              href="/usage"
-              aria-disabled="true"
-              onClick={(e) => e.preventDefault()}
-              className="flex items-center p-3 rounded-md no-underline cursor-not-allowed text-gray-700 hover:bg-gray-100"
-            >
-              <div className="w-6 h-6 mr-3">📊</div>
-              <span className="font-medium">{t("usage")}</span>
+              <span className="font-medium">{t("XRGI´s")}</span>
             </Link>
 
             <Link

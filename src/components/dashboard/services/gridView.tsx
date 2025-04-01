@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
 interface Facility {
-  facilityId?: number;
+  id?: number;
   name?: string;
   xrgiID?: string;
   modelNumber?: string;
@@ -27,10 +27,10 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {facilities.map((facility) => (
               <div
-                key={facility.facilityId}
+                key={facility.id}
                 className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
                 onClick={() =>
-                  router.push(`/dashboard/facilities/${facility.facilityId}`)
+                  router.push(`/dashboard/facilities/${facility.id}`)
                 }
               >
                 <div>
