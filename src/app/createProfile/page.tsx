@@ -24,6 +24,7 @@ function Dashboard() {
   const [setupSuperSaver, setSetupSuperSaver] = useState<boolean>(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
+  const [facilityMethod, setFacilityMethod] = useState("");
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -200,18 +201,20 @@ function Dashboard() {
       isInstalled,
       DaSigned: isChecked,
       hasServiceContract: hasServiceProvider ? true : false,
-      ...(setupSuperSaver && isPartnerDetailsFilled
-        ? {
-            feature: {
-              method: selectedOption || "",
-              partner_details:selectedOption === "local_partner" ? {
-                      name: partnerDetails.name || "",
-                      mobile: partnerDetails.mobile || "",
-                      email: partnerDetails.email || "",
-              } : {},
-            },
-          }
-        : {}),
+      feature:
+          setupSuperSaver
+            ? {
+                method: selectedOption || "",
+                partner_details:
+                  selectedOption === "local_partner"
+                    ? {
+                        name: partnerDetails.name || "",
+                        mobile: partnerDetails.mobile || "",
+                        email: partnerDetails.email || "",
+                      }
+                    : undefined,
+              }
+            : null,
       featureAdded: setupSuperSaver ? true : false,
     };
 
@@ -308,6 +311,14 @@ function Dashboard() {
         });
       }
 
+      if(facilityData?.isInstalled){
+        setIsInstalled(facilityData.isInstalled);
+        setFacilityMethod(facilityData.feature.method);
+      }
+      if(facilityData?.featureAdded){
+        setSetupSuperSaver(facilityData.featureAdded);
+      }
+
       const { serviceProvider } = facilityData || {};
       if (
         serviceProvider &&
@@ -395,6 +406,8 @@ function Dashboard() {
                   setPartnerDetails={setPartnerDetails}
                   setupSuperSaver={setupSuperSaver}
                   setSetupSuperSaver={setSetupSuperSaver}
+                  facilityMethod={facilityMethod}
+                  setFacilityMethod={setFacilityMethod}
                 />
               )}
             </div>

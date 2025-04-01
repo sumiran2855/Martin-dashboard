@@ -55,7 +55,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
-  console.log("🚀 ~ EditFacilities ~ hasServiceProvider:", hasServiceProvider);
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [setupSuperSaver, setSetupSuperSaver] = useState(facility?.featureAdded || false);
@@ -93,7 +92,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           setHasServiceProvider(true);
         }
 
-        if (response.data.featureAdded === true && feature) {
+        if (response.data.featureAdded === true || feature) {
           setSetupSuperSaver(true);
           setSelectedOption(feature.method || "");
 

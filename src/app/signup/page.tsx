@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { countryCodes } from "@/components/dashboard/staticData/Data";
 import { signup } from "@/services/authService";
 import { InputField } from "@/components/form/InputField";
@@ -17,13 +17,33 @@ export default function Signup() {
   const [countryCode, setCountryCode] = useState("+45");
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [email, setEmail] = useState("");
+  const [phoneValidationSchema, setPhoneValidationSchema] = useState(Yup.string());
+
+  useEffect(() => {
+    const getPhoneValidation = () => {
+      switch (countryCode) {
+        case "+91": 
+          return Yup.string()
+            .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+            .required("Phone number is required");
+        case "+45": 
+          return Yup.string()
+            .matches(/^\d{8}$/, "Phone number must be exactly 8 digits")
+            .required("Phone number is required");
+        default:
+          return Yup.string()
+            .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+            .required("Phone number is required");
+      }
+    };
+
+    setPhoneValidationSchema(getPhoneValidation());
+  }, [countryCode]);
 
   const validationSchema = Yup.object({
     firstname: Yup.string().required("firstname is required"),
     lastname: Yup.string().required("lastname is required"),
-    phone_number: Yup.string()
-      .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
-      .required("Phone number is required"),
+    phone_number: phoneValidationSchema,
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
