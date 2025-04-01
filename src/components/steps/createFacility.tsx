@@ -88,7 +88,7 @@ export default function CreateFacility({
               <div className="relative">
                 <select
                   name="model"
-                  value={selectedModel}
+                  value={stepTwoFormData.model}
                   onChange={handleChangeSelect}
                   className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                 >

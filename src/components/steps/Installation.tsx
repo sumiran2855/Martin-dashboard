@@ -7,6 +7,8 @@ interface AddFeature {
   setPartnerDetails: (details: any) => void;
   setupSuperSaver: boolean;
   setSetupSuperSaver: React.Dispatch<React.SetStateAction<any>>;
+  facilityMethod: string;
+  setFacilityMethod: (value: string) => void;
 }
 
 export default function StepThree({
@@ -16,6 +18,8 @@ export default function StepThree({
   setPartnerDetails,
   setupSuperSaver,
   setSetupSuperSaver,
+  facilityMethod,
+  setFacilityMethod,
 }: AddFeature) {
   const handleCheckboxChange = () => {
     setSetupSuperSaver((prev: any) => !prev);
