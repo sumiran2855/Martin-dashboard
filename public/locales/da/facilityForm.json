@@ -64,5 +64,13 @@
   "partnerName": "Navn",
   "partnerMobile": "Mobil",
   "partnerEmail": "E-mail",
-  "addSuperSaverX": "Tilføj SuperSaverX"
+  "addSuperSaverX": "Tilføj SuperSaverX",
+  "help": "Hjælp",
+  "next": "Næste",
+  "modalConfirmation": "Vil du fortsætte?",
+  "acceptTerms": "Accepter vilkår",
+  "facilityAdded": "Facilitet tilføjet",
+  "termsAgreement": "Jeg accepterer vilkårene og betingelserne",
+  "facilityDetails": "Facilitetsdetaljer",
+  "proceed": "Fortsæt"
 }

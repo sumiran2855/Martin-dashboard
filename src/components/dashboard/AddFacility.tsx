@@ -86,7 +86,8 @@ function AddFacility() {
     const success = await handleCreateFacility(
       isChecked,
       isInstalled,
-      hasServiceProvider
+      hasServiceProvider,
+      setupSuperSaver
     );
     if (success) {
       router.push("/dashboard");

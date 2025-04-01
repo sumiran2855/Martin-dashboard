@@ -15,6 +15,11 @@
     "electricityVariableCosts": "Forbrugsafhængige omkostninger, el",
     "electricityFixedCosts": "Forbrugsuafhængige omkostninger, el",
     "annualElectricityConsumption": "Årligt elforbrug",
-    "superSaverXConsumption": "SuperSaverX Forbrug"
+    "superSaverXConsumption": "SuperSaverX Forbrug",
+    "xrgI": "XRGI",
+    "tariffs": "Priser",
+    "flexPrice": "Flexpris",
+    "vat": "Moms"
+    
   }
   

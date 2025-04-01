@@ -163,10 +163,10 @@ function Dashboard() {
       console.error("Authorization token missing.");
       return false;
     }
-  
+
     const isPartnerDetailsFilled =
       partnerDetails.name || partnerDetails.mobile || partnerDetails.email;
-  
+
     const payload = {
       name: stepTwoFormData.systemName,
       xrgiID: stepTwoFormData.XRGINumber,
@@ -205,19 +205,20 @@ function Dashboard() {
             feature: {
               method: selectedOption || "",
               partner_details:selectedOption === "local_partner" ? {
-                name: partnerDetails.name || "",
-                mobile: partnerDetails.mobile || "",
-                email: partnerDetails.email || "",
+                      name: partnerDetails.name || "",
+                      mobile: partnerDetails.mobile || "",
+                      email: partnerDetails.email || "",
               } : {},
             },
           }
         : {}),
+      featureAdded: setupSuperSaver ? true : false,
     };
-  
+
     try {
       const response = await createFacility(token, IdToken, payload);
       console.log("create facility success", response);
-  
+
       await handleCreateProfile(true);
       return true;
     } catch (error) {
@@ -394,7 +395,6 @@ function Dashboard() {
                   setPartnerDetails={setPartnerDetails}
                   setupSuperSaver={setupSuperSaver}
                   setSetupSuperSaver={setSetupSuperSaver}
-
                 />
               )}
             </div>

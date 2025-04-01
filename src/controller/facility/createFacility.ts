@@ -40,7 +40,8 @@ export function useCreateFacility() {
   const handleCreateFacility = async (
     DaSigned?: boolean,
     isInstalled?: boolean,
-    hasServiceProvider?: boolean
+    hasServiceProvider?: boolean,
+    setupSuperSaver?: boolean
   ) => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
@@ -78,6 +79,7 @@ export function useCreateFacility() {
       isInstalled: isInstalled || false,
       DaSigned: DaSigned || false,
       hasServiceProvider: hasServiceProvider || false,
+      featureAdded: setupSuperSaver ? true : false,
     };
 
     if (hasServiceProvider) {

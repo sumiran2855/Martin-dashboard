@@ -64,5 +64,13 @@
   "partnerName": "Name",
   "partnerMobile": "Mobile",
   "partnerEmail": "Email",
-  "addSuperSaverX": "Add SuperSaverX"
+  "addSuperSaverX": "Add SuperSaverX",
+  "help": "Help",
+  "next": "Next",
+  "modalConfirmation": "Do you want to proceed?",
+  "acceptTerms": "Accept Terms",
+  "facilityAdded": "Facility Added",
+  "termsAgreement": "I agree to the terms and conditions",
+  "facilityDetails": "Facility Details",
+  "proceed": "Proceed"
 }

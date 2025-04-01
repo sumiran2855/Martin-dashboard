@@ -87,7 +87,8 @@ export const getFacility = async (token: string, IdToken: string) => {
       status: facilityData.status || "",
       createdAt: facilityData.createdAt || "",
       updatedAt: facilityData.updatedAt || "",
-
+      DaSigned: facilityData.DaSigned || false,
+      isInstalled: facilityData.isInstalled || false,
       location: {
         address: facilityData.location?.address || "",
         postalCode: facilityData.location?.postalCode || "",
@@ -123,7 +124,8 @@ export const getFacility = async (token: string, IdToken: string) => {
         mailAddress: facilityData.serviceProvider?.mailAddress || "",
         phone: facilityData.serviceProvider?.phone || "",
       },
-
+      hasServiceContract: facilityData.hasServiceContract || false,
+      featureAdded: facilityData.featureAdded || false,
       feature: {
         method: facilityData.feature?.method || "",
         partner_details: {
@@ -165,6 +167,8 @@ export const getAllFacility = async (token: string, IdToken: string) => {
       status: facilityData.status || "",
       createdAt: facilityData.createdAt || "",
       updatedAt: facilityData.updatedAt || "",
+      DaSigned: facilityData.DaSigned || false,
+      isInstalled: facilityData.isInstalled || false,
       location: {
         address: facilityData.location?.address || "",
         postalCode: facilityData.location?.postalCode || "",
@@ -196,6 +200,16 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         name: facilityData.serviceProvider?.name || "",
         mailAddress: facilityData.serviceProvider?.mailAddress || "",
         phone: facilityData.serviceProvider?.phone || "",
+      },
+      hasServiceContract: facilityData.hasServiceContract || false,
+      featureAdded: facilityData.featureAdded || false,
+      feature: {
+        method: facilityData.feature?.method || "",
+        partner_details: {
+          name: facilityData.feature?.partner_details?.name || "",
+          mobile: facilityData.feature?.partner_details?.mobile || "",
+          email: facilityData.feature?.partner_details?.email || "",
+        },
       },
     }));
   } catch (error) {

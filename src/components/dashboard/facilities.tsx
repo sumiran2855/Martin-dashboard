@@ -53,7 +53,6 @@ export default function facilities({ facilityId }: { facilityId: string }) {
         );
 
         if (!response.success || !response.data) {
-          // throw new Error("Failed to fetch facility data");
           return;
         }
 
@@ -227,19 +226,19 @@ export default function facilities({ facilityId }: { facilityId: string }) {
               <div className="flex justify-center space-x-6 mt-4 text-sm">
                 <div className="flex items-center">
                   <span className="w-3 h-3 bg-yellow-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">XRGI</span>
+                  <span className="text-gray-700">{t("xrgI")}</span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-3 h-3 bg-blue-900 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">Tariffs</span>
+                  <span className="text-gray-700">{t("tariffs")}</span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-3 h-3 bg-blue-400 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">Flex Price</span>
+                  <span className="text-gray-700">{t("flexPrice")}</span>
                 </div>
                 <div className="flex items-center">
                   <span className="w-3 h-3 bg-gray-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">VAT</span>
+                  <span className="text-gray-700">{t("vat")}</span>
                 </div>
               </div>
             </div>

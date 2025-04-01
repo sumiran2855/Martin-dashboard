@@ -54,27 +54,33 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
               className="flex items-center p-3 rounded-md no-underline cursor-not-allowed text-gray-700 hover:bg-gray-100"
             >
               <div className="w-6 h-6 mr-3">📊</div>
-              <span>{t("usage")}</span>
+              <span className="font-medium">{t("usage")}</span>
             </Link>
 
             <Link
               href="/subscription"
               aria-disabled="true"
-              onClick={(e) => e.preventDefault()}
-              className="flex items-center p-3 rounded-md no-underline cursor-not-allowed text-gray-700 hover:bg-gray-100"
+              className={`flex items-center p-3 rounded-md no-underline ${
+                pathname === "/subscription"
+                  ? "text-white bg-blue-900"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
             >
               <div className="w-6 h-6 mr-3">💳</div>
-              <span>{t("subscription")}</span>
+              <span className="font-medium">{t("subscription")}</span>
             </Link>
 
             <Link
-              href="/service"
+              href="/services"
               aria-disabled="true"
-              onClick={(e) => e.preventDefault()}
-              className="flex items-center p-3 rounded-md no-underline cursor-not-allowed text-gray-700 hover:bg-gray-100"
+              className={`flex items-center p-3 rounded-md no-underline ${
+                pathname === "/services"
+                  ? "text-white bg-blue-900"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
             >
               <div className="w-6 h-6 mr-3">🔧</div>
-              <span>{t("service")}</span>
+              <span className="font-medium">{t("services")}</span>
             </Link>
           </div>
         </nav>
