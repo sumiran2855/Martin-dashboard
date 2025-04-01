@@ -5,8 +5,10 @@ import ChangePassword from "../modals/changePassword";
 import { createProfile } from "@/services/customerServices";
 import { getProfile } from "@/controller/companyProfile/createProfile";
 import { countryCodes } from "./staticData/Data";
+import { useTranslation } from "react-i18next";
 
 export default function profileDetail() {
+  const { t } = useTranslation("profile");
   const [isOpen, setIsOpen] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const { formData, setFormData, loading } = getProfile();
@@ -65,84 +67,84 @@ export default function profileDetail() {
             <div className="bg-white shadow-md rounded-lg">
               <div className="p-6 border-b flex justify-between items-center">
                 <h1 className="text-2xl font-semibold text-gray-800">
-                  Profile
+                {t("profile")}
                 </h1>
                 <button
                   className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
                   onClick={() => setChangePassword(true)}
                 >
-                  Change Password
+                  {t("changePassword")}
                 </button>
               </div>
 
               {/* Business Information Section */}
               <div className="p-6 border-b">
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                  Business Information
+                {t("businessInfo")}
                 </h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-1">
-                      Business Name
+                    {t("businessName")}
                     </label>
                     <input
                       type="text"
                       name="companyName"
                       value={formData.companyName}
                       onChange={handleChange}
-                      placeholder="Enter business name"
+                      placeholder={t("enterBusinessName")}
                       className="w-full px-3 py-2 border rounded-md"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-1">
-                      CVR Number
+                    {t("cvrNumber")}
                     </label>
                     <input
                       type="text"
                       name="cvrNumber"
                       value={formData.cvrNumber}
                       onChange={handleChange}
-                      placeholder="Enter CVR number"
+                      placeholder={t("enterCvrNumber")}
                       className="w-full px-3 py-2 border rounded-md"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-1">
-                      Address
+                    {t("address")}
                     </label>
                     <input
                       type="text"
                       name="address"
                       value={formData.address}
                       onChange={handleChange}
-                      placeholder="Enter address"
+                      placeholder={t("enterAddress")}
                       className="w-full px-3 py-2 border rounded-md"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Postal Code
+                      {t("postalCode")}
                       </label>
                       <input
                         type="text"
                         name="postal_code"
                         value={formData.postal_code}
                         onChange={handleChange}
-                        placeholder="Enter postal code"
+                        placeholder={t("enterPostalCode")}
                         className="w-full px-3 py-2 border rounded-md"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        City
+                      {t("city")}
                       </label>
                       <input
                         type="text"
                         name="city"
-                        placeholder="Enter city"
+                        placeholder={t("enterCity")}
                         value={formData.city}
                         onChange={handleChange}
                         className="w-full px-3 py-2 border rounded-md"
@@ -155,52 +157,52 @@ export default function profileDetail() {
               {/* Contact Person Section */}
               <div className="p-6">
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                  Contact Person
+                {t("contactPerson")}
                 </h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-1">
-                      First Name
+                    {t("firstName")}
                     </label>
                     <input
                       type="text"
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleChange}
-                      placeholder="Enter first name"
+                      placeholder={t("enterFirstName")}
                       className="w-full px-3 py-2 border rounded-md"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-1">
-                      Last Name
+                    {t("lastName")}
                     </label>
                     <input
                       type="text"
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleChange}
-                      placeholder="Enter last name"
+                      placeholder={t("enterLastName")}
                       className="w-full px-3 py-2 border rounded-md"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-1">
-                      Email
+                    {t("email")}
                     </label>
                     <input
                       type="text"
                       name="personalEmail"
                       value={formData.personalEmail}
                       onChange={handleChange}
-                      placeholder="Enter email"
+                      placeholder={t("enterEmail")}
                       className="w-full px-3 py-2 border rounded-md"
                     />
                   </div>
                   <div className="flex items-end space-x-2">
                     <div className="w-24 md:w-28">
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Mobile
+                      {t("mobile")}
                       </label>
                       <div className="relative">
                         <select
@@ -227,7 +229,7 @@ export default function profileDetail() {
                         name="personalPhone"
                         value={formData.personalPhone}
                         onChange={handleChange}
-                        placeholder="Enter mobile number"
+                        placeholder={t("enterMobileNumber")}
                         className="w-full h-10 md:h-12 px-3 border rounded-md"
                       />
                     </div>
@@ -241,7 +243,7 @@ export default function profileDetail() {
                   className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
                   onClick={() => setIsOpen(true)}
                 >
-                  Save Changes
+                  {t("saveChanges")}
                 </button>
               </div>
             </div>
@@ -250,12 +252,11 @@ export default function profileDetail() {
           <Modal
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
-            title="Do you want to save the changes?"
-            message="Changes have been made to your profile. Do you want to save or
-                discard them?"
-            primaryButton="Save"
+            title={t("saveChangesTitle")}
+            message={t("saveChangesMessage")}
+            primaryButton={t("save")}
             onPrimaryClick={updateProfile}
-            secondaryButton="Discard"
+            secondaryButton={t("discard")}
             onSecondaryClick={() => router.push("/profile")}
           />
 

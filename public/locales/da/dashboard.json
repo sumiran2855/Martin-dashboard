@@ -10,6 +10,8 @@
     "xrgiFacility": "XRGi facilitet",
     "model": "Model",
     "status": "Status",
+    "superSaverX":"superSaverX",
+    "services": "Tjenester",
     "statusOptions": {
       "All": "Alle",
       "Active": "Aktiv",
@@ -21,6 +23,8 @@
     "activeFacilities": "Aktiv",
     "noFacilities": "Ingen registrerede faciliteter",
     "rowsPerPage": "Rækker per side:",
-    "facilitiesWithServices": "Faciliteter med service"
+    "facilitiesWithServices": "Faciliteter med service",
+     "Unavailable": "Utilgængelig",
+      "Available": "Tilgængelig"
   }
   

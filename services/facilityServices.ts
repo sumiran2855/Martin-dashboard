@@ -304,3 +304,21 @@ export const addFacility = async (
   }
   throw new Error("Failed to create facility");
 };
+
+// get all facility for admin
+export const getAllFacilityForAdmin = async (
+  token: string,
+  IdToken: string
+) => {
+  const result = await apiRequest(
+    `${FACILITY_API_ROUTES.GET_ALL_FACILITY}`,
+    "GET",
+    undefined,
+    token,
+    IdToken
+  )
+  if (result.success) {
+    return result.data;
+  }
+  throw new Error("Failed to get facility");
+};

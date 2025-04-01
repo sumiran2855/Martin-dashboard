@@ -54,11 +54,10 @@ export default function AdminSidebar({ userId = [] }: User) {
             </Link>
 
             <Link
-              href="/subscription"
+              href="/admin/subscription"
               aria-disabled="true"
-              onClick={(e) => e.preventDefault()}
-              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
-                pathname === "/subscription"
+              className={`flex items-center p-3 rounded-md no-underline  ${
+                pathname === "/admin/subscription"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
               }`}
@@ -70,11 +69,10 @@ export default function AdminSidebar({ userId = [] }: User) {
             </Link>
 
             <Link
-              href="/service"
+              href="/admin/services"
               aria-disabled="true"
-              onClick={(e) => e.preventDefault()}
-              className={`flex items-center p-3 rounded-md no-underline cursor-not-allowed ${
-                pathname === "/service"
+              className={`flex items-center p-3 rounded-md no-underline ${
+                pathname === "/admin/services"
                   ? "text-white bg-blue-900"
                   : "text-gray-700 hover:bg-gray-100"
               }`}
