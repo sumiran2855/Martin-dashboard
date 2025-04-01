@@ -35,7 +35,7 @@ interface Facility {
     fixed_costs_dkk: string;
     variable_costs_dkk: string;
   };
-
+  featureAdded: boolean;
   hasServiceContract: boolean;
   feature?: {
     method: string;
@@ -55,9 +55,10 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
+  console.log("🚀 ~ EditFacilities ~ hasServiceProvider:", hasServiceProvider);
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-  const [setupSuperSaver, setSetupSuperSaver] = useState(facility?.hasServiceContract || false);
+  const [setupSuperSaver, setSetupSuperSaver] = useState(facility?.featureAdded || false);
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -86,16 +87,13 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         setFacility(response.data);
         setIsInstalled(response.data?.isInstalled || false);
 
-        const { serviceProvider, feature } = response.data;
-        if (
-          serviceProvider?.name &&
-          serviceProvider?.mailAddress &&
-          serviceProvider?.phone
-        ) {
+        console.log("🚀 ~ fetchFacility ~ response.data.hasServiceContract:", response.data)
+        const { feature } = response.data;
+        if(response.data.hasServiceContract){
           setHasServiceProvider(true);
         }
 
-        if (response.data.hasServiceContract && feature) {
+        if (response.data.featureAdded === true && feature) {
           setSetupSuperSaver(true);
           setSelectedOption(feature.method || "");
 
@@ -171,7 +169,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           postalCode: facility?.location?.postalCode,
           city: facility?.location?.city,
         },
-        serviceProvider: hasServiceProvider
+        serviceProvider: facility?.hasServiceContract
           ? {
               name: facility?.serviceProvider?.name || "",
               mailAddress: facility?.serviceProvider?.mailAddress || "",

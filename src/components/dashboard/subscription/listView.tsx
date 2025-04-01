@@ -89,7 +89,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
                   </span>
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                  {facility.serviceProvider?.name ? "Available" : "Unavailable"}
+                  {facility.hasServiceContract ? "Available" : "Unavailable"}
                 </td>
                 <td className="px-6 py-2 text-right">
                   <button
