@@ -71,25 +71,25 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
                 <td className="px-6 py-3 whitespace-nowrap flex items-center space-x-2">
                   <img
                     src={
-                      facility.featureAdded && facility.hasServiceContract
+                      facility.featureAdded 
                         ? "/Active.png"
                         : "/Inactive.png"
                     }
                     alt={
-                      facility.featureAdded && facility.hasServiceContract
+                      facility.featureAdded 
                         ? "Active"
                         : "Inactive"
                     }
                     className="w-5 h-5"
                   />
                   <span className="text-sm text-gray-700">
-                    {facility.featureAdded && facility.hasServiceContract
+                    {facility.featureAdded 
                       ? "Active"
                       : "Inactive"}
                   </span>
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                  {facility.serviceProvider?.name ? "Available" : "Unavailable"}
+                  {facility.hasServiceContract ? "Available" : "Unavailable"}
                 </td>
                 <td className="px-6 py-2 text-right">
                   <button

@@ -54,11 +54,11 @@ function SubscriptionPage() {
   }, []);
 
   const filteredData = facilitiesData
-    .filter((facility) =>
-      facility.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter((facility) => {
-      if (selectedStatus === "All") return true;
+  .filter((facility) =>
+    facility.name?.toLowerCase().includes(searchTerm.toLowerCase())
+)
+.filter((facility) => {
+  if (selectedStatus === "All") return true;
       if (selectedStatus === "Active")
         return (
           facility.featureAdded === true && facility.hasServiceContract === true
@@ -68,8 +68,8 @@ function SubscriptionPage() {
           facility.featureAdded === false ||
           facility.hasServiceContract === false
         );
-      return false;
-    });
+        return false;
+      });
 
   return (
     <>

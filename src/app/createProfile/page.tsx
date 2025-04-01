@@ -199,7 +199,7 @@ function Dashboard() {
       },
       isInstalled,
       DaSigned: isChecked,
-      hasServiceContract: setupSuperSaver ? true : false,
+      hasServiceContract: hasServiceProvider ? true : false,
       ...(setupSuperSaver && isPartnerDetailsFilled
         ? {
             feature: {
