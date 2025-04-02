@@ -22,7 +22,7 @@ interface Facility {
 const statusOptions = ["All", "Active", "Inactive"];
 
 function SubscriptionPage() {
-  const { t } = useTranslation("dashboard");
+  const { t } = useTranslation("subscription");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
@@ -61,12 +61,11 @@ function SubscriptionPage() {
   if (selectedStatus === "All") return true;
       if (selectedStatus === "Active")
         return (
-          facility.featureAdded === true && facility.hasServiceContract === true
+          facility.featureAdded === true 
         );
       if (selectedStatus === "Inactive")
         return (
-          facility.featureAdded === false ||
-          facility.hasServiceContract === false
+          facility.featureAdded === false 
         );
         return false;
       });
@@ -86,9 +85,9 @@ function SubscriptionPage() {
         <div className="flex-1 overflow-auto">
           <div className="p-8">
             <h1 className="text-2xl font-medium text-gray-800 mb-2">
-              {t("facilitiesTitle")}
+              {t("subscriptionTitle")}
             </h1>
-            <p className="text-gray-600 mb-6">{t("facilitiesDescription")}</p>
+            <p className="text-gray-600 mb-6">{t("subscriptionDescription")}</p>
 
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center space-x-4">

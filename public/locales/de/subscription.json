@@ -1,0 +1,20 @@
+{
+    
+      "subscriptionTitle": "Abonnements",
+      "subscriptionDescription": "Verwalten und überwachen Sie alle Ihre aktiven und inaktiven Abonnements.",
+      "sortBy": "Sortieren nach",
+      "searchPlaceholder": "Abonnements suchen...",
+      "statusOptions": {
+        "All": "Alle",
+        "Active": "Aktiv",
+        "Inactive": "Inaktiv",
+        "MissingData": "Fehlende Daten"
+      },
+      "services": {
+        "servicesTitle": "Dienstleistungen",
+        "servicesDescription": "Anzeigen und verwalten aller Einrichtungen mit einem zugehörigen Dienstanbieter. Behalten Sie den Überblick über Serviceverträge, überwachen Sie aktive Vereinbarungen und stellen Sie eine nahtlose Wartungsunterstützung für Ihre Einrichtungen sicher.",
+        "searchPlaceholder": "Dienstleistungen suchen..."
+      }
+    
+  }
+  

@@ -65,7 +65,7 @@ export default function AdminSidebar({ userId = [] }: User) {
               <div className="w-6 h-6 mr-3 flex items-center justify-center">
               💳
               </div>
-              <span>Subscription</span>
+              <span className="font-medium">Subscription</span>
             </Link>
 
             <Link
@@ -80,7 +80,7 @@ export default function AdminSidebar({ userId = [] }: User) {
               <div className="w-6 h-6 mr-3 flex items-center justify-center">
               🔧
               </div>
-              <span>Service</span>
+              <span className="font-medium">Service</span>
             </Link>
           </div>
         </nav>
