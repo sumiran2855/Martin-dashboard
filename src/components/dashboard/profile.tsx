@@ -12,7 +12,6 @@ export default function profileDetail() {
   const [isOpen, setIsOpen] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const { formData, setFormData, loading } = getProfile();
-  console.log("🚀 ~ profileDetail ~ formData:", formData);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;

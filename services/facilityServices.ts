@@ -68,7 +68,7 @@ export const getFacility = async (token: string, IdToken: string) => {
       !result.data ||
       result.data.length === 0
     ) {
-      console.error(" No valid facility data found.");
+      console.log(" No valid facility data found.");
       return null;
     }
 

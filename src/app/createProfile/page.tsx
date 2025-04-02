@@ -25,25 +25,40 @@ function Dashboard() {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
   const [facilityMethod, setFacilityMethod] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
     email: "",
   });
 
-  const [isChecked, setIsChecked] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const getAuthTokens = () => {
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+    if (!token || !IdToken) {
+      console.error("Authorization token missing.");
+      return null;
+    }
+    return { token, IdToken };
+  };
 
   useEffect(() => {
-    const journeyStatus = localStorage.getItem("journeyStatus");
-    if (journeyStatus === "profileInfo") {
-      setStep(1);
-      handleGetCustomer();
-    } else if (journeyStatus === "facilityInfo") {
-      setStep(2);
-      handleGetFacility();
-    } else if (journeyStatus === "installationInfo") {
-      setStep(3);
+    const journeyStatus = localStorage.getItem("journeyStatus") || "";
+    const journeyMapping: Record<string, () => void> = {
+      profileInfo: () => {
+        setStep(1);
+        handleGetCustomer();
+      },
+      facilityInfo: () => {
+        setStep(2);
+        handleGetFacility();
+      },
+      installationInfo: () => setStep(3),
+    };
+
+    if (journeyMapping[journeyStatus]) {
+      journeyMapping[journeyStatus]();
     } else {
       router.push("/dashboard");
     }
@@ -104,13 +119,10 @@ function Dashboard() {
   };
 
   const handleCreateProfile = async (updateOnly = false) => {
-    const token = localStorage.getItem("token");
-    const IdToken = localStorage.getItem("IdToken");
-    if (!token || !IdToken) {
-      console.error("Authorization token missing.");
-      return false;
-    }
+    const auth = getAuthTokens();
+    if (!auth) return false;
 
+    const { token, IdToken } = auth;
     const journeyStatus = localStorage.getItem("journeyStatus");
 
     const formatPhoneNumber = (phone: string, countryCode: string) => {
@@ -121,12 +133,7 @@ function Dashboard() {
       ? { journeyStatus }
       : {
           companyInfo: {
-            name: formData.companyName,
-            cvr_number: formData.cvrNumber,
-            address: formData.address,
-            city: formData.city,
-            postal_code: formData.postal_code,
-            email: formData.email,
+            ...formData,
             phone: formatPhoneNumber(formData.phone, formData.countryCode),
           },
           contactPerson: {
@@ -165,9 +172,6 @@ function Dashboard() {
       return false;
     }
 
-    const isPartnerDetailsFilled =
-      partnerDetails.name || partnerDetails.mobile || partnerDetails.email;
-
     const payload = {
       name: stepTwoFormData.systemName,
       xrgiID: stepTwoFormData.XRGINumber,
@@ -177,11 +181,11 @@ function Dashboard() {
         postalCode: stepTwoFormData.postalCode,
         city: stepTwoFormData.city,
       },
-      serviceProvider: {
+      serviceProvider: hasServiceProvider ? {
         name: stepTwoFormData.serviceProviderName,
         mailAddress: stepTwoFormData.serviceProviderMail,
         phone: stepTwoFormData.serviceProviderPhone,
-      },
+      } : null,
       systemCosts: {
         service_Costs: parseFloat(stepTwoFormData.serviceCost),
         VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat),
@@ -203,18 +207,18 @@ function Dashboard() {
       hasServiceContract: hasServiceProvider ? true : false,
       feature:
           setupSuperSaver
-            ? {
-                method: selectedOption || "",
-                partner_details:
-                  selectedOption === "local_partner"
-                    ? {
-                        name: partnerDetails.name || "",
-                        mobile: partnerDetails.mobile || "",
-                        email: partnerDetails.email || "",
-                      }
-                    : undefined,
-              }
-            : null,
+        ? {
+            method: selectedOption || "",
+            partner_details:
+              selectedOption === "local_partner"
+                ? {
+                    name: partnerDetails.name || "",
+                    mobile: partnerDetails.mobile || "",
+                    email: partnerDetails.email || "",
+                  }
+                : undefined,
+          }
+        : null,
       featureAdded: setupSuperSaver ? true : false,
     };
 
@@ -231,13 +235,10 @@ function Dashboard() {
   };
 
   const handleGetCustomer = async () => {
-    const token = localStorage.getItem("token");
-    const IdToken = localStorage.getItem("IdToken");
-    if (!token || !IdToken) {
-      console.error("Authorization token missing.");
-      return;
-    }
+    const auth = getAuthTokens();
+    if (!auth) return false;
 
+    const { token, IdToken } = auth;
     const splitPhoneNumber = (fullPhoneNumber: string) => {
       if (!fullPhoneNumber) return { phone: "", countryCode: "" };
       const phone = fullPhoneNumber.slice(-10);

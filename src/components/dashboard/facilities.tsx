@@ -70,65 +70,17 @@ export default function facilities({ facilityId }: { facilityId: string }) {
   }, [facilityId]);
 
   const facilityDetails = [
-    {
-      label: t("serviceCosts"),
-      value: facility?.systemCosts?.service_Costs ?? "-",
-    },
-    {
-      label: t("vatDeduction"),
-      value: facility?.systemCosts?.VAT_Deduction_Percent ?? "-",
-    },
-    {
-      label: t("gasSupply"),
-      value:
-        facility?.gas_Consumption?.xrgi_gas_type === "Select gas type"
-          ? "-"
-          : facility?.gas_Consumption?.xrgi_gas_type ?? "-",
-    },
-    {
-      label: t("gasVariableCosts"),
-      value:
-        facility?.gas_Consumption?.gas_variable_costs_dkk != null
-          ? facility.gas_Consumption.gas_variable_costs_dkk + " m³"
-          : "-",
-    },
-    {
-      label: t("gasFixedCosts"),
-      value:
-        facility?.gas_Consumption?.gas_fixed_costs_dkk != null
-          ? facility.gas_Consumption.gas_fixed_costs_dkk + " m³"
-          : "-",
-    },
-    {
-      label: t("annualGasConsumption"),
-      value:
-        facility?.gas_Consumption?.annual_gas_consumption_m3 != null
-          ? facility.gas_Consumption.annual_gas_consumption_m3 + " m³"
-          : "-",
-    },
-    {
-      label: t("electricityVariableCosts"),
-      value:
-        facility?.electircity_Consumption?.variable_costs_dkk != null
-          ? facility.electircity_Consumption.variable_costs_dkk + " kWh"
-          : "-",
-    },
-    {
-      label: t("electricityFixedCosts"),
-      value:
-        facility?.electircity_Consumption?.fixed_costs_dkk != null
-          ? facility.electircity_Consumption.fixed_costs_dkk + " kWh"
-          : "-",
-    },
-    {
-      label: t("annualElectricityConsumption"),
-      value:
-        facility?.electircity_Consumption?.annual_grid_consumption_kwh != null
-          ? facility.electircity_Consumption.annual_grid_consumption_kwh +
-            " kWh"
-          : "-",
-    },
-  ];
+    { label: t("serviceCosts"), value: facility?.systemCosts?.service_Costs ?? "-" },
+    { label: t("vatDeduction"), value: facility?.systemCosts?.VAT_Deduction_Percent ?? "-" },
+    { label: t("gasSupply"), value: facility?.gas_Consumption?.xrgi_gas_type !== "Select gas type" 
+      ? facility?.gas_Consumption?.xrgi_gas_type ?? "-" : "-" },
+    { label: t("gasVariableCosts"), value: facility?.gas_Consumption?.gas_variable_costs_dkk ? `${facility.gas_Consumption.gas_variable_costs_dkk} m³` : "-" },
+    { label: t("gasFixedCosts"), value: facility?.gas_Consumption?.gas_fixed_costs_dkk ? `${facility.gas_Consumption.gas_fixed_costs_dkk} m³` : "-" },
+    { label: t("annualGasConsumption"), value: facility?.gas_Consumption?.annual_gas_consumption_m3 ? `${facility.gas_Consumption.annual_gas_consumption_m3} m³` : "-" },
+    { label: t("electricityVariableCosts"), value: facility?.electircity_Consumption?.variable_costs_dkk ? `${facility.electircity_Consumption.variable_costs_dkk} kWh` : "-" },
+    { label: t("electricityFixedCosts"), value: facility?.electircity_Consumption?.fixed_costs_dkk ? `${facility.electircity_Consumption.fixed_costs_dkk} kWh` : "-" },
+    { label: t("annualElectricityConsumption"), value: facility?.electircity_Consumption?.annual_grid_consumption_kwh ? `${facility.electircity_Consumption.annual_grid_consumption_kwh} kWh` : "-" }
+  ];  
 
   return (
     <>
@@ -176,7 +128,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-white rounded-lg border p-6">
                 <h2 className="text-lg font-medium mb-4">
-                {t("model")} {facility?.modelNumber}
+                  {t("model")} {facility?.modelNumber}
                 </h2>
                 <div className="flex justify-center">
                   <img

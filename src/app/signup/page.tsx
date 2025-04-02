@@ -4,12 +4,24 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { countryCodes } from "@/components/dashboard/staticData/Data";
 import { signup } from "@/services/authService";
 import { InputField } from "@/components/form/InputField";
 import EmailVarification from "@/components/emailVarification";
 import { PasswordField } from "@/components/form/passwordField";
+
+const getPhoneValidationSchema = (countryCode: string) => {
+  const phoneValidations: { [key: string]: Yup.StringSchema } = {
+    "+91": Yup.string()
+      .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+      .required("Phone number is required"),
+    "+45": Yup.string()
+      .matches(/^\d{8}$/, "Phone number must be exactly 8 digits")
+      .required("Phone number is required"),
+  };
+  return phoneValidations[countryCode] || phoneValidations["+91"];
+};
 
 export default function Signup() {
   const [error, setError] = useState("");
@@ -17,43 +29,30 @@ export default function Signup() {
   const [countryCode, setCountryCode] = useState("+45");
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [email, setEmail] = useState("");
-  const [phoneValidationSchema, setPhoneValidationSchema] = useState(Yup.string());
 
-  useEffect(() => {
-    const getPhoneValidation = () => {
-      switch (countryCode) {
-        case "+91": 
-          return Yup.string()
-            .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
-            .required("Phone number is required");
-        case "+45": 
-          return Yup.string()
-            .matches(/^\d{8}$/, "Phone number must be exactly 8 digits")
-            .required("Phone number is required");
-        default:
-          return Yup.string()
-            .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
-            .required("Phone number is required");
-      }
-    };
+  const phoneValidationSchema = useMemo(
+    () => getPhoneValidationSchema(countryCode),
+    [countryCode]
+  );
 
-    setPhoneValidationSchema(getPhoneValidation());
-  }, [countryCode]);
-
-  const validationSchema = Yup.object({
-    firstname: Yup.string().required("firstname is required"),
-    lastname: Yup.string().required("lastname is required"),
-    phone_number: phoneValidationSchema,
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), ""], "Passwords must match")
-      .required("Confirm Password is required"),
-  });
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        firstname: Yup.string().required("First name is required"),
+        lastname: Yup.string().required("Last name is required"),
+        phone_number: phoneValidationSchema,
+        email: Yup.string()
+          .email("Invalid email address")
+          .required("Email is required"),
+        password: Yup.string()
+          .min(8, "Password must be at least 8 characters")
+          .required("Password is required"),
+        confirmPassword: Yup.string()
+          .oneOf([Yup.ref("password")], "Passwords must match")
+          .required("Confirm Password is required"),
+      }),
+    [phoneValidationSchema]
+  );
 
   const formik = useFormik({
     initialValues: {

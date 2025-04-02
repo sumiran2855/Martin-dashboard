@@ -4,14 +4,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/services/authService";
 import { InputField } from "@/components/form/InputField";
 import { setCookie, removeCookie } from "@/utils/cookies";
-import { encryptData } from "@/utils/encryption";
+import { encryptData, decodeAccessToken } from "@/utils/encryption";
 import { useRememberMe } from "@/controller/rememberMe";
-import { decodeAccessToken } from "@/utils/encryption";
 import Modal from "@/components/modals/modal";
 import EmailVarification from "@/components/emailVarification";
 import { PasswordField } from "@/components/form/passwordField";
@@ -21,6 +20,19 @@ interface LoginValues {
   password: string;
   rememberMe: boolean;
 }
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Invalid email format"
+    )
+    .required("Email is required"),
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+  rememberMe: Yup.boolean(),
+});
 
 export default function Login() {
   const [error, setError] = useState("");
@@ -30,63 +42,42 @@ export default function Login() {
   const [unverifiedEmail, setUnverifiedEmail] = useState("");
   const router = useRouter();
 
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email address")
-      .matches(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Invalid email format"
-      )
-      .required("Email is required"),
-    password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .required("Password is required"),
-    rememberMe: Yup.boolean(),
-  });
+  const redirectUser = useCallback((accessToken: string, journeyStatus: string) => {
+    const decodedToken = decodeAccessToken(accessToken);
+    router.push(decodedToken?.["cognito:groups"]?.includes("ServiceTechnician") ? "/admin" : journeyStatus === "completed" ? "/dashboard" : "/createProfile");
+  }, [router]);
+
+  const handleSubmit = useCallback(async (values: LoginValues) => {
+    setError("");
+    setSuccessMessage("");
+
+    const result = await login(values.email, values.password);
+    if (!result.success) {
+      if (result.message === "User is not confirmed. Please verify your account.") {
+        setUnverifiedEmail(values.email);
+        setIsOpen(true);
+        return;
+      }
+      setError(result.message || "Invalid email or password.");
+      return;
+    }
+
+    const journeyStatus = result.data.userData.journeyStatus;
+    localStorage.setItem("journeyStatus", journeyStatus);
+    setSuccessMessage("Login successful! Redirecting...");
+
+    values.rememberMe
+      ? (setCookie("rememberedEmail", values.email, 1), setCookie("rememberedPassword", encryptData(values.password), 1))
+      : (removeCookie("rememberedEmail"), removeCookie("rememberedPassword"));
+
+    redirectUser(result.data.tokens.accessToken, journeyStatus);
+  }, [redirectUser]);
+
 
   const formik = useFormik<LoginValues>({
     initialValues: { email: "", password: "", rememberMe: false },
     validationSchema,
-    onSubmit: async (values) => {
-      setError("");
-      setSuccessMessage("");
-
-      const result = await login(values.email, values.password);
-      if (!result.success) {
-        if (
-          result.message ===
-          "User is not confirmed. Please verify your account."
-        ) {
-          setUnverifiedEmail(values.email);
-          setIsOpen(true);
-          return;
-        }
-        setError(result.message || "Invalid email or password.");
-        return;
-      }
-
-      const journeyStatus = result.data.userData.journeyStatus;
-      localStorage.setItem("journeyStatus", journeyStatus);
-      setSuccessMessage("Login successful! Redirecting...");
-
-      if (values.rememberMe) {
-        setCookie("rememberedEmail", values.email, 1);
-        setCookie("rememberedPassword", encryptData(values.password), 1);
-      } else {
-        removeCookie("rememberedEmail");
-        removeCookie("rememberedPassword");
-      }
-
-      const accessToken = result.data.tokens.accessToken;
-      const decodedToken = decodeAccessToken(accessToken);
-      if (decodedToken?.["cognito:groups"]?.includes("ServiceTechnician")) {
-        router.push("/admin");
-      } else {
-        router.push(
-          journeyStatus === "completed" ? "/dashboard" : "/createProfile"
-        );
-      }
-    },
+    onSubmit: handleSubmit
   });
 
   useRememberMe(formik.setValues);

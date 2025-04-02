@@ -1,6 +1,6 @@
 "use client";
 import { Search, Filter, Grid, List, ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import GridView from "@/components/dashboard/view/gridView";
 import ListView from "@/components/dashboard/view/listView";
 import { useRouter } from "next/navigation";
@@ -34,15 +34,15 @@ export default function MainContent() {
   const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleSelect = (selectedView: string) => {
+  const handleSelect = useCallback((selectedView: string) => {
     setView(selectedView);
     setIsOpen(false);
-  };
+  }, []);
 
-  const handleStatusSelect = (status: string) => {
+  const handleStatusSelect = useCallback((status: string) => {
     setSelectedStatus(status);
     setSortDropdownOpen(false);
-  };
+  }, []);
 
   useEffect(() => {
     const fetchFacilities = async () => {

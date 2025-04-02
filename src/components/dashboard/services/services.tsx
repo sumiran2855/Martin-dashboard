@@ -6,7 +6,7 @@ import { getAllFacility } from "@/services/facilityServices";
 import GridView from "./gridView";
 
 interface Facility {
-  facilityId?: number;
+  id?: number;
   name?: string;
   xrgiID?: string;
   modelNumber?: string;
