@@ -1,0 +1,20 @@
+{
+    
+      "subscriptionTitle": "Abonnementer",
+      "subscriptionDescription": "Administrer og overvåg alle dine aktive og inaktive abonnementer.",
+      "sortBy": "Sorter efter",
+      "searchPlaceholder": "Søg i abonnementer...",
+      "statusOptions": {
+        "All": "Alle",
+        "Active": "Aktiv",
+        "Inactive": "Inaktiv",
+        "MissingData": "Manglende data"
+      },
+      "services": {
+        "servicesTitle": "Tjenester",
+        "servicesDescription": "Se og administrer alle faciliteter, der har en tilknyttet serviceudbyder. Hold styr på servicekontrakter, overvåg aktive aftaler, og sikr problemfri vedligeholdelse af dine faciliteter.",
+        "searchPlaceholder": "Søg i tjenester..."
+      }
+    
+  }
+  

@@ -1,0 +1,19 @@
+{
+    
+      "subscriptionTitle": "Subscriptions",
+      "subscriptionDescription": "Manage and monitor all your active and inactive subscriptions.",
+      "sortBy": "Sort by",
+      "searchPlaceholder": "Search subscriptions...",
+      "statusOptions": {
+        "All": "All",
+        "Active": "Active",
+        "Inactive": "Inactive",
+        "MissingData": "Data Missing"
+      },
+      "services": {
+        "servicesTitle": "Services",
+        "servicesDescription": "View and manage all facilities that have an associated service provider. Keep track of service contracts, monitor active agreements, and ensure seamless maintenance support for your facilities.",
+        "searchPlaceholder": "Search services..."
+      }
+  }
+  
