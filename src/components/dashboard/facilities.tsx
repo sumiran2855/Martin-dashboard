@@ -1,6 +1,5 @@
 import { ArrowLeft, HelpCircle } from "lucide-react";
 import Link from "next/link";
-import BarChart from "@/components/barChart";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/utils/authHelper";
@@ -165,32 +164,6 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                       </span>
                     </div>
                   ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg border mt-6 p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-medium">{t("superSaverXConsumption")}</h2>
-                <HelpCircle size={20} className="text-gray-400" />
-              </div>
-              <BarChart />
-              <div className="flex justify-center space-x-6 mt-4 text-sm">
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-yellow-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">{t("xrgI")}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-blue-900 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">{t("tariffs")}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-blue-400 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">{t("flexPrice")}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-gray-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">{t("vat")}</span>
                 </div>
               </div>
             </div>
