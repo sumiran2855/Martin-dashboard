@@ -16,13 +16,14 @@ function AddFacility() {
   const [isInstalled, setIsInstalled] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
+  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
   const [facilityAdded, setFacilityAdded] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+
   const {
     stepTwoFormData,
     setStepTwoFormData,
     handleCreateFacility,
-    selectedOption,
-    setSelectedOption,
     partnerDetails,
     setPartnerDetails,
   } = useCreateFacility();
@@ -30,18 +31,12 @@ function AddFacility() {
   const [selectedModel, setSelectedModel] = useState(
     stepTwoFormData.model || ""
   );
-  const [VATDeduction, setVATDeduction] = useState(
-    stepTwoFormData.VATDeduction || "Yes"
-  );
-  const [selectGasType, setSelectGasType] = useState(
-    stepTwoFormData.gasType || ""
-  );
 
   const handleRadioChange = () => {
     setHasServiceProvider((prev) => !prev);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     const { name, value } = e.target;
     setStepTwoFormData((prev: any) => ({ ...prev, [name]: value }));
   };
@@ -52,12 +47,6 @@ function AddFacility() {
     if (name === "model") {
       setSelectedModel(value);
       setStepTwoFormData((prev: any) => ({ ...prev, model: value }));
-    } else if (name === "VATDeduction") {
-      setVATDeduction(value);
-      setStepTwoFormData((prev: any) => ({ ...prev, VATDeduction: value }));
-    } else if (name === "gasType") {
-      setSelectGasType(value);
-      setStepTwoFormData((prev: any) => ({ ...prev, gasType: value }));
     }
   };
 
@@ -74,8 +63,16 @@ function AddFacility() {
 
   const [setupSuperSaver, setSetupSuperSaver] = useState(false);
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = (e: any) => {
+    const { name, checked } = e.target;
     setSetupSuperSaver((prev) => !prev);
+    if (name === "performanceReport") {
+      setHasPerformanceReport(checked);
+      setStepTwoFormData((prev: any) => ({
+        ...prev,
+        performanceReport: checked,
+      }));
+    }
   };
 
   const handleOptionChange = (value: string) => {
@@ -87,7 +84,9 @@ function AddFacility() {
       isChecked,
       isInstalled,
       hasServiceProvider,
-      setupSuperSaver
+      setupSuperSaver,
+      hasPerformanceReport,
+      selectedOption,
     );
     if (success) {
       router.push("/dashboard");
@@ -344,261 +343,93 @@ function AddFacility() {
             </div>
 
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
-              <div className=" p-6 rounded-lg mb-6">
-                <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                  {t("systemCosts")}
-                </h2>
-                <div className="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-3 rounded-md flex items-start space-x-3 mb-4">
-                  <svg
-                    className="w-5 h-5 text-blue-500 mt-0.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13 16h-1v-4h-1m0-4h.01M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"
-                    />
-                  </svg>
-                  <p className="text-sm mb-[-5]">
-                    {t("preFilledFieldsMessage")}
-                  </p>
-                </div>
+              <div className="flex items-center space-x-3 py-4">
+                <input
+                  type="checkbox"
+                  id="performanceReport"
+                  name="performanceReport"
+                  checked={hasPerformanceReport}
+                  onChange={handleCheckboxChange}
+                  className="w-5 h-5 cursor-pointer"
+                />
+                <label
+                  htmlFor="performanceReport"
+                  className="text-[#082351DE] text-lg font-semibold"
+                >
+                  {t("addPerformanceReport")}
+                </label>
+              </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="md:col-span-1">
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("serviceCosts")}
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="serviceCost"
-                        className="p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300"
-                        value={stepTwoFormData.serviceCost}
-                        onChange={handleChange}
-                      />
-                      <span className="absolute inset-y-0 right-3 flex items-center text-blue-500 cursor-pointer">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 text-blue-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <circle
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 16h.01M12 12a2 2 0 1 0-2-2"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                    <p className="text-gray-500 text-sm mt-1 ml-3">
-                      {t("serviceCostsHint")}
-                    </p>
-                  </div>
+              {hasPerformanceReport && (
+                <div className="bg-white p-10 rounded-lg mb-6">
+                  <div className="text-[#082351DE] rounded-lg mb-6">
+                    <h2 className="text-lg font-semibold mb-4">
+                      {t("performanceReport")}
+                    </h2>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:col-span-2">
-                    <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1">
-                        {t("vatDeductionPercentage")}
-                      </label>
-                      <input
-                        type="text"
-                        name="vat"
-                        className="p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300"
-                        value={stepTwoFormData.vat}
-                        onChange={handleChange}
-                      />
-                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("expectedAnnualSavings")}
+                        </label>
+                        <input
+                          type="text"
+                          name="annualSavings"
+                          placeholder={t("euroPerYear")}
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2"
+                          value={stepTwoFormData.annualSavings}
+                          onChange={handleChange}
+                        />
+                      </div>
 
-                    <div className="relative">
-                      <label className="block text-gray-700 text-sm font-medium mb-1">
-                        {t("vatDeduction")}
-                      </label>
-                      <div className="relative">
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("expectedAnnualCO2Savings")}
+                        </label>
+                        <input
+                          type="text"
+                          name="co2Savings"
+                          placeholder={t("tonsPerYear")}
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                          value={stepTwoFormData.co2Savings}
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("expectedOperatingHours")}
+                        </label>
+                        <input
+                          type="text"
+                          name="operatingHours"
+                          placeholder={t("operatingHoursPlaceholder")}
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                          value={stepTwoFormData.operatingHours}
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("industry")}
+                        </label>
                         <select
-                          name="VATDeduction"
-                          value={VATDeduction}
-                          onChange={handleChangeSelect}
-                          className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
+                          name="industry"
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                          value={stepTwoFormData.industry}
+                          onChange={handleChange}
                         >
-                          <option>{t("yes")}</option>
-                          <option>{t("no")}</option>
+                          <option value="" disabled>Select a Industry</option>
+                          <option value="manufacturing">Manufacturing</option>
+                          <option value="healthcare">Healthcare</option>
+                          <option value="hospitality">Hospitality</option>
                         </select>
-                        <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none ">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5 text-gray-500"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M6 9l6 6 6-6"></path>
-                          </svg>
-                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-              <div className="text-[#082351DE] rounded-lg mb-6">
-                <h2 className="text-lg font-semibold mb-4">
-                  {t("gasConsumption")}
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="relative">
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("gasType")}
-                    </label>
-                    <div className="relative">
-                      <select
-                        name="gasType"
-                        value={selectGasType}
-                        onChange={handleChangeSelect}
-                        className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
-                      >
-                        <option>{t("selectGasType")}</option>
-                        <option>{t("naturalGas")}</option>
-                        <option>{t("hydrogen")}</option>
-                      </select>
-                      <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 text-gray-500"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("annualGasConsumption")}
-                    </label>
-                    <input
-                      type="text"
-                      name="m3"
-                      placeholder="m³"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                      value={stepTwoFormData.m3}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("consumptionIndependentCosts")}
-                    </label>
-                    <input
-                      type="text"
-                      name="independentDKK"
-                      placeholder="DKK"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                      value={stepTwoFormData.independentDKK}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("consumptionDependentCosts")}
-                    </label>
-                    <input
-                      type="text"
-                      name="dependentDKK"
-                      placeholder="DKK"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                      value={stepTwoFormData.dependentDKK}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-              <div className="text-[#082351DE] rounded-lg mb-6">
-                <h2 className="text-lg font-semibold mb-4">
-                  {t("electricityConsumption")}
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("annualGridConsumption")}
-                    </label>
-                    <input
-                      type="text"
-                      name="kWh"
-                      placeholder="kWh"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                      value={stepTwoFormData.kWh}
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  <div></div>
-
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("fixedCosts")}
-                    </label>
-                    <input
-                      type="text"
-                      name="electricityIndependentDKK"
-                      placeholder="DKK"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                      value={stepTwoFormData.electricityIndependentDKK}
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("variableCosts")}
-                    </label>
-                    <input
-                      type="text"
-                      name="electricityDependentDKK"
-                      placeholder="DKK"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                      value={stepTwoFormData.electricityDependentDKK}
-                      onChange={handleChange}
-                    />
-                    <span className="text-gray-500 text-xs mt-1 block">
-                      Tariffs, taxes, etc., excl. flexible price
-                    </span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">

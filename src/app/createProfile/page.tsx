@@ -27,6 +27,7 @@ function Dashboard() {
   const [facilityMethod, setFacilityMethod] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -88,16 +89,11 @@ function Dashboard() {
     address: "",
     postalCode: "",
     city: "",
-    serviceCost: "5.75",
-    vat: "12",
-    VATDeduction: "Yes",
-    m3: "",
-    gasType: "",
-    independentDKK: "",
-    dependentDKK: "",
-    kWh: "",
-    electricityIndependentDKK: "",
-    electricityDependentDKK: "",
+    annualSavings:"",
+    co2Savings:"",
+    operatingHours:"",
+    industry:"",
+    hasPerformanceReport:"",
     serviceProviderName: "",
     serviceProviderMail: "",
     serviceProviderPhone: "",
@@ -186,22 +182,13 @@ function Dashboard() {
         mailAddress: stepTwoFormData.serviceProviderMail,
         phone: stepTwoFormData.serviceProviderPhone,
       } : null,
-      systemCosts: {
-        service_Costs: parseFloat(stepTwoFormData.serviceCost),
-        VAT_Deduction_Percent: parseFloat(stepTwoFormData.vat),
-        VAT_Deduction: stepTwoFormData.VATDeduction === "Yes",
+      performance_report:{
+        annualSavings:stepTwoFormData.annualSavings,
+        co2Savings:stepTwoFormData.co2Savings,
+        operatingHours:stepTwoFormData.operatingHours,
+        industry:stepTwoFormData.industry,
       },
-      gas_Consumption: {
-        annual_gas_consumption_m3: parseFloat(stepTwoFormData.m3),
-        xrgi_gas_type: stepTwoFormData.gasType,
-        gas_fixed_costs_dkk: stepTwoFormData.independentDKK,
-        gas_variable_costs_dkk: stepTwoFormData.dependentDKK,
-      },
-      electircity_Consumption: {
-        annual_grid_consumption_kwh: stepTwoFormData.kWh,
-        fixed_costs_dkk: stepTwoFormData.electricityIndependentDKK,
-        variable_costs_dkk: stepTwoFormData.electricityDependentDKK,
-      },
+      hasPerformanceReport:hasPerformanceReport,
       isInstalled,
       DaSigned: isChecked,
       hasServiceContract: hasServiceProvider ? true : false,
@@ -286,22 +273,11 @@ function Dashboard() {
           address: facilityData.location.address || "",
           postalCode: facilityData.location.postalCode || "",
           city: facilityData.location.city || "",
-
-          serviceCost: facilityData.systemCosts.serviceCost || "5.75",
-          vat: facilityData.systemCosts.vat || "12",
-          VATDeduction: facilityData.systemCosts.VATDeduction || "",
-
-          m3: facilityData.gas_Consumption.m3 || "",
-          gasType: facilityData.gas_Consumption.gasType || "",
-          independentDKK: facilityData.gas_Consumption.independentDKK || "",
-          dependentDKK: facilityData.gas_Consumption.dependentDKK || "",
-
-          kWh: facilityData.electircity_Consumption.kWh || "",
-          electricityIndependentDKK:
-            facilityData.electircity_Consumption.electricityIndependentDKK ||
-            "",
-          electricityDependentDKK:
-            facilityData.electircity_Consumption.electricityDependentDKK || "",
+          annualSavings: facilityData.performance_report.annualSavings || "",
+          co2Savings: facilityData.performance_report.co2Savings || "",
+          operatingHours: facilityData.performance_report.operatingHours || "",
+          industry: facilityData.performance_report.industry || "",
+          hasPerformanceReport:facilityData.hasPerformanceReport || false,       
           serviceProviderName: facilityData.serviceProvider.name || "",
           serviceProviderMail: facilityData.serviceProvider.mailAddress || "",
           serviceProviderPhone: facilityData.serviceProvider.phone || "",
@@ -397,6 +373,8 @@ function Dashboard() {
                   setIsInstalled={setIsInstalled}
                   hasServiceProvider={hasServiceProvider}
                   setHasServiceProvider={setHasServiceProvider}
+                  hasPerformanceReport={hasPerformanceReport}
+                  setHasPerformanceReport={setHasPerformanceReport}
                 />
               )}
               {step === 3 && (

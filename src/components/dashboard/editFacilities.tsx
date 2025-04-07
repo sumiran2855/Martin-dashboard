@@ -14,27 +14,18 @@ interface Facility {
   name: string;
   modelNumber: string;
   xrgiID: string;
-  systemCosts?: {
-    service_Costs: string;
-    VAT_Deduction_Percent: string;
-    VAT_Deduction: string;
-  };
   serviceProvider?: {
     name: string;
     mailAddress: string;
     phone: string;
   };
-  gas_Consumption?: {
-    annual_gas_consumption_m3: string;
-    xrgi_gas_type: string;
-    gas_fixed_costs_dkk: string;
-    gas_variable_costs_dkk: string;
+  performance_report?: {
+    annualSavings: string;
+    co2Savings: string;
+    operatingHours: string;
+    industry: string;
   };
-  electircity_Consumption?: {
-    annual_grid_consumption_kwh: string;
-    fixed_costs_dkk: string;
-    variable_costs_dkk: string;
-  };
+  hasPerformanceReport: boolean;
   featureAdded: boolean;
   hasServiceContract: boolean;
   feature?: {
@@ -63,6 +54,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     mobile: "",
     email: "",
   });
+  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
 
   const handleAcceptTerms = async () => {
     setFacilityAdded(true);
@@ -86,10 +78,13 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         setFacility(response.data);
         setIsInstalled(response.data?.isInstalled || false);
 
-        console.log("🚀 ~ fetchFacility ~ response.data.hasServiceContract:", response.data)
         const { feature } = response.data;
         if(response.data.hasServiceContract){
           setHasServiceProvider(true);
+        }
+
+        if (response.data.hasPerformanceReport) {
+          setHasPerformanceReport(true);
         }
 
         if (response.data.featureAdded === true || feature) {
@@ -142,9 +137,12 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     });
   };
 
-
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = (e: any) => {
+    const { name, checked } = e.target;
     setSetupSuperSaver((prev) => !prev);
+    if (name === "performanceReport") {
+      setHasPerformanceReport(checked);
+    }
   };
 
   const handleSave = async () => {
@@ -175,44 +173,30 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
               phone: facility?.serviceProvider?.phone || "",
             }
           : null,
-        systemCosts: {
-          service_Costs: facility?.systemCosts?.service_Costs,
-          VAT_Deduction_Percent: facility?.systemCosts?.VAT_Deduction_Percent,
-          VAT_Deduction: facility?.systemCosts?.VAT_Deduction,
-        },
-        gas_Consumption: {
-          annual_gas_consumption_m3:
-            facility?.gas_Consumption?.annual_gas_consumption_m3,
-          xrgi_gas_type: facility?.gas_Consumption?.xrgi_gas_type,
-          gas_fixed_costs_dkk: facility?.gas_Consumption?.gas_fixed_costs_dkk,
-          gas_variable_costs_dkk:
-            facility?.gas_Consumption?.gas_variable_costs_dkk,
-        },
-        electircity_Consumption: {
-          annual_grid_consumption_kwh:
-            facility?.electircity_Consumption?.annual_grid_consumption_kwh,
-          fixed_costs_dkk: facility?.electircity_Consumption?.fixed_costs_dkk,
-          variable_costs_dkk:
-            facility?.electircity_Consumption?.variable_costs_dkk,
+        performance_report: {
+          annualSavings: facility?.performance_report?.annualSavings || "",
+          co2Savings: facility?.performance_report?.co2Savings || "",
+          operatingHours: facility?.performance_report?.operatingHours || "",
+          industry: facility?.performance_report?.industry || "",
         },
         isInstalled,
         DaSigned: true,
         hasServiceContract,
         feature:
           setupSuperSaver
-            ? {
-                method: selectedOption || "",
-                partner_details:
-                  selectedOption === "local_partner"
-                    ? {
-                        name: partnerDetails.name || "",
-                        mobile: partnerDetails.mobile || "",
-                        email: partnerDetails.email || "",
-                      }
-                    : undefined,
-              }
-            : null,
-            featureAdded: setupSuperSaver ? true : false,
+          ? {
+              method: selectedOption || "",
+              partner_details:
+                selectedOption === "local_partner"
+                  ? {
+                      name: partnerDetails.name || "",
+                      mobile: partnerDetails.mobile || "",
+                      email: partnerDetails.email || "",
+                    }
+                  : undefined,
+            }
+          : null,
+        featureAdded: setupSuperSaver ? true : false,
       };
 
       const updatedFacility = await apiRequest(
@@ -422,104 +406,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
             </div>
 
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
-              <div className="p-6 rounded-lg mb-6">
-                <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                  {t("systemCosts")}
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="md:col-span-1">
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("serviceCosts")}
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="systemCosts.service_Costs"
-                        value={facility?.systemCosts?.service_Costs || ''}
-                        onChange={handleChange}
-                        className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
-                      />
-                      <span className="absolute inset-y-0 right-3 flex items-center text-blue-500 cursor-pointer">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 text-blue-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <circle
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 16h.01M12 12a2 2 0 1 0-2-2"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                    <p className="text-gray-500 text-sm mt-1 ml-3">
-                      {t("serviceCostsHint")}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:col-span-2">
-                    <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1">
-                        {t("vatDeductionPercentage")}
-                      </label>
-                      <input
-                        type="text"
-                        name="systemCosts.VAT_Deduction_Percent"
-                        value={facility?.systemCosts?.VAT_Deduction_Percent || ''}
-                        onChange={handleChange}
-                        className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
-                      />
-                    </div>
-
-                    <div className="relative">
-                      <label className="block text-gray-700 text-sm font-medium mb-1">
-                        {t("vatDeduction")}
-                      </label>
-                      <div className="relative">
-                        <select
-                          className="appearance-none p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
-                          name="systemCosts.VAT_Deduction"
-                          value={
-                            facility?.systemCosts?.VAT_Deduction ? "Yes" : "No"
-                          }
-                          onChange={handleChange}
-                        >
-                          <option>{t("yes")}</option>
-                          <option>{t("no")}</option>
-                        </select>
-                        <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5 text-gray-500"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M6 9l6 6 6-6"></path>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
               <div className="flex items-center space-x-3 py-4">
                 <input
                   type="checkbox"
@@ -583,154 +469,94 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
               )}
             </div>
 
-            <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-              <div className="text-[#082351DE] rounded-lg mb-6">
-                <h2 className="text-lg font-semibold mb-4">
-                  {t("gasConsumption")}
-                </h2>
+            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+              <div className="flex items-center space-x-3 py-4">
+                <input
+                  type="checkbox"
+                  id="performanceReport"
+                  name="performanceReport"
+                  checked={hasPerformanceReport}
+                  onChange={handleCheckboxChange}
+                  className="w-5 h-5 cursor-pointer"
+                />
+                <label
+                  htmlFor="performanceReport"
+                  className="text-[#082351DE] text-lg font-semibold"
+                >
+                  {t("addPerformanceReport")}
+                </label>
+              </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="relative">
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("gasType")}
-                    </label>
-                    <div className="relative">
-                      <select
-                        name="gas_Consumption.xrgi_gas_type"
-                        value={facility?.gas_Consumption?.xrgi_gas_type ?? ""}
-                        onChange={handleChange}
-                        className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
-                      >
-                        <option>{t("selectGasType")}</option>
-                        <option>{t("naturalGas")}</option>
-                        <option>{t("hydrogen")}</option>
-                      </select>
-                      <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 text-gray-500"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+              {hasPerformanceReport && (
+                <div className="bg-white p-10 rounded-lg mb-6">
+                  <div className="text-[#082351DE] rounded-lg mb-6">
+                    <h2 className="text-lg font-semibold mb-4">
+                      {t("performanceReport")}
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("expectedAnnualSavings")}
+                        </label>
+                        <input
+                          type="text"
+                          name="performance_report.annualSavings"
+                          placeholder={t("euroPerYear")}
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2"
+                          value={facility?.performance_report?.annualSavings}
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("expectedAnnualCO2Savings")}
+                        </label>
+                        <input
+                          type="text"
+                          name="performance_report.co2Savings"
+                          placeholder={t("tonsPerYear")}
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                          value={facility?.performance_report?.co2Savings}
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("expectedOperatingHours")}
+                        </label>
+                        <input
+                          type="text"
+                          name="performance_report.operatingHours"
+                          placeholder={t("operatingHoursPlaceholder")}
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                          value={facility?.performance_report?.operatingHours}
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("industry")}
+                        </label>
+                        <select
+                          name="performance_report.industry"
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                          value={facility?.performance_report?.industry}
+                          onChange={handleChange}
                         >
-                          <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-                      </span>
+                          <option value="">Select a Industry</option>
+                          <option value="manufacturing">Manufacturing</option>
+                          <option value="healthcare">Healthcare</option>
+                          <option value="hospitality">Hospitality</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("annualGasConsumption")}
-                    </label>
-                    <input
-                      type="text"
-                      name="gas_Consumption.annual_gas_consumption_m3"
-                      value={
-                        facility?.gas_Consumption?.annual_gas_consumption_m3 ??
-                        ""
-                      }
-                      onChange={handleChange}
-                      placeholder="m³"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                    />
-                  </div>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("consumptionIndependentCosts")}
-                    </label>
-                    <input
-                      type="text"
-                      name="gas_Consumption.gas_fixed_costs_dkk"
-                      value={facility?.gas_Consumption?.gas_fixed_costs_dkk || ""}
-                      onChange={handleChange}
-                      placeholder="DKK"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("consumptionDependentCosts")}
-                    </label>
-                    <input
-                      type="text"
-                      name="gas_Consumption.gas_variable_costs_dkk"
-                      value={facility?.gas_Consumption?.gas_variable_costs_dkk || ""}
-                      onChange={handleChange}
-                      placeholder="DKK"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-              <div className="text-[#082351DE] rounded-lg mb-6">
-                <h2 className="text-lg font-semibold mb-4">
-                  {t("electricityConsumption")}
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("annualGridConsumption")}
-                    </label>
-                    <input
-                      type="text"
-                      name="electircity_Consumption.annual_grid_consumption_kwh"
-                      value={
-                        facility?.electircity_Consumption
-                          ?.annual_grid_consumption_kwh || ""
-                      }
-                      onChange={handleChange}
-                      placeholder="kWh"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                    />
-                  </div>
-
-                  <div></div>
-
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("fixedCosts")}
-                    </label>
-                    <input
-                      type="text"
-                      name="electircity_Consumption.fixed_costs_dkk"
-                      value={facility?.electircity_Consumption?.fixed_costs_dkk || ""}
-                      onChange={handleChange}
-                      placeholder="DKK"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      {t("variableCosts")}
-                    </label>
-                    <input
-                      type="text"
-                      name="electircity_Consumption.variable_costs_dkk"
-                      value={
-                        facility?.electircity_Consumption?.variable_costs_dkk || ""
-                      }
-                      onChange={handleChange}
-                      placeholder="DKK"
-                      className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                    />
-                    <span className="text-gray-500 text-xs mt-1 block">
-                      {t("tariffHint")}
-                    </span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">

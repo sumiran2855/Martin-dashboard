@@ -12,21 +12,11 @@ interface Facility {
   modelNumber: string;
   xrgiID: string;
   systemCosts?: { service_Costs: string; VAT_Deduction_Percent: string };
-  gas_Consumption?: {
-    annual_gas_consumption_m3: string;
-    xrgi_gas_type: string;
-    gas_fixed_costs_dkk: string;
-    gas_variable_costs_dkk: string;
-  };
-  serviceProvider?: {
-    name: string;
-    mailAddress: string;
-    phone: string;
-  };
-  electircity_Consumption?: {
-    annual_grid_consumption_kwh: string;
-    fixed_costs_dkk: string;
-    variable_costs_dkk: string;
+  performance_report?: {
+    annualSavings: string;
+    co2Savings: string;
+    operatingHours: string;
+    industry: string;
   };
 }
 
@@ -69,16 +59,11 @@ export default function facilities({ facilityId }: { facilityId: string }) {
   }, [facilityId]);
 
   const facilityDetails = [
-    { label: t("serviceCosts"), value: facility?.systemCosts?.service_Costs ?? "-" },
-    { label: t("vatDeduction"), value: facility?.systemCosts?.VAT_Deduction_Percent ?? "-" },
-    { label: t("gasSupply"), value: facility?.gas_Consumption?.xrgi_gas_type !== "Select gas type" 
-      ? facility?.gas_Consumption?.xrgi_gas_type ?? "-" : "-" },
-    { label: t("gasVariableCosts"), value: facility?.gas_Consumption?.gas_variable_costs_dkk ? `${facility.gas_Consumption.gas_variable_costs_dkk} m³` : "-" },
-    { label: t("gasFixedCosts"), value: facility?.gas_Consumption?.gas_fixed_costs_dkk ? `${facility.gas_Consumption.gas_fixed_costs_dkk} m³` : "-" },
-    { label: t("annualGasConsumption"), value: facility?.gas_Consumption?.annual_gas_consumption_m3 ? `${facility.gas_Consumption.annual_gas_consumption_m3} m³` : "-" },
-    { label: t("electricityVariableCosts"), value: facility?.electircity_Consumption?.variable_costs_dkk ? `${facility.electircity_Consumption.variable_costs_dkk} kWh` : "-" },
-    { label: t("electricityFixedCosts"), value: facility?.electircity_Consumption?.fixed_costs_dkk ? `${facility.electircity_Consumption.fixed_costs_dkk} kWh` : "-" },
-    { label: t("annualElectricityConsumption"), value: facility?.electircity_Consumption?.annual_grid_consumption_kwh ? `${facility.electircity_Consumption.annual_grid_consumption_kwh} kWh` : "-" }
+    { label: "Annual Savings", value: facility?.performance_report?.annualSavings  
+      ? facility?.performance_report?.annualSavings ?? "-" : "-" },
+    { label: "Annual CO₂ savings", value: facility?.performance_report?.co2Savings ? `${facility.performance_report.co2Savings}` : "-" },
+    { label: "Operating hours per year", value: facility?.performance_report?.operatingHours ? `${facility.performance_report.operatingHours} hrs` : "-" },
+    { label: "Industry", value: facility?.performance_report?.industry ? `${facility.performance_report.industry}` : "-" },
   ];  
 
   return (

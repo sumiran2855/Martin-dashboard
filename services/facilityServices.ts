@@ -95,30 +95,13 @@ export const getFacility = async (token: string, IdToken: string) => {
         city: facilityData.location?.city || "",
       },
 
-      systemCosts: {
-        vat: facilityData.SystemCostsInfo?.VAT_Deduction_Percent || "",
-        serviceCost: facilityData.SystemCostsInfo?.service_Costs || "",
-        VATDeduction: facilityData.SystemCostsInfo?.VAT_Deduction || "",
+      performance_report:{
+        annualSavings: facilityData.performance_report?.annualSavings || "",
+        co2Savings: facilityData.performance_report?.co2Savings || "",
+        operatingHours: facilityData.performance_report?.operatingHours || "",
+        industry: facilityData.performance_report?.industry || "",
       },
-
-      gas_Consumption: {
-        m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
-        gasType: facilityData.gas_Consumption?.xrgi_gas_type || "",
-        independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
-        dependentDKK:
-          facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
-      },
-
-      electircity_Consumption: {
-        kWh:
-          facilityData.electircity_Consumption?.annual_grid_consumption_kwh ||
-          "",
-        electricityIndependentDKK:
-          facilityData.electircity_Consumption?.fixed_costs_dkk || "",
-        electricityDependentDKK:
-          facilityData.electircity_Consumption?.variable_costs_dkk || "",
-      },
-
+      hasPerformanceReport:facilityData.hasPerformanceReport || false,
       serviceProvider: {
         name: facilityData.serviceProvider?.name || "",
         mailAddress: facilityData.serviceProvider?.mailAddress || "",

@@ -9,6 +9,8 @@ interface ValidateFormProps {
   setIsInstalled: React.Dispatch<React.SetStateAction<any>>;
   hasServiceProvider:boolean;
   setHasServiceProvider:React.Dispatch<React.SetStateAction<any>>;
+  hasPerformanceReport:boolean;
+  setHasPerformanceReport: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function CreateFacility({
@@ -18,24 +20,30 @@ export default function CreateFacility({
   setIsInstalled,
   hasServiceProvider,
   setHasServiceProvider,
+  hasPerformanceReport,
+  setHasPerformanceReport
 }: ValidateFormProps) {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(
     stepTwoFormData.model || ""
   );
 
-  const [VATDeduction, setVATDeduction] = useState(
-    stepTwoFormData.VATDeduction || "Yes"
-  );
-  const [selectGasType, setSelectGasType] = useState(
-    stepTwoFormData.gasType || ""
-  );
+  const handleCheckboxChange = (e: any) => {
+    const { name, checked } = e.target;
+    if (name === "performanceReport") {
+      setHasPerformanceReport(checked);
+      setStepTwoFormData((prev: any) => ({
+        ...prev,
+        performanceReport: checked,
+      }));
+    }
+  };
 
   const handleRadioChange = () => {
     setHasServiceProvider((prev: boolean) => !prev);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     const { name, value } = e.target;
     setStepTwoFormData((prev: any) => ({ ...prev, [name]: value }));
   };
@@ -46,12 +54,6 @@ export default function CreateFacility({
     if (name === "model") {
       setSelectedModel(value);
       setStepTwoFormData((prev: any) => ({ ...prev, model: value }));
-    } else if (name === "VATDeduction") {
-      setVATDeduction(value);
-      setStepTwoFormData((prev: any) => ({ ...prev, VATDeduction: value }));
-    } else if (name === "gasType") {
-      setSelectGasType(value);
-      setStepTwoFormData((prev: any) => ({ ...prev, gasType: value }));
     }
   };
 
@@ -290,261 +292,91 @@ export default function CreateFacility({
       </div>
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
-        <div className=" p-6 rounded-lg mb-6">
-          <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-            System Costs
-          </h2>
-          <div className="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-3 rounded-md flex items-start space-x-3 mb-4">
-            <svg
-              className="w-5 h-5 text-blue-500 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13 16h-1v-4h-1m0-4h.01M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"
-              />
-            </svg>
-            <p className="text-sm mb-[-5]">
-              We have pre-filled some of the fields. You can edit them if the
-              entries do not match your usage.
-            </p>
-          </div>
+        <div className="flex items-center space-x-3 py-4">
+          <input
+            type="checkbox"
+            id="performanceReport"
+            name="performanceReport"
+            checked={hasPerformanceReport}
+            onChange={handleCheckboxChange}
+            className="w-5 h-5 cursor-pointer"
+          />
+          <label
+            htmlFor="performanceReport"
+            className="text-[#082351DE] text-lg font-semibold"
+          >
+            I want to add a performance report
+          </label>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="md:col-span-1">
-              <label className="block text-gray-700 text-sm font-medium mb-1">
-                Service Costs for Operating XRGI®
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="serviceCost"
-                  className="p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300"
-                  value={stepTwoFormData.serviceCost}
-                  onChange={handleChange}
-                />
-                <span className="absolute inset-y-0 right-3 flex items-center text-blue-500 cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5 text-blue-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 16h.01M12 12a2 2 0 1 0-2-2"
-                    />
-                  </svg>
-                </span>
-              </div>
-              <p className="text-gray-500 text-sm mt-1 ml-3">
-                Your service costs can be found in your contract for the system.
-              </p>
-            </div>
+        {hasPerformanceReport && (
+          <div className="bg-white p-10 rounded-lg mb-6">
+            <div className="text-[#082351DE] rounded-lg mb-6">
+              <h2 className="text-lg font-semibold mb-4">Performance report</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:col-span-2">
-              <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">
-                  Enter VAT Deduction Percentage
-                </label>
-                <input
-                  type="text"
-                  name="vat"
-                  className="p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300"
-                  value={stepTwoFormData.vat}
-                  onChange={handleChange}
-                />
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Expected annual savings
+                  </label>
+                  <input
+                    type="text"
+                    name="annualSavings"
+                    placeholder="Euro Pr. Year"
+                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2"
+                    value={stepTwoFormData.annualSavings}
+                    onChange={handleChange}
+                  />
+                </div>
 
-              <div className="relative">
-                <label className="block text-gray-700 text-sm font-medium mb-1">
-                  Select if VAT can be Deducted
-                </label>
-                <div className="relative">
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Expected annual CO₂ savings
+                  </label>
+                  <input
+                    type="text"
+                    name="co2Savings"
+                    placeholder="Tons Pr. year"
+                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                    value={stepTwoFormData.co2Savings}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Expected operating hours per year
+                  </label>
+                  <input
+                    type="text"
+                    name="operatingHours"
+                    placeholder="0-8763"
+                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                    value={stepTwoFormData.operatingHours}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Industry
+                  </label>
                   <select
-                    name="VATDeduction"
-                    value={VATDeduction}
-                    onChange={handleChangeSelect}
-                    className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-[#F2F6FC] focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
+                    name="industry"
+                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                    value={stepTwoFormData.industry}
+                    onChange={handleChange}
                   >
-                    <option>Yes</option>
-                    <option>No</option>
+                    <option value="">Select a Industry</option>
+                    <option value="manufacturing">Manufacturing</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="hospitality">Hospitality</option>
                   </select>
-                  <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none ">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5 text-gray-500"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 9l6 6 6-6"></path>
-                    </svg>
-                  </span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-        <div className="text-[#082351DE] rounded-lg mb-6">
-          <h2 className="text-lg font-semibold mb-4">Gas Consumption</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="relative">
-              <label className="block text-gray-700 text-sm font-medium mb-1">
-                What type of gas is supplied to the XRGI system?
-              </label>
-              <div className="relative">
-                <select
-                  name="gasType"
-                  value={selectGasType}
-                  onChange={handleChangeSelect}
-                  className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
-                >
-                  <option>Select gas type</option>
-                  <option>Naturel Gas</option>
-                  <option>Hydrogen</option>
-                </select>
-                <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5 text-gray-500"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6"></path>
-                  </svg>
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1">
-                What is the annual gas consumption?
-              </label>
-              <input
-                type="text"
-                name="m3"
-                placeholder="m³"
-                className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                value={stepTwoFormData.m3}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1">
-                Enter the sum of consumption-independent costs
-              </label>
-              <input
-                type="text"
-                name="independentDKK"
-                placeholder="DKK"
-                className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                value={stepTwoFormData.independentDKK}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1">
-                Enter the sum of consumption-dependent costs
-              </label>
-              <input
-                type="text"
-                name="dependentDKK"
-                placeholder="DKK"
-                className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                value={stepTwoFormData.dependentDKK}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-        <div className="text-[#082351DE] rounded-lg mb-6">
-          <h2 className="text-lg font-semibold mb-4">
-            Electricity Consumption
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1">
-                Enter the annual electricity consumption when purchasing from
-                the grid
-              </label>
-              <input
-                type="text"
-                name="kWh"
-                placeholder="kWh"
-                className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                value={stepTwoFormData.kWh}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div></div>
-
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1">
-                Enter the sum of consumption-independent costs
-              </label>
-              <input
-                type="text"
-                name="electricityIndependentDKK"
-                placeholder="DKK"
-                className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                value={stepTwoFormData.electricityIndependentDKK}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1">
-                Enter the sum of consumption-dependent costs
-              </label>
-              <input
-                type="text"
-                name="electricityDependentDKK"
-                placeholder="DKK"
-                className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                value={stepTwoFormData.electricityDependentDKK}
-                onChange={handleChange}
-              />
-              <span className="text-gray-500 text-xs mt-1 block">
-                Tariffs, taxes, etc., excl. flexible price
-              </span>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
 
       <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
@@ -595,7 +427,6 @@ export default function CreateFacility({
           </span>
         </div>
 
-        {/* Chart Section */}
         <div className="bg-[#F9FAFB] p-4 rounded-lg border border-gray-200">
           <BarChart />
         </div>
