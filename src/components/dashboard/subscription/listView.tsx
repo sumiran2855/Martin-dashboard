@@ -10,6 +10,9 @@ interface Facility {
   modelNumber?: string;
   hasServiceContract?: boolean;
   featureAdded?: boolean;
+  feature?: {
+    method?: string;
+  };
   serviceProvider?: {
     name?: string;
     mailAddress?: string;
@@ -187,3 +190,5 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
     </div>
   );
 }
+
+

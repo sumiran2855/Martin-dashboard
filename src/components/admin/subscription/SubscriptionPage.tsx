@@ -12,6 +12,9 @@ interface Facility {
   modelNumber?: string;
   hasServiceContract?: boolean;
   featureAdded?: boolean;
+  feature?: {
+    method?: string;
+  };
   serviceProvider?: {
     name?: string;
     mailAddress?: string;
@@ -19,7 +22,7 @@ interface Facility {
   };
 }
 
-const statusOptions = ["All", "Active", "Inactive"];
+const statusOptions = ["HaveSuperSaverX", "WantSuperSaverX"];
 
 function SubscriptionPage() {
   const { t } = useTranslation("subscription");
@@ -58,10 +61,23 @@ function SubscriptionPage() {
       facility.name?.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter((facility) => {
-      if (selectedStatus === "All") return true;
-      if (selectedStatus === "Active") return facility.featureAdded === true;
-      if (selectedStatus === "Inactive") return facility.featureAdded === false;
-      return false;
+      switch (selectedStatus) {
+        case "All":
+          return true;
+        case "HaveSuperSaverX":
+          return (
+            facility.featureAdded === true &&
+            facility.feature &&
+            facility.feature.method
+          );
+        case "WantSuperSaverX":
+          return (
+            facility.featureAdded === true &&
+            (!facility.feature || !facility.feature.method)
+          );
+        default:
+          return true;
+      }
     });
 
   return (
@@ -95,7 +111,7 @@ function SubscriptionPage() {
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                   {sortDropdownOpen && (
-                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md">
+                    <div className="absolute left-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-md">
                       {statusOptions.map((status) => (
                         <button
                           key={status}

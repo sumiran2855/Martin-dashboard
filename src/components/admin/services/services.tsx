@@ -20,7 +20,7 @@ interface Facility {
   status: string;
 }
 
-const statusOptions = ["All", "Active", "Inactive", "MissingData"];
+const statusOptions = ["All", "Active", "Inactive", "MissingData", "WithProvider", "WithoutProvider"];
 
 function ServicesPage() {
   const { t } = useTranslation("subscription");
@@ -67,6 +67,24 @@ function ServicesPage() {
       if (selectedStatus === "Inactive") return facility.status === "Inactive";
       if (selectedStatus === "MissingData")
         return facility.status === "Data Missing";
+      if (selectedStatus === "WithProvider") {
+        return (
+          facility.hasServiceContract &&
+          facility.serviceProvider &&
+          facility.serviceProvider.name &&
+          facility.serviceProvider.mailAddress &&
+          facility.serviceProvider.phone
+        );
+      }
+      if (selectedStatus === "WithoutProvider") {
+        return (
+          facility.hasServiceContract &&
+          (!facility.serviceProvider ||
+            (!facility.serviceProvider.name &&
+              !facility.serviceProvider.mailAddress &&
+              !facility.serviceProvider.phone))
+        );
+      }
       return false;
     });
 
@@ -92,9 +110,9 @@ function ServicesPage() {
 
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center space-x-4">
-              <div className="relative">
+              <div className="relative w-64">
                 <button
-                  className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                  className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 "
                   onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
                 >
                   <Filter size={16} className="mr-2" />
@@ -102,7 +120,7 @@ function ServicesPage() {
                   <ChevronDown size={16} className="ml-2" />
                 </button>
                 {sortDropdownOpen && (
-                  <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md">
+                  <div className="absolute left-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-md">
                     {statusOptions.map((status) => (
                       <button
                         key={status}

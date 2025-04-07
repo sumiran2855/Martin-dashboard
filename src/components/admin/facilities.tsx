@@ -12,22 +12,16 @@ interface Facility {
   name: string;
   modelNumber: string;
   xrgiID: string;
-  systemCosts?: { service_Costs: string; VAT_Deduction_Percent: string };
-  gas_Consumption?: {
-    annual_gas_consumption_m3: string;
-    xrgi_gas_type: string;
-    gas_fixed_costs_dkk: string;
-    gas_variable_costs_dkk: string;
-  };
   serviceProvider?: {
     name: string;
     mailAddress: string;
     phone: string;
   };
-  electircity_Consumption?: {
-    annual_grid_consumption_kwh: string;
-    fixed_costs_dkk: string;
-    variable_costs_dkk: string;
+  performance_report?: {
+    annualSavings: string;
+    co2Savings: string;
+    operatingHours: string;
+    industry: string;
   };
 }
 
@@ -69,64 +63,11 @@ export default function facilities({ facilityId }: { facilityId: string }) {
   }, [facilityId]);
 
   const facilityDetails = [
-    {
-      label: "Service costs per operating hour",
-      value: facility?.systemCosts?.service_Costs ?? "-",
-    },
-    {
-      label: "VAT Deduction Percentage",
-      value: facility?.systemCosts?.VAT_Deduction_Percent ?? "-",
-    },
-    {
-      label: "Gas supply",
-      value:
-        facility?.gas_Consumption?.xrgi_gas_type === "Select gas type"
-          ? "-"
-          : facility?.gas_Consumption?.xrgi_gas_type ?? "-",
-    },
-    {
-      label: "Consumption-dependent costs, gas",
-      value:
-        facility?.gas_Consumption?.gas_variable_costs_dkk != null
-          ? facility.gas_Consumption.gas_variable_costs_dkk + " m³"
-          : "-",
-    },
-    {
-      label: "Consumption-Independent costs, gas",
-      value:
-        facility?.gas_Consumption?.gas_fixed_costs_dkk != null
-          ? facility.gas_Consumption.gas_fixed_costs_dkk + " m³"
-          : "-",
-    },
-    {
-      label: "Annual gas consumption",
-      value:
-        facility?.gas_Consumption?.annual_gas_consumption_m3 != null
-          ? facility.gas_Consumption.annual_gas_consumption_m3 + " m³"
-          : "-",
-    },
-    {
-      label: "Consumption-dependent costs, electricity",
-      value:
-        facility?.electircity_Consumption?.variable_costs_dkk != null
-          ? facility.electircity_Consumption.variable_costs_dkk + " kWh"
-          : "-",
-    },
-    {
-      label: "Consumption-Independent costs, electricity",
-      value:
-        facility?.electircity_Consumption?.fixed_costs_dkk != null
-          ? facility.electircity_Consumption.fixed_costs_dkk + " kWh"
-          : "-",
-    },
-    {
-      label: "Annual electricity consumption",
-      value:
-        facility?.electircity_Consumption?.annual_grid_consumption_kwh != null
-          ? facility.electircity_Consumption.annual_grid_consumption_kwh +
-            " kWh"
-          : "-",
-    },
+    { label: "Annual Savings", value: facility?.performance_report?.annualSavings  
+      ? facility?.performance_report?.annualSavings ?? "-" : "-" },
+    { label: "Annual CO₂ savings", value: facility?.performance_report?.co2Savings ? `${facility.performance_report.co2Savings}` : "-" },
+    { label: "Operating hours per year", value: facility?.performance_report?.operatingHours ? `${facility.performance_report.operatingHours} hrs` : "-" },
+    { label: "Industry", value: facility?.performance_report?.industry ? `${facility.performance_report.industry}` : "-" },
   ];
 
   return (
@@ -212,32 +153,6 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                       </span>
                     </div>
                   ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg border mt-6 p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-medium">SuperSaverX Consumption</h2>
-                <HelpCircle size={20} className="text-gray-400" />
-              </div>
-              <BarChart />
-              <div className="flex justify-center space-x-6 mt-4 text-sm">
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-yellow-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">XRGI</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-blue-900 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">Tariffs</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-blue-400 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">Flex Price</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-gray-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">VAT</span>
                 </div>
               </div>
             </div>

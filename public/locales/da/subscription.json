@@ -8,7 +8,12 @@
         "All": "Alle",
         "Active": "Aktiv",
         "Inactive": "Inaktiv",
-        "MissingData": "Manglende data"
+        "MissingData": "Manglende data",
+        "WithProvider": "tjenesteudbyder",
+        "WithoutProvider": "anmodende tjenesteudbyder",
+        "HaveSuperSaverX": "har SuperSaverX",
+        "WantSuperSaverX": "vil have SuperSaverX"
+        
       },
       "services": {
         "servicesTitle": "Tjenester",

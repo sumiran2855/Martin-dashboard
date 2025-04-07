@@ -13,26 +13,17 @@ interface Facility {
   name: string;
   modelNumber: string;
   xrgiID: string;
-  systemCosts?: {
-    service_Costs: string;
-    VAT_Deduction_Percent: string;
-    VAT_Deduction: string;
-  };
   serviceProvider?: {
     name: string;
     mailAddress: string;
     phone: string;
   };
-  gas_Consumption?: {
-    annual_gas_consumption_m3: string;
-    xrgi_gas_type: string;
-    gas_fixed_costs_dkk: string;
-    gas_variable_costs_dkk: string;
-  };
-  electircity_Consumption?: {
-    annual_grid_consumption_kwh: string;
-    fixed_costs_dkk: string;
-    variable_costs_dkk: string;
+  hasPerformanceReport: boolean;
+  performance_report?: {
+    annualSavings: string;
+    co2Savings: string;
+    operatingHours: string;
+    industry: string;
   };
   isInstalled: boolean;
 }
@@ -48,6 +39,7 @@ export default function EditFacilities({
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
+  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
 
   const handleRadioChange = () => {
     setHasServiceProvider((prev) => !prev);
@@ -113,6 +105,13 @@ export default function EditFacilities({
     });
   };
 
+  const handleCheckboxChange = (e: any) => {
+    const { name, checked } = e.target;
+    if (name === "performanceReport") {
+      setHasPerformanceReport(checked);
+    }
+  };
+
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token") || "";
@@ -135,26 +134,13 @@ export default function EditFacilities({
           mailAddress: facility?.serviceProvider?.mailAddress,
           phone: facility?.serviceProvider?.phone,
         },
-        systemCosts: {
-          service_Costs: facility?.systemCosts?.service_Costs,
-          VAT_Deduction_Percent: facility?.systemCosts?.VAT_Deduction_Percent,
-          VAT_Deduction: facility?.systemCosts?.VAT_Deduction,
+        performance_report: {
+          annualSavings: facility?.performance_report?.annualSavings || "",
+          co2Savings: facility?.performance_report?.co2Savings || "",
+          operatingHours: facility?.performance_report?.operatingHours || "",
+          industry: facility?.performance_report?.industry || "",
         },
-        gas_Consumption: {
-          annual_gas_consumption_m3:
-            facility?.gas_Consumption?.annual_gas_consumption_m3,
-          xrgi_gas_type: facility?.gas_Consumption?.xrgi_gas_type,
-          gas_fixed_costs_dkk: facility?.gas_Consumption?.gas_fixed_costs_dkk,
-          gas_variable_costs_dkk:
-            facility?.gas_Consumption?.gas_variable_costs_dkk,
-        },
-        electircity_Consumption: {
-          annual_grid_consumption_kwh:
-            facility?.electircity_Consumption?.annual_grid_consumption_kwh,
-          fixed_costs_dkk: facility?.electircity_Consumption?.fixed_costs_dkk,
-          variable_costs_dkk:
-            facility?.electircity_Consumption?.variable_costs_dkk,
-        },
+        hasPerformanceReport,
         isInstalled: isInstalled,
         DaSigned: true,
       };
@@ -361,105 +347,6 @@ export default function EditFacilities({
           </div>
 
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
-            <div className="p-6 rounded-lg mb-6">
-              <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                System Costs
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="md:col-span-1">
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Service Costs for Operating XRGI®
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="systemCosts.service_Costs"
-                      value={facility?.systemCosts?.service_Costs}
-                      onChange={handleChange}
-                      className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
-                    />
-                    <span className="absolute inset-y-0 right-3 flex items-center text-blue-500 cursor-pointer">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 text-blue-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 16h.01M12 12a2 2 0 1 0-2-2"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                  <p className="text-gray-500 text-sm mt-1 ml-3">
-                    Your service costs can be found in your contract for the
-                    system.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:col-span-2">
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Enter VAT Deduction Percentage
-                    </label>
-                    <input
-                      type="text"
-                      name="systemCosts.VAT_Deduction_Percent"
-                      value={facility?.systemCosts?.VAT_Deduction_Percent}
-                      onChange={handleChange}
-                      className="p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <label className="block text-gray-700 text-sm font-medium mb-1">
-                      Select if VAT can be Deducted
-                    </label>
-                    <div className="relative">
-                      <select
-                        className="appearance-none p-3 border border-gray-300 rounded-lg w-full  focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
-                        name="systemCosts.VAT_Deduction"
-                        value={
-                          facility?.systemCosts?.VAT_Deduction ? "Yes" : "No"
-                        }
-                        onChange={handleChange}
-                      >
-                        <option>Yes</option>
-                        <option>No</option>
-                      </select>
-                      <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 text-gray-500"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
             <div className="flex items-center space-x-3 py-4">
               <input
                 type="checkbox"
@@ -523,152 +410,94 @@ export default function EditFacilities({
             )}
           </div>
 
-          <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-            <div className="text-[#082351DE] rounded-lg mb-6">
-              <h2 className="text-lg font-semibold mb-4">Gas Consumption</h2>
+          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+            <div className="flex items-center space-x-3 py-4">
+              <input
+                type="checkbox"
+                id="performanceReport"
+                name="performanceReport"
+                checked={hasPerformanceReport}
+                onChange={handleCheckboxChange}
+                className="w-5 h-5 cursor-pointer"
+              />
+              <label
+                htmlFor="performanceReport"
+                className="text-[#082351DE] text-lg font-semibold"
+              >
+                I want to add a performance report
+              </label>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="relative">
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
-                    What type of gas is supplied to the XRGI system?
-                  </label>
-                  <div className="relative">
-                    <select
-                      name="gas_Consumption.xrgi_gas_type"
-                      value={facility?.gas_Consumption?.xrgi_gas_type ?? ""}
-                      onChange={handleChange}
-                      className="appearance-none p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
-                    >
-                      <option>Select gas type</option>
-                      <option>Naturel Gas</option>
-                      <option>Hydrogen</option>
-                    </select>
-                    <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 text-gray-500"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+            {hasPerformanceReport && (
+              <div className="bg-white p-10 rounded-lg mb-6">
+                <div className="text-[#082351DE] rounded-lg mb-6">
+                  <h2 className="text-lg font-semibold mb-4">
+                    Performance report
+                  </h2>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-1">
+                        Expected annual savings
+                      </label>
+                      <input
+                        type="text"
+                        name="performance_report.annualSavings"
+                        placeholder="Euro Pr. Year"
+                        className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2"
+                        value={facility?.performance_report?.annualSavings || ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-1">
+                        Expected annual CO₂ savings
+                      </label>
+                      <input
+                        type="text"
+                        name="performance_report.co2Savings"
+                        placeholder="Tons Pr. year"
+                        className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                        value={facility?.performance_report?.co2Savings || ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-1">
+                        Expected operating hours per year
+                      </label>
+                      <input
+                        type="text"
+                        name="performance_report.operatingHours"
+                        placeholder="0-8763"
+                        className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                        value={facility?.performance_report?.operatingHours || ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-1">
+                        Industry
+                      </label>
+                      <select
+                        name="performance_report.industry"
+                        className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                        value={facility?.performance_report?.industry || ""}
+                        onChange={handleChange}
                       >
-                        <path d="M6 9l6 6 6-6"></path>
-                      </svg>
-                    </span>
+                        <option value="">Select a Industry</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="hospitality">Hospitality</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
-                    What is the annual gas consumption?
-                  </label>
-                  <input
-                    type="text"
-                    name="gas_Consumption.annual_gas_consumption_m3"
-                    value={
-                      facility?.gas_Consumption?.annual_gas_consumption_m3 ?? ""
-                    }
-                    onChange={handleChange}
-                    placeholder="m³"
-                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                  />
-                </div>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the sum of consumption-independent costs
-                  </label>
-                  <input
-                    type="text"
-                    name="gas_Consumption.gas_fixed_costs_dkk"
-                    value={facility?.gas_Consumption?.gas_fixed_costs_dkk}
-                    onChange={handleChange}
-                    placeholder="DKK"
-                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the sum of consumption-dependent costs
-                  </label>
-                  <input
-                    type="text"
-                    name="gas_Consumption.gas_variable_costs_dkk"
-                    value={facility?.gas_Consumption?.gas_variable_costs_dkk}
-                    onChange={handleChange}
-                    placeholder="DKK"
-                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-            <div className="text-[#082351DE] rounded-lg mb-6">
-              <h2 className="text-lg font-semibold mb-4">
-                Electricity Consumption
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the annual electricity consumption when purchasing
-                    from the grid
-                  </label>
-                  <input
-                    type="text"
-                    name="electircity_Consumption.annual_grid_consumption_kwh"
-                    value={
-                      facility?.electircity_Consumption
-                        ?.annual_grid_consumption_kwh
-                    }
-                    onChange={handleChange}
-                    placeholder="kWh"
-                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                  />
-                </div>
-
-                <div></div>
-
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the sum of consumption-independent costs
-                  </label>
-                  <input
-                    type="text"
-                    name="electircity_Consumption.fixed_costs_dkk"
-                    value={facility?.electircity_Consumption?.fixed_costs_dkk}
-                    onChange={handleChange}
-                    placeholder="DKK"
-                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Enter the sum of consumption-dependent costs
-                  </label>
-                  <input
-                    type="text"
-                    name="electircity_Consumption.variable_costs_dkk"
-                    value={
-                      facility?.electircity_Consumption?.variable_costs_dkk
-                    }
-                    onChange={handleChange}
-                    placeholder="DKK"
-                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 focus:ring-blue-300"
-                  />
-                  <span className="text-gray-500 text-xs mt-1 block">
-                    Tariffs, taxes, etc., excl. flexible price
-                  </span>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
 
           <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">

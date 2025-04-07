@@ -162,9 +162,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         xrgiID: facility?.xrgiID,
         modelNumber: facility?.modelNumber,
         location: {
-          address: facility?.location?.address,
-          postalCode: facility?.location?.postalCode,
-          city: facility?.location?.city,
+          address: facility?.location?.address || "",
+          postalCode: facility?.location?.postalCode || "",
+          city: facility?.location?.city || "",
         },
         serviceProvider: facility?.hasServiceContract
           ? {

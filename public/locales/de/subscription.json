@@ -8,7 +8,11 @@
         "All": "Alle",
         "Active": "Aktiv",
         "Inactive": "Inaktiv",
-        "MissingData": "Fehlende Daten"
+        "MissingData": "Fehlende Daten",
+        "WithProvider": "mit Dienstleister",
+        "WithoutProvider": "anfragenden Dienstleister",
+        "HaveSuperSaverX": "hat SuperSaverX",
+        "WantSuperSaverX": "will SuperSaverX"
       },
       "services": {
         "servicesTitle": "Dienstleistungen",

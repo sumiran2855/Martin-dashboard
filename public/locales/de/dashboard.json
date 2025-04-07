@@ -23,7 +23,10 @@
   "activeFacilities": "Aktiv",
   "noFacilities": "Keine registrierten Einrichtungen",
   "rowsPerPage": "Zeilen pro Seite:",
-  "facilitiesWithServices": "Einrichtungen mit Dienstleistungen",
+  "facilitiesWithServices": "Dienste mit Dienstanbieter",
+  "facilitiesRequestingService": "Dienste, die einen Dienstanbieter anfordern",
   "Unavailable": "Nicht verfügbar",
-  "Available": "Verfügbar"
+  "Available": "Verfügbar",
+  "haveSuperSaverX": "Hat superSaverX",
+  "wantSuperSaverX": "Will superSaverX"
 }

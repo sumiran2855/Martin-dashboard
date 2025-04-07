@@ -23,8 +23,11 @@
     "activeFacilities": "Aktiv",
     "noFacilities": "Ingen registrerede faciliteter",
     "rowsPerPage": "Rækker per side:",
-    "facilitiesWithServices": "Faciliteter med service",
+    "facilitiesWithServices": "Tjenester med serviceudbyder",
+    "facilitiesRequestingService": "Tjenester der ønsker en serviceudbyder",
      "Unavailable": "Utilgængelig",
-      "Available": "Tilgængelig"
+      "Available": "Tilgængelig",
+      "haveSuperSaverX": "Har superSaverX",
+      "wantSuperSaverX": "Vil have superSaverX"
   }
   

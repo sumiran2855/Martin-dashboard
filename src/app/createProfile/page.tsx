@@ -12,10 +12,11 @@ import { useRouter } from "next/navigation";
 import Modal from "@/components/modals/modal";
 import { createProfile, getCustomer } from "@/services/customerServices";
 import { getFacility, createFacility } from "@/services/facilityServices";
-import { termsText } from "@/components/dashboard/staticData/Data";
 import TermsModal from "@/components/modals/acceptTerms";
+import { useTranslation } from "react-i18next";
 
 function Dashboard() {
+  const { t: term } = useTranslation("term");
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -405,7 +406,7 @@ function Dashboard() {
         isOpen={isTermsOpen}
         onClose={() => setIsTermsOpen(false)}
         title="Terms and Conditions"
-        termsContent={termsText}
+        termsContent={term("termsAndConsent", { returnObjects: true }) as string[] }
         onAccept={handleAcceptTerms}
         isChecked={isChecked}
         setIsChecked={setIsChecked}

@@ -4,7 +4,7 @@ interface TermsModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  termsContent: string;
+  termsContent: string[];
   onAccept: () => void;
   isChecked: boolean;
   setIsChecked: (value: boolean) => void;
@@ -54,9 +54,14 @@ const TermsModal: React.FC<TermsModalProps> = ({
         </div>
 
         <div className="mt-2 h-64 overflow-y-auto border border-gray-200 rounded-md p-4 text-left bg-gray-50">
-          <p className="text-gray-700 break-words whitespace-pre-line text-sm leading-relaxed">
-            {termsContent}
-          </p>
+          {termsContent.map((para:any, idx:any) => (
+            <div
+              key={idx}
+              className="mb-4 whitespace-pre-line text-sm text-gray-700"
+            >
+              {para}
+            </div>
+          ))}
         </div>
 
         <div className="mt-4 space-y-3">

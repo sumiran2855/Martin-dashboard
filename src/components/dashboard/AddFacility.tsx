@@ -6,11 +6,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useCreateFacility } from "@/controller/facility/createFacility";
 import TermsModal from "../modals/acceptTerms";
-import { termsText } from "./staticData/Data";
 import { useTranslation } from "react-i18next";
 
 function AddFacility() {
   const { t } = useTranslation("facilityForm");
+  const { t: term } = useTranslation("term");
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -628,7 +628,7 @@ function AddFacility() {
         isOpen={isTermsOpen}
         onClose={() => setTermsOpen(false)}
         title="Terms and Conditions"
-        termsContent={termsText}
+        termsContent={term("termsAndConsent", { returnObjects: true }) as string[] }
         onAccept={handleAcceptTerms}
         isChecked={isChecked}
         setIsChecked={setIsChecked}
