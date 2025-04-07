@@ -179,6 +179,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           operatingHours: facility?.performance_report?.operatingHours || "",
           industry: facility?.performance_report?.industry || "",
         },
+        hasPerformanceReport,
         isInstalled,
         DaSigned: true,
         hasServiceContract,

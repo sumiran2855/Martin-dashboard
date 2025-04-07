@@ -11,7 +11,6 @@ interface Facility {
   name: string;
   modelNumber: string;
   xrgiID: string;
-  systemCosts?: { service_Costs: string; VAT_Deduction_Percent: string };
   performance_report?: {
     annualSavings: string;
     co2Savings: string;
