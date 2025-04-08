@@ -131,6 +131,7 @@ function Dashboard() {
       : {
           companyInfo: {
             ...formData,
+            cvrNumber:formData.cvrNumber,
             phone: formatPhoneNumber(formData.phone, formData.countryCode),
           },
           contactPerson: {

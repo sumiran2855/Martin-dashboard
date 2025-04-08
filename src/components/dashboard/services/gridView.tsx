@@ -17,7 +17,6 @@ interface Facility {
 }
 
 export default function GridView({ facilities }: { facilities: Facility[] }) {
-  console.log("🚀 ~ GridView ~ facilities:", facilities);
   const router = useRouter();
   const { t } = useTranslation("dashboard");
 
