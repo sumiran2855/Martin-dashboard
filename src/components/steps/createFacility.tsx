@@ -379,20 +379,20 @@ export default function CreateFacility({
         )}
       </div>
 
-      <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-        <div className="flex items-center gap-4 ">
+      <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+        <div className="flex items-center space-x-3 py-4">
           <input
             type="checkbox"
             id="installSystem"
             checked={isInstalled}
             onChange={() => setIsInstalled(!isInstalled)}
-            className="w-5 h-5 text-blue-600 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            className="w-5 h-5 cursor-pointer"
           />
           <label
             htmlFor="installSystem"
-            className="text-gray-800 text-sm font-medium"
+            className="text-[#082351DE] text-lg font-semibold"
           >
-            Is your system installed?
+            Is your system installed ?
           </label>
         </div>
       </div>
