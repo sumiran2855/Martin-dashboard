@@ -548,10 +548,15 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                           value={facility?.performance_report?.industry}
                           onChange={handleChange}
                         >
-                          <option value="">Select a Industry</option>
-                          <option value="manufacturing">Manufacturing</option>
-                          <option value="healthcare">Healthcare</option>
-                          <option value="hospitality">Hospitality</option>
+                          <option value="" disabled>
+                            Select a Industry
+                          </option>
+                          <option value="manufacturing">Hotel</option>
+                          <option value="healthcare">School</option>
+                          <option value="hospitality">Sport</option>
+                          <option value="hospitality">Nursing home</option>
+                          <option value="hospitality">Indrusty</option>
+                          <option value="hospitality">Other</option>
                         </select>
                       </div>
                     </div>

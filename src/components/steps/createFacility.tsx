@@ -7,9 +7,9 @@ interface ValidateFormProps {
   setStepTwoFormData: React.Dispatch<React.SetStateAction<any>>;
   isInstalled: boolean;
   setIsInstalled: React.Dispatch<React.SetStateAction<any>>;
-  hasServiceProvider:boolean;
-  setHasServiceProvider:React.Dispatch<React.SetStateAction<any>>;
-  hasPerformanceReport:boolean;
+  hasServiceProvider: boolean;
+  setHasServiceProvider: React.Dispatch<React.SetStateAction<any>>;
+  hasPerformanceReport: boolean;
   setHasPerformanceReport: React.Dispatch<React.SetStateAction<any>>;
 }
 
@@ -21,7 +21,7 @@ export default function CreateFacility({
   hasServiceProvider,
   setHasServiceProvider,
   hasPerformanceReport,
-  setHasPerformanceReport
+  setHasPerformanceReport,
 }: ValidateFormProps) {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(
@@ -367,10 +367,15 @@ export default function CreateFacility({
                     value={stepTwoFormData.industry}
                     onChange={handleChange}
                   >
-                    <option value="">Select a Industry</option>
-                    <option value="manufacturing">Manufacturing</option>
-                    <option value="healthcare">Healthcare</option>
-                    <option value="hospitality">Hospitality</option>
+                    <option value="" disabled>
+                      Select a Industry
+                    </option>
+                    <option value="manufacturing">Hotel</option>
+                    <option value="healthcare">School</option>
+                    <option value="hospitality">Sport</option>
+                    <option value="hospitality">Nursing home</option>
+                    <option value="hospitality">Indrusty</option>
+                    <option value="hospitality">Other</option>
                   </select>
                 </div>
               </div>
