@@ -9,6 +9,7 @@ export function useCreateFacility() {
     address: "",
     postalCode: "",
     city: "",
+    country:"",
     status: "",
     annualSavings:"",
     co2Savings:"",
@@ -18,6 +19,7 @@ export function useCreateFacility() {
     serviceProviderName: "",
     serviceProviderMail: "",
     serviceProviderPhone: "",
+    serviceProviderCountryCode:"",
     installationMethod: "",
     partnerName: "",
     partnerMobile: "",
@@ -28,6 +30,7 @@ export function useCreateFacility() {
     name: "",
     mobile: "",
     email: "",
+    countryCode: "",
   });
 
   const handleCreateFacility = async (
@@ -54,6 +57,7 @@ export function useCreateFacility() {
         address: stepTwoFormData.address || "",
         postalCode: stepTwoFormData.postalCode || "",
         city: stepTwoFormData.city || "",
+        country:stepTwoFormData.country || "",
       },
       performance_report:{
         annualSavings:stepTwoFormData.annualSavings,
@@ -74,6 +78,7 @@ export function useCreateFacility() {
                       name: partnerDetails.name || "",
                       mobile: partnerDetails.mobile || "",
                       email: partnerDetails.email || "",
+                      countryCode:partnerDetails.countryCode || "",
                     }
                   : undefined,
             }
@@ -86,6 +91,7 @@ export function useCreateFacility() {
         name: stepTwoFormData.serviceProviderName || "",
         mailAddress: stepTwoFormData.serviceProviderMail || "",
         phone: stepTwoFormData.serviceProviderPhone || "",
+        countryCode: stepTwoFormData.serviceProviderCountryCode || "",
       };
     }
     try {

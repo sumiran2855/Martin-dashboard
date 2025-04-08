@@ -33,6 +33,7 @@ function Dashboard() {
     name: "",
     mobile: "",
     email: "",
+    countryCode: "",
   });
 
   const getAuthTokens = () => {
@@ -98,10 +99,12 @@ function Dashboard() {
     serviceProviderName: "",
     serviceProviderMail: "",
     serviceProviderPhone: "",
+    serviceProviderCountryCode:"",
     installationMethod : "",
     partnerName:"",
     partnerMobile:"",
-    partnerEmail:""
+    partnerEmail:"",
+    partnerCountryCode:"",
   });
 
   const handleSubscription = async () => {
@@ -183,6 +186,7 @@ function Dashboard() {
         name: stepTwoFormData.serviceProviderName,
         mailAddress: stepTwoFormData.serviceProviderMail,
         phone: stepTwoFormData.serviceProviderPhone,
+        countryCode:stepTwoFormData.serviceProviderCountryCode
       } : null,
       performance_report:{
         annualSavings:stepTwoFormData.annualSavings,
@@ -204,6 +208,7 @@ function Dashboard() {
                     name: partnerDetails.name || "",
                     mobile: partnerDetails.mobile || "",
                     email: partnerDetails.email || "",
+                    countryCode: partnerDetails.countryCode || "",
                   }
                 : undefined,
           }
@@ -283,10 +288,12 @@ function Dashboard() {
           serviceProviderName: facilityData.serviceProvider.name || "",
           serviceProviderMail: facilityData.serviceProvider.mailAddress || "",
           serviceProviderPhone: facilityData.serviceProvider.phone || "",
+          serviceProviderCountryCode:facilityData.serviceProvider.countryCode || "",
           installationMethod: facilityData.feature.method || "",
           partnerName: facilityData.feature.partner_details.name || "",
           partnerMobile: facilityData.feature.partner_details.mobile || "",
           partnerEmail: facilityData.feature.partner_details.email || "",
+          partnerCountryCode:facilityData.feature.partner_details.countryCode || "",
         });
       }
 

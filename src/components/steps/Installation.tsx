@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { countryCodes } from "../dashboard/staticData/Data";
 
 interface AddFeature {
   selectedOption: string;
   setSelectedOption: (value: string) => void;
-  partnerDetails: { name: string; mobile: string; email: string };
+  partnerDetails: {
+    name: string;
+    mobile: string;
+    email: string;
+    countryCode: string;
+  };
   setPartnerDetails: (details: any) => void;
   setupSuperSaver: boolean;
   setSetupSuperSaver: React.Dispatch<React.SetStateAction<any>>;
@@ -109,18 +115,45 @@ export default function StepThree({
                       }
                       className="p-2 border rounded-md w-full"
                     />
-                    <input
-                      type="text"
-                      placeholder="Mobile"
-                      value={partnerDetails.mobile}
-                      onChange={(e) =>
-                        setPartnerDetails({
-                          ...partnerDetails,
-                          mobile: e.target.value,
-                        })
-                      }
+
+                    <div className="flex gap-2">
+                      <div className="relative w-1/5">
+                        <select
+                          name="serviceProviderCountryCode"
+                          value={partnerDetails.countryCode}
+                          onChange={(e) =>
+                            setPartnerDetails({
+                              ...partnerDetails,
+                              countryCode: e.target.value,
+                            })
+                          }
+                          className="p-2 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                        >
+                          {countryCodes.map((country) => (
+                            <option
+                              key={country.code}
+                              className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                              value={country.code}
+                            >
+                              {country.flag} {country.code}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Mobile"
+                        value={partnerDetails.mobile}
+                        onChange={(e) =>
+                          setPartnerDetails({
+                            ...partnerDetails,
+                            mobile: e.target.value,
+                          })
+                        }
                       className="p-2 border rounded-md w-full"
-                    />
+                      />
+                    </div>
+
                     <input
                       type="email"
                       placeholder="Email"

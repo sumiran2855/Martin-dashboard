@@ -1,6 +1,7 @@
 import GenericModal from "@/components/modals/genericPopup";
 import { useState } from "react";
 import BarChart from "../barChart";
+import { countryCodes } from "../dashboard/staticData/Data";
 
 interface ValidateFormProps {
   stepTwoFormData: any;
@@ -223,6 +224,16 @@ export default function CreateFacility({
                 onChange={handleChange}
               />
             </div>
+            <div className="md:col-span-1">
+              <input
+                type="text"
+                name="country"
+                placeholder="Country"
+                className="p-3 border rounded-lg w-full"
+                value={stepTwoFormData.country}
+                onChange={handleChange}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -275,13 +286,31 @@ export default function CreateFacility({
                   onChange={handleChange}
                 />
               </div>
+              <div className="flex items-center w-full gap-2">
+                <div className="relative w-1/6">
+                  <select
+                    name="serviceProviderCountryCode"
+                    value={stepTwoFormData.serviceProviderCountryCode}
+                    onChange={handleChange}
+                    className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                  >
+                    {countryCodes.map((country) => (
+                      <option
+                        key={country.code}
+                        className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                        value={country.code}
+                      >
+                        {country.flag} {country.code}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <div className="md:col-span-1">
                 <input
                   type="text"
                   name="serviceProviderPhone"
                   placeholder="Phone Number"
-                  className="p-3 border rounded-lg w-full"
+                  className="p-3 w-5/6 border rounded-lg outline-none"
                   value={stepTwoFormData.serviceProviderPhone}
                   onChange={handleChange}
                 />

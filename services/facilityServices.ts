@@ -106,6 +106,7 @@ export const getFacility = async (token: string, IdToken: string) => {
         name: facilityData.serviceProvider?.name || "",
         mailAddress: facilityData.serviceProvider?.mailAddress || "",
         phone: facilityData.serviceProvider?.phone || "",
+        countryCode:facilityData.serviceProvider?.countryCode || "",
       },
       hasServiceContract: facilityData.hasServiceContract || false,
       featureAdded: facilityData.featureAdded || false,
@@ -115,6 +116,7 @@ export const getFacility = async (token: string, IdToken: string) => {
           name: facilityData.feature?.partner_details?.name || "",
           mobile: facilityData.feature?.partner_details?.mobile || "",
           email: facilityData.feature?.partner_details?.email || "",
+          countryCode: facilityData.feature?.partner_details?.countryCode || "",
         },
       },
     };

@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { useCreateFacility } from "@/controller/facility/createFacility";
 import TermsModal from "../modals/acceptTerms";
 import { useTranslation } from "react-i18next";
+import { countryCodes } from "./staticData/Data";
 
 function AddFacility() {
   const { t } = useTranslation("facilityForm");
@@ -274,6 +275,17 @@ function AddFacility() {
                       onChange={handleChange}
                     />
                   </div>
+
+                  <div className="md:col-span-1">
+                    <input
+                      type="text"
+                      name="country"
+                      placeholder={t("country")}
+                      className="p-3 border rounded-lg w-full"
+                      value={stepTwoFormData.country}
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -326,13 +338,31 @@ function AddFacility() {
                         onChange={handleChange}
                       />
                     </div>
+                    <div className="flex items-center w-full gap-2">
+                      <div className="relative w-1/4">
+                        <select
+                          name="serviceProviderCountryCode"
+                          value={stepTwoFormData.serviceProviderCountryCode}
+                          onChange={handleChange}
+                          className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                        >
+                          {countryCodes.map((country) => (
+                            <option
+                              key={country.code}
+                              className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                              value={country.code}
+                            >
+                              {country.flag} {country.code}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
 
-                    <div className="md:col-span-1">
                       <input
                         type="text"
                         name="serviceProviderPhone"
                         placeholder={t("serviceProviderPhone")}
-                        className="p-3 border rounded-lg w-full"
+                        className="p-3 w-5/6 border rounded-lg outline-none"
                         value={stepTwoFormData.serviceProviderPhone}
                         onChange={handleChange}
                       />
@@ -586,18 +616,43 @@ function AddFacility() {
                             }
                             className="p-2 border rounded-md w-full"
                           />
-                          <input
-                            type="text"
-                            placeholder={t("partnerMobile")}
-                            value={partnerDetails.mobile}
-                            onChange={(e) =>
-                              setPartnerDetails({
-                                ...partnerDetails,
-                                mobile: e.target.value,
-                              })
-                            }
+                          <div className="flex gap-2">
+                            <div className="relative w-1/5">
+                              <select
+                                name="partnerDetails.countryCode"
+                                value={partnerDetails.countryCode}
+                                onChange={(e) =>
+                                  setPartnerDetails({
+                                    ...partnerDetails,
+                                    countryCode: e.target.value,
+                                  })
+                                }
+                                className="p-2 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                              >
+                                {countryCodes.map((country) => (
+                                  <option
+                                    key={country.code}
+                                    className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                                    value={country.code}
+                                  >
+                                    {country.flag} {country.code}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                            <input
+                              type="text"
+                              placeholder={t("partnerMobile")}
+                              value={partnerDetails.mobile}
+                              onChange={(e) =>
+                                setPartnerDetails({
+                                  ...partnerDetails,
+                                  mobile: e.target.value,
+                                })
+                              }
                             className="p-2 border rounded-md w-full"
-                          />
+                            />
+                          </div>
                           <input
                             type="email"
                             placeholder={t("partnerEmail")}

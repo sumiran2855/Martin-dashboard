@@ -7,10 +7,16 @@ import Modal from "../modals/modal";
 import { apiRequest } from "@/utils/authHelper";
 import GenericModal from "../modals/genericPopup";
 import { useTranslation } from "react-i18next";
+import { countryCodes } from "./staticData/Data";
 
 interface Facility {
   facilityId?: string;
-  location?: { address: string; postalCode: string; city: string };
+  location?: {
+    address: string;
+    postalCode: string;
+    city: string;
+    country: string;
+  };
   name: string;
   modelNumber: string;
   xrgiID: string;
@@ -18,6 +24,7 @@ interface Facility {
     name: string;
     mailAddress: string;
     phone: string;
+    countryCode: string;
   };
   performance_report?: {
     annualSavings: string;
@@ -48,11 +55,14 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-  const [setupSuperSaver, setSetupSuperSaver] = useState(facility?.featureAdded || false);
+  const [setupSuperSaver, setSetupSuperSaver] = useState(
+    facility?.featureAdded || false
+  );
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
     email: "",
+    countryCode: "",
   });
   const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
 
@@ -79,7 +89,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         setIsInstalled(response.data?.isInstalled || false);
 
         const { feature } = response.data;
-        if(response.data.hasServiceContract){
+        if (response.data.hasServiceContract) {
           setHasServiceProvider(true);
         }
 
@@ -96,6 +106,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
               name: feature.partner_details.name || "",
               mobile: feature.partner_details.mobile || "",
               email: feature.partner_details.email || "",
+              countryCode: feature.partner_details.countryCode || "",
             });
           }
         }
@@ -165,12 +176,14 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           address: facility?.location?.address || "",
           postalCode: facility?.location?.postalCode || "",
           city: facility?.location?.city || "",
+          country: facility?.location?.country || "",
         },
         serviceProvider: facility?.hasServiceContract
           ? {
               name: facility?.serviceProvider?.name || "",
               mailAddress: facility?.serviceProvider?.mailAddress || "",
               phone: facility?.serviceProvider?.phone || "",
+              countryCode: facility?.serviceProvider?.countryCode || "",
             }
           : null,
         performance_report: {
@@ -183,8 +196,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         isInstalled,
         DaSigned: true,
         hasServiceContract,
-        feature:
-          setupSuperSaver
+        feature: setupSuperSaver
           ? {
               method: selectedOption || "",
               partner_details:
@@ -193,6 +205,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name: partnerDetails.name || "",
                       mobile: partnerDetails.mobile || "",
                       email: partnerDetails.email || "",
+                      countryCode: partnerDetails.countryCode || "",
                     }
                   : undefined,
             }
@@ -255,7 +268,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="name"
                       placeholder={t("nameSystem")}
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.name || ''}
+                      value={facility?.name || ""}
                       onChange={handleChange}
                     />
                     <label className="text-gray-500 text-sm mt-1 block ml-3">
@@ -267,7 +280,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                     <div className="relative">
                       <select
                         name="modelNumber"
-                        value={facility?.modelNumber || ''}
+                        value={facility?.modelNumber || ""}
                         onChange={handleChange}
                         className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                       >
@@ -319,7 +332,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                         name="xrgiID"
                         placeholder={t("enterXrgiId")}
                         className="p-3 border border-gray-300 rounded-lg w-full pr-10  focus:ring-2 focus:ring-blue-300"
-                        value={facility?.xrgiID || ''}
+                        value={facility?.xrgiID || ""}
                         onChange={handleChange}
                       />
                       <span
@@ -373,7 +386,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="location.address"
                       placeholder={t("address")}
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.location?.address || ''}
+                      value={facility?.location?.address || ""}
                       onChange={handleChange}
                     />
                     <label className="text-gray-500 text-sm mt-1 block ml-3">
@@ -387,7 +400,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="location.postalCode"
                       placeholder={t("postalCode")}
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.location?.postalCode || ''}
+                      value={facility?.location?.postalCode || ""}
                       onChange={handleChange}
                     />
                   </div>
@@ -398,7 +411,18 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       name="location.city"
                       placeholder={t("city")}
                       className="p-3 border rounded-lg w-full"
-                      value={facility?.location?.city || ''}
+                      value={facility?.location?.city || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="md:col-span-1">
+                    <input
+                      type="text"
+                      name="location.country"
+                      placeholder={t("country")}
+                      className="p-3 border rounded-lg w-full"
+                      value={facility?.location?.country || ""}
                       onChange={handleChange}
                     />
                   </div>
@@ -455,7 +479,25 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                       />
                     </div>
 
-                    <div className="md:col-span-1">
+                    <div className="flex items-center w-full gap-2">
+                      <div className="relative w-1/3">
+                        <select
+                          name="serviceProvider.countryCode"
+                          value={facility?.serviceProvider?.countryCode ?? ""}
+                          onChange={handleChange}
+                          className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                        >
+                          {countryCodes.map((country) => (
+                            <option
+                              key={country.code}
+                              className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                              value={country.code}
+                            >
+                              {country.flag} {country.code}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                       <input
                         type="text"
                         name="serviceProvider.phone"
@@ -705,18 +747,43 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                             }
                             className="p-2 border rounded-md w-full"
                           />
-                          <input
-                            type="text"
-                            placeholder={t("partnerMobile")}
-                            value={partnerDetails.mobile}
-                            onChange={(e) =>
-                              setPartnerDetails({
-                                ...partnerDetails,
-                                mobile: e.target.value,
-                              })
-                            }
-                            className="p-2 border rounded-md w-full"
-                          />
+                          <div className="flex gap-2">
+                            <div className="relative w-1/3">
+                              <select
+                                name="serviceProviderCountryCode"
+                                value={partnerDetails.countryCode}
+                                onChange={(e) =>
+                                  setPartnerDetails({
+                                    ...partnerDetails,
+                                    countryCode: e.target.value,
+                                  })
+                                }
+                                className="p-2 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                              >
+                                {countryCodes.map((country) => (
+                                  <option
+                                    key={country.code}
+                                    className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                                    value={country.code}
+                                  >
+                                    {country.flag} {country.code}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                            <input
+                              type="text"
+                              placeholder={t("partnerMobile")}
+                              value={partnerDetails.mobile}
+                              onChange={(e) =>
+                                setPartnerDetails({
+                                  ...partnerDetails,
+                                  mobile: e.target.value,
+                                })
+                              }
+                              className="p-2 border rounded-md w-full"
+                            />
+                          </div>
                           <input
                             type="email"
                             placeholder={t("partnerEmail")}
