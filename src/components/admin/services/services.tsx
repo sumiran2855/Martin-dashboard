@@ -108,7 +108,7 @@ function ServicesPage() {
             {t("services.servicesDescription")}
           </p>
 
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
             <div className="flex items-center space-x-4">
               <div className="relative w-64">
                 <button

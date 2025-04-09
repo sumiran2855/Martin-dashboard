@@ -116,7 +116,7 @@ function AddFacility() {
             </h2>
             <p className="text-gray-600 mb-6">{t("loginCreatedMessage")}</p>
 
-            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
               <div className="p-6 rounded-lg mb-6">
                 <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
                   {t("registerSystem")}
@@ -234,7 +234,7 @@ function AddFacility() {
               />
             </div>
 
-            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
               <div className="p-6 rounded-lg mb-6">
                 <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
                   {t("systemLocation")}
@@ -290,7 +290,7 @@ function AddFacility() {
               </div>
             </div>
 
-            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
               <div className="flex items-center space-x-3 py-4">
                 <input
                   type="checkbox"
@@ -372,7 +372,7 @@ function AddFacility() {
               )}
             </div>
 
-            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
               <div className="flex items-center space-x-3 py-4">
                 <input
                   type="checkbox"
@@ -467,7 +467,7 @@ function AddFacility() {
               )}
             </div>
 
-            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
               <div className="flex items-center space-x-3 py-4">
                 <input
                   type="checkbox"

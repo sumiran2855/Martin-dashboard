@@ -182,7 +182,7 @@ export default function EditFacilities({
           </h1>
         </div>
         <div className="flex-1 overflow-auto px-6 py-2 mx-4">
-          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0 max-md:px-0">
             <div className="p-6 rounded-lg mb-6">
               <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
                 Register a System
@@ -301,7 +301,7 @@ export default function EditFacilities({
             />
           </div>
 
-          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
             <div className="p-6 rounded-lg mb-6">
               <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
                 System Location
@@ -346,7 +346,7 @@ export default function EditFacilities({
             </div>
           </div>
 
-          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
             <div className="flex items-center space-x-3 py-4">
               <input
                 type="checkbox"
@@ -410,7 +410,7 @@ export default function EditFacilities({
             )}
           </div>
 
-          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200">
+          <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
             <div className="flex items-center space-x-3 py-4">
               <input
                 type="checkbox"

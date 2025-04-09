@@ -23,7 +23,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
   const router = useRouter();
 
   return (
-    <div className="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-md shadow-sm ">
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr className="bg-gray-50">

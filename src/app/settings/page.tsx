@@ -27,7 +27,7 @@ function SettingsPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t("languageSelector.title")}
               </label>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-4 max-md:grid-cols-1">
                 {[
                   { code: "en", label: "English" },
                   { code: "da", label: "Danish" },

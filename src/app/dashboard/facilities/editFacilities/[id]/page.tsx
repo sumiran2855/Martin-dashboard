@@ -1,7 +1,7 @@
 "use client";
 
 import withAuth from "@/auth/authUtils";
-import AdminSidebar from "@/components/dashboard/Sidebar";
+import Sidebar from "@/components/dashboard/Sidebar";
 import EditFacilities from "@/components/dashboard/editFacilities";
 import { useParams } from "next/navigation";
 const EditFacilitiesPage = () => {
@@ -10,7 +10,7 @@ const EditFacilitiesPage = () => {
   return (
     <>
       <div className="flex h-screen bg-gray-50">
-        <AdminSidebar facilityId={facilityId} />
+        <Sidebar facilityId={facilityId} />
         <EditFacilities facilityId={facilityId} />
       </div>
     </>

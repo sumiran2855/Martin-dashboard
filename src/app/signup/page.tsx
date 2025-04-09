@@ -89,8 +89,8 @@ export default function Signup() {
   });
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
-      <div className="w-full md:w-1/3 flex flex-col justify-center px-6 md:px-12 bg-white">
+    <div className="flex h-screen max-md:flex-col-reverse max-md:justify-center">
+      <div className="w-full md:w-1/3 flex flex-col justify-center px-6 md:px-12 bg-white max-lg:w-2/4 max-md:w-full">
         {!isVerificationStep ? (
           <>
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">
@@ -206,7 +206,7 @@ export default function Signup() {
         )}
       </div>
 
-      <div className="hidden md:flex w-2/3 items-center justify-center bg-gray-100 relative">
+      <div className="flex w-2/3 items-center justify-center bg-gray-100 relative max-lg:w-2/4 max-md:w-full max-md:h-48">
         <div className="w-[80%] h-[80%] relative">
           <Image
             src="/Green Industry.png"

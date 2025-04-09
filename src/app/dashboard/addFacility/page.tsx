@@ -1,7 +1,7 @@
 "use client";
 
 import AddFacility from "@/components/dashboard/AddFacility";
-import AdminSidebar from "@/components/dashboard/Sidebar";
+import Sidebar from "@/components/dashboard/Sidebar";
 import withAuth from "@/auth/authUtils";
 import { useParams } from "next/navigation";
 
@@ -12,7 +12,7 @@ function addFacility() {
     : params.facilityId || "";
   return (
     <div className="flex h-screen bg-gray-50">
-      <AdminSidebar facilityId={facilityId} />
+      <Sidebar facilityId={facilityId} />
       <AddFacility />
     </div>
   );

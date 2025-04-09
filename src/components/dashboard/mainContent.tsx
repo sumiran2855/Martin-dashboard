@@ -85,17 +85,36 @@ export default function MainContent() {
       )}
       {!loading && (
         <div className="flex-1 overflow-auto">
-          <div className="p-8">
+         
+         
+          <div className="hidden max-lg:block ">
+            <div className="cursor-pointer p-4 flex justify-end">
+              <svg
+                fill="#000000"
+                width="24px"
+                height="24px"
+                viewBox="0 -2 28 28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="m2.61 0h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
+                <path d="m2.61 9.39h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
+                <path d="m2.61 18.781h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
+              </svg>
+            </div>
+          </div>
+
+
+          <div className="p-8 max-md:p-4">
             <h1 className="text-2xl font-medium text-gray-800 mb-2">
               {t("facilitiesTitle")}
             </h1>
             <p className="text-gray-600 mb-6">{t("facilitiesDescription")}</p>
 
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center space-x-4">
-                <div className="relative">
+            <div className="flex justify-between items-center mb-6 gap-2 flex-wrap">
+              <div className="flex items-center space-x-4 max-md:w-full">
+                <div className="relative max-md:flex-1">
                   <button
-                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 max-md:w-full max-md:justify-center"
                     onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
                   >
                     <Filter size={16} className="mr-2" />
@@ -117,9 +136,9 @@ export default function MainContent() {
                   )}
                 </div>
 
-                <div className="relative">
+                <div className="relative  max-md:flex-1">
                   <button
-                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 max-md:w-full max-md:justify-center"
                     onClick={() => setIsOpen(!isOpen)}
                   >
                     {view === "list" ? (
@@ -151,12 +170,12 @@ export default function MainContent() {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="relative">
+              <div className="flex items-center space-x-4 max-md:flex-wrap max-md:gap-3 max-md:space-x-0">
+                <div className="relative max-md:w-full">
                   <input
                     type="text"
                     placeholder={t("searchPlaceholder")}
-                    className="pl-10 pr-4 py-2 w-64 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="pl-10 pr-4 py-2 w-64 max-md:w-full text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />

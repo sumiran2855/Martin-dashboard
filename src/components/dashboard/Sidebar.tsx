@@ -31,7 +31,7 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
   ];
 
   return (
-    <div className="w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col h-screen">
+    <div className="w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col h-screen max-lg:hidden max-lg:fixed z-10 ">
       <div className="flex-1">
         <SectionTitle title={t("mainMenu")} />
         <nav className="px-2">
