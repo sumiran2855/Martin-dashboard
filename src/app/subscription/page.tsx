@@ -15,4 +15,4 @@ function Subscription() {
   );
 }
 
-export default withAuth(Subscription);
+export default withAuth(Subscription)

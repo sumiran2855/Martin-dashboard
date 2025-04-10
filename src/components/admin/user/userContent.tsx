@@ -167,7 +167,7 @@ export default function MainContent({ userId = [] }: User) {
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                   {sortDropdownOpen && (
-                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md">
+                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
                       {statusOptions.map((status) => (
                         <button
                           key={status}
@@ -195,7 +195,7 @@ export default function MainContent({ userId = [] }: User) {
                   </button>
 
                   {isOpen && (
-                    <div className="absolute left-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md">
+                    <div className="absolute left-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md w-full z-10">
                       <button
                         onClick={() => handleSelect("list")}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

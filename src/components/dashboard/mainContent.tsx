@@ -86,22 +86,6 @@ export default function MainContent() {
       {!loading && (
         <div className="flex-1 overflow-auto">
          
-         
-          <div className="hidden max-lg:block ">
-            <div className="cursor-pointer p-4 flex justify-end">
-              <svg
-                fill="#000000"
-                width="24px"
-                height="24px"
-                viewBox="0 -2 28 28"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="m2.61 0h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
-                <path d="m2.61 9.39h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
-                <path d="m2.61 18.781h22.431c1.441 0 2.61 1.168 2.61 2.61s-1.168 2.61-2.61 2.61h-22.431c-1.441 0-2.61-1.168-2.61-2.61s1.168-2.61 2.61-2.61z" />
-              </svg>
-            </div>
-          </div>
 
 
           <div className="p-8 max-md:p-4">
@@ -122,7 +106,7 @@ export default function MainContent() {
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                   {sortDropdownOpen && (
-                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md">
+                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
                       {statusOptions.map((status) => (
                         <button
                           key={status}
@@ -152,7 +136,7 @@ export default function MainContent() {
                   </button>
 
                   {isOpen && (
-                    <div className="absolute left-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md">
+                    <div className="absolute left-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md w-full z-10">
                       <button
                         onClick={() => handleSelect("list")}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

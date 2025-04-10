@@ -102,7 +102,7 @@ function SubscriptionPage() {
                   <ChevronDown size={16} className="ml-2" />
                 </button>
                 {sortDropdownOpen && (
-                  <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md">
+                  <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
                     {statusOptions.map((status) => (
                       <button
                         key={status}
