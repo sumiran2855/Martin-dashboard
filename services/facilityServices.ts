@@ -159,33 +159,18 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         postalCode: facilityData.location?.postalCode || "",
         city: facilityData.location?.city || "",
       },
-      systemCosts: {
-        vat: facilityData.systemCosts?.VAT_Deduction_Percent || "",
-        serviceCost: facilityData.systemCosts?.service_Costs || "",
-        VATDeduction: facilityData.systemCosts?.VAT_Deduction || "",
-      },
-
-      gas_Consumption: {
-        m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
-        gasType: facilityData.gas_Consumption?.xrgi_gas_type || "",
-        independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
-        dependentDKK:
-          facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
-      },
-      electircity_Consumption: {
-        kWh:
-          facilityData.electircity_Consumption?.annual_grid_consumption_kwh ||
-          "",
-        electricityIndependentDKK:
-          facilityData.electircity_Consumption?.fixed_costs_dkk || "",
-        electricityDependentDKK:
-          facilityData.electircity_Consumption?.variable_costs_dkk || "",
-      },
       serviceProvider: {
         name: facilityData.serviceProvider?.name || "",
         mailAddress: facilityData.serviceProvider?.mailAddress || "",
         phone: facilityData.serviceProvider?.phone || "",
       },
+      performance_report:{
+        annualSavings: facilityData.performance_report?.annualSavings || "",
+        co2Savings: facilityData.performance_report?.co2Savings || "",
+        operatingHours: facilityData.performance_report?.operatingHours || "",
+        industry: facilityData.performance_report?.industry || "",
+      },
+      hasPerformanceReport:facilityData.hasPerformanceReport || false,
       hasServiceContract: facilityData.hasServiceContract || false,
       featureAdded: facilityData.featureAdded || false,
       feature: {
@@ -236,33 +221,28 @@ export const getAllUserFacility = async (
         postalCode: facilityData.location?.postalCode || "",
         city: facilityData.location?.city || "",
       },
-      systemCosts: {
-        vat: facilityData.systemCosts?.VAT_Deduction_Percent || "",
-        serviceCost: facilityData.systemCosts?.service_Costs || "",
-        VATDeduction: facilityData.systemCosts?.VAT_Deduction || "",
-      },
-
-      gas_Consumption: {
-        m3: facilityData.gas_Consumption?.annual_gas_consumption_m3 || "",
-        gasType: facilityData.gas_Consumption?.xrgi_gas_type || "",
-        independentDKK: facilityData.gas_Consumption?.gas_fixed_costs_dkk || "",
-        dependentDKK:
-          facilityData.gas_Consumption?.gas_variable_costs_dkk || "",
-      },
-      electircity_Consumption: {
-        kWh:
-          facilityData.electircity_Consumption?.annual_grid_consumption_kwh ||
-          "",
-        electricityIndependentDKK:
-          facilityData.electircity_Consumption?.fixed_costs_dkk || "",
-        electricityDependentDKK:
-          facilityData.electircity_Consumption?.variable_costs_dkk || "",
-      },
+      hasServiceContract:facilityData.hasServiceContract || false,
       serviceProvider: {
         name: facilityData?.serviceProvider?.name || "",
         mailAddress: facilityData?.serviceProvider?.mailAddress || "",
         phone: facilityData?.serviceProvider?.phone || "",
       },
+      performance_report:{
+        annualSavings: facilityData.performance_report?.annualSavings || "",
+        co2Savings: facilityData.performance_report?.co2Savings || "",
+        operatingHours: facilityData.performance_report?.operatingHours || "",
+        industry: facilityData.performance_report?.industry || "",
+      },
+      hasPerformanceReport:facilityData.hasPerformanceReport || false,
+      featureAdded: facilityData.featureAdded || false,
+      feature: {
+        method: facilityData.feature?.method || "",
+        partner_details: {
+          name: facilityData.feature?.partner_details?.name || "",
+          mobile: facilityData.feature?.partner_details?.mobile || "",
+          email: facilityData.feature?.partner_details?.email || "",
+        }
+      }
     }));
   } catch (error) {
     console.error("Error fetching facility data:", error);

@@ -8,6 +8,12 @@ interface Facility {
   xrgiID?: string;
   modelNumber?: string;
   status?: string;
+  hasServiceContract?: boolean;
+  serviceProvider?: {
+    name?: string;
+    mailAddress?: string;
+    phone?: string;
+  };
 }
 
 export default function listView({ facilities }: { facilities: Facility[] }) {
@@ -19,6 +25,33 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
   const endIndex = startIndex + rowsPerPage;
   const displayedFacilities = facilities.slice(startIndex, endIndex);
   const router = useRouter();
+
+  const getServiceInfo = (facility: Facility) => {
+    const provider = facility.serviceProvider || {};
+    const hasProvider =
+      provider.name?.trim() ||
+      provider.mailAddress?.trim() ||
+      provider.phone?.trim();
+
+    if (facility.hasServiceContract) {
+      if (hasProvider) {
+        return {
+          label: "Has a service provider",
+          className: "text-green-600",
+        };
+      } else {
+        return {
+          label: "Wants a service provider",
+          className: "text-red-600",
+        };
+      }
+    }
+
+    return {
+      label: "Wants a service contract",
+      className: "text-red-600",
+    };
+  };
 
   return (
     <div className="bg-white border border-gray-200 rounded-md shadow-sm overflow-auto">
@@ -33,6 +66,9 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Model
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Service Provider
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Status
@@ -52,6 +88,16 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600">
                   {facility.modelNumber}
+                </td>
+                <td className="px-6 py-3 whitespace-nowrap text-sm font-medium">
+                  {(() => {
+                    const serviceInfo = getServiceInfo(facility);
+                    return (
+                      <span className={serviceInfo.className}>
+                        {serviceInfo.label}
+                      </span>
+                    );
+                  })()}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap flex items-center space-x-2">
                   <img
@@ -85,7 +131,7 @@ export default function listView({ facilities }: { facilities: Facility[] }) {
             ))
           ) : (
             <tr>
-              <td colSpan={4} className="px-6 py-16 text-center">
+              <td colSpan={5} className="px-6 py-16 text-center">
                 <div className="flex flex-col items-center justify-center">
                   <div className="relative w-64 h-32 mb-4">
                     <div className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">

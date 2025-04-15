@@ -42,9 +42,6 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
     <div
       key={facility.id}
       className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white cursor-pointer"
-      onClick={() =>
-        router.push(`/dashboard/facilities/${facility.id}`)
-      }
     >
       <div>
         <h3 className="text-gray-800 text-sm font-semibold">

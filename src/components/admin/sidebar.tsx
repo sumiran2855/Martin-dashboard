@@ -26,7 +26,7 @@ export default function AdminSidebar({ userId = [] }: User) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleToggle = () => {
-      setMenuOpen(!menuOpen);
+    setMenuOpen(!menuOpen);
   };
 
   return (
@@ -59,14 +59,14 @@ export default function AdminSidebar({ userId = [] }: User) {
               <Link
                 href="/admin"
                 className={`flex items-center p-3 rounded-md no-underline ${[
-                  "/admin",
-                  `/admin/user/${userId}`,
-                  `/admin/user/plantDetail/${facilityId}`,
+                    "/admin",
+                    `/admin/user/${userId}`,
+                    `/admin/user/plantDetail/${facilityId}`,
                   `/admin/user/editFacilities/${id}`
-                ].includes(pathname)
-                  ? "text-white bg-blue-900"
-                  : "text-gray-700 hover:bg-gray-100"
-                  }`}
+                  ].includes(pathname)
+                    ? "text-white bg-blue-900"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
               >
                 <div className="w-6 h-6 mr-3 flex items-center justify-center">
 
@@ -79,9 +79,9 @@ export default function AdminSidebar({ userId = [] }: User) {
                 href="/admin/subscription"
                 aria-disabled="true"
                 className={`flex items-center p-3 rounded-md no-underline  ${pathname === "/admin/subscription"
-                  ? "text-white bg-blue-900"
-                  : "text-gray-700 hover:bg-gray-100"
-                  }`}
+                    ? "text-white bg-blue-900"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
               >
                 <div className="w-6 h-6 mr-3 flex items-center justify-center">
                   💳
@@ -93,14 +93,28 @@ export default function AdminSidebar({ userId = [] }: User) {
                 href="/admin/services"
                 aria-disabled="true"
                 className={`flex items-center p-3 rounded-md no-underline ${pathname === "/admin/services"
-                  ? "text-white bg-blue-900"
-                  : "text-gray-700 hover:bg-gray-100"
-                  }`}
+                    ? "text-white bg-blue-900"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
               >
                 <div className="w-6 h-6 mr-3 flex items-center justify-center">
                   🔧
                 </div>
                 <span className="font-medium">Service</span>
+              </Link>
+              <Link
+                href="/admin/contact"
+                aria-disabled="true"
+                className={`flex items-center p-3 rounded-md no-underline ${
+                  pathname === "/admin/contact"
+                    ? "text-white bg-blue-900"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                <div className="w-6 h-6 mr-3 flex items-center justify-center">
+                  📩
+                </div>
+                <span className="font-medium">Contact EC Power</span>
               </Link>
             </div>
           </nav>
@@ -109,7 +123,7 @@ export default function AdminSidebar({ userId = [] }: User) {
         {/* User Profile at Bottom */}
         <div
           className={`p-4 border-t border-gray-200 transition-all duration-300 ${isDropdownOpen ? "mb-2" : ""
-            }`}
+          }`}
         >
           <div
             className="flex items-center cursor-pointer"

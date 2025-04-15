@@ -168,7 +168,7 @@ export const getAllCustomers = async (token: string, IdToken: string) => {
   }
 };
 
-// send query 
+// send query
 export const sendQuery = async (
   subject: string,
   message: string,
@@ -177,7 +177,13 @@ export const sendQuery = async (
 ) => {
   const payload = { subject, body: message };
 
-  const result = await apiRequest("/send-queries", "POST", payload, token, IdToken);
+  const result = await apiRequest(
+    CUSTOMER_API_ROUTES.SEND_QUERY,
+    "POST",
+    payload,
+    token,
+    IdToken
+  );
 
   if (result.success) {
     return result.data;
@@ -185,3 +191,40 @@ export const sendQuery = async (
 
   throw new Error("Failed to send query");
 };
+
+export const getQuery = async (
+  token?: string,
+  IdToken?: string
+) => {
+  const result = await apiRequest(
+    CUSTOMER_API_ROUTES.GET_QUERIES,
+    "GET",
+    undefined,
+    token,
+    IdToken
+  );
+  if (result.success) {
+    return result.data;
+  }
+
+  throw new Error("Failed to get query");
+};
+
+export const markAsRead = async (
+  id:string,
+  token?: string,
+  IdToken?: string
+) => {
+  const result = await apiRequest(
+    `${CUSTOMER_API_ROUTES.UPDATE_QUERY}?id=${id}`,
+    "POST",
+    undefined,
+    token,
+    IdToken
+  );
+  if (result.success) {
+    return result.data;
+  }
+
+  throw new Error("Failed to update query");
+}

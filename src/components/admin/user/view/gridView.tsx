@@ -6,7 +6,14 @@ interface Facility {
   xrgiID?: string;
   modelNumber?: string;
   status?: string;
+  hasServiceContract?: boolean;
+  serviceProvider?: {
+    name?: string;
+    mailAddress?: string;
+    phone?: string;
+  };
 }
+
 export default function GridView({ facilities }: { facilities: Facility[] }) {
   const inactiveFacilities = facilities.filter(
     (facility) => facility.status !== "Active"
@@ -17,6 +24,34 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
   );
 
   const router = useRouter();
+
+  const getServiceInfo = (facility: Facility) => {
+    const provider = facility.serviceProvider || {};
+    const hasProvider =
+      provider.name?.trim() ||
+      provider.mailAddress?.trim() ||
+      provider.phone?.trim();
+
+    if (facility.hasServiceContract) {
+      if (hasProvider) {
+        return {
+          label: "Has a service provider",
+          className: "text-green-600",
+        };
+      } else {
+        return {
+          label: "Wants service provider",
+          className: "text-red-600",
+        };
+      }
+    }
+
+    return {
+      label: "Wants a service contract",
+      className: "text-red-600",
+    };
+  };
+
   return (
     <div className="space-y-6">
       {/* Inactive Section */}
@@ -57,6 +92,18 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                         {facility.status}
                       </span>
                     </div>
+                    <div className="border-t-2 mt-2 pt-2">
+                      {(() => {
+                        const serviceInfo = getServiceInfo(facility);
+                        return (
+                          <span
+                            className={`text-sm font-medium ${serviceInfo.className}`}
+                          >
+                            {serviceInfo.label}
+                          </span>
+                        );
+                      })()}
+                    </div>
                   </div>
                   <img
                     src="/Rectangle 137.png"
@@ -94,6 +141,18 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                       <span className="text-sm text-gray-700">
                         {facility.status}
                       </span>
+                    </div>
+                    <div className="border-t-2 mt-2 pt-2">
+                      {(() => {
+                        const serviceInfo = getServiceInfo(facility);
+                        return (
+                          <span
+                            className={`text-sm font-medium ${serviceInfo.className}`}
+                          >
+                            {serviceInfo.label}
+                          </span>
+                        );
+                      })()}
                     </div>
                   </div>
                   <img

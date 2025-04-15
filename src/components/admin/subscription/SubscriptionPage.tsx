@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import withAuth from "@/auth/authUtils";
-import { Search, Filter, List, ChevronDown } from "lucide-react";
+import { Search, Filter, ChevronDown } from "lucide-react";
 import ListView from "@/components/dashboard/subscription/listView";
 import { getAllFacilityForAdmin } from "@/services/facilityServices";
-import { useTranslation } from "react-i18next";
 
 interface Facility {
   facilityId?: number;
@@ -12,6 +11,13 @@ interface Facility {
   modelNumber?: string;
   hasServiceContract?: boolean;
   featureAdded?: boolean;
+  hasPerformanceReport?: boolean;
+  performance_report?: {
+    annualSavings?: number | null;
+    co2Savings?: number | null;
+    industry?: string | null;
+    operatingHours?: number | null;
+  }; 
   feature?: {
     method?: string;
   };
@@ -22,20 +28,22 @@ interface Facility {
   };
 }
 
-const statusOptions = ["HaveSuperSaverX", "WantSuperSaverX"];
+const superSaverOptions = ["All", "HaveSuperSaverX", "WantSuperSaverX"];
+const performanceOptions = ["All", "HaveReport", "NoReport"];
 
 function SubscriptionPage() {
-  const { t } = useTranslation("subscription");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("All");
-  const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleStatusSelect = (status: string) => {
-    setSelectedStatus(status);
-    setSortDropdownOpen(false);
-  };
+  // SuperSaverX states
+  const [superSearch, setSuperSearch] = useState("");
+  const [superFilter, setSuperFilter] = useState("All");
+  const [superDropdownOpen, setSuperDropdownOpen] = useState(false);
+
+  // Performance Report states
+  const [reportSearch, setReportSearch] = useState("");
+  const [reportFilter, setReportFilter] = useState("All");
+  const [reportDropdownOpen, setReportDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchFacilities = async () => {
@@ -56,94 +64,166 @@ function SubscriptionPage() {
     fetchFacilities();
   }, []);
 
-  const filteredData = facilitiesData
-    .filter((facility) =>
-      facility.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter((facility) => {
-      switch (selectedStatus) {
-        case "All":
-          return true;
-        case "HaveSuperSaverX":
-          return (
-            facility.featureAdded === true &&
-            facility.feature &&
-            facility.feature.method
-          );
-        case "WantSuperSaverX":
-          return (
-            facility.featureAdded === true &&
-            (!facility.feature || !facility.feature.method)
-          );
-        default:
-          return true;
-      }
-    });
+  const filterFacilities = (
+    data: Facility[],
+    search: string,
+    filter: string,
+    type: "super" | "report"
+  ) => {
+    return data
+      .filter((facility) =>
+        facility.name?.toLowerCase().includes(search.toLowerCase())
+      )
+      .filter((facility) => {
+        if (type === "super") {
+          switch (filter) {
+            case "HaveSuperSaverX":
+              return facility.featureAdded && facility.feature?.method;
+            case "WantSuperSaverX":
+              return facility.featureAdded && !facility.feature?.method;
+            default:
+              return facility.featureAdded;
+          }
+        } else {
+          if (!facility.hasPerformanceReport) return false;
+
+          const report = facility.performance_report;
+          const allNull =
+            report &&
+            report.annualSavings == null &&
+            report.co2Savings == null &&
+            report.industry == null &&
+            report.operatingHours == null;
+        
+          switch (filter) {
+            case "HaveReport":
+              return !allNull;
+            case "NoReport":
+              return allNull;
+            default:
+              return true;
+          }
+        }
+      });
+  };
+
+  const superSaverData = filterFacilities(facilitiesData, superSearch, superFilter, "super");
+  const reportData = filterFacilities(facilitiesData, reportSearch, reportFilter, "report");
 
   return (
     <>
       {loading && (
         <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
-          <div
-            className="loader animate-spin rounded-full border-4 border-gray-300 border-t-gray-900 h-12 w-12"
-            role="status"
-            aria-hidden="true"
-          ></div>
+          <div className="loader animate-spin rounded-full border-4 border-gray-300 border-t-gray-900 h-12 w-12"></div>
         </div>
       )}
       {!loading && (
-        <div className="flex-1 overflow-auto">
-          <div className="p-8">
+        <div className="flex-1 overflow-auto p-8">
+          <section className="mb-12">
             <h1 className="text-2xl font-medium text-gray-800 mb-2">
-              {t("subscriptionTitle")}
+              SuperSaverX Overview
             </h1>
-            <p className="text-gray-600 mb-6">{t("subscriptionDescription")}</p>
+            <p className="text-gray-600 mb-6">
+              View and manage SuperSaverX access for all facilities.
+            </p>
 
-            <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <button
-                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
-                    onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
-                  >
-                    <Filter size={16} className="mr-2" />
-                    <span>{t("sortBy")}</span>
-                    <ChevronDown size={16} className="ml-2" />
-                  </button>
-                  {sortDropdownOpen && (
-                    <div className="absolute left-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-md">
-                      {statusOptions.map((status) => (
-                        <button
-                          key={status}
-                          onClick={() => handleStatusSelect(status)}
-                          className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          {t(`statusOptions.${status}`)}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+            <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+              <div className="relative">
+                <button
+                  onClick={() => setSuperDropdownOpen(!superDropdownOpen)}
+                  className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  <Filter size={16} className="mr-2" />
+                  Sort By
+                  <ChevronDown size={16} className="ml-2" />
+                </button>
+                {superDropdownOpen && (
+                  <div className="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-md z-10">
+                    {superSaverOptions.map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => {
+                          setSuperFilter(option);
+                          setSuperDropdownOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder={t("searchPlaceholder")}
-                    className="pl-10 pr-4 py-2 w-96 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <Search size={16} className="text-gray-400" />
-                  </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={superSearch}
+                  onChange={(e) => setSuperSearch(e.target.value)}
+                  placeholder="Search by facility name"
+                  className="pl-10 pr-4 py-2 w-80 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Search size={16} className="text-gray-400" />
                 </div>
               </div>
             </div>
 
-            <ListView facilities={filteredData} />
-          </div>
+            <ListView facilities={superSaverData} />
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-medium text-gray-800 mb-2">
+              Performance Report Overview
+            </h2>
+            <p className="text-gray-600 mb-6">
+              View and manage performance report access for all facilities.
+            </p>
+
+            <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+              <div className="relative">
+                <button
+                  onClick={() => setReportDropdownOpen(!reportDropdownOpen)}
+                  className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  <Filter size={16} className="mr-2" />
+                  Sort By
+                  <ChevronDown size={16} className="ml-2" />
+                </button>
+                {reportDropdownOpen && (
+                  <div className="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-md z-10">
+                    {performanceOptions.map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => {
+                          setReportFilter(option);
+                          setReportDropdownOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="relative">
+                <input
+                  type="text"
+                  value={reportSearch}
+                  onChange={(e) => setReportSearch(e.target.value)}
+                  placeholder="Search by facility name"
+                  className="pl-10 pr-4 py-2 w-80 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Search size={16} className="text-gray-400" />
+                </div>
+              </div>
+            </div>
+
+            <ListView facilities={reportData} />
+          </section>
         </div>
       )}
     </>

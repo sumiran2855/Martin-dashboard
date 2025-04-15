@@ -55,11 +55,14 @@ export default function HelpCenterForm() {
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">{t("selectSubject")}</option>
-              {SUBJECT_OPTIONS_KEYS.map((key) => (
-                <option key={key} value={key}>
-                  {t(`subjects.${key}`)}
-                </option>
-              ))}
+              {SUBJECT_OPTIONS_KEYS.map((key) => {
+                const translated = t(`subjects.${key}`);
+                return (
+                  <option key={key} value={translated}>
+                    {translated}
+                  </option>
+                );
+              })}
             </select>
           </div>
 
