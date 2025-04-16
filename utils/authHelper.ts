@@ -18,6 +18,16 @@ export const apiRequest = async (
       body: body ? JSON.stringify(body) : undefined,
     });
 
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+      const blob = await response.blob();
+      return {
+        success: response.ok,
+        data: blob,
+      };
+    }
+  
     const data = await response.json();
 
     if (!response.ok) {

@@ -1,23 +1,49 @@
 import { useEffect, useState } from "react";
 import withAuth from "@/auth/authUtils";
-import { ChevronDown, Filter, Search } from "lucide-react";
+import { ChevronDown, FileDown, Filter, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getAllFacilityForAdmin } from "@/services/facilityServices";
 import GridView from "@/components/dashboard/services/gridView";
+import { exportSuperSaverData } from "@/services/customerServices";
 
 interface Facility {
-  facilityId?: number;
+  userID?:string,
+  id?: number;
   name?: string;
   xrgiID?: string;
+  status?:string;
   modelNumber?: string;
-  hasServiceContract?: boolean;
+  isInstalled:boolean;
+  daSigned:boolean;
+  location?:{
+    city:string,
+    address:string,
+    postal_code:string
+  }
+  hasPerformanceReport?: boolean;
+  performance_report?: {
+    annualSavings?: number | null;
+    co2Savings?: number | null;
+    industry?: string | null;
+    operatingHours?: number | null;
+  }; 
   featureAdded?: boolean;
+  feature?: {
+    method?: string;
+    partner_details?: {
+      name: string;
+      mobile: string;
+      email: string;
+      countryCode: string;
+    }
+  };
+
+  hasServiceContract?: boolean;
   serviceProvider?: {
     name?: string;
     mailAddress?: string;
     phone?: string;
   };
-  status: string;
 }
 
 const statusOptions = ["All", "Active", "Inactive", "MissingData", "WithProvider", "WithoutProvider"];
@@ -88,6 +114,69 @@ function ServicesPage() {
       return false;
     });
 
+      const handleExportExcelForServiceProvider = async (data: Facility[]) => {
+        try {
+          if (!Array.isArray(data)) {
+            throw new Error("Data is not an array");
+          }
+          const token = localStorage.getItem("token") || "";
+          const IdToken = localStorage.getItem("IdToken") || "";
+          const refinedData = data.map((item) => ({
+            userId: item.userID,
+            facilityId: item.id,
+            plantName: item.name,
+            modelNumber: item.modelNumber,
+            xrgiID: item.xrgiID,
+            status: item.status,
+            city: item.location?.city,
+            address: item.location?.address,
+            isInstalled: item.isInstalled ? "YES" : "NO",
+            daSigned: item.daSigned ? "YES" : "NO",
+            hasServiceContract: item.hasServiceContract
+              ? "has a service contract"
+              : "want a service contract",
+            serviceProvider_name: item.serviceProvider?.name,
+            serviceProvider_email: item.serviceProvider?.mailAddress,
+            serviceProvider_Phone: item.serviceProvider?.mailAddress,
+            SuperSaverX: item.featureAdded
+              ? "Has SuperSaverX"
+              : "Wants SuperSaverX",
+            SuperSaverX_method:
+              item.feature?.method === "local_partner"
+                ? {
+                    partner_Name: item.feature?.partner_details?.name,
+                    partner_email: item.feature?.partner_details?.email,
+                    partner_phone: item.feature?.partner_details?.mobile,
+                  }
+                : item.feature?.method,
+            hasPerformanceReport: item.hasPerformanceReport
+              ? "Available"
+              : "Not Available",
+            annual_Savings: item.performance_report?.annualSavings,
+            co2Savings: item.performance_report?.co2Savings,
+            industry: item.performance_report?.industry,
+            operatingHours: item.performance_report?.operatingHours,
+          }));
+      
+          const blob = await exportSuperSaverData(refinedData, token, IdToken);
+          if (!(blob instanceof Blob)) {
+            throw new Error("The response is not a valid Blob.");
+          }
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "serviceProvider.xlsx");
+          
+          document.body.appendChild(link);
+          link.click();
+          
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        } catch (error) {
+          console.error("Export error:", error);
+        }
+      };
+
   return (
     <>
       {loading && (
@@ -148,6 +237,13 @@ function ServicesPage() {
                   <Search size={16} className="text-gray-400" />
                 </div>
               </div>
+              <button
+                  onClick={() => handleExportExcelForServiceProvider(filteredData)}
+                  className="flex items-center px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-md"
+                >
+                  <FileDown size={16} className="mr-2" />
+                  export file
+                </button>
             </div>
           </div>
 

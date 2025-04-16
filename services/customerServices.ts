@@ -227,4 +227,22 @@ export const markAsRead = async (
   }
 
   throw new Error("Failed to update query");
-}
+};
+
+export const exportSuperSaverData = async (
+  data: any[],
+  token?: string,
+  IdToken?: string
+) => {
+  const response = await apiRequest(
+    CUSTOMER_API_ROUTES.EXPORT_EXCEL,
+    "POST",
+     data,
+    token,
+    IdToken
+  );
+
+  if (!response.success) throw new Error("Failed to export file.");
+
+  return response.data;
+};

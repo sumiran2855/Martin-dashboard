@@ -6,5 +6,6 @@ export const CUSTOMER_API_ROUTES = {
     GET_ALL_CUSTOMERS: "customers",
     SEND_QUERY:"send-queries",
     GET_QUERIES:"getAll-queries",
-    UPDATE_QUERY:"mark-as-read"
+    UPDATE_QUERY:"mark-as-read",
+    EXPORT_EXCEL:"export-excel"
 }

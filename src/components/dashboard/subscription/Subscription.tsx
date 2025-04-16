@@ -26,7 +26,7 @@ function SubscriptionPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
-  const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]); 
+  const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleStatusSelect = (status: string) => {
@@ -54,11 +54,11 @@ function SubscriptionPage() {
   }, []);
 
   const filteredData = facilitiesData
-  .filter((facility) =>
-    facility.name?.toLowerCase().includes(searchTerm.toLowerCase())
-)
-.filter((facility) => {
-  if (selectedStatus === "All") return true;
+    .filter((facility) =>
+      facility.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter((facility) => {
+      if (selectedStatus === "All") return true;
       if (selectedStatus === "Active")
         return (
           facility.featureAdded === true 
@@ -67,8 +67,8 @@ function SubscriptionPage() {
         return (
           facility.featureAdded === false 
         );
-        return false;
-      });
+      return false;
+    });
 
   return (
     <>
@@ -101,7 +101,7 @@ function SubscriptionPage() {
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                   {sortDropdownOpen && (
-                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
+                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
                       {statusOptions.map((status) => (
                         <button
                           key={status}
