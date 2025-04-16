@@ -3,7 +3,10 @@ import withAuth from "@/auth/authUtils";
 import { Search, Filter, ChevronDown, FileDown } from "lucide-react";
 import ListView from "@/components/dashboard/subscription/listView";
 import { getAllFacilityForAdmin } from "@/services/facilityServices";
-import { exportSuperSaverData } from "@/services/customerServices";
+import {
+  exportSuperSaverData,
+  getCustomerById,
+} from "@/services/customerServices";
 
 interface Facility {
   userID?: string;
@@ -51,6 +54,7 @@ const performanceOptions = ["All", "HaveReport", "NoReport"];
 function SubscriptionPage() {
   const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
 
   // SuperSaverX states
   const [superSearch, setSuperSearch] = useState("");
@@ -126,52 +130,65 @@ function SubscriptionPage() {
 
   const handleExportExcelForSuperSaverX = async (data: Facility[]) => {
     try {
+      setIsExporting(true);
       if (!Array.isArray(data)) {
         throw new Error("Data is not an array");
       }
+
       const token = localStorage.getItem("token") || "";
       const IdToken = localStorage.getItem("IdToken") || "";
-      const refinedData = data.map((item) => ({
-        userId: item.userID,
-        facilityId: item.id,
-        plantName: item.name,
-        modelNumber: item.modelNumber,
-        xrgiID: item.xrgiID,
-        status: item.status,
-        city: item.location?.city,
-        address: item.location?.address,
-        isInstalled: item.isInstalled ? "YES" : "NO",
-        daSigned: item.daSigned ? "YES" : "NO",
-        hasServiceContract: item.hasServiceContract
-          ? "has a service contract"
-          : "want a service contract",
-        serviceProvider_name: item.serviceProvider?.name,
-        serviceProvider_email: item.serviceProvider?.mailAddress,
-        serviceProvider_Phone: item.serviceProvider?.mailAddress,
-        SuperSaverX: item.featureAdded
-          ? "Has SuperSaverX"
-          : "Wants SuperSaverX",
-        SuperSaverX_method:
-          item.feature?.method === "local_partner"
-            ? {
-                partner_Name: item.feature?.partner_details?.name,
-                partner_email: item.feature?.partner_details?.email,
-                partner_phone: item.feature?.partner_details?.mobile,
-              }
-            : item.feature?.method,
-        hasPerformanceReport: item.hasPerformanceReport
-          ? "Available"
-          : "Not Available",
-        annual_Savings: item.performance_report?.annualSavings,
-        co2Savings: item.performance_report?.co2Savings,
-        industry: item.performance_report?.industry,
-        operatingHours: item.performance_report?.operatingHours,
-      }));
+
+      const refinedData = await Promise.all(
+        data.map(async (item) => {
+          const customer = await getCustomerById(token, IdToken, item.userID!);
+          const isLocalPartner = item.feature?.method === "local_partner";
+
+          return {
+            userId: item.userID,
+            facilityId: item.id,
+            plantName: item.name,
+            modelNumber: item.modelNumber,
+            xrgiID: item.xrgiID,
+            status: item.status,
+            city: item.location?.city,
+            address: item.location?.address,
+            isInstalled: item.isInstalled ? "YES" : "NO",
+            daSigned: item.daSigned ? "YES" : "NO",
+            hasServiceContract: item.hasServiceContract
+              ? "has a service contract"
+              : "want a service contract",
+            serviceProvider_name: item.serviceProvider?.name,
+            serviceProvider_email: item.serviceProvider?.mailAddress,
+            serviceProvider_Phone: item.serviceProvider?.phone,
+            SuperSaverX: item.featureAdded
+              ? "Has SuperSaverX"
+              : "Wants SuperSaverX",
+            SuperSaverX_method: isLocalPartner
+              ? "Local Partner"
+              : item.feature?.method,
+            ...(isLocalPartner && {
+              partner_Name: item.feature?.partner_details?.name || "",
+              partner_email: item.feature?.partner_details?.email || "",
+              partner_phone: item.feature?.partner_details?.mobile || "",
+            }),
+            hasPerformanceReport: item.hasPerformanceReport
+              ? "Available"
+              : "Not Available",
+            annual_Savings: item.performance_report?.annualSavings,
+            co2Savings: item.performance_report?.co2Savings,
+            industry: item.performance_report?.industry,
+            operatingHours: item.performance_report?.operatingHours,
+            customer_email: customer?.email || "",
+            customer_phone: customer?.phone || "",
+          };
+        })
+      );
 
       const blob = await exportSuperSaverData(refinedData, token, IdToken);
       if (!(blob instanceof Blob)) {
         throw new Error("The response is not a valid Blob.");
       }
+
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -184,52 +201,64 @@ function SubscriptionPage() {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Export error:", error);
+    } finally {
+      setIsExporting(false);
     }
   };
 
   const handleExportExcelForReport = async (data: Facility[]) => {
     try {
+      setIsExporting(true);
       if (!Array.isArray(data)) {
         throw new Error("Data is not an array");
       }
       const token = localStorage.getItem("token") || "";
       const IdToken = localStorage.getItem("IdToken") || "";
-      const refinedData = data.map((item) => ({
-        userId: item.userID,
-        facilityId: item.id,
-        plantName: item.name,
-        modelNumber: item.modelNumber,
-        xrgiID: item.xrgiID,
-        status: item.status,
-        city: item.location?.city,
-        address: item.location?.address,
-        isInstalled: item.isInstalled ? "YES" : "NO",
-        daSigned: item.daSigned ? "YES" : "NO",
-        hasServiceContract: item.hasServiceContract
-          ? "has a service contract"
-          : "want a service contract",
-        serviceProvider_name: item.serviceProvider?.name,
-        serviceProvider_email: item.serviceProvider?.mailAddress,
-        serviceProvider_Phone: item.serviceProvider?.mailAddress,
-        SuperSaverX: item.featureAdded
-          ? "Has SuperSaverX"
-          : "Wants SuperSaverX",
-        SuperSaverX_method:
-          item.feature?.method === "local_partner"
-            ? {
-                partner_Name: item.feature?.partner_details?.name,
-                partner_email: item.feature?.partner_details?.email,
-                partner_phone: item.feature?.partner_details?.mobile,
-              }
-            : item.feature?.method,
-        hasPerformanceReport: item.hasPerformanceReport
-          ? "Available"
-          : "Not Available",
-        annual_Savings: item.performance_report?.annualSavings,
-        co2Savings: item.performance_report?.co2Savings,
-        industry: item.performance_report?.industry,
-        operatingHours: item.performance_report?.operatingHours,
-      }));
+      const refinedData = await Promise.all(
+        data.map(async (item) => {
+          const customer = await getCustomerById(token, IdToken, item.userID!);
+          const isLocalPartner = item.feature?.method === "local_partner";
+
+          return {
+            userId: item.userID,
+            facilityId: item.id,
+            plantName: item.name,
+            modelNumber: item.modelNumber,
+            xrgiID: item.xrgiID,
+            status: item.status,
+            city: item.location?.city,
+            address: item.location?.address,
+            isInstalled: item.isInstalled ? "YES" : "NO",
+            daSigned: item.daSigned ? "YES" : "NO",
+            hasServiceContract: item.hasServiceContract
+              ? "has a service contract"
+              : "want a service contract",
+            serviceProvider_name: item.serviceProvider?.name,
+            serviceProvider_email: item.serviceProvider?.mailAddress,
+            serviceProvider_Phone: item.serviceProvider?.phone,
+            SuperSaverX: item.featureAdded
+              ? "Has SuperSaverX"
+              : "Wants SuperSaverX",
+            SuperSaverX_method: isLocalPartner
+              ? "Local Partner"
+              : item.feature?.method,
+            ...(isLocalPartner && {
+              partner_Name: item.feature?.partner_details?.name || "",
+              partner_email: item.feature?.partner_details?.email || "",
+              partner_phone: item.feature?.partner_details?.mobile || "",
+            }),
+            hasPerformanceReport: item.hasPerformanceReport
+              ? "Available"
+              : "Not Available",
+            annual_Savings: item.performance_report?.annualSavings,
+            co2Savings: item.performance_report?.co2Savings,
+            industry: item.performance_report?.industry,
+            operatingHours: item.performance_report?.operatingHours,
+            customer_email: customer?.email || "",
+            customer_phone: customer?.phone || "",
+          };
+        })
+      );
 
       const blob = await exportSuperSaverData(refinedData, token, IdToken);
       if (!(blob instanceof Blob)) {
@@ -247,6 +276,8 @@ function SubscriptionPage() {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Export error:", error);
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -266,8 +297,13 @@ function SubscriptionPage() {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+        <div className="fixed inset-0 flex justify-center items-center bg-white/70 backdrop-blur-sm z-50">
           <div className="loader animate-spin rounded-full border-4 border-gray-300 border-t-gray-900 h-12 w-12"></div>
+        </div>
+      )}
+      {isExporting && (
+        <div className="fixed inset-0 flex justify-center items-center bg-white/70 backdrop-blur-sm z-50">
+          <div className="loader animate-spin rounded-full border-4 border-gray-300 border-t-gray-900 h-12 w-12" />
         </div>
       )}
       {!loading && (
