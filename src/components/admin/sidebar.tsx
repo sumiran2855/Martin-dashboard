@@ -32,7 +32,10 @@ export default function AdminSidebar({ userId = [] }: User) {
   return (
     <>
       <div className=" max-lg:block absolute right-3 top-3 hidden ">
-        <div className="cursor-pointer flex justify-end bg-white rounded-full p-2 shadow-sm" onClick={handleToggle}>
+        <div
+          className="cursor-pointer flex justify-end bg-white rounded-full p-2 shadow-sm"
+          onClick={handleToggle}
+        >
           <svg
             fill="#000000"
             width="20px"
@@ -46,10 +49,12 @@ export default function AdminSidebar({ userId = [] }: User) {
           </svg>
         </div>
       </div>
-      <div className={`w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col transition-all duration-300 h-screen max-lg:fixed z-10 ${menuOpen ? ' max-lg:left-[0%]' : 'max-lg:left-[-100%] '}`}>
-
+      <div
+        className={`w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col transition-all duration-300 h-screen max-lg:fixed z-10 ${
+          menuOpen ? " max-lg:left-[0%]" : "max-lg:left-[-100%] "
+        }`}
+      >
         <div className="flex-1">
-
           <div className="py-4 px-3 ml-5">
             <h2 className="text-sm text-gray-500 mb-[-10]">Main Menu</h2>
           </div>
@@ -58,18 +63,18 @@ export default function AdminSidebar({ userId = [] }: User) {
             <div className="space-y-1">
               <Link
                 href="/admin"
-                className={`flex items-center p-3 rounded-md no-underline ${[
+                className={`flex items-center p-3 rounded-md no-underline ${
+                  [
                     "/admin",
                     `/admin/user/${userId}`,
                     `/admin/user/plantDetail/${facilityId}`,
-                  `/admin/user/editFacilities/${id}`
+                    `/admin/user/editFacilities/${id}`,
                   ].includes(pathname)
                     ? "text-white bg-blue-900"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
                 <div className="w-6 h-6 mr-3 flex items-center justify-center">
-
                   👤
                 </div>
                 <span className="font-medium">Users</span>
@@ -78,7 +83,8 @@ export default function AdminSidebar({ userId = [] }: User) {
               <Link
                 href="/admin/subscription"
                 aria-disabled="true"
-                className={`flex items-center p-3 rounded-md no-underline  ${pathname === "/admin/subscription"
+                className={`flex items-center p-3 rounded-md no-underline  ${
+                  pathname === "/admin/subscription"
                     ? "text-white bg-blue-900"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -92,7 +98,8 @@ export default function AdminSidebar({ userId = [] }: User) {
               <Link
                 href="/admin/services"
                 aria-disabled="true"
-                className={`flex items-center p-3 rounded-md no-underline ${pathname === "/admin/services"
+                className={`flex items-center p-3 rounded-md no-underline ${
+                  pathname === "/admin/services"
                     ? "text-white bg-blue-900"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -122,7 +129,8 @@ export default function AdminSidebar({ userId = [] }: User) {
 
         {/* User Profile at Bottom */}
         <div
-          className={`p-4 border-t border-gray-200 transition-all duration-300 ${isDropdownOpen ? "mb-2" : ""
+          className={`p-4 border-t border-gray-200 transition-all duration-300 ${
+            isDropdownOpen ? "mb-2" : ""
           }`}
         >
           <div
@@ -150,6 +158,12 @@ export default function AdminSidebar({ userId = [] }: User) {
 
           {isDropdownOpen && (
             <div className="mt-2 bg-white py-2">
+              <button
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200 rounded"
+                onClick={() => router.push("/admin/create-admin")}
+              >
+                Create new Admin
+              </button>
               <button
                 className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200 rounded"
                 onClick={() => router.push("/admin/profile")}

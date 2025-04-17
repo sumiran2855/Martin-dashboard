@@ -36,6 +36,42 @@ export const signup = async (
   });
 };
 
+//create new admin
+export const createAdmin = async (
+  email: string,
+  firstname: string,
+  lastname: string,
+  countryCode: string,
+  phoneNumber: string,
+  token: string,
+  IdToken: string
+) => {
+  return await apiRequest(
+    AUTH_API_ROUTES.CREATE_ADMIN,
+    "POST",
+    {
+      email,
+      name: `${firstname} ${lastname}`,
+      phone_number: `${countryCode}${phoneNumber}`,
+    },
+    token,
+    IdToken
+  );
+};
+
+// change admin password
+export const change_Admin_Password = async (
+  email: string,
+  newPassword: string,
+  session: string
+) => {
+  return await apiRequest(AUTH_API_ROUTES.CHANGE_ADMIN_PASSWORD, "POST", {
+    email,
+    newPassword,
+    session,
+  });
+};
+
 // verify email
 export const verifyEmail = async (email: string, verificationCode: string) => {
   return await apiRequest(AUTH_API_ROUTES.VERIFY_EMAIL, "POST", {

@@ -52,6 +52,12 @@ export default function Login() {
     setSuccessMessage("");
 
     const result = await login(values.email, values.password);
+    if(result?.data?.tokens?.sessionToken){
+      localStorage.setItem("SessionId", result.data.tokens.sessionToken)
+      localStorage.setItem("email",result.data.userData.email)
+      router.push("/admin/reset-password")
+      return;
+    }
     if (!result.success) {
       if (result.message === "User is not confirmed. Please verify your account.") {
         setUnverifiedEmail(values.email);
