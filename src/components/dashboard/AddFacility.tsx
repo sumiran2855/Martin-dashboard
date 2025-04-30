@@ -145,22 +145,14 @@ function AddFacility() {
                         className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                       >
                         <option value="">{t("selectModel")}</option>
-                        <option>XRGI® 9-FORD</option>
-                        <option>XRGI® 9</option>
                         <option>XRGI® 6 LOWNOX</option>
                         <option>XRGI® 6</option>
-                        <option>XRGI® 25</option>
-                        <option>XRGI® 20</option>
-                        <option>XRGI® 19</option>
-                        <option>XRGI® 17BIO</option>
-                        <option>XRGI® 17</option>
-                        <option>XRGI® 15BIO</option>
-                        <option>XRGI® 15 LOWNOX</option>
+                        <option>XRGI® 9</option>
                         <option>XRGI® 15</option>
-                        <option>XRGI® 13BIO</option>
-                        <option>XRGI® 13</option>
-                        <option>XRGI® 12</option>
-                        <option>XRGI 9 FORD</option>
+                        <option>XRGI® 15 BIO</option>
+                        <option>XRGI® 15 LOWNOX</option>
+                        <option>XRGI® 20</option>
+                        <option>XRGI® 25</option>
                       </select>
                       <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none ">
                         <svg
@@ -650,7 +642,7 @@ function AddFacility() {
                                   mobile: e.target.value,
                                 })
                               }
-                            className="p-2 border rounded-md w-full"
+                              className="p-2 border rounded-md w-full"
                             />
                           </div>
                           <input
@@ -688,7 +680,9 @@ function AddFacility() {
         isOpen={isTermsOpen}
         onClose={() => setTermsOpen(false)}
         title="Terms and Conditions"
-        termsContent={term("termsAndConsent", { returnObjects: true }) as string[] }
+        termsContent={
+          term("termsAndConsent", { returnObjects: true }) as string[]
+        }
         onAccept={handleAcceptTerms}
         isChecked={isChecked}
         setIsChecked={setIsChecked}
