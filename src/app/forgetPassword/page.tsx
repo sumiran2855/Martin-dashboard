@@ -6,26 +6,48 @@ import ForgetPasswordForm from "@/components/authForm/ForgetPasswordForm";
 import ChangePasswordForm from "@/components/authForm/ChangePasswordForm";
 import Modal from "@/components/modals/modal";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function AuthPage() {
+  const { t } = useTranslation("login");
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
-  const [modalContent, setModalContent] = useState({ title: "", message: "", action: () => {} });
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    message: "",
+    action: () => {},
+  });
   const router = useRouter();
   const handleModal = (title: string, message: string, action: () => void) => {
-    setModalContent({ title, message,  action: action || (() => {}) });
+    setModalContent({ title, message, action: action || (() => {}) });
     setIsOpen(true);
   };
 
   return (
     <div className="flex h-screen max-md:flex-col-reverse max-md:justify-center">
-     <div className="w-full md:w-1/3 flex flex-col justify-center px-6 md:px-12 bg-white max-lg:w-2/4 max-md:w-full">
+      <div className="w-full md:w-1/3 flex flex-col justify-center px-6 md:px-12 bg-white max-lg:w-2/4 max-md:w-full">
         {isChangingPassword ? (
-          <ChangePasswordForm  email={email} onSuccess={() => handleModal("Password Changed", "Your password has been successfully changed.", () => router.push("/") )} />
+          <ChangePasswordForm
+            email={email}
+            onSuccess={() =>
+              handleModal(
+                t("passwordChanged"),
+                t("passwordChangedMessage"),
+                () => router.push("/")
+              )
+            }
+          />
         ) : (
           <ForgetPasswordForm
-            onSuccess={(enteredEmail) =>{setEmail(enteredEmail); handleModal("Email Sent", "An email has been sent to reset your password.", () => setIsChangingPassword(true))}}
+            onSuccess={(enteredEmail) => {
+              setEmail(enteredEmail);
+              handleModal(
+                t("emailSent"),
+                t("emailSentMessage"),
+                () => setIsChangingPassword(true)
+              );
+            }}
           />
         )}
       </div>

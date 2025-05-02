@@ -72,9 +72,10 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
           <ul className="flex gap-2 pt-3 font-sm pb-3 justify-center pl-0">
             
             {[
-              { code: "da", label: "Dansk" },
-              { code: "de", label: "Deutsch" },
-              { code: "en", label: "English" },
+              { code: "da", label: "Da" },
+              { code: "de", label: "De" },
+              { code: "it", label: "It" },
+              { code: "en", label: "En" },
             ].map(({ code, label }) => (
               <li key={code}>
                 <button

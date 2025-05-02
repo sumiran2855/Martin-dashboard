@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/services/authService";
 import { InputField } from "@/components/form/InputField";
@@ -14,25 +14,13 @@ import { useRememberMe } from "@/controller/rememberMe";
 import Modal from "@/components/modals/modal";
 import EmailVarification from "@/components/emailVarification";
 import { PasswordField } from "@/components/form/passwordField";
+import { useTranslation } from "react-i18next";
 
 interface LoginValues {
   email: string;
   password: string;
   rememberMe: boolean;
 }
-const validationSchema = Yup.object({
-  email: Yup.string()
-    .email("Invalid email address")
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Invalid email format"
-    )
-    .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
-  rememberMe: Yup.boolean(),
-});
 
 export default function Login() {
   const [error, setError] = useState("");
@@ -40,61 +28,112 @@ export default function Login() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [unverifiedEmail, setUnverifiedEmail] = useState("");
+  const [hasMounted, setHasMounted] = useState(false);
   const router = useRouter();
+  const { t, i18n } = useTranslation("login");
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email(t("invalidEmail"))
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        t("invalidEmail")
+      )
+      .required(t("emailRequired")),
+    password: Yup.string()
+      .min(8, t("passwordMin"))
+      .required(t("passwordRequired")),
+    rememberMe: Yup.boolean(),
+  });
 
-  const redirectUser = useCallback((accessToken: string, journeyStatus: string) => {
-    const decodedToken = decodeAccessToken(accessToken);
-    router.push(decodedToken?.["cognito:groups"]?.includes("ServiceTechnician") ? "/admin" : journeyStatus === "completed" ? "/dashboard" : "/createProfile");
-  }, [router]);
-
-  const handleSubmit = useCallback(async (values: LoginValues) => {
-    setError("");
-    setSuccessMessage("");
-
-    const result = await login(values.email, values.password);
-    if(result?.data?.tokens?.sessionToken){
-      localStorage.setItem("SessionId", result.data.tokens.sessionToken)
-      localStorage.setItem("email",result.data.userData.email)
-      router.push("/admin/reset-password")
-      return;
+  useEffect(() => {
+    setHasMounted(true);
+    const savedLang = localStorage.getItem("language");
+    if (savedLang && i18n.language !== savedLang) {
+      i18n.changeLanguage(savedLang);
     }
-    if (!result.success) {
-      if (result.message === "User is not confirmed. Please verify your account.") {
-        setUnverifiedEmail(values.email);
-        setIsOpen(true);
+  }, []);
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem("language", lng);
+    localStorage.setItem("i18nextLng", lng);
+  };
+
+  const redirectUser = useCallback(
+    (accessToken: string, journeyStatus: string) => {
+      const decodedToken = decodeAccessToken(accessToken);
+      router.push(
+        decodedToken?.["cognito:groups"]?.includes("ServiceTechnician")
+          ? "/admin"
+          : journeyStatus === "completed"
+          ? "/dashboard"
+          : "/createProfile"
+      );
+    },
+    [router]
+  );
+
+  const handleSubmit = useCallback(
+    async (values: LoginValues) => {
+      setError("");
+      setSuccessMessage("");
+
+      const result = await login(values.email, values.password);
+      if (result?.data?.tokens?.sessionToken) {
+        localStorage.setItem("SessionId", result.data.tokens.sessionToken);
+        localStorage.setItem("email", result.data.userData.email);
+        router.push("/admin/reset-password");
         return;
       }
-      setError(result.message || "Invalid email or password.");
-      return;
-    }
+      if (!result.success) {
+        if (
+          result.message ===
+          "User is not confirmed. Please verify your account."
+        ) {
+          setUnverifiedEmail(values.email);
+          setIsOpen(true);
+          return;
+        }
+        setError(result.message || "Invalid email or password.");
+        return;
+      }
 
-    const journeyStatus = result.data.userData.journeyStatus;
-    localStorage.setItem("journeyStatus", journeyStatus);
-    setSuccessMessage("Login successful! Redirecting...");
+      const journeyStatus = result.data.userData.journeyStatus;
+      localStorage.setItem("journeyStatus", journeyStatus);
+      setSuccessMessage("Login successful! Redirecting...");
 
-    values.rememberMe
+      values.rememberMe
       ? (setCookie("rememberedEmail", values.email, 1), setCookie("rememberedPassword", encryptData(values.password), 1))
-      : (removeCookie("rememberedEmail"), removeCookie("rememberedPassword"));
+        : (removeCookie("rememberedEmail"), removeCookie("rememberedPassword"));
 
-    redirectUser(result.data.tokens.accessToken, journeyStatus);
+      redirectUser(result.data.tokens.accessToken, journeyStatus);
   }, [redirectUser]);
 
 
   const formik = useFormik<LoginValues>({
     initialValues: { email: "", password: "", rememberMe: false },
     validationSchema,
-    onSubmit: handleSubmit
+    onSubmit: handleSubmit,
   });
 
   useRememberMe(formik.setValues);
+  if (!hasMounted) return null;
+
+  const languages = [
+    { code: "da", label: "Danish" },
+    { code: "de", label: "German" },
+    { code: "it", label: "Italian" },
+    { code: "en", label: "English" },
+  ];
 
   return (
     <div className="flex h-screen max-md:flex-col-reverse max-md:justify-center">
       <div className="w-full md:w-1/3 flex flex-col justify-center px-6 md:px-12 bg-white max-lg:w-2/4 max-md:w-full">
         {!isVerificationStep ? (
           <>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Login</h2>
-
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+              {t("login")}
+            </h2>
             {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
             {successMessage && (
               <p className="text-green-600 text-sm mb-3">{successMessage}</p>
@@ -102,13 +141,13 @@ export default function Login() {
 
             <form onSubmit={formik.handleSubmit} noValidate>
               <InputField
-                label="Email"
+                label={t("email")}
                 type="email"
                 formikKey="email"
                 formikProps={formik}
               />
               <PasswordField
-                label="Password"
+                label={t("password")}
                 type="password"
                 formikKey="password"
                 formikProps={formik}
@@ -124,13 +163,13 @@ export default function Login() {
                     type="checkbox"
                     className="mr-2"
                   />{" "}
-                  Remember me
+                  {t("rememberMe")}
                 </label>
                 <Link
                   href="/forgetPassword"
                   className="text-blue-600 hover:underline"
                 >
-                  Forgot password?
+                  {t("forgotPassword")}
                 </Link>
               </div>
 
@@ -139,19 +178,35 @@ export default function Login() {
                 className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer"
                 disabled={!formik.isValid || formik.isSubmitting}
               >
-                Login
+                {t("login")}
               </button>
             </form>
 
             <p className="text-sm text-gray-600 mt-4">
-              Don't have an account?{" "}
+              {t("createAccountPrompt")}{" "}
               <Link
                 href="/signup"
                 className="text-blue-700 font-semibold hover:underline"
               >
-                Create an account
+                {t("createAccountLink")}
               </Link>
             </p>
+            <ul className="flex flex-wrap gap-2 font-sm justify-center">
+              {languages.map(({ code, label }) => (
+                <li key={code}>
+                  <button
+                    onClick={() => changeLanguage(code)}
+                    className={`no-underline text-blue-900 relative focus:outline-none ${
+                      i18n.language === code
+                        ? "font-bold underline text-blue"
+                        : ""
+                    }`}
+                  >
+                    {label} {code !== "en" && "|"}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </>
         ) : (
           <EmailVarification email={unverifiedEmail} />
@@ -173,9 +228,9 @@ export default function Login() {
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title="Verify Your Email"
-        message="Your account is not verified. Please verify your email to continue."
-        primaryButton="Verify email"
+        title={t("verifyEmailTitle")}
+        message={t("verifyEmailMessage")}
+        primaryButton={t("verifyEmailButton")}
         onPrimaryClick={() => setIsVerificationStep(true)}
       />
     </div>

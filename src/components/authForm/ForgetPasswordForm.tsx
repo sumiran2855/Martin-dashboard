@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { useState } from "react";
 import { forget_Password } from "@/services/authService";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function ForgetPasswordForm({
   onSuccess,
@@ -13,12 +14,13 @@ export default function ForgetPasswordForm({
 }) {
   const [error, setError] = useState("");
 
+  const { t } = useTranslation("login");
   const formik = useFormik({
     initialValues: { email: "" },
     validationSchema: Yup.object({
       email: Yup.string()
-        .email("Invalid email address")
-        .required("Email is required"),
+        .email(t("invalidEmail"))
+        .required(t("emailRequired")),
     }),
     onSubmit: async (values) => {
       setError("");
@@ -38,14 +40,14 @@ export default function ForgetPasswordForm({
   return (
     <>
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-        Forget Password
+      {t("forgotPassword")}
       </h2>
       {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
       <form onSubmit={formik.handleSubmit} noValidate>
         <input
           type="email"
-          placeholder="Email"
+          placeholder={t("email")}
           className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           {...formik.getFieldProps("email")}
         />
@@ -58,13 +60,13 @@ export default function ForgetPasswordForm({
           className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer mt-3"
           disabled={!formik.isValid || formik.isSubmitting}
         >
-          Forget Password
+          {t("forgotPassword")}
         </button>
       </form>
       <p className="text-sm text-gray-600 mt-4">
-        Remembered your password?{" "}
+      {t("rememberPassword")}{" "}
         <Link href="/" className="text-blue-700 font-semibold hover:underline">
-          Go back to login
+        {t("backToLogin")}
         </Link>
       </p>
     </>

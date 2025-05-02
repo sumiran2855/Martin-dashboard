@@ -141,7 +141,7 @@ function ServicesPage() {
             city: item.location?.city,
             address: item.location?.address,
             isInstalled: item.isInstalled ? "YES" : "NO",
-            daSigned: item.daSigned ? "YES" : "NO",
+            // daSigned: item.daSigned ? "YES" : "NO",
             hasServiceContract: item.hasServiceContract
               ? "has a service contract"
               : "want a service contract",

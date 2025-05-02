@@ -1,0 +1,33 @@
+{
+    "facilitiesTitle": "Le Tue Strutture",
+    "facilitiesDescription": "Questa è una panoramica delle tue strutture XRGi. Le strutture devono essere registrate qui per poter ricevere il servizio SuperXSaver.",
+    "sortBy": "Ordina per",
+    "listView": "Vista Elenco",
+    "gridView": "Vista Griglia",
+    "searchPlaceholder": "Cerca",
+    "registerFacilities": "Registrare altre strutture",
+    "name": "Nome",
+    "xrgiFacility": "Struttura XRGi",
+    "model": "Modello",
+    "status": "Stato",
+    "superSaverX": "superSaverX",
+    "services": "Servizi",
+    "statusOptions": {
+      "All": "Tutti",
+      "Active": "Attivo",
+      "Data Missing": "Dati Mancanti",
+      "Inactive": "Inattivo",
+      "Maintenance": "Manutenzione"
+    },
+    "inactiveFacilities": "Inattivo",
+    "activeFacilities": "Attivo",
+    "noFacilities": "Nessuna struttura registrata",
+    "rowsPerPage": "Righe per pagina:",
+    "facilitiesWithServices": "Servizi con Fornitore di Servizi",
+    "facilitiesRequestingService": "Servizi in attesa di un Fornitore di Servizi",
+    "Unavailable": "Non Disponibile",
+    "Available": "Disponibile",
+    "haveSuperSaverX": "Ha SuperSaverX",
+    "wantSuperSaverX": "Desidera SuperSaverX"
+  }
+  

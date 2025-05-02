@@ -10,7 +10,7 @@
   "modelNameHint": "Model name is on your registration form",
   "xrgiIdNumber": "XRGI ID Number",
   "enterXrgiId": "Enter XRGI ID number",
-  "xrgiIdHint": "The ID number is 8 digits and located on the side of the machine.",
+  "xrgiIdHint": "The ID number is 10 digits and located on the side of the machine.",
   "systemLocation": "System Location",
   "address": "Address",
   "addressHint": "Enter the address of this system's location",

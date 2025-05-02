@@ -1,10 +1,11 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-// Define supported languages
+// Defined supported languages
 export const LANGUAGES = {
   EN: 'en',
   DA: 'da',
-  DE: 'de'
+  DE: 'de',
+  IT: 'it'
 } as const;
 
 export type Language = typeof LANGUAGES[keyof typeof LANGUAGES];

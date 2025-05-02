@@ -10,7 +10,7 @@
   "modelNameHint": "Der Modellname steht auf Ihrem Registrierungsformular",
   "xrgiIdNumber": "XRGI-ID-Nummer",
   "enterXrgiId": "Geben Sie die XRGI-ID-Nummer ein",
-  "xrgiIdHint": "Die ID-Nummer besteht aus 8 Ziffern und befindet sich an der Seite der Maschine.",
+  "xrgiIdHint": "Die ID-Nummer besteht aus 10 Ziffern und befindet sich an der Seite der Maschine.",
   "systemLocation": "Systemstandort",
   "address": "Adresse",
   "addressHint": "Geben Sie die Adresse des Systemstandorts ein",

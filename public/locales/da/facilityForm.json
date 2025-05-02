@@ -10,7 +10,7 @@
   "modelNameHint": "Modelnavnet står på din registreringsformular",
   "xrgiIdNumber": "XRGI ID-nummer",
   "enterXrgiId": "Indtast XRGI ID-nummer",
-  "xrgiIdHint": "ID-nummeret er 8 cifre langt og placeret på siden af maskinen.",
+  "xrgiIdHint": "ID-nummeret er 10 cifre langt og placeret på siden af maskinen.",
   "systemLocation": "Systemplacering",
   "address": "Adresse",
   "addressHint": "Indtast adressen for dette systems placering",

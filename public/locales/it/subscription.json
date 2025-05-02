@@ -1,0 +1,22 @@
+{
+    "subscriptionTitle": "Abbonamenti",
+    "subscriptionDescription": "Gestisci e monitora tutti i tuoi abbonamenti attivi e inattivi.",
+    "sortBy": "Ordina per",
+    "searchPlaceholder": "Cerca abbonamenti...",
+    "statusOptions": {
+      "All": "Tutti",
+      "Active": "Attivo",
+      "Inactive": "Inattivo",
+      "MissingData": "Dati mancanti",
+      "WithProvider": "Con fornitore di servizio",
+      "WithoutProvider": "Richiesta fornitore di servizio",
+      "HaveSuperSaverX": "Possiedi SuperSaverX",
+      "WantSuperSaverX": "Vuoi SuperSaverX"
+    },
+    "services": {
+      "servicesTitle": "Servizi",
+      "servicesDescription": "Visualizza e gestisci tutte le strutture che hanno un fornitore di servizio associato. Tieni traccia dei contratti di servizio, monitora gli accordi attivi e garantisci un supporto di manutenzione continuo per le tue strutture.",
+      "searchPlaceholder": "Cerca servizi..."
+    }
+  }
+  

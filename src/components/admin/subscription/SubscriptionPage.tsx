@@ -48,8 +48,8 @@ interface Facility {
   };
 }
 
-const superSaverOptions = ["All", "HaveSuperSaverX", "WantSuperSaverX"];
-const performanceOptions = ["All", "HaveReport", "NoReport"];
+const superSaverOptions = ["All", "Have SuperSaverX", "Want SuperSaverX"];
+const performanceOptions = ["All", "Want a Report", "Don’t want a report"];
 
 function SubscriptionPage() {
   const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
@@ -98,9 +98,9 @@ function SubscriptionPage() {
       .filter((facility) => {
         if (type === "super") {
           switch (filter) {
-            case "HaveSuperSaverX":
+            case "Have SuperSaverX":
               return facility.featureAdded && facility.feature?.method;
-            case "WantSuperSaverX":
+            case "Want SuperSaverX":
               return facility.featureAdded && !facility.feature?.method;
             default:
               return facility.featureAdded;
@@ -117,9 +117,9 @@ function SubscriptionPage() {
             report.operatingHours == null;
 
           switch (filter) {
-            case "HaveReport":
+            case "Want a Report":
               return !allNull;
-            case "NoReport":
+            case "Don’t want a report":
               return allNull;
             default:
               return true;
@@ -153,7 +153,7 @@ function SubscriptionPage() {
             city: item.location?.city,
             address: item.location?.address,
             isInstalled: item.isInstalled ? "YES" : "NO",
-            daSigned: item.daSigned ? "YES" : "NO",
+            // daSigned: item.daSigned ? "YES" : "NO",
             hasServiceContract: item.hasServiceContract
               ? "has a service contract"
               : "want a service contract",
@@ -229,7 +229,7 @@ function SubscriptionPage() {
             city: item.location?.city,
             address: item.location?.address,
             isInstalled: item.isInstalled ? "YES" : "NO",
-            daSigned: item.daSigned ? "YES" : "NO",
+            // daSigned: item.daSigned ? "YES" : "NO",
             hasServiceContract: item.hasServiceContract
               ? "has a service contract"
               : "want a service contract",

@@ -10,18 +10,9 @@ import { signup } from "@/services/authService";
 import { InputField } from "@/components/form/InputField";
 import EmailVarification from "@/components/emailVarification";
 import { PasswordField } from "@/components/form/passwordField";
+import { useTranslation } from "react-i18next";
+// import { t } from "i18next";
 
-const getPhoneValidationSchema = (countryCode: string) => {
-  const phoneValidations: { [key: string]: Yup.StringSchema } = {
-    "+91": Yup.string()
-      .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
-      .required("Phone number is required"),
-    "+45": Yup.string()
-      .matches(/^\d{8}$/, "Phone number must be exactly 8 digits")
-      .required("Phone number is required"),
-  };
-  return phoneValidations[countryCode] || phoneValidations["+91"];
-};
 
 export default function Signup() {
   const [error, setError] = useState("");
@@ -29,7 +20,19 @@ export default function Signup() {
   const [countryCode, setCountryCode] = useState("+45");
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [email, setEmail] = useState("");
-
+  const { t } = useTranslation("signup");
+  
+  const getPhoneValidationSchema = (countryCode: string) => {
+    const phoneValidations: { [key: string]: Yup.StringSchema } = {
+      "+91": Yup.string()
+        .matches(/^\d{10}$/, t("phone10Digits"))
+        .required(t("phoneRequired")),
+      "+45": Yup.string()
+        .matches(/^\d{8}$/, t("phone8Digits"))
+        .required(t("phoneRequired")),
+    };
+    return phoneValidations[countryCode] || phoneValidations["+91"];
+  };
   const phoneValidationSchema = useMemo(
     () => getPhoneValidationSchema(countryCode),
     [countryCode]
@@ -38,18 +41,18 @@ export default function Signup() {
   const validationSchema = useMemo(
     () =>
       Yup.object({
-        firstname: Yup.string().required("First name is required"),
-        lastname: Yup.string().required("Last name is required"),
+        firstname: Yup.string().required(t("firstNameRequired")),
+        lastname: Yup.string().required(t("lastNameRequired")),
         phone_number: phoneValidationSchema,
         email: Yup.string()
-          .email("Invalid email address")
-          .required("Email is required"),
+          .email(t("invalidEmail"))
+          .required(t("emailRequired")),
         password: Yup.string()
-          .min(8, "Password must be at least 8 characters")
-          .required("Password is required"),
+          .min(8, t("passwordMin"))
+          .required(t("passwordRequired")),
         confirmPassword: Yup.string()
-          .oneOf([Yup.ref("password")], "Passwords must match")
-          .required("Confirm Password is required"),
+          .oneOf([Yup.ref("password")], t("passwordsMustMatch"))
+          .required(t("confirmPasswordRequired")),
       }),
     [phoneValidationSchema]
   );
@@ -94,7 +97,7 @@ export default function Signup() {
         {!isVerificationStep ? (
           <>
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-              Signup
+            {t("title")}
             </h2>
 
             {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
@@ -106,7 +109,7 @@ export default function Signup() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
                 <div>
                   <InputField
-                    label="First Name"
+                    label={t("firstName")}
                     type="text"
                     name="firstname"
                     formikKey="firstname"
@@ -115,7 +118,7 @@ export default function Signup() {
                 </div>
                 <div>
                   <InputField
-                    label="Last Name"
+                    label={t("lastName")}
                     type="text"
                     name="lastname"
                     formikKey="lastname"
@@ -124,7 +127,7 @@ export default function Signup() {
                 </div>
               </div>
               <InputField
-                label="Email"
+                label={t("email")}
                 type="email"
                 name="email"
                 formikKey="email"
@@ -153,7 +156,7 @@ export default function Signup() {
                   <input
                     type="phone_number"
                     name="phone_number"
-                    placeholder="Phone Number"
+                    placeholder={t("phoneNumber")}
                     className="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -168,14 +171,14 @@ export default function Signup() {
               )}
 
               <PasswordField
-                label="Password"
+                label={t("password")}
                 type="password"
                 name="password"
                 formikKey="password"
                 formikProps={formik}
               />
               <PasswordField
-                label="Confirm Password"
+                label={t("confirmPassword")}
                 type="password"
                 name="confirmPassword"
                 formikKey="confirmPassword"
@@ -187,17 +190,17 @@ export default function Signup() {
                 className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer mt-4"
                 disabled={!formik.isValid || formik.isSubmitting}
               >
-                Signup
+                {t("signupButton")}
               </button>
             </form>
 
             <p className="text-sm text-gray-600 mt-4">
-              Already have an account?{" "}
+                {t("alreadyHaveAccount")}{" "}
               <Link
                 href="/"
                 className="text-blue-700 font-semibold hover:underline"
               >
-                Login
+                {t("login")}
               </Link>
             </p>
           </>

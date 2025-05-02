@@ -477,60 +477,6 @@ function AddFacility() {
               </div>
             </div>
 
-            <div className="bg-white p-10 rounded-lg mb-6 border border-gray-200">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg text-[#082351DE] font-semibold">
-                  {t("operationExample")}
-                </h2>
-                <span className="text-blue-500 cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 16h.01M12 12a2 2 0 1 0-2-2"
-                    />
-                  </svg>
-                </span>
-              </div>
-
-              {/* Chart Section */}
-              <div className="bg-[#F9FAFB] p-4 rounded-lg border border-gray-200">
-                <BarChart />
-              </div>
-
-              <div className="flex justify-center space-x-6 mt-4 text-sm">
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-yellow-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">{t("xrgilabel")}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-blue-900 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">{t("tariffsLabel")}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-blue-400 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">{t("flexPriceLabel")}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="w-3 h-3 bg-gray-300 rounded-full inline-block mr-2"></span>
-                  <span className="text-gray-700">{t("vatLabel")}</span>
-                </div>
-              </div>
-            </div>
 
             <div className="flex gap-4">
               <button
