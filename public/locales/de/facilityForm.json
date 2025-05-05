@@ -62,5 +62,7 @@
   "selectIndustry": "Branche auswählen",
   "euroPerYear": "Euro pro Jahr",
   "tonsPerYear": "Tonnen pro Jahr",
-  "operatingHoursPlaceholder": "0-8763"
+  "operatingHoursPlaceholder": "0-8763",
+   "alreadyHaveContract": "Haben Sie bereits einen Servicevertrag für Ihr System?",
+    "wantContract": "Möchten Sie einen Servicevertrag für Ihr ECPower?"
 }

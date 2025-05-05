@@ -1,6 +1,5 @@
 import GenericModal from "@/components/modals/genericPopup";
 import { useState } from "react";
-import BarChart from "../barChart";
 import { countryCodes } from "../dashboard/staticData/Data";
 
 interface ValidateFormProps {
@@ -12,6 +11,11 @@ interface ValidateFormProps {
   setHasServiceProvider: React.Dispatch<React.SetStateAction<any>>;
   hasPerformanceReport: boolean;
   setHasPerformanceReport: React.Dispatch<React.SetStateAction<any>>;
+  setWantsServiceContract: React.Dispatch<React.SetStateAction<any>>;
+  serviceContractChoice: string;
+  setServiceContractChoice: React.Dispatch<React.SetStateAction<any>>;
+  serviceContractWantedChoice: string;
+  setServiceContractWantedChoice: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function CreateFacility({
@@ -23,11 +27,26 @@ export default function CreateFacility({
   setHasServiceProvider,
   hasPerformanceReport,
   setHasPerformanceReport,
+  setWantsServiceContract,
+  serviceContractChoice,
+  setServiceContractChoice,
+  setServiceContractWantedChoice,
+  serviceContractWantedChoice,
 }: ValidateFormProps) {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(
     stepTwoFormData.model || ""
   );
+
+  const handleServiceContractChoice = (choice: any) => {
+    setServiceContractChoice(choice);
+    setHasServiceProvider(choice === "yes");
+  };
+
+  const handleWantServiceContractChoice = (choice: any) => {
+    setServiceContractWantedChoice(choice);
+    setWantsServiceContract(choice === "yes");
+  };
 
   const handleCheckboxChange = (e: any) => {
     const { name, checked } = e.target;
@@ -57,6 +76,19 @@ export default function CreateFacility({
       setStepTwoFormData((prev: any) => ({ ...prev, model: value }));
     }
   };
+
+  const SelectionButton = ({ selected, onClick, children }: any) => (
+    <button
+      onClick={onClick}
+      className={`flex-2 py-3 px-4 rounded-lg border ${
+        selected
+          ? "bg-blue-500 text-white border-blue-500"
+          : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+      } transition duration-200 font-medium`}
+    >
+      {children}
+    </button>
+  );
 
   return (
     <div>
@@ -231,85 +263,110 @@ export default function CreateFacility({
       </div>
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
-        <div className="flex items-center space-x-3 py-4">
-          <input
-            type="checkbox"
-            id="serviceProvider"
-            name="serviceProvider"
-            checked={hasServiceProvider}
-            onChange={handleRadioChange}
-            className="w-5 h-5 cursor-pointer"
-          />
-          <label
-            htmlFor="serviceProvider"
-            className="text-[#082351DE] text-lg font-semibold"
-          >
-            I want to add my service provider
-          </label>
-        </div>
+        <div className="p-6 rounded-lg">
+          <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+            Do you already have a service contract for your system?
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+            <SelectionButton
+              selected={serviceContractChoice === "yes"}
+              onClick={() => handleServiceContractChoice("yes")}
+            >
+              Yes
+            </SelectionButton>
+            <SelectionButton
+              selected={serviceContractChoice === "no"}
+              onClick={() => handleServiceContractChoice("no")}
+            >
+              No
+            </SelectionButton>
+          </div>
 
-        {hasServiceProvider && (
-          <div className="p-6 rounded-lg mb-6">
-            <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-              Service Provider
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <input
-                  type="text"
-                  name="serviceProviderName"
-                  placeholder="Name of service provider"
-                  className="p-3 border rounded-lg w-full"
-                  value={stepTwoFormData.serviceProviderName}
-                  onChange={handleChange}
-                />
-                <label className="text-gray-500 text-sm mt-1 block ml-3">
-                  Enter the name of the service provider
-                </label>
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  name="serviceProviderMail"
-                  placeholder="Email Address"
-                  className="p-3 border rounded-lg w-full"
-                  value={stepTwoFormData.serviceProviderMail}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center w-full gap-2">
-                <div className="relative w-1/6">
-                  <select
-                    name="serviceProviderCountryCode"
-                    value={stepTwoFormData.serviceProviderCountryCode}
-                    onChange={handleChange}
-                    className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
-                  >
-                    {countryCodes.map((country) => (
-                      <option
-                        key={country.code}
-                        className="p-2 text-gray-700 bg-white hover:bg-gray-100"
-                        value={country.code}
-                      >
-                        {country.flag} {country.code}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <input
-                  type="text"
-                  name="serviceProviderPhone"
-                  placeholder="Phone Number"
-                  className="p-3 w-5/6 border rounded-lg outline-none"
-                  value={stepTwoFormData.serviceProviderPhone}
-                  onChange={handleChange}
-                />
+          {serviceContractChoice === "no" && (
+            <div className="mt-6">
+              <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                Do you want a service contract for your ECPower?
+              </h2>
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <SelectionButton
+                  selected={serviceContractWantedChoice === "yes"}
+                  onClick={() => handleWantServiceContractChoice("yes")}
+                >
+                  Yes
+                </SelectionButton>
+                <SelectionButton
+                  selected={serviceContractWantedChoice === "no"}
+                  onClick={() => handleWantServiceContractChoice("no")}
+                >
+                  No
+                </SelectionButton>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {hasServiceProvider && (
+            <div className="mt-6">
+              <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                Service Provider
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <input
+                    type="text"
+                    name="serviceProviderName"
+                    placeholder="Name of service provider"
+                    className="p-3 border rounded-lg w-full"
+                    value={stepTwoFormData.serviceProviderName}
+                    onChange={handleChange}
+                  />
+                  <label className="text-gray-500 text-sm mt-1 block ml-3">
+                    Enter the name of the service provider
+                  </label>
+                </div>
+
+                <div>
+                  <input
+                    type="text"
+                    name="serviceProviderMail"
+                    placeholder="Email Address"
+                    className="p-3 border rounded-lg w-full"
+                    value={stepTwoFormData.serviceProviderMail}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="flex items-center w-full gap-2">
+                  <div className="relative w-1/4">
+                    <select
+                      name="serviceProviderCountryCode"
+                      value={stepTwoFormData.serviceProviderCountryCode}
+                      onChange={handleChange}
+                      className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                    >
+                      {countryCodes.map((country) => (
+                        <option
+                          key={country.code}
+                          className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                          value={country.code}
+                        >
+                          {country.flag} {country.code}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <input
+                    type="text"
+                    name="serviceProviderPhone"
+                    placeholder="Phone Number"
+                    className="p-3 w-5/6 border rounded-lg outline-none"
+                    value={stepTwoFormData.serviceProviderPhone}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
@@ -422,7 +479,6 @@ export default function CreateFacility({
           </label>
         </div>
       </div>
-
     </div>
   );
 }

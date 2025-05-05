@@ -109,6 +109,7 @@ export const getFacility = async (token: string, IdToken: string) => {
         countryCode:facilityData.serviceProvider?.countryCode || "",
       },
       hasServiceContract: facilityData.hasServiceContract || false,
+      needServiceContract:facilityData.needServiceContract || false,
       featureAdded: facilityData.featureAdded || false,
       feature: {
         method: facilityData.feature?.method || "",

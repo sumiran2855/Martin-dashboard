@@ -63,5 +63,7 @@
   "selectIndustry": "Vælg en branche",
   "euroPerYear": "Euro pr. år",
   "tonsPerYear": "Tons pr. år",
-  "operatingHoursPlaceholder": "0-8763"
+  "operatingHoursPlaceholder": "0-8763",
+  "alreadyHaveContract": "Har du allerede en serviceaftale for dit system?",
+  "wantContract": "Ønsker du en serviceaftale for din ECPower?"
 }

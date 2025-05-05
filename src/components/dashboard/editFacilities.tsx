@@ -1,7 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import BarChart from "../barChart";
 import { useRouter } from "next/navigation";
 import Modal from "../modals/modal";
 import { apiRequest } from "@/utils/authHelper";
@@ -35,6 +34,7 @@ interface Facility {
   hasPerformanceReport: boolean;
   featureAdded: boolean;
   hasServiceContract: boolean;
+  needServiceContract: boolean;
   feature?: {
     method: string;
     partner_details?: {
@@ -55,9 +55,22 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [serviceContractChoice, setServiceContractChoice] = useState("");
+  const [serviceContractWantedChoice, setServiceContractWantedChoice] =
+    useState("");
   const [setupSuperSaver, setSetupSuperSaver] = useState(
     facility?.featureAdded || false
   );
+
+  const handleServiceContractChoice = (choice: any) => {
+    setServiceContractChoice(choice);
+    setHasServiceProvider(choice === "yes");
+  };
+
+  const handleWantServiceContractChoice = (choice: any) => {
+    setServiceContractWantedChoice(choice);
+  };
+
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -89,8 +102,15 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         setIsInstalled(response.data?.isInstalled || false);
 
         const { feature } = response.data;
+
         if (response.data.hasServiceContract) {
           setHasServiceProvider(true);
+          setServiceContractChoice("yes");
+        } else {
+          setServiceContractChoice("no");
+          setServiceContractWantedChoice(
+            response.data.needServiceContract ? "yes" : "no"
+          );
         }
 
         if (response.data.hasPerformanceReport) {
@@ -119,10 +139,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
       fetchFacility();
     }
   }, [facilityId]);
-
-  const handleRadioChange = () => {
-    setHasServiceProvider((prev) => !prev);
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -166,7 +182,18 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         return;
       }
 
-      const hasServiceContract = hasServiceProvider ? true : false;
+      const hasServiceContract = serviceContractChoice === "yes";
+      const needServiceContract =
+        serviceContractChoice === "no" && serviceContractWantedChoice === "yes";
+
+      const serviceProviderData = hasServiceContract
+        ? {
+            name: facility?.serviceProvider?.name || "",
+            mailAddress: facility?.serviceProvider?.mailAddress || "",
+            phone: facility?.serviceProvider?.phone || "",
+            countryCode: facility?.serviceProvider?.countryCode || "",
+          }
+        : null;
 
       const payload = {
         name: facility?.name,
@@ -178,14 +205,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           city: facility?.location?.city || "",
           country: facility?.location?.country || "",
         },
-        serviceProvider: facility?.hasServiceContract
-          ? {
-              name: facility?.serviceProvider?.name || "",
-              mailAddress: facility?.serviceProvider?.mailAddress || "",
-              phone: facility?.serviceProvider?.phone || "",
-              countryCode: facility?.serviceProvider?.countryCode || "",
-            }
-          : null,
+        serviceProvider: serviceProviderData,
         performance_report: {
           annualSavings: facility?.performance_report?.annualSavings || "",
           co2Savings: facility?.performance_report?.co2Savings || "",
@@ -194,6 +214,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         },
         hasPerformanceReport,
         isInstalled,
+        needServiceContract,
         DaSigned: true,
         hasServiceContract,
         feature: setupSuperSaver
@@ -212,6 +233,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           : null,
         featureAdded: setupSuperSaver ? true : false,
       };
+      console.log("🚀 ~ handleSave ~ payload:", payload);
 
       const updatedFacility = await apiRequest(
         `create-facility?id=${facilityId}`,
@@ -234,6 +256,19 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
   };
+
+  const SelectionButton = ({ selected, onClick, children }: any) => (
+    <button
+      onClick={onClick}
+      className={`flex-2 py-3 px-4 rounded-lg border ${
+        selected
+          ? "bg-blue-500 text-white border-blue-500"
+          : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+      } transition duration-200 font-medium`}
+    >
+      {children}
+    </button>
+  );
 
   return (
     <>
@@ -423,85 +458,110 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
             </div>
 
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
-              <div className="flex items-center space-x-3 py-4">
-                <input
-                  type="checkbox"
-                  id="serviceProvider"
-                  name="serviceProvider"
-                  checked={hasServiceProvider}
-                  onChange={handleRadioChange}
-                  className="w-5 h-5 cursor-pointer"
-                />
-                <label
-                  htmlFor="serviceProvider"
-                  className="text-[#082351DE] text-lg font-semibold"
-                >
-                  {t("addServiceProvider")}
-                </label>
-              </div>
+              <div className="p-6 rounded-lg">
+                <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                  {t("alreadyHaveContract")}
+                </h2>
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                  <SelectionButton
+                    selected={serviceContractChoice === "yes"}
+                    onClick={() => handleServiceContractChoice("yes")}
+                  >
+                    Yes
+                  </SelectionButton>
+                  <SelectionButton
+                    selected={serviceContractChoice === "no"}
+                    onClick={() => handleServiceContractChoice("no")}
+                  >
+                    No
+                  </SelectionButton>
+                </div>
 
-              {hasServiceProvider && (
-                <div className="p-6 rounded-lg mb-6">
-                  <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                    {t("serviceProvider")}
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <input
-                        type="text"
-                        name="serviceProvider.name"
-                        placeholder={t("serviceProviderName")}
-                        className="p-3 border rounded-lg w-full"
-                        value={facility?.serviceProvider?.name ?? ""}
-                        onChange={handleChange}
-                      />
-                      <label className="text-gray-500 text-sm mt-1 block ml-3">
-                        {t("enterServiceProviderName")}
-                      </label>
-                    </div>
-
-                    <div>
-                      <input
-                        type="text"
-                        name="serviceProvider.mailAddress"
-                        placeholder={t("serviceProviderEmail")}
-                        className="p-3 border rounded-lg w-full"
-                        value={facility?.serviceProvider?.mailAddress ?? ""}
-                        onChange={handleChange}
-                      />
-                    </div>
-
-                    <div className="flex items-center w-full gap-2">
-                      <div className="relative w-1/3">
-                        <select
-                          name="serviceProvider.countryCode"
-                          value={facility?.serviceProvider?.countryCode ?? ""}
-                          onChange={handleChange}
-                          className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
-                        >
-                          {countryCodes.map((country) => (
-                            <option
-                              key={country.code}
-                              className="p-2 text-gray-700 bg-white hover:bg-gray-100"
-                              value={country.code}
-                            >
-                              {country.flag} {country.code}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <input
-                        type="text"
-                        name="serviceProvider.phone"
-                        placeholder={t("serviceProviderPhone")}
-                        className="p-3 border rounded-lg w-full"
-                        value={facility?.serviceProvider?.phone ?? ""}
-                        onChange={handleChange}
-                      />
+                {serviceContractChoice === "no" && (
+                  <div className="mt-6">
+                    <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                      {t("wantContract")}
+                    </h2>
+                    <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                      <SelectionButton
+                        selected={serviceContractWantedChoice === "yes"}
+                        onClick={() => handleWantServiceContractChoice("yes")}
+                      >
+                        Yes
+                      </SelectionButton>
+                      <SelectionButton
+                        selected={serviceContractWantedChoice === "no"}
+                        onClick={() => handleWantServiceContractChoice("no")}
+                      >
+                        No
+                      </SelectionButton>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+
+                {hasServiceProvider && (
+                  <div className="mt-6">
+                    <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                      {t("serviceProvider")}
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <input
+                          type="text"
+                          name="serviceProvider.name"
+                          placeholder={t("serviceProviderName")}
+                          className="p-3 border rounded-lg w-full"
+                          value={facility?.serviceProvider?.name ?? ""}
+                          onChange={handleChange}
+                        />
+                        <label className="text-gray-500 text-sm mt-1 block ml-3">
+                          {t("enterServiceProviderName")}
+                        </label>
+                      </div>
+
+                      <div>
+                        <input
+                          type="text"
+                          name="serviceProvider.mailAddress"
+                          placeholder={t("serviceProviderEmail")}
+                          className="p-3 border rounded-lg w-full"
+                          value={facility?.serviceProvider?.mailAddress ?? ""}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="flex items-center w-full gap-2">
+                        <div className="relative w-1/4">
+                          <select
+                            name="serviceProvider.countryCode"
+                            value={facility?.serviceProvider?.countryCode ?? ""}
+                            onChange={handleChange}
+                            className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                          >
+                            {countryCodes.map((country) => (
+                              <option
+                                key={country.code}
+                                className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                                value={country.code}
+                              >
+                                {country.flag} {country.code}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <input
+                          type="text"
+                          name="serviceProvider.phone"
+                          placeholder={t("serviceProviderPhone")}
+                          className="p-3 w-5/6 border rounded-lg outline-none"
+                          value={facility?.serviceProvider?.phone ?? ""}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
@@ -616,7 +676,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                 </label>
               </div>
             </div>
-
           </div>
         ) : (
           <div className="flex-1 overflow-auto px-6 py-2 mx-4">

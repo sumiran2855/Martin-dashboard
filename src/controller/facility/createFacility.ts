@@ -40,6 +40,7 @@ export function useCreateFacility() {
     setupSuperSaver?: boolean,
     hasPerformanceReport?:boolean,
     selectedOption?:string,
+    wantsServiceContract?:boolean
   ) => {
     const token = localStorage.getItem("token");
     const IdToken = localStorage.getItem("IdToken");
@@ -68,6 +69,7 @@ export function useCreateFacility() {
       hasPerformanceReport:hasPerformanceReport || false,
       isInstalled: isInstalled || false,
       DaSigned: DaSigned || false,
+      needServiceContract : wantsServiceContract || false ,
       hasServiceContract : hasServiceProvider || false,
       feature: setupSuperSaver
           ? {
@@ -85,6 +87,7 @@ export function useCreateFacility() {
           : null,
       featureAdded: setupSuperSaver ? true : false,
     };
+
 
     if (hasServiceProvider) {
       payload.serviceProvider = {

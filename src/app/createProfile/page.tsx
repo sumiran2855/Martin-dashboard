@@ -29,6 +29,9 @@ function Dashboard() {
   const [isChecked, setIsChecked] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
+  const [wantsServiceContract, setWantsServiceContract] = useState(false);
+  const [serviceContractChoice, setServiceContractChoice] = useState("");
+  const [serviceContractWantedChoice, setServiceContractWantedChoice] = useState("");
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -96,6 +99,7 @@ function Dashboard() {
     operatingHours:"",
     industry:"",
     hasPerformanceReport:"",
+    needServiceContract:"",
     serviceProviderName: "",
     serviceProviderMail: "",
     serviceProviderPhone: "",
@@ -195,6 +199,7 @@ function Dashboard() {
         industry:stepTwoFormData.industry,
       },
       hasPerformanceReport:hasPerformanceReport,
+      needServiceContract : wantsServiceContract ,
       isInstalled,
       DaSigned: isChecked,
       hasServiceContract: hasServiceProvider ? true : false,
@@ -284,7 +289,8 @@ function Dashboard() {
           co2Savings: facilityData.performance_report.co2Savings || "",
           operatingHours: facilityData.performance_report.operatingHours || "",
           industry: facilityData.performance_report.industry || "",
-          hasPerformanceReport:facilityData.hasPerformanceReport || false,       
+          hasPerformanceReport:facilityData.hasPerformanceReport || false,   
+          needServiceContract : facilityData.needServiceContract || false,    
           serviceProviderName: facilityData.serviceProvider.name || "",
           serviceProviderMail: facilityData.serviceProvider.mailAddress || "",
           serviceProviderPhone: facilityData.serviceProvider.phone || "",
@@ -384,6 +390,12 @@ function Dashboard() {
                   setHasServiceProvider={setHasServiceProvider}
                   hasPerformanceReport={hasPerformanceReport}
                   setHasPerformanceReport={setHasPerformanceReport}
+                  setWantsServiceContract={setWantsServiceContract}
+                  setServiceContractChoice={setServiceContractChoice}
+                  setServiceContractWantedChoice={setServiceContractWantedChoice}
+                  serviceContractChoice={serviceContractChoice}
+                  serviceContractWantedChoice={serviceContractWantedChoice}
+
                 />
               )}
               {step === 3 && (
