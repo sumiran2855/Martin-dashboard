@@ -1,4 +1,4 @@
-import { getQuery, markAsRead } from "@/services/customerServices";
+import { getQuery, markAsRead, sendReply } from "@/services/customerServices";
 import { useEffect, useState } from "react";
 
 interface Contact {
@@ -16,6 +16,9 @@ export default function ContactList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [replyModalOpen, setReplyModalOpen] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [currentContact, setCurrentContact] = useState<Contact | null>(null);
 
   useEffect(() => {
     const fetchQueries = async () => {
@@ -66,6 +69,48 @@ export default function ContactList() {
     }
   };
 
+  const openReplyModal = (contact: Contact) => {
+    setCurrentContact(contact);
+    setReplyModalOpen(true);
+  };
+
+  const closeReplyModal = () => {
+    setReplyModalOpen(false);
+    setReplyText("");
+    setCurrentContact(null);
+  };
+
+  const handleSendReply = async () => {
+    if (!currentContact) return;
+
+    try {
+      const token = localStorage.getItem("token") || "";
+      const IdToken = localStorage.getItem("IdToken") || "";
+
+      await sendReply(
+        currentContact.subject,
+        replyText,
+        currentContact.email,
+        token,
+        IdToken
+      );
+      await markAsRead(currentContact.id, token, IdToken);
+
+      setContacts((prevContacts) =>
+        prevContacts.map((contact) =>
+          contact.id === currentContact.id
+            ? { ...contact, seen: true }
+            : contact
+        )
+      );
+
+      closeReplyModal();
+    } catch (error) {
+      console.error("Failed to send reply:", error);
+      alert("Failed to send reply.");
+    }
+  };
+
   return (
     <>
       {loading && (
@@ -77,6 +122,67 @@ export default function ContactList() {
           ></div>
         </div>
       )}
+
+      {replyModalOpen && (
+        <div className="fixed inset-0 flex justify-center items-center z-50">
+          <div className="absolute inset-0 bg-gray-800 bg-opacity-75 backdrop-blur-sm"></div>
+          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md z-10">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium">
+                Reply to {currentContact?.email}
+              </h3>
+              <button
+                onClick={closeReplyModal}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="mb-4">
+              <p className="text-sm text-gray-500 mb-2">
+                Subject: {currentContact?.subject}
+              </p>
+              <textarea
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                rows={6}
+                placeholder="Type your reply here..."
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={closeReplyModal}
+                className="mr-3 inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSendReply}
+                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                disabled={!replyText.trim()}
+              >
+                Send Reply
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {!loading && (
         <div className="flex-1 overflow-auto p-8">
           <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -188,6 +294,7 @@ export default function ContactList() {
                                   </button>
                                   <button
                                     type="button"
+                                    onClick={() => openReplyModal(contact)}
                                     className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                   >
                                     Reply

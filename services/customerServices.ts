@@ -192,6 +192,30 @@ export const sendQuery = async (
   throw new Error("Failed to send query");
 };
 
+export const sendReply = async (
+  subject: string,
+  message: string,
+  email:string,
+  token?: string,
+  IdToken?: string
+) => {
+  const payload = { subject, body: message, email };
+
+  const result = await apiRequest(
+    CUSTOMER_API_ROUTES.SEND_REPLY,
+    "POST",
+    payload,
+    token,
+    IdToken
+  );
+
+  if (result.success) {
+    return result.data;
+  }
+
+  throw new Error("Failed to send query");
+};
+
 export const getQuery = async (
   token?: string,
   IdToken?: string

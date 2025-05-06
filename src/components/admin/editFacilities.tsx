@@ -1,15 +1,21 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import BarChart from "../barChart";
 import { useRouter } from "next/navigation";
 import Modal from "../modals/modal";
 import { apiRequest } from "@/utils/authHelper";
 import GenericModal from "../modals/genericPopup";
+import { countryCodes } from "../dashboard/staticData/Data";
+import { useTranslation } from "react-i18next";
 
 interface Facility {
   facilityId?: string;
-  location?: { address: string; postalCode: string; city: string };
+  location?: {
+    address: string;
+    postalCode: string;
+    city: string;
+    country: string;
+  };
   name: string;
   modelNumber: string;
   xrgiID: string;
@@ -17,15 +23,26 @@ interface Facility {
     name: string;
     mailAddress: string;
     phone: string;
+    countryCode: string;
   };
-  hasPerformanceReport: boolean;
   performance_report?: {
     annualSavings: string;
     co2Savings: string;
     operatingHours: string;
     industry: string;
   };
-  isInstalled: boolean;
+  hasPerformanceReport: boolean;
+  featureAdded: boolean;
+  hasServiceContract: boolean;
+  needServiceContract: boolean;
+  feature?: {
+    method: string;
+    partner_details?: {
+      name: string;
+      email: string;
+      mobile: string;
+    };
+  };
 }
 
 export default function EditFacilities({
@@ -34,12 +51,40 @@ export default function EditFacilities({
   facilityId: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation("facilityForm");
   const router = useRouter();
   const [facility, setFacility] = useState<Facility | null>(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
   const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
+  const [facilityAdded, setFacilityAdded] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [serviceContractChoice, setServiceContractChoice] = useState("");
+  const [serviceContractWantedChoice, setServiceContractWantedChoice] =
+    useState("");
+  const [setupSuperSaver, setSetupSuperSaver] = useState(
+    facility?.featureAdded || false
+  );
+  const [partnerDetails, setPartnerDetails] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+    countryCode: "",
+  });
+
+  const handleServiceContractChoice = (choice: any) => {
+    setServiceContractChoice(choice);
+    setHasServiceProvider(choice === "yes");
+  };
+
+  const handleWantServiceContractChoice = (choice: any) => {
+    setServiceContractWantedChoice(choice);
+  };
+
+  const handleAcceptTerms = async () => {
+    setFacilityAdded(true);
+  };
 
   const handleRadioChange = () => {
     setHasServiceProvider((prev) => !prev);
@@ -61,15 +106,34 @@ export default function EditFacilities({
           console.log("Failed to fetch facility data");
         }
         setFacility(response.data);
-        setIsInstalled(response.data.isInstalled || false);
-        const { serviceProvider } = response.data;
-        if (
-          serviceProvider &&
-          serviceProvider.name &&
-          serviceProvider.mailAddress &&
-          serviceProvider.phone
-        ) {
+        setIsInstalled(response.data?.isInstalled || false);
+        const { serviceProvider, feature } = response.data;
+        if (response.data.hasServiceContract) {
           setHasServiceProvider(true);
+          setServiceContractChoice("yes");
+        } else {
+          setServiceContractChoice("no");
+          setServiceContractWantedChoice(
+            response.data.needServiceContract ? "yes" : "no"
+          );
+        }
+
+        if (response.data.hasPerformanceReport) {
+          setHasPerformanceReport(true);
+        }
+
+        if (response.data.featureAdded === true || feature) {
+          setSetupSuperSaver(true);
+          setSelectedOption(feature.method || "");
+
+          if (feature.method === "local_partner" && feature.partner_details) {
+            setPartnerDetails({
+              name: feature.partner_details.name || "",
+              mobile: feature.partner_details.mobile || "",
+              email: feature.partner_details.email || "",
+              countryCode: feature.partner_details.countryCode || "",
+            });
+          }
         }
       } catch (error) {
         console.error("Error fetching facility details:", error);
@@ -107,6 +171,7 @@ export default function EditFacilities({
 
   const handleCheckboxChange = (e: any) => {
     const { name, checked } = e.target;
+    setSetupSuperSaver((prev) => !prev);
     if (name === "performanceReport") {
       setHasPerformanceReport(checked);
     }
@@ -120,20 +185,31 @@ export default function EditFacilities({
       if (!token || !IdToken) {
         console.log(" Authentication tokens are missing.");
       }
+
+      const hasServiceContract = serviceContractChoice === "yes";
+      const needServiceContract =
+        serviceContractChoice === "no" && serviceContractWantedChoice === "yes";
+
+      const serviceProviderData = hasServiceContract
+        ? {
+            name: facility?.serviceProvider?.name || "",
+            mailAddress: facility?.serviceProvider?.mailAddress || "",
+            phone: facility?.serviceProvider?.phone || "",
+            countryCode: facility?.serviceProvider?.countryCode || "",
+          }
+        : null;
+
       const payload = {
         name: facility?.name,
         xrgiID: facility?.xrgiID,
         modelNumber: facility?.modelNumber,
         location: {
-          address: facility?.location?.address,
-          postalCode: facility?.location?.postalCode,
-          city: facility?.location?.city,
+          address: facility?.location?.address || "",
+          postalCode: facility?.location?.postalCode || "",
+          city: facility?.location?.city || "",
+          country: facility?.location?.country || "",
         },
-        serviceProvider: {
-          name: facility?.serviceProvider?.name,
-          mailAddress: facility?.serviceProvider?.mailAddress,
-          phone: facility?.serviceProvider?.phone,
-        },
+        serviceProvider: serviceProviderData,
         performance_report: {
           annualSavings: facility?.performance_report?.annualSavings || "",
           co2Savings: facility?.performance_report?.co2Savings || "",
@@ -141,8 +217,25 @@ export default function EditFacilities({
           industry: facility?.performance_report?.industry || "",
         },
         hasPerformanceReport,
-        isInstalled: isInstalled,
+        isInstalled,
+        needServiceContract,
         DaSigned: true,
+        hasServiceContract,
+        feature: setupSuperSaver
+          ? {
+              method: selectedOption || "",
+              partner_details:
+                selectedOption === "local_partner"
+                  ? {
+                      name: partnerDetails.name || "",
+                      mobile: partnerDetails.mobile || "",
+                      email: partnerDetails.email || "",
+                      countryCode: partnerDetails.countryCode || "",
+                    }
+                  : undefined,
+            }
+          : null,
+        featureAdded: setupSuperSaver ? true : false,
       };
 
       const updatedFacility = await apiRequest(
@@ -161,6 +254,23 @@ export default function EditFacilities({
       console.error(" Error saving facility:", error);
     }
   };
+
+  const handleOptionChange = (value: string) => {
+    setSelectedOption(value);
+  };
+
+  const SelectionButton = ({ selected, onClick, children }: any) => (
+    <button
+      onClick={onClick}
+      className={`flex-2 py-3 px-4 rounded-lg border ${
+        selected
+          ? "bg-blue-500 text-white border-blue-500"
+          : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+      } transition duration-200 font-medium`}
+    >
+      {children}
+    </button>
+  );
 
   return (
     <>
@@ -339,67 +449,110 @@ export default function EditFacilities({
           </div>
 
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
-            <div className="flex items-center space-x-3 py-4">
-              <input
-                type="checkbox"
-                id="serviceProvider"
-                name="serviceProvider"
-                checked={hasServiceProvider}
-                onChange={handleRadioChange}
-                className="w-5 h-5 cursor-pointer"
-              />
-              <label
-                htmlFor="serviceProvider"
-                className="text-[#082351DE] text-lg font-semibold"
-              >
-                I want to add my service provider
-              </label>
-            </div>
+            <div className="p-6 rounded-lg">
+              <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                {t("alreadyHaveContract")}
+              </h2>
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <SelectionButton
+                  selected={serviceContractChoice === "yes"}
+                  onClick={() => handleServiceContractChoice("yes")}
+                >
+                  {t("yes")}
+                </SelectionButton>
+                <SelectionButton
+                  selected={serviceContractChoice === "no"}
+                  onClick={() => handleServiceContractChoice("no")}
+                >
+                  {t("no")}
+                </SelectionButton>
+              </div>
 
-            {hasServiceProvider && (
-              <div className="p-6 rounded-lg mb-6">
-                <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                  Service Provider
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <input
-                      type="text"
-                      name="serviceProvider.name"
-                      placeholder="Name of service provider"
-                      className="p-3 border rounded-lg w-full"
-                      value={facility?.serviceProvider?.name ?? ""}
-                      onChange={handleChange}
-                    />
-                    <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      Enter the name of the service provider
-                    </label>
-                  </div>
-
-                  <div>
-                    <input
-                      type="text"
-                      name="serviceProvider.mailAddress"
-                      placeholder="Email Address"
-                      className="p-3 border rounded-lg w-full"
-                      value={facility?.serviceProvider?.mailAddress ?? ""}
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  <div className="md:col-span-1">
-                    <input
-                      type="text"
-                      name="serviceProvider.phone"
-                      placeholder="Phone Number"
-                      className="p-3 border rounded-lg w-full"
-                      value={facility?.serviceProvider?.phone ?? ""}
-                      onChange={handleChange}
-                    />
+              {serviceContractChoice === "no" && (
+                <div className="mt-6">
+                  <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                    {t("wantContract")}
+                  </h2>
+                  <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                    <SelectionButton
+                      selected={serviceContractWantedChoice === "yes"}
+                      onClick={() => handleWantServiceContractChoice("yes")}
+                    >
+                      {t("yes")}
+                    </SelectionButton>
+                    <SelectionButton
+                      selected={serviceContractWantedChoice === "no"}
+                      onClick={() => handleWantServiceContractChoice("no")}
+                    >
+                      {t("no")}
+                    </SelectionButton>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+
+              {hasServiceProvider && (
+                <div className="mt-6">
+                  <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                    {t("serviceProvider")}
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <input
+                        type="text"
+                        name="serviceProvider.name"
+                        placeholder={t("serviceProviderName")}
+                        className="p-3 border rounded-lg w-full"
+                        value={facility?.serviceProvider?.name ?? ""}
+                        onChange={handleChange}
+                      />
+                      <label className="text-gray-500 text-sm mt-1 block ml-3">
+                        {t("enterServiceProviderName")}
+                      </label>
+                    </div>
+
+                    <div>
+                      <input
+                        type="text"
+                        name="serviceProvider.mailAddress"
+                        placeholder={t("serviceProviderEmail")}
+                        className="p-3 border rounded-lg w-full"
+                        value={facility?.serviceProvider?.mailAddress ?? ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="flex items-center w-full gap-2">
+                      <div className="relative w-1/4">
+                        <select
+                          name="serviceProvider.countryCode"
+                          value={facility?.serviceProvider?.countryCode ?? ""}
+                          onChange={handleChange}
+                          className="p-3 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
+                        >
+                          {countryCodes.map((country) => (
+                            <option
+                              key={country.code}
+                              className="p-2 text-gray-700 bg-white hover:bg-gray-100"
+                              value={country.code}
+                            >
+                              {country.flag} {country.code}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <input
+                        type="text"
+                        name="serviceProvider.phone"
+                        placeholder={t("serviceProviderPhone")}
+                        className="p-3 w-5/6 border rounded-lg outline-none"
+                        value={facility?.serviceProvider?.phone ?? ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
