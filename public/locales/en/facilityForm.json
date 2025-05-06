@@ -45,7 +45,7 @@
   "partnerName": "Name",
   "partnerMobile": "Mobile",
   "partnerEmail": "Email",
-  "addSuperSaverX": "Add SuperSaverX",
+  "addSuperSaverX": "Save",
   "help": "Help",
   "next": "Next",
   "modalConfirmation": "Do you want to proceed?",
@@ -64,6 +64,8 @@
   "euroPerYear": "Euro Pr. Year",
   "tonsPerYear": "Tons Pr. year",
   "operatingHoursPlaceholder": "0-8763",
-   "alreadyHaveContract": "Do you already have a service contract for your system?",
-    "wantContract": "Do you want a service contract for your ECPower?"
+  "alreadyHaveContract": "Do you already have a service contract for your system?",
+  "wantContract": "Do you want a service contract for your ECPower?",
+  "yes": "Yes",
+  "no": "No"
 }

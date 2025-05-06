@@ -318,13 +318,13 @@ function AddFacility() {
                     selected={serviceContractChoice === "yes"}
                     onClick={() => handleServiceContractChoice("yes")}
                   >
-                    Yes
+                    {t("yes")}
                   </SelectionButton>
                   <SelectionButton
                     selected={serviceContractChoice === "no"}
                     onClick={() => handleServiceContractChoice("no")}
                   >
-                    No
+                    {t("no")}
                   </SelectionButton>
                 </div>
 
@@ -338,13 +338,13 @@ function AddFacility() {
                         selected={serviceContractWantedChoice === "yes"}
                         onClick={() => handleWantServiceContractChoice("yes")}
                       >
-                        Yes
+                        {t("yes")}
                       </SelectionButton>
                       <SelectionButton
                         selected={serviceContractWantedChoice === "no"}
                         onClick={() => handleWantServiceContractChoice("no")}
                       >
-                        No
+                        {t("no")}
                       </SelectionButton>
                     </div>
                   </div>

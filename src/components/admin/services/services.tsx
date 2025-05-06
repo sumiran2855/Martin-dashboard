@@ -141,14 +141,17 @@ function ServicesPage() {
             city: item.location?.city,
             address: item.location?.address,
             isInstalled: item.isInstalled ? "YES" : "NO",
-            // daSigned: item.daSigned ? "YES" : "NO",
-            hasServiceContract: item.hasServiceContract
+            AgreementSigned: item.daSigned ? "YES" : "NO",
+            hasServiceContract: item.hasServiceContract && item.serviceProvider &&
+            item.serviceProvider.name &&
+            item.serviceProvider.mailAddress &&
+            item.serviceProvider.phone
               ? "has a service contract"
               : "want a service contract",
             serviceProvider_name: item.serviceProvider?.name,
             serviceProvider_email: item.serviceProvider?.mailAddress,
             serviceProvider_Phone: item.serviceProvider?.phone,
-            SuperSaverX: item.featureAdded
+            SuperSaverX: item.featureAdded && item.feature?.method
               ? "Has SuperSaverX"
               : "Wants SuperSaverX",
             SuperSaverX_method: isLocalPartner
@@ -160,8 +163,8 @@ function ServicesPage() {
               partner_phone: item.feature?.partner_details?.mobile || "",
             }),
             hasPerformanceReport: item.hasPerformanceReport
-              ? "Available"
-              : "Not Available",
+            ? "Wants report"
+            : "Don’t want report",
             annual_Savings: item.performance_report?.annualSavings,
             co2Savings: item.performance_report?.co2Savings,
             industry: item.performance_report?.industry,

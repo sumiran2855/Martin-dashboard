@@ -45,7 +45,7 @@
   "partnerName": "Nome",
   "partnerMobile": "Cellulare",
   "partnerEmail": "Email",
-  "addSuperSaverX": "Aggiungi SuperSaverX",
+  "addSuperSaverX": "Salva",
   "help": "Aiuto",
   "next": "Avanti",
   "modalConfirmation": "Vuoi procedere?",
@@ -65,5 +65,7 @@
   "tonsPerYear": "Tonnellate per anno",
   "operatingHoursPlaceholder": "0-8763",
   "alreadyHaveContract": "Hai già un contratto di assistenza per il tuo sistema?",
-  "wantContract": "Vuoi un contratto di assistenza per il tuo ECPower?"
+  "wantContract": "Vuoi un contratto di assistenza per il tuo ECPower?",
+  "yes": "Sì",
+  "no": "No"
 }

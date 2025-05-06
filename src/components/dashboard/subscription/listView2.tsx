@@ -26,7 +26,7 @@ interface Facility {
   };
 }
 
-export default function ListView({ facilities }: { facilities: Facility[] }) {
+export default function ListView2({ facilities }: { facilities: Facility[] }) {
   const { t } = useTranslation("dashboard");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -164,36 +164,35 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                 
                                 <div className="space-y-5">
                                   <h4 className="font-medium text-sm text-gray-700 mb-3">Status Overview</h4>
-
-                                  {/* Supersaver Plan Card */}
+                                  
                                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                     <div className="flex items-center justify-between mb-3">
                                       <span className="text-sm font-medium text-gray-700">
-                                        Supersaver Plan
+                                        Performance Report
                                       </span>
                                       <div className="flex items-center">
-                                        {facility.featureAdded ? (
-                                          hasFeatureDetails(facility) ? (
+                                        {facility.hasPerformanceReport ? (
+                                          hasPerformanceReportDetails(facility) ? (
                                             <div className="flex items-center bg-green-50 text-green-600 px-2 py-1 rounded-full">
                                               <Check size={14} className="mr-1" />
-                                              <span className="text-xs font-medium">Active</span>
+                                              <span className="text-xs font-medium">Complete</span>
                                             </div>
                                           ) : (
                                             <div className="flex items-center bg-yellow-50 text-yellow-600 px-2 py-1 rounded-full">
                                               <AlertCircle size={14} className="mr-1" />
-                                              <span className="text-xs font-medium">Processing</span>
+                                              <span className="text-xs font-medium">Pending</span>
                                             </div>
                                           )
                                         ) : (
                                           <div className="flex items-center bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
                                             <X size={14} className="mr-1" />
-                                            <span className="text-xs font-medium">Not Active</span>
+                                            <span className="text-xs font-medium">Not Available</span>
                                           </div>
                                         )}
                                       </div>
                                     </div>
 
-                                    {facility.featureAdded && !hasFeatureDetails(facility) && (
+                                    {facility.hasPerformanceReport && !hasPerformanceReportDetails(facility) && (
                                       <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
                                         Requested, but no details available yet
                                       </div>

@@ -45,7 +45,7 @@
   "partnerName": "Navn",
   "partnerMobile": "Mobil",
   "partnerEmail": "E-mail",
-  "addSuperSaverX": "Tilføj SuperSaverX",
+  "addSuperSaverX": "Gem",
   "help": "Hjælp",
   "next": "Næste",
   "modalConfirmation": "Vil du fortsætte?",
@@ -65,5 +65,7 @@
   "tonsPerYear": "Tons pr. år",
   "operatingHoursPlaceholder": "0-8763",
   "alreadyHaveContract": "Har du allerede en serviceaftale for dit system?",
-  "wantContract": "Ønsker du en serviceaftale for din ECPower?"
+  "wantContract": "Ønsker du en serviceaftale for din ECPower?",
+  "yes": "Ja",
+  "no": "Nej"
 }

@@ -8,7 +8,6 @@ import { getAllCustomers } from "@/services/customerServices";
 const statusOptions = ["All", "Active", "Inactive"];
 
 export default function MainContent() {
-  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [view, setView] = useState("grid");
   const [isOpen, setIsOpen] = useState(false);
@@ -63,12 +62,18 @@ export default function MainContent() {
   }, []);
 
   const filteredUsers = customerData
-    ?.filter(
-      (user) => selectedStatus === "All" || user.status === selectedStatus
-    )
-    .filter((user) =>
-      user.companyName?.toLowerCase().includes(searchTerm.toLowerCase())
+  ?.filter(
+    (user) => selectedStatus === "All" || user.status === selectedStatus
+  )
+  .filter((user) => {
+    const lowerSearch = searchTerm.toLowerCase();
+    return (
+      user.companyName?.toLowerCase().includes(lowerSearch) ||
+      user.email?.toLowerCase().includes(lowerSearch) ||
+      user.address?.toLowerCase().includes(lowerSearch)
     );
+  });
+
 
   return (
     <>
@@ -166,13 +171,6 @@ export default function MainContent() {
                     <Search size={16} className="text-gray-400" />
                   </div>
                 </div>
-
-                {/* <button
-                  onClick={() => router.push("/admin")}
-                  className="px-4 py-2 text-sm text-white bg-blue-800 rounded-md hover:bg-blue-900"
-                >
-                  Add Users
-                </button> */}
               </div>
             </div>
 
