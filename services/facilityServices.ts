@@ -100,6 +100,7 @@ export const getFacility = async (token: string, IdToken: string) => {
         co2Savings: facilityData.performance_report?.co2Savings || "",
         operatingHours: facilityData.performance_report?.operatingHours || "",
         industry: facilityData.performance_report?.industry || "",
+        email: facilityData.performance_report?.email || "",
       },
       hasPerformanceReport:facilityData.hasPerformanceReport || false,
       serviceProvider: {

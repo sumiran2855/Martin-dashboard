@@ -98,6 +98,7 @@ function Dashboard() {
     co2Savings:"",
     operatingHours:"",
     industry:"",
+    email:"",
     hasPerformanceReport:"",
     needServiceContract:"",
     serviceProviderName: "",
@@ -197,6 +198,7 @@ function Dashboard() {
         co2Savings:stepTwoFormData.co2Savings,
         operatingHours:stepTwoFormData.operatingHours,
         industry:stepTwoFormData.industry,
+        email:stepTwoFormData.email
       },
       hasPerformanceReport:hasPerformanceReport,
       needServiceContract : wantsServiceContract ,
@@ -289,6 +291,7 @@ function Dashboard() {
           co2Savings: facilityData.performance_report.co2Savings || "",
           operatingHours: facilityData.performance_report.operatingHours || "",
           industry: facilityData.performance_report.industry || "",
+          email: facilityData.performance_report.email || "",
           hasPerformanceReport:facilityData.hasPerformanceReport || false,   
           needServiceContract : facilityData.needServiceContract || false,    
           serviceProviderName: facilityData.serviceProvider.name || "",

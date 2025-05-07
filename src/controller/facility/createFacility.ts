@@ -15,6 +15,7 @@ export function useCreateFacility() {
     co2Savings:"",
     operatingHours:"",
     industry:"",
+    email:"",
     hasServiceProvider: "",
     serviceProviderName: "",
     serviceProviderMail: "",
@@ -65,6 +66,7 @@ export function useCreateFacility() {
         co2Savings:stepTwoFormData.co2Savings,
         operatingHours:stepTwoFormData.operatingHours,
         industry:stepTwoFormData.industry,
+        email:stepTwoFormData.email
       },
       hasPerformanceReport:hasPerformanceReport || false,
       isInstalled: isInstalled || false,

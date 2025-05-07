@@ -456,6 +456,22 @@ export default function CreateFacility({
                     <option value="hospitality">Other</option>
                   </select>
                 </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Recipient Email Address(es){" "}
+                    <span className="text-gray-500 text-sm">
+                      (You can enter multiple addresses separated by commas)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="email"
+                    placeholder="e.g. user@example.com, admin@example.com"
+                    className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                    value={stepTwoFormData.email}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
             </div>
           </div>

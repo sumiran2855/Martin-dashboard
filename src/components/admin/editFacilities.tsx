@@ -30,6 +30,7 @@ interface Facility {
     co2Savings: string;
     operatingHours: string;
     industry: string;
+    email:string;
   };
   hasPerformanceReport: boolean;
   featureAdded: boolean;
@@ -215,6 +216,7 @@ export default function EditFacilities({
           co2Savings: facility?.performance_report?.co2Savings || "",
           operatingHours: facility?.performance_report?.operatingHours || "",
           industry: facility?.performance_report?.industry || "",
+          email: facility?.performance_report?.email || "",
         },
         hasPerformanceReport,
         isInstalled,
@@ -643,6 +645,22 @@ export default function EditFacilities({
                         <option value="hospitality">Hospitality</option>
                       </select>
                     </div>
+                    <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                        {t("emailLabel")}
+                          <span className="text-gray-500 text-sm">
+                          {t("emailHint")}
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          name="performance_report.email"
+                          placeholder={t("emailPlaceholder")}
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                          value={facility?.performance_report?.email}
+                          onChange={handleChange}
+                        />
+                      </div>
                   </div>
                 </div>
               </div>

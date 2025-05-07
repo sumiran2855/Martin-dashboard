@@ -350,7 +350,7 @@ function AddFacility() {
                   </div>
                 )}
 
-                {(hasServiceProvider ) && (
+                {hasServiceProvider && (
                   <div className="mt-6">
                     <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
                       {t("serviceProvider")}
@@ -503,6 +503,23 @@ function AddFacility() {
                           <option value="hospitality">Indrusty</option>
                           <option value="hospitality">Other</option>
                         </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                          {t("emailLabel")}
+                          <span className="text-gray-500 text-sm">
+                            {t("emailHint")}
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          name="email"
+                          placeholder={t("emailPlaceholder")}
+                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                          value={stepTwoFormData.email}
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
                   </div>

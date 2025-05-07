@@ -67,5 +67,8 @@
   "alreadyHaveContract": "Hai già un contratto di assistenza per il tuo sistema?",
   "wantContract": "Vuoi un contratto di assistenza per il tuo ECPower?",
   "yes": "Sì",
-  "no": "No"
+  "no": "No",
+  "emailLabel": "Indirizzo/i email del destinatario",
+  "emailHint": "(Puoi inserire più indirizzi separati da virgole)",
+  "emailPlaceholder": "es. utente@esempio.com, admin@esempio.com"
 }

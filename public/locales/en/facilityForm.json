@@ -67,5 +67,8 @@
   "alreadyHaveContract": "Do you already have a service contract for your system?",
   "wantContract": "Do you want a service contract for your ECPower?",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "emailLabel": "Recipient Email Address(es)",
+  "emailHint": "(You can enter multiple addresses separated by commas)",
+  "emailPlaceholder": "e.g. user@example.com, admin@example.com"
 }

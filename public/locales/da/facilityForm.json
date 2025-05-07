@@ -67,5 +67,8 @@
   "alreadyHaveContract": "Har du allerede en serviceaftale for dit system?",
   "wantContract": "Ønsker du en serviceaftale for din ECPower?",
   "yes": "Ja",
-  "no": "Nej"
+  "no": "Nej",
+  "emailLabel": "Modtagerens e-mailadresse(r)",
+  "emailHint": "(Du kan indtaste flere adresser adskilt med komma)",
+  "emailPlaceholder": "f.eks. bruger@eksempel.dk, admin@eksempel.dk"
 }
