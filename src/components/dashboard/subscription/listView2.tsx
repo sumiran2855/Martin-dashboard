@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 interface Facility {
   name: string;
@@ -87,7 +88,7 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                 const absoluteIndex = startIndex + index;
 
                 return (
-                  <>
+                  <React.Fragment key={`facility-${facility.xrgiID}-${index}`}>
                     <tr key={`row-${absoluteIndex}`} className="hover:bg-gray-50 transition">
                       <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
                         <div className="flex items-center space-x-3">
@@ -205,7 +206,7 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                         </td>
                       </tr>
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })
             ) : (

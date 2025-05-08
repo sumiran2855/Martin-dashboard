@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 interface Facility {
@@ -44,9 +45,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
       className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white cursor-pointer"
     >
       <div>
-        <h3 className="text-gray-800 text-sm font-semibold">
-          {facility.name}
-        </h3>
+        <h3 className="text-gray-800 text-sm font-semibold">{facility.name}</h3>
         <p className="text-gray-600 text-xs">{facility.xrgiID}</p>
         <div className="flex items-center space-x-2 mt-2">
           <img
@@ -85,7 +84,13 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
             {t("facilitiesWithServices")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {withServiceProvider.map(renderFacilityCard)}
+            {withServiceProvider.map((facility,index) => (
+              <React.Fragment
+                key={facility.id || index}
+              >
+                {renderFacilityCard(facility)}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       )}
@@ -96,7 +101,15 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
             {t("facilitiesRequestingService")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {requestingServiceProvider.map(renderFacilityCard)}
+            {requestingServiceProvider.map((facility,index) => (
+              <React.Fragment
+                key={
+                  facility.id || index
+                }
+              >
+                {renderFacilityCard(facility)}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       )}

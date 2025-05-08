@@ -9,6 +9,11 @@
     "title": "Termini e condizioni",
     "checkboxLabel": "Ho letto e accetto i termini e le condizioni",
     "cancelButton": "Annulla",
-    "acceptButton": "Accetta i termini"
+    "acceptButton": "Accetta i termini",
+    "model":{
+      "title": "Profilo creato con successo! 🎉",
+      "message": "Il tuo profilo è stato creato. Ora puoi accedere alla dashboard e continuare con la configurazione.",
+      "primaryButton": "Vai alla Dashboard"
+    }
   }
   

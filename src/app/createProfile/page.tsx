@@ -368,10 +368,9 @@ function Dashboard() {
           <Modal
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
-            title="Subscription Activated! 🎉"
-            message="Your subscription has been successfully started. You now have
-               access to all premium features."
-            primaryButton="Go to Dashboard"
+            title={term("model.title")}
+            message={term("model.message")}
+            primaryButton={term("model.primaryButton")}
             onPrimaryClick={() => {
               router.push("/dashboard");
             }}
@@ -428,7 +427,7 @@ function Dashboard() {
       <TermsModal
         isOpen={isTermsOpen}
         onClose={() => setIsTermsOpen(false)}
-        title="Terms and Conditions"
+        title={term("title")}
         termsContent={term("termsAndConsent", { returnObjects: true }) as string[] }
         onAccept={handleAcceptTerms}
         isChecked={isChecked}

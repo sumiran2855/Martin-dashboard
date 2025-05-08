@@ -9,6 +9,11 @@
     "title": "Allgemeine Geschäftsbedingungen",
     "checkboxLabel": "Ich habe die Bedingungen gelesen und stimme ihnen zu",
     "cancelButton": "Abbrechen",
-    "acceptButton": "Bedingungen akzeptieren"
+    "acceptButton": "Bedingungen akzeptieren",
+    "model":{
+      "title": "Profil erfolgreich erstellt! 🎉",
+      "message": "Ihr Profil wurde erstellt. Sie können jetzt auf Ihr Dashboard zugreifen und mit der Einrichtung fortfahren.",
+      "primaryButton": "Zum Dashboard"
+    }
   }
   

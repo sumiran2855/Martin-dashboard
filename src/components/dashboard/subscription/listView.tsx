@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight, X } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -87,8 +88,8 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                 const absoluteIndex = startIndex + index;
 
                 return (
-                  <>
-                    <tr key={`row-${absoluteIndex}`} className="hover:bg-gray-50 transition">
+                  <React.Fragment key={`facility-${absoluteIndex}`}>
+                    <tr className="hover:bg-gray-50 transition">
                       <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
                         <div className="flex items-center space-x-3">
                           <img
@@ -129,7 +130,6 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
 
                     {expandedRows.includes(absoluteIndex) && (
                       <tr
-                        key={`expanded-${absoluteIndex}`}
                         className="bg-gray-50 border-t border-b border-gray-200"
                       >
                         <td colSpan={5} className="px-0 py-0">
@@ -206,7 +206,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                         </td>
                       </tr>
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })
             ) : (
