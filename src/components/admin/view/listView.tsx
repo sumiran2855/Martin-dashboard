@@ -63,17 +63,12 @@ export default function listView({ users }: { users: Users[] }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRowId, setExpandedRowId] = useState<number | null>(null);
   const [selectedFacilityIndex, setSelectedFacilityIndex] = useState<number | null>(null);
-
   const totalPages = Math.ceil(users.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const displayedUsers = users.slice(startIndex, endIndex);
-  const [facilitiesMap, setFacilitiesMap] = useState<
-    Record<number, FacilityDetails[]>
-  >({});
-  const [loadingFacilityId, setLoadingFacilityId] = useState<number | null>(
-    null
-  );
+  const [facilitiesMap, setFacilitiesMap] = useState<Record<number, FacilityDetails[]>>({});
+  const [loadingFacilityId, setLoadingFacilityId] = useState<number | null>(null);
 
   const toggleRowExpansion = async (index: number, userId?: number) => {
     if (expandedRowId === index) {
@@ -231,7 +226,6 @@ export default function listView({ users }: { users: Users[] }) {
                   </td>
                 </tr>
 
-                {/* Expanded Row Content */}
                 {expandedRowId === index && (
                   <tr key={`expanded-${index}`}>
                     <td
@@ -318,7 +312,6 @@ export default function listView({ users }: { users: Users[] }) {
                                             )}
                                         </div>
 
-                                        {/* Supersaver Plan */}
                                         <div>
                                           <div className="flex items-center justify-between mb-2">
                                             <span className="text-xs md:text-sm font-medium text-gray-700">
@@ -351,7 +344,6 @@ export default function listView({ users }: { users: Users[] }) {
                                             )}
                                         </div>
 
-                                        {/* Service Contract */}
                                         <div>
                                           <div className="flex items-center justify-between mb-2">
                                             <span className="text-xs md:text-sm font-medium text-gray-700">

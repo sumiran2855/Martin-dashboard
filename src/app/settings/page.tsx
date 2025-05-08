@@ -39,13 +39,9 @@ function SettingsPage() {
                     onClick={() => changeLanguage(code)}
                     className={`
                       py-2 px-4 rounded-md transition-all duration-300
-                      ${
-                        i18n.language === code
+                      ${ i18n.language === code
                           ? "bg-blue-900 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }
-                    `}
-                  >
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200" }`} >
                     {label}
                   </button>
                 ))}

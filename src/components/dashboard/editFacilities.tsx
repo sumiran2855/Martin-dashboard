@@ -57,11 +57,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [serviceContractChoice, setServiceContractChoice] = useState("");
-  const [serviceContractWantedChoice, setServiceContractWantedChoice] =
-    useState("");
-  const [setupSuperSaver, setSetupSuperSaver] = useState(
-    facility?.featureAdded || false
-  );
+  const [serviceContractWantedChoice, setServiceContractWantedChoice] = useState("");
+  const [setupSuperSaver, setSetupSuperSaver] = useState( facility?.featureAdded || false);
+  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
 
   const handleServiceContractChoice = (choice: any) => {
     setServiceContractChoice(choice);
@@ -78,7 +76,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     email: "",
     countryCode: "",
   });
-  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
 
   const handleAcceptTerms = async () => {
     setFacilityAdded(true);
@@ -141,14 +138,11 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     }
   }, [facilityId]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = ( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-
     setFacility((prev) => {
       if (!prev) return prev;
-
+      
       const keys = name.split(".");
       let updatedFacility = { ...prev };
       let current: any = updatedFacility;

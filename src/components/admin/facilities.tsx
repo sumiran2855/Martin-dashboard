@@ -131,19 +131,14 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                   <h2 className="text-lg font-medium">Basic Data</h2>
                   <button
                     className="text-blue-600 border border-blue-600 rounded px-3 py-1 text-sm"
-                    onClick={() =>
-                      router.push(
-                        `/admin/user/editFacilities/${facilityId}`
-                      )
-                    }
+                    onClick={() => router.push(`/admin/user/editFacilities/${facilityId}`)}
                   >
                     Edit
                   </button>
                 </div>
                 <div className="space-y-2">
                   {facilityDetails.map((item, index) => (
-                    <div
-                      key={index}
+                    <div key={index}
                       className="flex justify-between py-2 border-b border-gray-100"
                     >
                       <span className="text-gray-600">{item.label}</span>

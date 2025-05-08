@@ -82,5 +82,9 @@
     "namePlaceholder": "Nome",
     "mobilePlaceholder": "Cellulare",
     "emailPlaceholder": "Email"
-  }
+  },
+  "back": "Indietro",
+  "saveForLater": "Salva per dopo",
+  "save": "Salva",
+  "next": "Avanti"
 }

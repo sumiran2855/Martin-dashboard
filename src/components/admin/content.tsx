@@ -2,7 +2,6 @@ import { Search, Filter, Grid, List, ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import GridView from "@/components/admin/view/gridView";
 import ListView from "@/components/admin/view/listView";
-import { useRouter } from "next/navigation";
 import { getAllCustomers } from "@/services/customerServices";
 
 const statusOptions = ["All", "Active", "Inactive"];
@@ -97,7 +96,6 @@ export default function MainContent() {
               Ensure that all user accounts are properly listed and managed here
               to maintain access and services.
             </p>
-
             <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
               <div className="flex items-center space-x-4">
                 <div className="relative">
@@ -110,7 +108,7 @@ export default function MainContent() {
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                   {sortDropdownOpen && (
-                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
+                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
                       {statusOptions.map((status) => (
                         <button
                           key={status}

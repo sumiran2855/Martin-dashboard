@@ -82,5 +82,9 @@
     "namePlaceholder": "Navn",
     "mobilePlaceholder": "Mobil",
     "emailPlaceholder": "Email"
-  }
+  },
+  "back": "Tilbage",
+  "saveForLater": "Gem til senere",
+  "save": "Gem",
+  "next": "Næste"
 }

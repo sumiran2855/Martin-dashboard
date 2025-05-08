@@ -9,9 +9,7 @@ export default function createProfile({
   setFormData,
 }: ValidateFormProps) {
   const { t } = useTranslation("CreateProfile");
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };

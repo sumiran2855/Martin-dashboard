@@ -8,9 +8,11 @@ import { useTranslation } from "react-i18next";
 
 export default function AdminSidebar({ facilityId }: { facilityId: string }) {
   const pathname = usePathname();
+  const { formData } = getProfile();
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { t, i18n } = useTranslation("sidebar");
 
   useEffect(() => {
@@ -34,11 +36,8 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
     router.push("/");
   };
 
-  const { formData } = getProfile();
-
   const menuItems = [
-    {
-      href: "/dashboard",
+    { href: "/dashboard",
       label: "XRGI´s",
       icon: "⚡",
       paths: [
@@ -48,8 +47,7 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
         `/dashboard/facilities/${facilityId}`,
       ],
     },
-    {
-      href: "/subscription",
+    { href: "/subscription",
       label: "subscription",
       icon: "💳",
       paths: ["/subscription"],
@@ -61,8 +59,6 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
     { href: "/settings", label: "settings", icon: "⚙️" },
     { href: "/helpCenter", label: "helpCenter", icon: "❓" },
   ];
-
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleToggle = () => {
     setMenuOpen(!menuOpen);
@@ -105,11 +101,7 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
                 <button
                   onClick={() => changeLanguage(code)}
                   className={`no-underline text-blue-900 relative focus:outline-none ${
-                    i18n.language === code
-                      ? "font-bold underline text-blue"
-                      : ""
-                  }`}
-                >
+                    i18n.language === code ? "font-bold underline text-blue" : ""}`} >
                   {label} {code !== "en" && "|"}
                 </button>
               </li>
@@ -119,9 +111,6 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
           <SectionTitle title={t("mainMenu")} />
           <nav className="px-2">
             <div className="space-y-1">
-              {/* {menuItems.map((item) => (
-                <NavItem key={item.href} href={item.href} label={t(item.label)} icon={item.icon} isActive={item.paths.includes(pathname)} />
-              ))} */}
               {hasMounted &&
                 menuItems.map((item) => (
                   <NavItem
@@ -151,19 +140,14 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
           </nav>
         </div>
 
-        <div
-          className={`p-4 border-t border-gray-200 transition-all duration-300 ${
-            isDropdownOpen ? "mb-2" : ""
-          }`}
-        >
+        <div className={`p-4 border-t border-gray-200 transition-all duration-300 ${ isDropdownOpen ? "mb-2" : "" }`}>
           <UserAvatar
             formData={formData}
             isDropdownOpen={isDropdownOpen}
             setIsDropdownOpen={setIsDropdownOpen}
             router={router}
             handleSignOut={handleSignOut}
-            t={t}
-          />
+            t={t} />
         </div>
       </div>
     </>
@@ -190,9 +174,7 @@ const NavItem = ({
   <Link
     href={href}
     className={`flex items-center p-3 rounded-md no-underline ${
-      isActive ? "text-white bg-blue-900" : "text-gray-700 hover:bg-gray-100"
-    }`}
-  >
+      isActive ? "text-white bg-blue-900" : "text-gray-700 hover:bg-gray-100" }`} >
     <div className="w-6 h-6 mr-3 flex items-center justify-center">{icon}</div>
     <span className="font-medium">{label}</span>
   </Link>

@@ -22,6 +22,8 @@ function AddFacility() {
   const [serviceContractChoice, setServiceContractChoice] = useState("");
   const [serviceContractWantedChoice, setServiceContractWantedChoice] = useState("");
   const [wantsServiceContract, setWantsServiceContract] = useState(false);
+  const [setupSuperSaver, setSetupSuperSaver] = useState(false);
+  const [isTermsOpen, setTermsOpen] = useState(false);
 
   const {
     stepTwoFormData,
@@ -45,10 +47,6 @@ function AddFacility() {
     setWantsServiceContract(choice === "yes");
   };
 
-  const handleRadioChange = () => {
-    setHasServiceProvider((prev) => !prev);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     const { name, value } = e.target;
     setStepTwoFormData((prev: any) => ({ ...prev, [name]: value }));
@@ -56,15 +54,12 @@ function AddFacility() {
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-
     if (name === "model") {
       setSelectedModel(value);
       setStepTwoFormData((prev: any) => ({ ...prev, model: value }));
     }
   };
 
-  // term and condition
-  const [isTermsOpen, setTermsOpen] = useState(false);
   const onSubmit = async () => {
     setTermsOpen(true);
   };
@@ -73,8 +68,6 @@ function AddFacility() {
     setTermsOpen(false);
     setFacilityAdded(true);
   };
-
-  const [setupSuperSaver, setSetupSuperSaver] = useState(false);
 
   const handleCheckboxChange = (e: any) => {
     const { name, checked } = e.target;

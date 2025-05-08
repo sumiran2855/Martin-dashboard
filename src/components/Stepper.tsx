@@ -7,7 +7,6 @@ export default function Stepper({ step }: StepperProps) {
     "Create Profile",
     "Register First Plant",
     "Installation",
-    // "Payment Info",
   ];
 
   return (

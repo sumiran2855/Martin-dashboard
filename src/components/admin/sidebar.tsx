@@ -3,11 +3,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { getProfile } from "@/controller/companyProfile/createProfile";
-interface User {
-  userId: string[];
-}
 
-export default function AdminSidebar({ userId = [] }: User) {
+export default function AdminSidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 

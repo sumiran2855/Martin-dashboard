@@ -226,7 +226,6 @@ function Dashboard() {
     try {
       const response = await createFacility(token, IdToken, payload);
       console.log("create facility success", response);
-
       await handleCreateProfile(true);
       return true;
     } catch (error) {
@@ -330,7 +329,6 @@ function Dashboard() {
 
   const handleAcceptTerms = async () => {
     setIsTermsOpen(false);
-
     const success = await handleCreateFacility();
     if (success) {
       setStep(3);
@@ -359,11 +357,7 @@ function Dashboard() {
   return (
     <div className="flex bg-gray-50">
       {step === 1 && !isSubscribed && <Sidebar />}
-      <div
-        className={`flex-1 transition-all ${
-          step === 1 ? "pl-[300px]" : "pl-0"
-        } p-10 flex flex-col items-center`}
-      >
+      <div className={`flex-1 transition-all ${ step === 1 ? "pl-[300px]" : "pl-0" } p-10 flex flex-col items-center`} >
         {isSubscribed ? (
           <Modal
             isOpen={isOpen}
@@ -373,8 +367,7 @@ function Dashboard() {
             primaryButton={term("model.primaryButton")}
             onPrimaryClick={() => {
               router.push("/dashboard");
-            }}
-          />
+            }} />
         ) : (
           <>
             <Stepper step={step} />

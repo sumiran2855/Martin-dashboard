@@ -85,9 +85,6 @@ export default function MainContent() {
       )}
       {!loading && (
         <div className="flex-1 overflow-auto">
-         
-
-
           <div className="p-8 max-md:p-4">
             <h1 className="text-2xl font-medium text-gray-800 mb-2">
               {t("facilitiesTitle")}
@@ -106,7 +103,7 @@ export default function MainContent() {
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                   {sortDropdownOpen && (
-                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
+                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
                       {statusOptions.map((status) => (
                         <button
                           key={status}
@@ -136,7 +133,7 @@ export default function MainContent() {
                   </button>
 
                   {isOpen && (
-                    <div className="absolute left-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md w-full z-10">
+                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md w-full z-10">
                       <button
                         onClick={() => handleSelect("list")}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

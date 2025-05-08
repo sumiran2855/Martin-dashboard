@@ -61,10 +61,6 @@ export default function CreateFacility({
     }
   };
 
-  const handleRadioChange = () => {
-    setHasServiceProvider((prev: boolean) => !prev);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     const { name, value } = e.target;
     setStepTwoFormData((prev: any) => ({ ...prev, [name]: value }));
@@ -72,7 +68,6 @@ export default function CreateFacility({
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-
     if (name === "model") {
       setSelectedModel(value);
       setStepTwoFormData((prev: any) => ({ ...prev, model: value }));

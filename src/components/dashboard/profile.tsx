@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../modals/modal";
 import ChangePassword from "../modals/changePassword";
 import { createProfile } from "@/services/customerServices";
@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 
 export default function profileDetail() {
   const { t } = useTranslation("profile");
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const { formData, setFormData, loading } = getProfile();
@@ -25,7 +26,6 @@ export default function profileDetail() {
       console.error("Authorization token missing.");
       return;
     }
-
     const payload = {
       companyInfo: {
         name: formData.companyName,
@@ -54,7 +54,6 @@ export default function profileDetail() {
     }
   };
 
-  const router = useRouter();
   return (
     <>
       {loading ? (
@@ -77,7 +76,6 @@ export default function profileDetail() {
                 </button>
               </div>
 
-              {/* Business Information Section */}
               <div className="p-6 border-b">
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
                 {t("businessInfo")}
@@ -154,7 +152,6 @@ export default function profileDetail() {
                 </div>
               </div>
 
-              {/* Contact Person Section */}
               <div className="p-6">
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
                 {t("contactPerson")}
@@ -237,7 +234,6 @@ export default function profileDetail() {
                 </div>
               </div>
 
-              {/* Save Changes Button */}
               <div className="p-6 border-t">
                 <button
                   className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"

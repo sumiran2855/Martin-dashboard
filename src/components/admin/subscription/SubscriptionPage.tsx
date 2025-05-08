@@ -56,13 +56,9 @@ function SubscriptionPage() {
   const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
-
-  // SuperSaverX states
   const [superSearch, setSuperSearch] = useState("");
   const [superFilter, setSuperFilter] = useState("All");
   const [superDropdownOpen, setSuperDropdownOpen] = useState(false);
-
-  // Performance Report states
   const [reportSearch, setReportSearch] = useState("");
   const [reportFilter, setReportFilter] = useState("All");
   const [reportDropdownOpen, setReportDropdownOpen] = useState(false);

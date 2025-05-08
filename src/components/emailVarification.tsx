@@ -10,14 +10,12 @@ export default function emailVarification({ email }: { email: string }) {
   const handleVerifyCode = async () => {
     setError("");
     setSuccess("");
-
     const result = await verifyEmail(email, verificationCode);
 
     if (!result.success) {
       setError(result.message);
       return;
     }
-
     setSuccess(result.message);
     setTimeout(() => (window.location.href = "/"), 2000);
   };
@@ -25,17 +23,14 @@ export default function emailVarification({ email }: { email: string }) {
   const handleResendCode = async () => {
     setResendMessage("");
     setError("");
-
-    //change the api for reset-code for forget password
     const result = await resendVerificationCode(email);
-
     if (!result.success) {
       setError(result.message);
       return;
     }
-
     setResendMessage(result.message);
   };
+  
   return (
     <>
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">

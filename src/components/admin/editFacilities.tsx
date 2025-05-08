@@ -46,9 +46,7 @@ interface Facility {
   };
 }
 
-export default function EditFacilities({
-  facilityId,
-}: {
+export default function EditFacilities({facilityId}: {
   facilityId: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,11 +60,8 @@ export default function EditFacilities({
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [serviceContractChoice, setServiceContractChoice] = useState("");
-  const [serviceContractWantedChoice, setServiceContractWantedChoice] =
-    useState("");
-  const [setupSuperSaver, setSetupSuperSaver] = useState(
-    facility?.featureAdded || false
-  );
+  const [serviceContractWantedChoice, setServiceContractWantedChoice] = useState("");
+  const [setupSuperSaver, setSetupSuperSaver] = useState(facility?.featureAdded || false);
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -81,14 +76,6 @@ export default function EditFacilities({
 
   const handleWantServiceContractChoice = (choice: any) => {
     setServiceContractWantedChoice(choice);
-  };
-
-  const handleAcceptTerms = async () => {
-    setFacilityAdded(true);
-  };
-
-  const handleRadioChange = () => {
-    setHasServiceProvider((prev) => !prev);
   };
 
   useEffect(() => {
@@ -146,11 +133,8 @@ export default function EditFacilities({
     }
   }, [facilityId]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-
     setFacility((prev) => {
       if (!prev) return prev;
 
@@ -255,10 +239,6 @@ export default function EditFacilities({
     } catch (error) {
       console.error(" Error saving facility:", error);
     }
-  };
-
-  const handleOptionChange = (value: string) => {
-    setSelectedOption(value);
   };
 
   const SelectionButton = ({ selected, onClick, children }: any) => (
