@@ -12,7 +12,7 @@
   "acceptButton": "Accept Terms",
   "model": {
     "title": "Profile Created Successfully! 🎉",
-    "message": "Your profile has been created. You can now access your dashboard and continue with your setup.",
+    "message": "Registration completed",
     "primaryButton": "Go to Dashboard"
   }
 }

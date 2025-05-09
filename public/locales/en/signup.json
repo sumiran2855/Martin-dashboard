@@ -1,11 +1,11 @@
 {
     "title": "Signup",
-    "firstName": "First Name",
-    "lastName": "Last Name",
+    "firstName": "First name",
+    "lastName": "Last name",
     "email": "Email",
-    "phoneNumber": "Phone Number",
+    "phoneNumber": "Phone number",
     "password": "Password",
-    "confirmPassword": "Confirm Password",
+    "confirmPassword": "Confirm password",
     "signupButton": "Signup",
     "alreadyHaveAccount": "Already have an account?",
     "login": "Login",
@@ -21,7 +21,7 @@
     "phone10Digits": "Phone number must be exactly 10 digits",
     "phone8Digits": "Phone number must be exactly 8 digits",
     "changePassword": {
-      "heading": "Change Password",
+      "heading": "Change password",
       "codePlaceholder": "Verification code",
       "codeMin": "Code must be at least 6 characters",
       "codeRequired": "Code is required",
@@ -29,15 +29,15 @@
       "passwordRequired": "Password is required",
       "confirmPasswordRequired": "Confirm Password is required",
       "passwordsMustMatch": "Passwords must match",
-      "submit": "Change Password",
+      "submit": "Change password",
       "noCode": "Didn't receive the code?",
       "resend": "Resend Code",
       "resetFailed": "Failed to reset password. Try again.",
       "generalError": "Something went wrong. Please try again.",
       "resendFailed": "Failed to resend code. Try again.",
       "resendError": "An error occurred while resending the code. Please try again.",
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm Password"
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password"
     }
   }
   

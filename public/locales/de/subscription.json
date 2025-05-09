@@ -1,24 +1,21 @@
 {
-    
-      "subscriptionTitle": "Abonnements",
-      "subscriptionDescription": "Verwalten und überwachen Sie alle Ihre aktiven und inaktiven Abonnements.",
-      "sortBy": "Sortieren nach",
-      "searchPlaceholder": "Abonnements suchen...",
-      "statusOptions": {
-        "All": "Alle",
-        "Active": "Aktiv",
-        "Inactive": "Inaktiv",
-        "MissingData": "Fehlende Daten",
-        "WithProvider": "mit Dienstleister",
-        "WithoutProvider": "anfragenden Dienstleister",
-        "HaveSuperSaverX": "hat SuperSaverX",
-        "WantSuperSaverX": "will SuperSaverX"
-      },
-      "services": {
-        "servicesTitle": "Dienstleistungen",
-        "servicesDescription": "Anzeigen und verwalten aller Einrichtungen mit einem zugehörigen Dienstanbieter. Behalten Sie den Überblick über Serviceverträge, überwachen Sie aktive Vereinbarungen und stellen Sie eine nahtlose Wartungsunterstützung für Ihre Einrichtungen sicher.",
-        "searchPlaceholder": "Dienstleistungen suchen..."
-      }
-    
+  "subscriptionTitle": "Abonnements",
+  "subscriptionDescription": "Verwalten und überwachen Sie alle Ihre aktiven und inaktiven Abonnements.",
+  "sortBy": "Sortieren nach",
+  "searchPlaceholder": "Abonnements suchen...",
+  "statusOptions": {
+    "All": "Alle",
+    "Active": "Aktiv",
+    "Inactive": "Inaktiv",
+    "MissingData": "Fehlende Daten",
+    "WithProvider": "mit Dienstleister",
+    "WithoutProvider": "anfragenden Dienstleister",
+    "HaveSuperSaverX": "hat SuperSaverX",
+    "WantSuperSaverX": "will SuperSaverX"
+  },
+  "services": {
+    "servicesTitle": "Serviceverträge",
+    "servicesDescription": "Anzeigen und verwalten Sie alle XRGI®-Systeme mit einem zugeordneten Servicepartner",
+    "searchPlaceholder": "Services durchsuchen..."
   }
-  
+}

@@ -8,9 +8,9 @@
     "alertError": "There was an error sending your message. Please try again.",
     "subjects": {
       "problemXRGi": "Problem with XRGi",
-      "problemAddingInfo": "Problem with Adding Information",
-      "questionSuperSaver": "Question about Super Saver",
-      "contactEC": "Get EC Power to Contact Me",
+      "problemAddingInfo": "Problem with adding information",
+      "questionSuperSaver": "Problem with Price Smart",
+      "contactEC": "I want to be contacted by EC POWER",
       "otherInquiry": "Other Inquiry"
     }
   }

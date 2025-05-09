@@ -46,7 +46,9 @@ interface Facility {
   };
 }
 
-export default function EditFacilities({facilityId}: {
+export default function EditFacilities({
+  facilityId,
+}: {
   facilityId: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,8 +62,11 @@ export default function EditFacilities({facilityId}: {
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [serviceContractChoice, setServiceContractChoice] = useState("");
-  const [serviceContractWantedChoice, setServiceContractWantedChoice] = useState("");
-  const [setupSuperSaver, setSetupSuperSaver] = useState(facility?.featureAdded || false);
+  const [serviceContractWantedChoice, setServiceContractWantedChoice] =
+    useState("");
+  const [setupSuperSaver, setSetupSuperSaver] = useState(
+    facility?.featureAdded || false
+  );
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -133,7 +138,9 @@ export default function EditFacilities({facilityId}: {
     }
   }, [facilityId]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFacility((prev) => {
       if (!prev) return prev;
@@ -474,9 +481,6 @@ export default function EditFacilities({facilityId}: {
 
               {hasServiceProvider && (
                 <div className="mt-6">
-                  <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                    {t("serviceProvider")}
-                  </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <input
@@ -538,7 +542,14 @@ export default function EditFacilities({facilityId}: {
           </div>
 
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
-            <div className="flex items-center space-x-3 py-4">
+            <h2 className="text-2xl font-semibold text-[#082351DE] px-4 pt-4">
+              EnergyCheck Plus
+            </h2>
+            <h2 className="text-xl font-semibold text-[#082351DE] px-4 pb-4">
+              Get a monthly overview of how much you have saved with your XRGI
+              System
+            </h2>
+            <div className="flex items-center space-x-3 pb-4">
               <input
                 type="checkbox"
                 id="performanceReport"
@@ -551,17 +562,21 @@ export default function EditFacilities({facilityId}: {
                 htmlFor="performanceReport"
                 className="text-[#082351DE] text-lg font-semibold"
               >
-                I want to add a performance report
+                Yes, please
               </label>
             </div>
 
             {hasPerformanceReport && (
-              <div className="bg-white p-10 rounded-lg mb-6">
+              <div className="bg-white px-4 rounded-lg mb-6">
                 <div className="text-[#082351DE] rounded-lg mb-6">
-                  <h2 className="text-lg font-semibold mb-4">
-                    Performance report
+                  <h2 className="text-lg font-normal mb-2">
+                    We will compare the actual running hours of your XRGI®
+                    system to the expected running hours
                   </h2>
-
+                  <h2 className="text-lg font-normal mb-4">
+                    Please find the values in your initial quote* and fill in
+                    below
+                  </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-gray-700 text-sm font-medium mb-1">
@@ -573,7 +588,7 @@ export default function EditFacilities({facilityId}: {
                         placeholder="Euro Pr. Year"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2"
                         value={
-                          facility?.performance_report?.annualSavings || ""
+                          facility?.performance_report?.annualSavings ?? ""
                         }
                         onChange={handleChange}
                       />
@@ -588,7 +603,7 @@ export default function EditFacilities({facilityId}: {
                         name="performance_report.co2Savings"
                         placeholder="Tons Pr. year"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                        value={facility?.performance_report?.co2Savings || ""}
+                        value={facility?.performance_report?.co2Savings ?? ""}
                         onChange={handleChange}
                       />
                     </div>
@@ -603,7 +618,7 @@ export default function EditFacilities({facilityId}: {
                         placeholder="0-8763"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
                         value={
-                          facility?.performance_report?.operatingHours || ""
+                          facility?.performance_report?.operatingHours ?? ""
                         }
                         onChange={handleChange}
                       />
@@ -611,12 +626,12 @@ export default function EditFacilities({facilityId}: {
 
                     <div>
                       <label className="block text-gray-700 text-sm font-medium mb-1">
-                        Industry
+                        Segment
                       </label>
                       <select
                         name="performance_report.industry"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                        value={facility?.performance_report?.industry || ""}
+                        value={facility?.performance_report?.industry ?? ""}
                         onChange={handleChange}
                       >
                         <option value="">Select a Industry</option>
@@ -626,21 +641,21 @@ export default function EditFacilities({facilityId}: {
                       </select>
                     </div>
                     <div>
-                        <label className="block text-gray-700 text-sm font-medium mb-1">
+                      <label className="block text-gray-700 text-sm font-medium mb-1">
                         {t("emailLabel")}
-                          <span className="text-gray-500 text-sm">
+                        <span className="text-gray-500 text-sm">
                           {t("emailHint")}
-                          </span>
-                        </label>
-                        <input
-                          type="text"
-                          name="performance_report.email"
-                          placeholder={t("emailPlaceholder")}
-                          className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                          value={facility?.performance_report?.email}
-                          onChange={handleChange}
-                        />
-                      </div>
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        name="performance_report.email"
+                        placeholder={t("emailPlaceholder")}
+                        className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
+                        value={facility?.performance_report?.email ?? ""}
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

@@ -38,7 +38,7 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
 
   const menuItems = [
     { href: "/dashboard",
-      label: "XRGI´s",
+      label: "XRGI",
       icon: "⚡",
       paths: [
         "/dashboard",
@@ -52,7 +52,7 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
       icon: "💳",
       paths: ["/subscription"],
     },
-    { href: "/services", label: "services", icon: "🔧", paths: ["/services"] },
+    { href: "/services", label: "service", icon: "🔧", paths: ["/services"] },
   ];
 
   const preferenceItems = [

@@ -12,7 +12,7 @@
     "acceptButton": "Bedingungen akzeptieren",
     "model":{
       "title": "Profil erfolgreich erstellt! 🎉",
-      "message": "Ihr Profil wurde erstellt. Sie können jetzt auf Ihr Dashboard zugreifen und mit der Einrichtung fortfahren.",
+      "message": "Registrierung abgeschlossen",
       "primaryButton": "Zum Dashboard"
     }
   }

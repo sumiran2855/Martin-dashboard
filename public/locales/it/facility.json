@@ -1,24 +1,10 @@
 {
     "back": "Indietro",
-    "facilityDetails": "Dettagli della Struttura",
+    "facilityDetails": "Dettagli del sistema XRGI®",
     "name": "Nome",
     "address": "Indirizzo",
     "model": "Modello",
     "basicData": "Dati di Base",
-    "edit": "Modifica",
-    "serviceCosts": "Costi di servizio per ora operativa",
-    "vatDeduction": "Percentuale di detrazione IVA",
-    "gasSupply": "Fornitura di gas",
-    "gasVariableCosts": "Costi variabili di consumo, gas",
-    "gasFixedCosts": "Costi fissi di consumo, gas",
-    "annualGasConsumption": "Consumo annuale di gas",
-    "electricityVariableCosts": "Costi variabili di consumo, elettricità",
-    "electricityFixedCosts": "Costi fissi di consumo, elettricità",
-    "annualElectricityConsumption": "Consumo annuale di elettricità",
-    "superSaverXConsumption": "Consumo SuperSaverX",
-    "xrgI": "XRGI",
-    "tariffs": "Tariffe",
-    "flexPrice": "Prezzo Flessibile",
-    "vat": "IVA"
+    "edit": "Modifica"
   }
   

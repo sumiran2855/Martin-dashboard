@@ -14,8 +14,8 @@
     "WantSuperSaverX": "Want SuperSaverX"
   },
   "services": {
-    "servicesTitle": "Services",
-    "servicesDescription": "View and manage all facilities that have an associated service provider. Keep track of service contracts, monitor active agreements, and ensure seamless maintenance support for your facilities.",
+    "servicesTitle": "Service Contracts",
+    "servicesDescription": "View and manage all XRGI® systems that have as associated service partner",
     "searchPlaceholder": "Search services..."
   }
 }

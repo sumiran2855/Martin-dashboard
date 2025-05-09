@@ -3,9 +3,9 @@
   "subtitle": "Folgen Sie den Schritten, um Ihr Profil einzurichten.",
   "companyInfo": {
     "title": "Unternehmensinformationen",
-    "description": "Füllen Sie die Angaben zu dem Unternehmen aus, das Sie für den Service registrieren möchten. Wir verwenden diese Informationen, um ein Login für Sie zu erstellen.",
+    "description": "Geben Sie die Details ein",
     "companyName": "Firmenname",
-    "cvrNumber": "CVR-Nummer",
+    "cvrNumber": "VAT no.",
     "address": "Adresse",
     "postalCode": "Postleitzahl",
     "city": "Stadt",
@@ -14,7 +14,7 @@
   },
   "contactPerson": {
     "title": "Kontaktperson",
-    "description": "Wir koordinieren die praktischen Details mit Ihrer Kontaktperson und benötigen später physischen Zugang zu Ihrer Anlage.",
+    "description": "Geben Sie die Details ein",
     "firstName": "Vorname",
     "lastName": "Nachname",
     "email": "E-Mail",
@@ -27,7 +27,7 @@
   },
   "facility": {
     "title": "Registrieren Sie Ihr XRGI-System",
-    "description": "Wir haben nun ein Login für Sie und Ihr Unternehmen erstellt. Wenn Sie die Systemdetails nicht haben, können Sie später zurückkehren.",
+    "description": "Wenn Sie die Systemdetails nicht haben, speichern Sie sie später am unteren Seitenrand",
     "registerSystem": "System registrieren",
     "systemNamePlaceholder": "System benennen",
     "systemNameHint": "Beispiel: „System im Keller 01“",
@@ -44,13 +44,17 @@
     "countryPlaceholder": "Land",
     "contractQuestion": "Haben Sie bereits einen Servicevertrag für Ihr System?",
     "wantContractQuestion": "Möchten Sie einen Servicevertrag für Ihr ECPower?",
+    "alreadyHaveContract": "Haben Sie einen Wartungsvertrag für Ihr XRGI®-System?",
+    "alreadyHaveContract2": "Die Angaben werden benötigt, um Ihrem Servicepartner Zugriff auf unsere EC POWER Servicedatenbank zu gewähren",
+    "wantContract": "Sie haben Interesse an einem Servicevertrag mit EC POWER?",
     "providerTitle": "Dienstleister",
     "providerNamePlaceholder": "Name des Dienstleisters",
     "providerNameHint": "Geben Sie den Namen des Dienstleisters ein",
     "providerEmailPlaceholder": "E-Mail-Adresse",
     "providerPhonePlaceholder": "Telefonnummer",
-    "addPerformanceReport": "Ich möchte einen Leistungsbericht hinzufügen",
-    "performanceTitle": "Leistungsbericht",
+    "addPerformanceReport": "Ja, bitte",
+    "performanceTitle": "Wir vergleichen die tatsächlichen Betriebsstunden Ihres XRGI®-Systems mit den erwarteten Betriebsstunden",
+    "performanceTitle2": "Bitte entnehmen Sie die Werte Ihrem ursprünglichen Angebot* und tragen Sie sie unten ein",
     "savingsLabel": "Erwartete jährliche Einsparungen",
     "savingsPlaceholder": "Euro pro Jahr",
     "co2Label": "Erwartete jährliche CO₂-Einsparung",
@@ -62,29 +66,25 @@
     "industries": {
       "hotel": "Hotel",
       "school": "Schule",
-      "sport": "Sport",
-      "nursing": "Pflegeheim",
-      "industry": "Industrie",
-      "other": "Andere"
+      "sport": "Sport"
     },
     "emailLabel": "Empfänger-E-Mail-Adresse(n)",
     "emailHint": "(Sie können mehrere Adressen durch Kommas trennen)",
     "emailPlaceholder": "z. B. benutzer@beispiel.de, admin@beispiel.de",
     "installCheckbox": "System wurde installiert"
   },
-  "Installation":{
-    "title": "Installation",
-    "description": "Um Stromkosten zu sparen, muss neue Software auf Ihrem System installiert werden. Diese Software wurde von EC Power entwickelt und sorgt für optimale Leistung sowie eine Erklärung ihrer Vorteile. Die Preise für diesen Service können je nach Tarif variieren. Preisübersicht hier einsehen.",
-    "setupQuestion": "Möchten Sie SuperSaverX einrichten?",
-    "setupTitle": "Einrichtung der SuperSaverX-Lösung",
-    "atService": "Bei der nächsten Wartung",
-    "localPartner": "Lokaler Partner",
-    "namePlaceholder": "Name",
-    "mobilePlaceholder": "Mobil",
-    "emailPlaceholder": "E-Mail"
+  "Installation": {
+    "description": "Unsere Software nutzt die Echtzeit-Strommarktpreise (EPEX Day-ahead), um die Energieproduktion automatisch zu pausieren, wenn die Marktpreise null oder negativ sind",
+    "description2": "(Diese Softwarefunktion ist ab April 2025 bei allen XRGI®-Systemen Standard)",
+    "setupTitle": "Bitte installieren",
+    "atService": "Die Software muss physisch von Ihrem Servicepartner auf Ihrem XRGI®-System installiert werden",
+    "atService2": "Beim nächsten Vor-Ort-Besuch",
+    "atService3": "So schnell wie möglich"
   },
   "back": "Zurück",
   "saveForLater": "Für später speichern",
   "save": "Speichern",
-  "next": "Weiter"
+  "next": "Weiter",
+  "energyCheckTitle": "EnergyCheck Plus",
+  "energyCheckSubtitle": "Erhalten Sie eine monatliche Übersicht darüber, wie viel Sie mit Ihrem XRGI-System gespart haben"
 }

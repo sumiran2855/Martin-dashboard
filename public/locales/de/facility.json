@@ -1,24 +1,9 @@
 {
-    "back": "Zurück",
-    "facilityDetails": "Einrichtungsdetails",
-    "name": "Name",
-    "address": "Adresse",
-    "model": "Modell",
-    "basicData": "Grunddaten",
-    "edit": "Bearbeiten",
-    "serviceCosts": "Betriebskosten pro Stunde",
-    "vatDeduction": "Mehrwertsteuerabzug Prozentsatz",
-    "gasSupply": "Gasversorgung",
-    "gasVariableCosts": "Verbrauchsabhängige Kosten, Gas",
-    "gasFixedCosts": "Verbrauchsunabhängige Kosten, Gas",
-    "annualGasConsumption": "Jährlicher Gasverbrauch",
-    "electricityVariableCosts": "Verbrauchsabhängige Kosten, Strom",
-    "electricityFixedCosts": "Verbrauchsunabhängige Kosten, Strom",
-    "annualElectricityConsumption": "Jährlicher Stromverbrauch",
-    "superSaverXConsumption": "SuperSaverX Verbrauch",
-    "xrgI": "XRGI",
-    "tariffs": "Preise",
-    "flexPrice": "Flexpreis",
-    "vat": "Mehrwertsteuer"
-  }
-  
+  "back": "Zurück",
+  "facilityDetails": "XRGI® Systemdetails",
+  "name": "Name",
+  "address": "Adresse",
+  "model": "Modell",
+  "basicData": "Grunddaten",
+  "edit": "Bearbeiten"
+}

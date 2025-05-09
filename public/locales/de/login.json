@@ -7,7 +7,7 @@
   "loginSuccess": "Anmeldung erfolgreich! Weiterleitung...",
   "loginFailed": "Ungültige E-Mail oder Passwort.",
   "verifyEmailMessage": "Ihr Konto ist nicht verifiziert. Bitte bestätigen Sie Ihre E-Mail, um fortzufahren.",
-  "verifyEmailTitle": "Bestätigen Sie Ihre E-Mail",
+  "verifyEmailTitle": "Bestätigen Sie Ihre E-Mail-Adresse",
   "verifyEmailButton": "E-Mail bestätigen",
   "createAccountPrompt": "Noch kein Konto?",
   "createAccountLink": "Konto erstellen",
@@ -21,5 +21,9 @@
   "passwordChanged": "Passwort geändert",
   "passwordChangedMessage": "Ihr Passwort wurde erfolgreich geändert.",
   "emailSent": "E-Mail gesendet",
-  "emailSentMessage": "Eine E-Mail zum Zurücksetzen Ihres Passworts wurde gesendet."
+  "emailSentMessage": "Eine E-Mail zum Zurücksetzen Ihres Passworts wurde gesendet.",
+  "verifyEmailPlaceholder": "Bestätigungscode eingeben",
+  "VerifyEmailButton": "Code bestätigen",
+  "didNotreceiveCode": "Code nicht erhalten?",
+  "ResendCode": "Code erneut senden"
 }

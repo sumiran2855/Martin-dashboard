@@ -12,7 +12,7 @@
     "acceptButton": "Accepter vilkår",
     "model":{
       "title": "Profil oprettet! 🎉",
-      "message": "Din profil er blevet oprettet. Du kan nu få adgang til dit dashboard og fortsætte med opsætningen.",
+      "message": "Registrering gennemført",
       "primaryButton": "Gå til Dashboard"
     }
   }

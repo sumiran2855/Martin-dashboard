@@ -7,7 +7,7 @@
   "loginSuccess": "Login lykkedes! Omdirigerer...",
   "loginFailed": "Ugyldig email eller adgangskode.",
   "verifyEmailMessage": "Din konto er ikke bekræftet. Bekræft din email for at fortsætte.",
-  "verifyEmailTitle": "Bekræft din email",
+  "verifyEmailTitle": "Bekræft din e-mailadresse",
   "verifyEmailButton": "Bekræft email",
   "createAccountPrompt": "Har du ikke en konto?",
   "createAccountLink": "Opret en konto",
@@ -21,5 +21,9 @@
   "passwordChanged": "Adgangskode ændret",
   "passwordChangedMessage": "Din adgangskode er blevet ændret.",
   "emailSent": "E-mail sendt",
-  "emailSentMessage": "En e-mail er blevet sendt for at nulstille din adgangskode."
+  "emailSentMessage": "En e-mail er blevet sendt for at nulstille din adgangskode.",
+  "verifyEmailPlaceholder": "Indtast bekræftelseskode",
+  "VerifyEmailButton": "Bekræft kode",
+  "didNotreceiveCode": "Modtog du ikke koden?",
+  "ResendCode": "Send koden igen"
 }

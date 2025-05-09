@@ -362,7 +362,7 @@ function Dashboard() {
           <Modal
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
-            title={term("model.title")}
+            title=""
             message={term("model.message")}
             primaryButton={term("model.primaryButton")}
             onPrimaryClick={() => {
@@ -395,6 +395,7 @@ function Dashboard() {
               )}
               {step === 3 && (
                 <Installation
+                 stepTwoFormData={stepTwoFormData}
                   selectedOption={selectedOption}
                   setSelectedOption={setSelectedOption}
                   partnerDetails={partnerDetails}

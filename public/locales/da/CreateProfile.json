@@ -3,9 +3,9 @@
   "subtitle": "Følg trinene for at fuldføre din profilopsætning.",
   "companyInfo": {
     "title": "Virksomhedsoplysninger",
-    "description": "Udfyld oplysninger om den virksomhed, du ønsker at registrere til tjenesten. Vi bruger disse oplysninger til at oprette et login til dig.",
+    "description": "Udfyld detaljerne",
     "companyName": "Firmanavn",
-    "cvrNumber": "CVR-nummer",
+    "cvrNumber": "VAT no.",
     "address": "Adresse",
     "postalCode": "Postnummer",
     "city": "By",
@@ -14,7 +14,7 @@
   },
   "contactPerson": {
     "title": "Kontaktperson",
-    "description": "Vi koordinerer de praktiske detaljer med din kontaktperson og vil senere have brug for fysisk adgang til din facilitet.",
+    "description": "Udfyld detaljerne",
     "firstName": "Fornavn",
     "lastName": "Efternavn",
     "email": "Email",
@@ -27,7 +27,7 @@
   },
   "facility": {
     "title": "Registrer dit XRGI-system",
-    "description": "Vi har nu oprettet en login til dig og din virksomhed. Hvis du ikke har systemoplysningerne, kan du altid vende tilbage senere.",
+    "description": "Hvis du ikke har systemoplysningerne, så gem til senere nederst på siden",
     "registerSystem": "Registrer et system",
     "systemNamePlaceholder": "Navngiv systemet",
     "systemNameHint": "Eksempel: “System i kælderen 01”",
@@ -44,13 +44,17 @@
     "countryPlaceholder": "Land",
     "contractQuestion": "Har du allerede en serviceaftale til dit system?",
     "wantContractQuestion": "Ønsker du en serviceaftale for din ECPower?",
+    "alreadyHaveContract": "Har du en servicekontrakt for dit XRGI®-system?",
+    "alreadyHaveContract2": "Oplysningerne er nødvendige for at give din servicepartner adgang til vores EC POWER Service Database",
+    "wantContract": "Er du interesseret i en servicekontrakt med EC POWER?",
     "providerTitle": "Serviceudbyder",
     "providerNamePlaceholder": "Navn på serviceudbyder",
     "providerNameHint": "Indtast navnet på serviceudbyderen",
     "providerEmailPlaceholder": "E-mailadresse",
     "providerPhonePlaceholder": "Telefonnummer",
-    "addPerformanceReport": "Jeg vil tilføje en performance rapport",
-    "performanceTitle": "Performance rapport",
+    "addPerformanceReport": "Ja, tak",
+    "performanceTitle": "Vi sammenligner de faktiske driftstimer for dit XRGI®-system med de forventede driftstimer",
+    "performanceTitle2": "Find venligst værdierne i dit oprindelige tilbud* og udfyld nedenfor",
     "savingsLabel": "Forventede årlige besparelser",
     "savingsPlaceholder": "Euro pr. år",
     "co2Label": "Forventede årlige CO₂-besparelser",
@@ -62,29 +66,25 @@
     "industries": {
       "hotel": "Hotel",
       "school": "Skole",
-      "sport": "Sport",
-      "nursing": "Plejehjem",
-      "industry": "Industri",
-      "other": "Andet"
+      "sport": "Sport"
     },
     "emailLabel": "Modtagerens e-mailadresse(r)",
     "emailHint": "(Du kan angive flere adresser adskilt med komma)",
     "emailPlaceholder": "f.eks. bruger@example.com, admin@example.com",
     "installCheckbox": "Systemet er installeret"
   },
-  "Installation":{
-    "title": "Installation",
-    "description": "For at begynde at spare penge på elektricitet, skal der installeres ny software på dit system. Denne software er udviklet af EC Power og sikrer optimal ydeevne, mens den forklarer fordelene. Prisen for denne service kan variere afhængigt af planen. Se prisoversigten her.",
-    "setupQuestion": "Vil du opsætte SuperSaverX?",
-    "setupTitle": "Opsætning af SuperSaverX-løsningen",
-    "atService": "Ved næste serviceeftersyn",
-    "localPartner": "Lokal partner",
-    "namePlaceholder": "Navn",
-    "mobilePlaceholder": "Mobil",
-    "emailPlaceholder": "Email"
+  "Installation": {
+    "description": "Vores software bruger elmarkedets realtidspriser (EPEX Day-ahead) til automatisk at pause energiproduktionen, når markedspriserne er nul eller negative",
+    "description2": "(Denne softwarefunktion er standard på alle XRGI®-systemer fra april 2025)",
+    "setupTitle": "Venligst installer",
+    "atService": "Softwaren skal fysisk installeres på dit XRGI®-system af din servicepartner",
+    "atService2": "Ved næste besøg på stedet",
+    "atService3": "Så hurtigt som muligt"
   },
   "back": "Tilbage",
   "saveForLater": "Gem til senere",
   "save": "Gem",
-  "next": "Næste"
+  "next": "Næste",
+  "energyCheckTitle": "EnergyCheck Plus",
+  "energyCheckSubtitle": "Få en månedlig oversigt over, hvor meget du har sparet med dit XRGI-system"
 }

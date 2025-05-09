@@ -5,8 +5,8 @@ interface StepperProps {
 export default function Stepper({ step }: StepperProps) {
   const steps = [
     "Create Profile",
-    "Register First Plant",
-    "Installation",
+    "Register First XRGI® System",
+    "Finish registeration",
   ];
 
   return (

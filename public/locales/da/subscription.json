@@ -1,25 +1,21 @@
 {
-    
-      "subscriptionTitle": "Abonnementer",
-      "subscriptionDescription": "Administrer og overvåg alle dine aktive og inaktive abonnementer.",
-      "sortBy": "Sorter efter",
-      "searchPlaceholder": "Søg i abonnementer...",
-      "statusOptions": {
-        "All": "Alle",
-        "Active": "Aktiv",
-        "Inactive": "Inaktiv",
-        "MissingData": "Manglende data",
-        "WithProvider": "tjenesteudbyder",
-        "WithoutProvider": "anmodende tjenesteudbyder",
-        "HaveSuperSaverX": "har SuperSaverX",
-        "WantSuperSaverX": "vil have SuperSaverX"
-        
-      },
-      "services": {
-        "servicesTitle": "Tjenester",
-        "servicesDescription": "Se og administrer alle faciliteter, der har en tilknyttet serviceudbyder. Hold styr på servicekontrakter, overvåg aktive aftaler, og sikr problemfri vedligeholdelse af dine faciliteter.",
-        "searchPlaceholder": "Søg i tjenester..."
-      }
-    
+  "subscriptionTitle": "Abonnementer",
+  "subscriptionDescription": "Administrer og overvåg alle dine aktive og inaktive abonnementer.",
+  "sortBy": "Sorter efter",
+  "searchPlaceholder": "Søg i abonnementer...",
+  "statusOptions": {
+    "All": "Alle",
+    "Active": "Aktiv",
+    "Inactive": "Inaktiv",
+    "MissingData": "Manglende data",
+    "WithProvider": "tjenesteudbyder",
+    "WithoutProvider": "anmodende tjenesteudbyder",
+    "HaveSuperSaverX": "har SuperSaverX",
+    "WantSuperSaverX": "vil have SuperSaverX"
+  },
+  "services": {
+    "servicesTitle": "Serviceaftaler",
+    "servicesDescription": "Se og administrer alle XRGI®-systemer, der har en tilknyttet servicepartner",
+    "searchPlaceholder": "Søg i services..."
   }
-  
+}

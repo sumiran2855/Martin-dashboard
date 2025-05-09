@@ -92,13 +92,11 @@ export default function CreateFacility({
       <h2 className="text-2xl font-bold text-[#082351DE] mb-2">
         {t("facility.title")}
       </h2>
-      <p className="text-gray-600 mb-6">
-      {t("facility.description")}
-      </p>
+      <p className="text-gray-600 mb-6">{t("facility.description")}</p>
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
         <div className="p-6 rounded-lg mb-6">
           <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
-          {t("facility.registerSystem")}
+            {t("facility.registerSystem")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -111,7 +109,7 @@ export default function CreateFacility({
                 onChange={handleChange}
               />
               <label className="text-gray-500 text-sm mt-1 block ml-3">
-              {t("facility.systemNameHint")}
+                {t("facility.systemNameHint")}
               </label>
             </div>
 
@@ -149,13 +147,13 @@ export default function CreateFacility({
                 </span>
               </div>
               <label className="text-gray-500 text-sm mt-1 block ml-3">
-              {t("facility.modelHint")}
+                {t("facility.modelHint")}
               </label>
             </div>
 
             <div className="md:col-span-1 relative">
               <label className="block text-gray-700 text-sm font-medium mb-1">
-              {t("facility.xrgiIdLabel")}
+                {t("facility.xrgiIdLabel")}
               </label>
               <div className="relative">
                 <input
@@ -205,7 +203,7 @@ export default function CreateFacility({
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
         <div className="p-6 rounded-lg mb-6">
           <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-          {t("facility.locationTitle")}
+            {t("facility.locationTitle")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -218,7 +216,7 @@ export default function CreateFacility({
                 onChange={handleChange}
               />
               <label className="text-gray-500 text-sm mt-1 block ml-3">
-              {t("facility.addressHint")}
+                {t("facility.addressHint")}
               </label>
             </div>
 
@@ -259,9 +257,12 @@ export default function CreateFacility({
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
         <div className="p-6 rounded-lg">
-          <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-          {t("facility.contractQuestion")}
+          <h2 className="text-lg text-[#082351DE] font-semibold mb-2">
+            {t("facility.alreadyHaveContract")}
           </h2>
+          <p className="mb-4 text-gray-500">
+            {t("facility.alreadyHaveContract2")}
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <SelectionButton
               selected={serviceContractChoice === "yes"}
@@ -280,7 +281,7 @@ export default function CreateFacility({
           {serviceContractChoice === "no" && (
             <div className="mt-6">
               <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-              {t("facility.wantContractQuestion")}
+                {t("facility.wantContract")}
               </h2>
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <SelectionButton
@@ -302,7 +303,7 @@ export default function CreateFacility({
           {hasServiceProvider && (
             <div className="mt-6">
               <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-              {t("facility.providerTitle")}
+                {t("facility.providerTitle")}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -315,7 +316,7 @@ export default function CreateFacility({
                     onChange={handleChange}
                   />
                   <label className="text-gray-500 text-sm mt-1 block ml-3">
-                  {t("facility.providerNameHint")}
+                    {t("facility.providerNameHint")}
                   </label>
                 </div>
 
@@ -365,7 +366,13 @@ export default function CreateFacility({
       </div>
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
-        <div className="flex items-center space-x-3 py-4">
+        <h2 className="text-2xl font-semibold text-[#082351DE] px-4 pt-4">
+        {t("energyCheckTitle")}
+        </h2>
+        <h2 className="text-xl font-semibold text-[#082351DE] px-4 pb-4">
+        {t("energyCheckSubtitle")}
+        </h2>
+        <div className="flex items-center space-x-3 pb-4">
           <input
             type="checkbox"
             id="performanceReport"
@@ -383,14 +390,18 @@ export default function CreateFacility({
         </div>
 
         {hasPerformanceReport && (
-          <div className="bg-white p-10 rounded-lg mb-6">
+          <div className="bg-white px-4 rounded-lg mb-6">
             <div className="text-[#082351DE] rounded-lg mb-6">
-              <h2 className="text-lg font-semibold mb-4">{t("facility.performanceTitle")}</h2>
-
+              <h2 className="text-lg font-normal mb-2">
+                {t("facility.performanceTitle")}
+              </h2>
+              <h2 className="text-lg font-normal mb-4">
+              {t("facility.performanceTitle2")}
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                  {t("facility.savingsLabel")}
+                    {t("facility.savingsLabel")}
                   </label>
                   <input
                     type="text"
@@ -404,7 +415,7 @@ export default function CreateFacility({
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                  {t("facility.co2Label")}
+                    {t("facility.co2Label")}
                   </label>
                   <input
                     type="text"
@@ -418,7 +429,7 @@ export default function CreateFacility({
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                  {t("facility.hoursLabel")}
+                    {t("facility.hoursLabel")}
                   </label>
                   <input
                     type="text"
@@ -432,7 +443,7 @@ export default function CreateFacility({
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                  {t("facility.industryLabel")}
+                    {t("facility.industryLabel")}
                   </label>
                   <select
                     name="industry"
@@ -441,21 +452,18 @@ export default function CreateFacility({
                     onChange={handleChange}
                   >
                     <option value="" disabled>
-                    {t("facility.industryPlaceholder")}
+                      {t("facility.industryPlaceholder")}
                     </option>
-                    <option value="manufacturing">Hotel</option>
-                    <option value="healthcare">School</option>
-                    <option value="hospitality">Sport</option>
-                    <option value="hospitality">Nursing home</option>
-                    <option value="hospitality">Indrusty</option>
-                    <option value="hospitality">Other</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="School">School</option>
+                    <option value="Sport">Sport</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                  {t("facility.emailLabel")}{" "}
+                    {t("facility.emailLabel")}{" "}
                     <span className="text-gray-500 text-sm">
-                    {t("facility.emailHint")}
+                      {t("facility.emailHint")}
                     </span>
                   </label>
                   <input

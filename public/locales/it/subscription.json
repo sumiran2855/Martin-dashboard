@@ -14,8 +14,8 @@
       "WantSuperSaverX": "Vuoi SuperSaverX"
     },
     "services": {
-      "servicesTitle": "Servizi",
-      "servicesDescription": "Visualizza e gestisci tutte le strutture che hanno un fornitore di servizio associato. Tieni traccia dei contratti di servizio, monitora gli accordi attivi e garantisci un supporto di manutenzione continuo per le tue strutture.",
+      "servicesTitle": "Contratti di Servizio",
+      "servicesDescription": "Visualizza e gestisci tutti i sistemi XRGI® che hanno un partner di servizio associato",
       "searchPlaceholder": "Cerca servizi..."
     }
   }

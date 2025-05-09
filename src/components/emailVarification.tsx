@@ -1,7 +1,9 @@
 import { resendVerificationCode, verifyEmail } from "@/services/authService";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function emailVarification({ email }: { email: string }) {
+  const { t } = useTranslation("login");
   const [verificationCode, setVerificationCode] = useState("");
   const [resendMessage, setResendMessage] = useState("");
   const [error, setError] = useState("");
@@ -30,11 +32,11 @@ export default function emailVarification({ email }: { email: string }) {
     }
     setResendMessage(result.message);
   };
-  
+
   return (
     <>
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-        Verify Your Email
+        {t("verifyEmailTitle")}
       </h2>
       {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
       {success && <p className="text-green-500 text-sm mb-3">{success}</p>}
@@ -44,7 +46,7 @@ export default function emailVarification({ email }: { email: string }) {
 
       <input
         type="text"
-        placeholder="Enter Verification Code"
+        placeholder={t("verifyEmailPlaceholder")}
         className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
         onChange={(e) => setVerificationCode(e.target.value)}
       />
@@ -53,16 +55,16 @@ export default function emailVarification({ email }: { email: string }) {
         onClick={handleVerifyCode}
         className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer mt-4"
       >
-        Verify Code
+        {t("VerifyEmailButton")}
       </button>
 
       <p className="text-sm text-gray-600 mt-4">
-        Didn't receive the code?{" "}
+        {t("didNotreceiveCode")}{" "}
         <button
           onClick={handleResendCode}
           className="text-blue-700 font-semibold hover:underline focus:outline-none"
         >
-          Resend Code
+          {t("ResendCode")}
         </button>
       </p>
     </>
