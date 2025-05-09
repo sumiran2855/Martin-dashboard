@@ -3,9 +3,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { forget_Password, resetPassword } from "@/services/authService";
-import Link from "next/link";
 import { PasswordField } from "../form/passwordField";
 import { useTranslation } from "react-i18next";
 
@@ -20,7 +18,7 @@ export default function ChangePasswordForm({
 }: ChangePasswordFormProps) {
   const [error, setError] = useState("");
   const { t } = useTranslation("signup");
-  const router = useRouter();
+
   const formik = useFormik({
     initialValues: { code: "", newPassword: "", confirmPassword: "" },
     validationSchema: Yup.object({
@@ -45,12 +43,10 @@ export default function ChangePasswordForm({
           values.newPassword,
           values.code
         );
-
         if (!response.success) {
           setError(response.message || t("changePassword.resetFailed"));
           return;
         }
-
         onSuccess();
       } catch (err) {
         setError(t("changePassword.generalError"));
@@ -58,10 +54,9 @@ export default function ChangePasswordForm({
     },
   });
 
-  // need to fix
+
   const handleResendCode = async () => {
     setError("");
-
     try {
       const response = await forget_Password(email);
       if (response.success) {
@@ -84,7 +79,6 @@ export default function ChangePasswordForm({
       <form onSubmit={formik.handleSubmit} noValidate>
         <input
           type="text"
-          //   name="code"
           placeholder={t("changePassword.codePlaceholder")}
           className="w-full px-4 py-3 mb-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           {...formik.getFieldProps("code")}
@@ -116,7 +110,6 @@ export default function ChangePasswordForm({
           {t("changePassword.submit")}
         </button>
       </form>
-      {/* need to fix */}
       <p className="text-sm text-gray-600 mt-4">
         {t("changePassword.noCode")}{" "}
         <button

@@ -1,17 +1,10 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { getProfile } from "@/controller/companyProfile/createProfile";
-interface User {
-  userId: string[];
-}
 
-export default function AdminSidebar({ userId = [] }: User) {
-  const params = useParams();
-  const facilityId = params.facilityId || "";
-  const id = params.id || "";
-
+export default function AdminSidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
@@ -24,7 +17,7 @@ export default function AdminSidebar({ userId = [] }: User) {
 
   const { formData } = getProfile();
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const isActive = (path: string) => pathname.startsWith(path);
   const handleToggle = () => {
     setMenuOpen(!menuOpen);
   };
@@ -64,12 +57,10 @@ export default function AdminSidebar({ userId = [] }: User) {
               <Link
                 href="/admin"
                 className={`flex items-center p-3 rounded-md no-underline ${
-                  [
-                    "/admin",
-                    `/admin/user/${userId}`,
-                    `/admin/user/plantDetail/${facilityId}`,
-                    `/admin/user/editFacilities/${id}`,
-                  ].includes(pathname)
+                  isActive("/admin") &&
+                  !isActive("/admin/subscription") &&
+                  !isActive("/admin/services") &&
+                  !isActive("/admin/contact")
                     ? "text-white bg-blue-900"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -82,9 +73,8 @@ export default function AdminSidebar({ userId = [] }: User) {
 
               <Link
                 href="/admin/subscription"
-                aria-disabled="true"
-                className={`flex items-center p-3 rounded-md no-underline  ${
-                  pathname === "/admin/subscription"
+                className={`flex items-center p-3 rounded-md no-underline ${
+                  isActive("/admin/subscription")
                     ? "text-white bg-blue-900"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -97,9 +87,8 @@ export default function AdminSidebar({ userId = [] }: User) {
 
               <Link
                 href="/admin/services"
-                aria-disabled="true"
                 className={`flex items-center p-3 rounded-md no-underline ${
-                  pathname === "/admin/services"
+                  isActive("/admin/services")
                     ? "text-white bg-blue-900"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -109,11 +98,11 @@ export default function AdminSidebar({ userId = [] }: User) {
                 </div>
                 <span className="font-medium">Service</span>
               </Link>
+
               <Link
                 href="/admin/contact"
-                aria-disabled="true"
                 className={`flex items-center p-3 rounded-md no-underline ${
-                  pathname === "/admin/contact"
+                  isActive("/admin/contact")
                     ? "text-white bg-blue-900"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -127,7 +116,6 @@ export default function AdminSidebar({ userId = [] }: User) {
           </nav>
         </div>
 
-        {/* User Profile at Bottom */}
         <div
           className={`p-4 border-t border-gray-200 transition-all duration-300 ${
             isDropdownOpen ? "mb-2" : ""

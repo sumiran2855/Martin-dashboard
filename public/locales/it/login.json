@@ -21,5 +21,9 @@
   "passwordChanged": "Password cambiata",
   "passwordChangedMessage": "La tua password è stata cambiata con successo.",
   "emailSent": "Email inviata",
-  "emailSentMessage": "È stata inviata un'email per reimpostare la password."
+  "emailSentMessage": "È stata inviata un'email per reimpostare la password.",
+  "verifyEmailPlaceholder": "Inserisci il codice di verifica",
+  "VerifyEmailButton": "Verifica codice",
+  "didNotreceiveCode": "Non hai ricevuto il codice?",
+  "ResendCode": "Invia nuovamente il codice"
 }

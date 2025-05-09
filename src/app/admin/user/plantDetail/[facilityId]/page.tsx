@@ -10,12 +10,9 @@ const FacilityDetailPage = () => {
   ? params.facilityId[0]
   : params.facilityId || "";
 
-  const id = params.id;
-  const userId: string[] = Array.isArray(id) ? id : id ? [id] : [];
-
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar userId={userId} />
+      <Sidebar/>
       <Facilities facilityId={facilityId} />
     </div>
   );

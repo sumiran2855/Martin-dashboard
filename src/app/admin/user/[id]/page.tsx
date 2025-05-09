@@ -11,7 +11,7 @@ function UserDetail() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar userId={userId}/>
+      <Sidebar />
       <UserContent userId={userId} />
     </div>
   );

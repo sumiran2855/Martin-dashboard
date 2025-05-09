@@ -13,7 +13,6 @@ export default function ForgetPasswordForm({
   onSuccess: (email:string) => void;
 }) {
   const [error, setError] = useState("");
-
   const { t } = useTranslation("login");
   const formik = useFormik({
     initialValues: { email: "" },

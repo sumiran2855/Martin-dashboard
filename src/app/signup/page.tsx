@@ -11,8 +11,6 @@ import { InputField } from "@/components/form/InputField";
 import EmailVarification from "@/components/emailVarification";
 import { PasswordField } from "@/components/form/passwordField";
 import { useTranslation } from "react-i18next";
-// import { t } from "i18next";
-
 
 export default function Signup() {
   const [error, setError] = useState("");

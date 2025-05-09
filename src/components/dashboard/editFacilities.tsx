@@ -62,6 +62,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
   const [setupSuperSaver, setSetupSuperSaver] = useState(
     facility?.featureAdded || false
   );
+  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
 
   const handleServiceContractChoice = (choice: any) => {
     setServiceContractChoice(choice);
@@ -78,7 +79,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     email: "",
     countryCode: "",
   });
-  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
 
   const handleAcceptTerms = async () => {
     setFacilityAdded(true);
@@ -102,7 +102,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         setFacility(response.data);
         setIsInstalled(response.data?.isInstalled || false);
 
-        const { feature } = response.data;
+        const { feature } = response.data ?? "";
 
         if (response.data.hasServiceContract) {
           setHasServiceProvider(true);
@@ -145,7 +145,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-
     setFacility((prev) => {
       if (!prev) return prev;
 
@@ -212,7 +211,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           co2Savings: facility?.performance_report?.co2Savings || "",
           operatingHours: facility?.performance_report?.operatingHours || "",
           industry: facility?.performance_report?.industry || "",
-          email:facility?.performance_report?.email || ""
+          email: facility?.performance_report?.email || "",
         },
         hasPerformanceReport,
         isInstalled,
@@ -461,9 +460,12 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
 
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
               <div className="p-6 rounded-lg">
-                <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
+                <h2 className="text-lg text-[#082351DE] font-semibold mb-2">
                   {t("alreadyHaveContract")}
                 </h2>
+                <p className="mb-4 text-gray-500">
+                  {t("alreadyHaveContract2")}
+                </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-6">
                   <SelectionButton
                     selected={serviceContractChoice === "yes"}
@@ -503,9 +505,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
 
                 {hasServiceProvider && (
                   <div className="mt-6">
-                    <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                      {t("serviceProvider")}
-                    </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <input
@@ -567,7 +566,15 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
             </div>
 
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
-              <div className="flex items-center space-x-3 py-4">
+              <h2 className="text-2xl font-semibold text-[#082351DE] px-4 pt-4">
+                {" "}
+                {t("energyCheckTitle")}
+              </h2>
+              <h2 className="text-xl font-semibold text-[#082351DE] px-4 pb-4">
+                {" "}
+                {t("energyCheckSubtitle")}
+              </h2>
+              <div className="flex items-center space-x-3 pb-4">
                 <input
                   type="checkbox"
                   id="performanceReport"
@@ -585,12 +592,14 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
               </div>
 
               {hasPerformanceReport && (
-                <div className="bg-white p-10 rounded-lg mb-6">
+                <div className="bg-white px-4 rounded-lg mb-6">
                   <div className="text-[#082351DE] rounded-lg mb-6">
-                    <h2 className="text-lg font-semibold mb-4">
+                    <h2 className="text-lg font-normal mb-2">
                       {t("performanceReport")}
                     </h2>
-
+                    <h2 className="text-lg font-normal mb-4">
+                      {t("performanceReport2")}
+                    </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-gray-700 text-sm font-medium mb-1">
@@ -601,7 +610,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                           name="performance_report.annualSavings"
                           placeholder={t("euroPerYear")}
                           className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2"
-                          value={facility?.performance_report?.annualSavings}
+                          value={
+                            facility?.performance_report?.annualSavings ?? ""
+                          }
                           onChange={handleChange}
                         />
                       </div>
@@ -615,7 +626,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                           name="performance_report.co2Savings"
                           placeholder={t("tonsPerYear")}
                           className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                          value={facility?.performance_report?.co2Savings}
+                          value={facility?.performance_report?.co2Savings ?? ""}
                           onChange={handleChange}
                         />
                       </div>
@@ -629,7 +640,9 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                           name="performance_report.operatingHours"
                           placeholder={t("operatingHoursPlaceholder")}
                           className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                          value={facility?.performance_report?.operatingHours}
+                          value={
+                            facility?.performance_report?.operatingHours ?? ""
+                          }
                           onChange={handleChange}
                         />
                       </div>
@@ -641,25 +654,22 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                         <select
                           name="performance_report.industry"
                           className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                          value={facility?.performance_report?.industry}
+                          value={facility?.performance_report?.industry ?? ""}
                           onChange={handleChange}
                         >
                           <option value="" disabled>
                             Select a Industry
                           </option>
-                          <option value="manufacturing">Hotel</option>
-                          <option value="healthcare">School</option>
-                          <option value="hospitality">Sport</option>
-                          <option value="hospitality">Nursing home</option>
-                          <option value="hospitality">Indrusty</option>
-                          <option value="hospitality">Other</option>
+                          <option value="Hotel">Hotel</option>
+                          <option value="School">School</option>
+                          <option value="Sport">Sport</option>
                         </select>
                       </div>
                       <div>
                         <label className="block text-gray-700 text-sm font-medium mb-1">
-                        {t("emailLabel")}
+                          {t("emailLabel")}
                           <span className="text-gray-500 text-sm">
-                          {t("emailHint")}
+                            {t("emailHint")}
                           </span>
                         </label>
                         <input
@@ -667,7 +677,7 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                           name="performance_report.email"
                           placeholder={t("emailPlaceholder")}
                           className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                          value={facility?.performance_report?.email}
+                          value={facility?.performance_report?.email ?? ""}
                           onChange={handleChange}
                         />
                       </div>
@@ -698,19 +708,26 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
         ) : (
           <div className="flex-1 overflow-auto px-6 py-2 mx-4">
             <h2 className="text-2xl font-bold text-[#082351DE] mb-2">
-              {t("installation")}
+              Smart PriceControl
             </h2>
-            <p className="text-gray-600 mb-6">{t("installationDescription")}</p>
-
-            <div className="flex items-center space-x-3 py-4">
+            <p className="text-gray-600 mb-4">
+              {t("Installation.description")}
+            </p>
+            <p className="text-gray-600 mb-2">
+              {t("Installation.description2")}
+            </p>
+            <div className="flex items-center space-x-3 py-3">
               <input
                 type="checkbox"
                 checked={setupSuperSaver}
                 onChange={handleCheckboxChange}
                 className="w-5 h-5 cursor-pointer"
               />
-              <label className="text-[#082351DE] text-lg font-semibold">
-                {t("setupSuperSaverX")}
+              <label
+                htmlFor="serviceProvider"
+                className="text-[#082351DE] text-lg font-semibold"
+              >
+                {t("Installation.setupTitle")} Smart PriceControl
               </label>
             </div>
 
@@ -718,19 +735,21 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
               <div className="bg-white px-6 py-4 rounded-lg mb-6 border border-gray-200">
                 <div className="p-4 rounded-lg mb-4">
                   <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
-                    {t("setupSuperSaverXSolution")}
+                    {t("Installation.atService")}
                   </h2>
                   <div className="space-y-4">
                     <label className="flex items-center space-x-2 cursor-pointer">
                       <input
                         type="radio"
                         name="installation"
-                        value="service_check"
-                        checked={selectedOption === "service_check"}
+                        value="On_Site_Visit"
+                        checked={selectedOption === "On_Site_Visit"}
                         onChange={(e) => handleOptionChange(e.target.value)}
                         className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
                       />
-                      <span className="text-gray-700">{t("serviceCheck")}</span>
+                      <span className="text-gray-700">
+                        {t("Installation.atService2")}
+                      </span>
                     </label>
 
                     <div className="space-y-2">
@@ -738,81 +757,15 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
                         <input
                           type="radio"
                           name="installation"
-                          value="local_partner"
-                          checked={selectedOption === "local_partner"}
+                          value="as_soon_as_possible"
+                          checked={selectedOption === "as_soon_as_possible"}
                           onChange={(e) => handleOptionChange(e.target.value)}
                           className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
                         />
                         <span className="text-gray-700">
-                          {t("localPartner")}
+                          {t("Installation.atService3")}
                         </span>
                       </label>
-
-                      {selectedOption === "local_partner" && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-300 p-4 rounded-lg">
-                          <input
-                            type="text"
-                            placeholder={t("partnerName")}
-                            value={partnerDetails.name}
-                            onChange={(e) =>
-                              setPartnerDetails({
-                                ...partnerDetails,
-                                name: e.target.value,
-                              })
-                            }
-                            className="p-2 border rounded-md w-full"
-                          />
-                          <div className="flex gap-2">
-                            <div className="relative w-1/3">
-                              <select
-                                name="serviceProviderCountryCode"
-                                value={partnerDetails.countryCode}
-                                onChange={(e) =>
-                                  setPartnerDetails({
-                                    ...partnerDetails,
-                                    countryCode: e.target.value,
-                                  })
-                                }
-                                className="p-2 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
-                              >
-                                {countryCodes.map((country) => (
-                                  <option
-                                    key={country.code}
-                                    className="p-2 text-gray-700 bg-white hover:bg-gray-100"
-                                    value={country.code}
-                                  >
-                                    {country.flag} {country.code}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                            <input
-                              type="text"
-                              placeholder={t("partnerMobile")}
-                              value={partnerDetails.mobile}
-                              onChange={(e) =>
-                                setPartnerDetails({
-                                  ...partnerDetails,
-                                  mobile: e.target.value,
-                                })
-                              }
-                              className="p-2 border rounded-md w-full"
-                            />
-                          </div>
-                          <input
-                            type="email"
-                            placeholder={t("partnerEmail")}
-                            value={partnerDetails.email}
-                            onChange={(e) =>
-                              setPartnerDetails({
-                                ...partnerDetails,
-                                email: e.target.value,
-                              })
-                            }
-                            className="p-2 border rounded-md w-full col-span-2"
-                          />
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>

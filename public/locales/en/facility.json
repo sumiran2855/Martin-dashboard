@@ -1,24 +1,10 @@
 {
     "back": "Back",
-    "facilityDetails": "Facility Details",
+    "facilityDetails": "XRGI® System Details",
     "name": "Name",
     "address": "Address",
     "model": "Model",
     "basicData": "Basic Data",
-    "edit": "Edit",
-    "serviceCosts": "Service costs per operating hour",
-    "vatDeduction": "VAT Deduction Percentage",
-    "gasSupply": "Gas supply",
-    "gasVariableCosts": "Consumption-dependent costs, gas",
-    "gasFixedCosts": "Consumption-Independent costs, gas",
-    "annualGasConsumption": "Annual gas consumption",
-    "electricityVariableCosts": "Consumption-dependent costs, electricity",
-    "electricityFixedCosts": "Consumption-Independent costs, electricity",
-    "annualElectricityConsumption": "Annual electricity consumption",
-    "superSaverXConsumption": "SuperSaverX Consumption",
-    "xrgI": "XRGI",
-    "tariffs": "Tariffs",
-    "flexPrice": "Flex Price",
-    "vat": "VAT"
+    "edit": "Edit"
   }
   

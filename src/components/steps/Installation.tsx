@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { countryCodes } from "../dashboard/staticData/Data";
+import { useTranslation } from "react-i18next";
 
 interface AddFeature {
+  stepTwoFormData: any;
   selectedOption: string;
   setSelectedOption: (value: string) => void;
   partnerDetails: {
@@ -18,15 +18,14 @@ interface AddFeature {
 }
 
 export default function StepThree({
+  stepTwoFormData,
   selectedOption,
   setSelectedOption,
-  partnerDetails,
   setPartnerDetails,
   setupSuperSaver,
   setSetupSuperSaver,
-  facilityMethod,
-  setFacilityMethod,
 }: AddFeature) {
+  const { t } = useTranslation("CreateProfile");
   const handleCheckboxChange = () => {
     setSetupSuperSaver((prev: any) => !prev);
     if (setupSuperSaver) {
@@ -45,16 +44,12 @@ export default function StepThree({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-[#082351DE] mb-2">Installation</h2>
-      <p className="text-gray-600 mb-6">
-        To start saving money on electricity, new software needs to be installed
-        on your system. This software is developed by EC Power and ensures
-        optimal performance while providing explanations on its benefits. The
-        pricing for this service may vary depending on the plan. See the price
-        overview here.
-      </p>
-
-      <div className="flex items-center space-x-3 py-4">
+      <h2 className="text-2xl font-bold text-[#082351DE] mb-2">
+        Smart PriceControl
+      </h2>
+      <p className="text-gray-600 mb-4">{t("Installation.description")}</p>
+      <p className="text-gray-600 mb-2">{t("Installation.description2")}</p>
+      <div className="flex items-center space-x-3 py-3">
         <input
           type="checkbox"
           checked={setupSuperSaver}
@@ -65,7 +60,7 @@ export default function StepThree({
           htmlFor="serviceProvider"
           className="text-[#082351DE] text-lg font-semibold"
         >
-          Do you want to set up SuperSaverX?
+          {t("Installation.setupTitle")} Smart PriceControl
         </label>
       </div>
 
@@ -73,19 +68,21 @@ export default function StepThree({
         <div className="bg-white px-6 py-4 rounded-lg mb-6 border border-gray-200">
           <div className="p-4 rounded-lg mb-4">
             <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
-              Setup of the SuperSaverX Solution
+              {t("Installation.atService")}
             </h2>
             <div className="space-y-4">
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="radio"
                   name="installation"
-                  value="service_check"
-                  checked={selectedOption === "service_check"}
+                  value="On_Site_Visit"
+                  checked={selectedOption === "On_Site_Visit"}
                   onChange={(e) => handleOptionChange(e.target.value)}
                   className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
-                <span className="text-gray-700">At next service check</span>
+                <span className="text-gray-700">
+                  {t("Installation.atService2")}
+                </span>
               </label>
 
               <div className="space-y-2">
@@ -93,81 +90,15 @@ export default function StepThree({
                   <input
                     type="radio"
                     name="installation"
-                    value="local_partner"
-                    checked={selectedOption === "local_partner"}
+                    value="as_soon_as_possible"
+                    checked={selectedOption === "as_soon_as_possible"}
                     onChange={(e) => handleOptionChange(e.target.value)}
                     className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
                   />
-                  <span className="text-gray-700">Local partner</span>
+                  <span className="text-gray-700">
+                    {t("Installation.atService3")}
+                  </span>
                 </label>
-
-                {selectedOption === "local_partner" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-300 p-4 rounded-lg">
-                    <input
-                      type="text"
-                      placeholder="Name"
-                      value={partnerDetails.name}
-                      onChange={(e) =>
-                        setPartnerDetails({
-                          ...partnerDetails,
-                          name: e.target.value,
-                        })
-                      }
-                      className="p-2 border rounded-md w-full"
-                    />
-
-                    <div className="flex gap-2">
-                      <div className="relative w-1/5">
-                        <select
-                          name="serviceProviderCountryCode"
-                          value={partnerDetails.countryCode}
-                          onChange={(e) =>
-                            setPartnerDetails({
-                              ...partnerDetails,
-                              countryCode: e.target.value,
-                            })
-                          }
-                          className="p-2 w-full border rounded outline-none bg-white cursor-pointer appearance-none pr-6"
-                        >
-                          {countryCodes.map((country) => (
-                            <option
-                              key={country.code}
-                              className="p-2 text-gray-700 bg-white hover:bg-gray-100"
-                              value={country.code}
-                            >
-                              {country.flag} {country.code}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <input
-                        type="text"
-                        placeholder="Mobile"
-                        value={partnerDetails.mobile}
-                        onChange={(e) =>
-                          setPartnerDetails({
-                            ...partnerDetails,
-                            mobile: e.target.value,
-                          })
-                        }
-                      className="p-2 border rounded-md w-full"
-                      />
-                    </div>
-
-                    <input
-                      type="email"
-                      placeholder="Email"
-                      value={partnerDetails.email}
-                      onChange={(e) =>
-                        setPartnerDetails({
-                          ...partnerDetails,
-                          email: e.target.value,
-                        })
-                      }
-                      className="p-2 border rounded-md w-full col-span-2"
-                    />
-                  </div>
-                )}
               </div>
             </div>
           </div>

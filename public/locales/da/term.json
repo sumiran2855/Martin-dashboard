@@ -9,6 +9,11 @@
     "title": "Vilkår og betingelser",
     "checkboxLabel": "Jeg har læst og accepterer vilkårene og betingelserne",
     "cancelButton": "Annuller",
-    "acceptButton": "Accepter vilkår"
+    "acceptButton": "Accepter vilkår",
+    "model":{
+      "title": "Profil oprettet! 🎉",
+      "message": "Registrering gennemført",
+      "primaryButton": "Gå til Dashboard"
+    }
   }
   

@@ -103,12 +103,14 @@ export default function Login() {
       setSuccessMessage("Login successful! Redirecting...");
 
       values.rememberMe
-      ? (setCookie("rememberedEmail", values.email, 1), setCookie("rememberedPassword", encryptData(values.password), 1))
+        ? (setCookie("rememberedEmail", values.email, 1),
+          setCookie("rememberedPassword", encryptData(values.password), 1))
         : (removeCookie("rememberedEmail"), removeCookie("rememberedPassword"));
 
       redirectUser(result.data.tokens.accessToken, journeyStatus);
-  }, [redirectUser]);
-
+    },
+    [redirectUser]
+  );
 
   const formik = useFormik<LoginValues>({
     initialValues: { email: "", password: "", rememberMe: false },

@@ -1,4 +1,5 @@
 import { countryCodes } from "@/components/dashboard/staticData/Data";
+import { useTranslation } from "react-i18next";
 interface ValidateFormProps {
   formData: any;
   setFormData: React.Dispatch<React.SetStateAction<any>>;
@@ -7,9 +8,8 @@ export default function createProfile({
   formData,
   setFormData,
 }: ValidateFormProps) {
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const { t } = useTranslation("CreateProfile");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
@@ -17,24 +17,23 @@ export default function createProfile({
   return (
     <>
       <h2 className="text-2xl font-bold text-[#082351DE] mb-2 ">
-        Create Profile
+      {t("title")}
       </h2>
       <p className="text-gray-600 mb-6">
-        Follow the steps to complete your profile setup.
+      {t("subtitle")}
       </p>
       <div className="bg-white p-6 rounded-lg mb-6 border border-gray-200">
         <h3 className="text-xl font-semibold text-[#082351DE] mb-2">
-          Company Information{" "}
+        {t("companyInfo.title")}
         </h3>
         <p className="text-gray-600 mb-6">
-          Fill in the details of the company you wish to register for the
-          service. We use this information to create a login for you.
+        {t("companyInfo.description")}
         </p>
         <div className="grid grid-cols-2 gap-4">
           <input
             type="text"
             name="companyName"
-            placeholder="Company Name"
+            placeholder={t("companyInfo.companyName")}
             className="border p-3 rounded w-full"
             value={formData.companyName}
             onChange={handleChange}
@@ -43,7 +42,7 @@ export default function createProfile({
           <input
             type="text"
             name="cvrNumber"
-            placeholder="CVR Number"
+            placeholder={t("companyInfo.cvrNumber")}
             className="border p-3 rounded w-full"
             value={formData.cvrNumber}
             onChange={handleChange}
@@ -51,7 +50,7 @@ export default function createProfile({
           <input
             type="text"
             name="address"
-            placeholder="Address"
+            placeholder={t("companyInfo.address")}
             className="border p-3 rounded w-full"
             value={formData.address}
             onChange={handleChange}
@@ -60,7 +59,7 @@ export default function createProfile({
             <input
               type="text"
               name="postal_code"
-              placeholder="Postcode"
+              placeholder={t("companyInfo.postalCode")}
               className="p-3 border rounded outline-none w-1/6"
               value={formData.postal_code}
               onChange={handleChange}
@@ -68,7 +67,7 @@ export default function createProfile({
             <input
               type="text"
               name="city"
-              placeholder="City"
+              placeholder={t("companyInfo.city")}
               className="p-3 border rounded outline-none w-5/6"
               value={formData.city}
               onChange={handleChange}
@@ -78,7 +77,7 @@ export default function createProfile({
           <input
             type="text"
             name="email"
-            placeholder="Email"
+            placeholder={t("companyInfo.email")}
             className="border p-3 rounded w-full"
             value={formData.email}
             onChange={handleChange}
@@ -106,7 +105,7 @@ export default function createProfile({
             <input
               type="text"
               name="phone"
-              placeholder="Phone"
+              placeholder={t("companyInfo.phone")}
               className="p-3 w-5/6 border rounded outline-none"
               value={formData.phone}
               onChange={handleChange}
@@ -116,17 +115,16 @@ export default function createProfile({
       </div>
       <div className="bg-white p-6 rounded-lg mb-6 border border-gray-200">
         <h3 className="text-xl font-semibold text-[#082351DE] mb-2">
-          Contact Person
+        {t("contactPerson.title")}
         </h3>
         <p className="text-gray-600 mb-6">
-          We will coordinate the practical details with your contact person and
-          will later need physical access to your facility.
+        {t("contactPerson.description")}
         </p>
         <div className="grid grid-cols-2 gap-4">
           <input
             type="text"
             name="firstName"
-            placeholder="First Name"
+            placeholder={t("contactPerson.firstName")}
             className="border p-3 rounded w-full"
             value={formData.firstName}
             onChange={handleChange}
@@ -134,7 +132,7 @@ export default function createProfile({
           <input
             type="text"
             name="lastName"
-            placeholder="Last Name"
+            placeholder={t("contactPerson.lastName")}
             className="border p-3 rounded w-full"
             value={formData.lastName}
             onChange={handleChange}
@@ -142,7 +140,7 @@ export default function createProfile({
           <input
             type="text"
             name="personalEmail"
-            placeholder="Email"
+            placeholder={t("contactPerson.email")}
             className="border p-3 rounded w-full"
             value={formData.personalEmail}
             onChange={handleChange}
@@ -170,7 +168,7 @@ export default function createProfile({
             <input
               type="text"
               name="personalPhone"
-              placeholder="Phone"
+              placeholder={t("contactPerson.phone")}
               className="p-3 w-5/6 border rounded outline-none"
               value={formData.personalPhone}
               onChange={handleChange}

@@ -64,7 +64,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
     { label: "Annual CO₂ savings", value: facility?.performance_report?.co2Savings ? `${facility.performance_report.co2Savings}` : "-" },
     { label: "Operating hours per year", value: facility?.performance_report?.operatingHours ? `${facility.performance_report.operatingHours} hrs` : "-" },
     { label: "Industry", value: facility?.performance_report?.industry ? `${facility.performance_report.industry}` : "-" },
-    {label:"email",value:facility?.performance_report?.email ? `${facility.performance_report.email}` : "-" }
+    {label:"E-mail address",value:facility?.performance_report?.email ? `${facility.performance_report.email}` : "-" }
   ];  
 
   return (

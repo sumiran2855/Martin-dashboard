@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight, X } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 interface Facility {
   name: string;
@@ -36,7 +36,6 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const displayedFacilities = facilities.slice(startIndex, endIndex);
-  const router = useRouter();
 
   const toggleRowExpansion = (absoluteIndex: number) => {
     setExpandedRows((prevExpandedRows) =>
@@ -54,10 +53,6 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
         facility.performance_report.industry !== null ||
         facility.performance_report.operatingHours !== null)
     );
-  };
-
-  const hasFeatureDetails = (facility: Facility) => {
-    return facility.feature && facility.feature.method;
   };
 
   return (
@@ -85,9 +80,8 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
             {displayedFacilities.length > 0 ? (
               displayedFacilities.map((facility, index) => {
                 const absoluteIndex = startIndex + index;
-
                 return (
-                  <>
+                  <React.Fragment key={`facility-${facility.xrgiID}-${index}`}>
                     <tr key={`row-${absoluteIndex}`} className="hover:bg-gray-50 transition">
                       <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
                         <div className="flex items-center space-x-3">
@@ -126,7 +120,6 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                         </button>
                       </td>
                     </tr>
-
                     {expandedRows.includes(absoluteIndex) && (
                       <tr
                         key={`expanded-${absoluteIndex}`}
@@ -191,7 +184,6 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                                         )}
                                       </div>
                                     </div>
-
                                     {facility.hasPerformanceReport && !hasPerformanceReportDetails(facility) && (
                                       <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
                                         Requested, but no details available yet
@@ -205,7 +197,7 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                         </td>
                       </tr>
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })
             ) : (

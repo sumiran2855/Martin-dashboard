@@ -3,6 +3,7 @@
 import { FC, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { X, Mail, Phone, HelpCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ModalProps {
   show: boolean;
@@ -10,6 +11,7 @@ interface ModalProps {
 }
 
 const GenericModal: FC<ModalProps> = ({ show, onHide }) => {
+  const { t } = useTranslation("facilityForm");
   const [showContactInfo, setShowContactInfo] = useState(false);
 
   const toggleContactInfo = () => {
@@ -20,7 +22,7 @@ const GenericModal: FC<ModalProps> = ({ show, onHide }) => {
     <Modal show={show} onHide={onHide} size="lg" centered className="border-0">
       <Modal.Header className="relative flex items-center justify-center border-0 bg-white rounded-t-lg py-4">
         <Modal.Title className="text-xl font-bold text-gray-900 flex items-center">
-          <span className="mr-2">XRGI ID Number</span>
+          <span className="mr-2">{t("modal.modalTitle")}</span>
         </Modal.Title>
         <button
           onClick={onHide}
@@ -32,11 +34,7 @@ const GenericModal: FC<ModalProps> = ({ show, onHide }) => {
       </Modal.Header>
 
       <Modal.Body className="text-center text-gray-700 px-6 py-2 bg-white">
-        <p className="text-lg mb-4">
-          The XRGI ID number is located at the back of your system, right under
-          the middle. You are welcome to contact us if you cannot find it on
-          your machine.
-        </p>
+        <p className="text-lg mb-4">{t("modal.modalDescription")}</p>
 
         <div className="flex justify-center mb-6">
           <div className="relative w-full md:w-4/5 lg:w-3/4 overflow-hidden rounded-lg shadow-md">
@@ -46,18 +44,20 @@ const GenericModal: FC<ModalProps> = ({ show, onHide }) => {
               className="w-full h-auto"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent text-white text-xs py-1 px-2 text-center">
-              XRGI ID Location
+              {t("modal.modalImageLabel")}
             </div>
           </div>
         </div>
       </Modal.Body>
-
+      <p className="text-lg mb-4 flex justify-center">
+        {t("modal.modalContactSupportText")}
+      </p>
       <Modal.Footer className="flex flex-col gap-4 px-6 pb-2 pt-0 border-0 bg-white rounded-b-lg">
         {showContactInfo && (
           <div className="w-full bg-blue-50 rounded-lg p-4 border border-blue-100 transition-all duration-300 ease-in-out">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <HelpCircle size={20} className="text-blue-600 mr-2" />
-              Support Contact Information
+              {t("modal.supportTitle")}
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -67,9 +67,10 @@ const GenericModal: FC<ModalProps> = ({ show, onHide }) => {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium text-gray-500">
-                    Email Support
+                    {t("modal.emailSupport")}
                   </span>
-                  <a href="mailto:support@ecpower.dk"
+                  <a
+                    href="mailto:support@ecpower.dk"
                     className="text-blue-600 hover:text-blue-700 font-medium"
                   >
                     support@ecpower.dk
@@ -83,13 +84,13 @@ const GenericModal: FC<ModalProps> = ({ show, onHide }) => {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium text-gray-500">
-                    Phone Support
+                    {t("modal.phoneSupport")}
                   </span>
                   <a
                     href="tel:+18005551234"
                     className="text-blue-600 hover:text-blue-700 font-medium"
                   >
-                   +4587414300
+                    +4587414300
                   </a>
                 </div>
               </div>
@@ -105,7 +106,9 @@ const GenericModal: FC<ModalProps> = ({ show, onHide }) => {
               : "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500"
           }`}
         >
-          {showContactInfo ? "Hide Contact Information" : "Contact Support"}
+          {showContactInfo
+            ? t("modal.hideContactInfoButton")
+            : t("modal.contactSupportButton")}
         </Button>
       </Modal.Footer>
     </Modal>

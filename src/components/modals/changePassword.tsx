@@ -59,12 +59,10 @@ export default function ChangePassword({
   const handleChangePassword = async () => {
     setError(null);
     setSuccess(null);
-
     if (!oldPassword || !newPassword || !confirmPassword) {
       setError(t("allFieldsRequired"));
       return;
     }
-
     if (newPassword !== confirmPassword) {
       setError(t("passwordMismatch"));
       return;
@@ -77,7 +75,6 @@ export default function ChangePassword({
       setError(t("authTokenMissing"));
       return;
     }
-
     try {
       const response = await change_Password(token, IdToken, payload);
       if (!response) {

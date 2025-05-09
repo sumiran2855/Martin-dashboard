@@ -1,6 +1,7 @@
 import GenericModal from "@/components/modals/genericPopup";
 import { useState } from "react";
 import { countryCodes } from "../dashboard/staticData/Data";
+import { useTranslation } from "react-i18next";
 
 interface ValidateFormProps {
   stepTwoFormData: any;
@@ -33,6 +34,7 @@ export default function CreateFacility({
   setServiceContractWantedChoice,
   serviceContractWantedChoice,
 }: ValidateFormProps) {
+  const { t } = useTranslation("CreateProfile");
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(
     stepTwoFormData.model || ""
@@ -59,10 +61,6 @@ export default function CreateFacility({
     }
   };
 
-  const handleRadioChange = () => {
-    setHasServiceProvider((prev: boolean) => !prev);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     const { name, value } = e.target;
     setStepTwoFormData((prev: any) => ({ ...prev, [name]: value }));
@@ -70,7 +68,6 @@ export default function CreateFacility({
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-
     if (name === "model") {
       setSelectedModel(value);
       setStepTwoFormData((prev: any) => ({ ...prev, model: value }));
@@ -93,29 +90,26 @@ export default function CreateFacility({
   return (
     <div>
       <h2 className="text-2xl font-bold text-[#082351DE] mb-2">
-        Register Your XRGI System
+        {t("facility.title")}
       </h2>
-      <p className="text-gray-600 mb-6">
-        We have now created a login for you and your company. If you do not have
-        the system details, you can always return later.
-      </p>
+      <p className="text-gray-600 mb-6">{t("facility.description")}</p>
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
         <div className="p-6 rounded-lg mb-6">
           <h2 className="text-lg font-semibold text-[#082351DE] mb-4">
-            Register a System
+            {t("facility.registerSystem")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <input
                 type="text"
                 name="systemName"
-                placeholder="Name the system"
+                placeholder={t("facility.systemNamePlaceholder")}
                 className="p-3 border rounded-lg w-full"
                 value={stepTwoFormData.systemName}
                 onChange={handleChange}
               />
               <label className="text-gray-500 text-sm mt-1 block ml-3">
-                Example: “System in basement 01”
+                {t("facility.systemNameHint")}
               </label>
             </div>
 
@@ -127,7 +121,7 @@ export default function CreateFacility({
                   onChange={handleChangeSelect}
                   className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                 >
-                  <option value="">Select a Model</option>
+                  <option value="">{t("facility.selectModel")}</option>
                   <option>XRGI® 6 LOWNOX</option>
                   <option>XRGI® 6</option>
                   <option>XRGI® 9</option>
@@ -153,19 +147,19 @@ export default function CreateFacility({
                 </span>
               </div>
               <label className="text-gray-500 text-sm mt-1 block ml-3">
-                Model name is on your registration form
+                {t("facility.modelHint")}
               </label>
             </div>
 
             <div className="md:col-span-1 relative">
               <label className="block text-gray-700 text-sm font-medium mb-1">
-                XRGI ID Number
+                {t("facility.xrgiIdLabel")}
               </label>
               <div className="relative">
                 <input
                   type="text"
                   name="XRGINumber"
-                  placeholder="Enter XRGI ID number"
+                  placeholder={t("facility.xrgiIdPlaceholder")}
                   className="p-3 border border-gray-300 rounded-lg w-full pr-10  focus:ring-2 focus:ring-blue-300"
                   value={stepTwoFormData.XRGINumber}
                   onChange={handleChange}
@@ -198,8 +192,7 @@ export default function CreateFacility({
                 </span>
               </div>
               <p className="text-gray-500 text-sm mt-1">
-                The ID number is 8 digits and located on the side of the
-                machine.
+                {t("facility.xrgiIdHint")}
               </p>
             </div>
           </div>
@@ -210,20 +203,20 @@ export default function CreateFacility({
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
         <div className="p-6 rounded-lg mb-6">
           <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-            System Location
+            {t("facility.locationTitle")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <input
                 type="text"
                 name="address"
-                placeholder="Address"
+                placeholder={t("facility.addressPlaceholder")}
                 className="p-3 border rounded-lg w-full"
                 value={stepTwoFormData.address}
                 onChange={handleChange}
               />
               <label className="text-gray-500 text-sm mt-1 block ml-3">
-                Enter the address of this system's location
+                {t("facility.addressHint")}
               </label>
             </div>
 
@@ -231,7 +224,7 @@ export default function CreateFacility({
               <input
                 type="text"
                 name="postalCode"
-                placeholder="Postal Code"
+                placeholder={t("facility.postalCodePlaceholder")}
                 className="p-3 border rounded-lg w-full"
                 value={stepTwoFormData.postalCode}
                 onChange={handleChange}
@@ -242,7 +235,7 @@ export default function CreateFacility({
               <input
                 type="text"
                 name="city"
-                placeholder="City"
+                placeholder={t("facility.cityPlaceholder")}
                 className="p-3 border rounded-lg w-full"
                 value={stepTwoFormData.city}
                 onChange={handleChange}
@@ -252,7 +245,7 @@ export default function CreateFacility({
               <input
                 type="text"
                 name="country"
-                placeholder="Country"
+                placeholder={t("facility.countryPlaceholder")}
                 className="p-3 border rounded-lg w-full"
                 value={stepTwoFormData.country}
                 onChange={handleChange}
@@ -264,9 +257,12 @@ export default function CreateFacility({
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
         <div className="p-6 rounded-lg">
-          <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-            Do you already have a service contract for your system?
+          <h2 className="text-lg text-[#082351DE] font-semibold mb-2">
+            {t("facility.alreadyHaveContract")}
           </h2>
+          <p className="mb-4 text-gray-500">
+            {t("facility.alreadyHaveContract2")}
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <SelectionButton
               selected={serviceContractChoice === "yes"}
@@ -285,7 +281,7 @@ export default function CreateFacility({
           {serviceContractChoice === "no" && (
             <div className="mt-6">
               <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                Do you want a service contract for your ECPower?
+                {t("facility.wantContract")}
               </h2>
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <SelectionButton
@@ -307,20 +303,20 @@ export default function CreateFacility({
           {hasServiceProvider && (
             <div className="mt-6">
               <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                Service Provider
+                {t("facility.providerTitle")}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <input
                     type="text"
                     name="serviceProviderName"
-                    placeholder="Name of service provider"
+                    placeholder={t("facility.providerNamePlaceholder")}
                     className="p-3 border rounded-lg w-full"
                     value={stepTwoFormData.serviceProviderName}
                     onChange={handleChange}
                   />
                   <label className="text-gray-500 text-sm mt-1 block ml-3">
-                    Enter the name of the service provider
+                    {t("facility.providerNameHint")}
                   </label>
                 </div>
 
@@ -328,7 +324,7 @@ export default function CreateFacility({
                   <input
                     type="text"
                     name="serviceProviderMail"
-                    placeholder="Email Address"
+                    placeholder={t("facility.providerEmailPlaceholder")}
                     className="p-3 border rounded-lg w-full"
                     value={stepTwoFormData.serviceProviderMail}
                     onChange={handleChange}
@@ -357,7 +353,7 @@ export default function CreateFacility({
                   <input
                     type="text"
                     name="serviceProviderPhone"
-                    placeholder="Phone Number"
+                    placeholder={t("facility.providerPhonePlaceholder")}
                     className="p-3 w-5/6 border rounded-lg outline-none"
                     value={stepTwoFormData.serviceProviderPhone}
                     onChange={handleChange}
@@ -370,7 +366,13 @@ export default function CreateFacility({
       </div>
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
-        <div className="flex items-center space-x-3 py-4">
+        <h2 className="text-2xl font-semibold text-[#082351DE] px-4 pt-4">
+        {t("energyCheckTitle")}
+        </h2>
+        <h2 className="text-xl font-semibold text-[#082351DE] px-4 pb-4">
+        {t("energyCheckSubtitle")}
+        </h2>
+        <div className="flex items-center space-x-3 pb-4">
           <input
             type="checkbox"
             id="performanceReport"
@@ -383,24 +385,28 @@ export default function CreateFacility({
             htmlFor="performanceReport"
             className="text-[#082351DE] text-lg font-semibold"
           >
-            I want to add a performance report
+            {t("facility.addPerformanceReport")}
           </label>
         </div>
 
         {hasPerformanceReport && (
-          <div className="bg-white p-10 rounded-lg mb-6">
+          <div className="bg-white px-4 rounded-lg mb-6">
             <div className="text-[#082351DE] rounded-lg mb-6">
-              <h2 className="text-lg font-semibold mb-4">Performance report</h2>
-
+              <h2 className="text-lg font-normal mb-2">
+                {t("facility.performanceTitle")}
+              </h2>
+              <h2 className="text-lg font-normal mb-4">
+              {t("facility.performanceTitle2")}
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Expected annual savings
+                    {t("facility.savingsLabel")}
                   </label>
                   <input
                     type="text"
                     name="annualSavings"
-                    placeholder="Euro Pr. Year"
+                    placeholder={t("facility.savingsPlaceholder")}
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2"
                     value={stepTwoFormData.annualSavings}
                     onChange={handleChange}
@@ -409,12 +415,12 @@ export default function CreateFacility({
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Expected annual CO₂ savings
+                    {t("facility.co2Label")}
                   </label>
                   <input
                     type="text"
                     name="co2Savings"
-                    placeholder="Tons Pr. year"
+                    placeholder={t("facility.co2Placeholder")}
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
                     value={stepTwoFormData.co2Savings}
                     onChange={handleChange}
@@ -423,12 +429,12 @@ export default function CreateFacility({
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Expected operating hours per year
+                    {t("facility.hoursLabel")}
                   </label>
                   <input
                     type="text"
                     name="operatingHours"
-                    placeholder="0-8763"
+                    placeholder={t("facility.hoursPlaceholder")}
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
                     value={stepTwoFormData.operatingHours}
                     onChange={handleChange}
@@ -437,7 +443,7 @@ export default function CreateFacility({
 
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Industry
+                    {t("facility.industryLabel")}
                   </label>
                   <select
                     name="industry"
@@ -446,27 +452,24 @@ export default function CreateFacility({
                     onChange={handleChange}
                   >
                     <option value="" disabled>
-                      Select a Industry
+                      {t("facility.industryPlaceholder")}
                     </option>
-                    <option value="manufacturing">Hotel</option>
-                    <option value="healthcare">School</option>
-                    <option value="hospitality">Sport</option>
-                    <option value="hospitality">Nursing home</option>
-                    <option value="hospitality">Indrusty</option>
-                    <option value="hospitality">Other</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="School">School</option>
+                    <option value="Sport">Sport</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-1">
-                    Recipient Email Address(es){" "}
+                    {t("facility.emailLabel")}{" "}
                     <span className="text-gray-500 text-sm">
-                      (You can enter multiple addresses separated by commas)
+                      {t("facility.emailHint")}
                     </span>
                   </label>
                   <input
                     type="text"
                     name="email"
-                    placeholder="e.g. user@example.com, admin@example.com"
+                    placeholder={t("facility.emailPlaceholder")}
                     className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
                     value={stepTwoFormData.email}
                     onChange={handleChange}
@@ -491,7 +494,7 @@ export default function CreateFacility({
             htmlFor="installSystem"
             className="text-[#082351DE] text-lg font-semibold"
           >
-            Is your system installed ?
+            {t("facility.installCheckbox")}
           </label>
         </div>
       </div>

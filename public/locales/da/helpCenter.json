@@ -1,17 +1,16 @@
 {
-    "subject": "Emne",
-    "selectSubject": "Vælg et emne",
-    "message": "Din besked",
-    "placeholder": "Angiv venligst detaljer om din forespørgsel...",
-    "sendMessage": "Send besked",
-    "alertSuccess": "Din besked er blevet sendt! Vi vender snart tilbage til dig.",
-    "alertError": "Der opstod en fejl ved afsendelse af din besked. Prøv venligst igen.",
-    "subjects": {
-      "problemXRGi": "Problem med XRGi",
-      "problemAddingInfo": "Problem med at tilføje oplysninger",
-      "questionSuperSaver": "Spørgsmål om Super Saver",
-      "contactEC": "Få EC Power til at kontakte mig",
-      "otherInquiry": "Anden forespørgsel"
-    }
+  "subject": "Emne",
+  "selectSubject": "Vælg et emne",
+  "message": "Din besked",
+  "placeholder": "Angiv venligst detaljer om din forespørgsel...",
+  "sendMessage": "Send besked",
+  "alertSuccess": "Din besked er blevet sendt! Vi vender snart tilbage til dig.",
+  "alertError": "Der opstod en fejl ved afsendelse af din besked. Prøv venligst igen.",
+  "subjects": {
+    "problemXRGi": "Problem med XRGi",
+    "problemAddingInfo": "Problem med at tilføje information",
+    "questionSuperSaver": "Problem med Price Smart",
+    "contactEC": "Jeg vil gerne kontaktes af EC POWER",
+    "otherInquiry": "Anden forespørgsel"
   }
-  
+}

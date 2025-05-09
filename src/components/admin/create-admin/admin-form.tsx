@@ -75,7 +75,6 @@ export default function AdminForm() {
         setError(result.message);
         return;
       }
-
       setSuccess(result.message);
       setIsOpen(true);
     },
@@ -88,10 +87,8 @@ export default function AdminForm() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Create new admin
           </h2>
-
           {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
           {success && <p className="text-green-500 text-sm mb-3">{success}</p>}
-
           <form onSubmit={formik.handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-6">
               <div>

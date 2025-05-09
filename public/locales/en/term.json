@@ -1,14 +1,18 @@
 {
-    "termsAndConsent": [
-      "Terms of Use and Consent EC POWER A/S",
-      "By using EC POWER A/S products and services, you as a customer accept the following terms:",
-      "1. Data Processing Consent\nYou agree that EC POWER A/S (CVR: 19228509, Samsvej 25, 8382 Hinnerup) may:\n- Collect and process technical data and contact information for support, troubleshooting, and service improvement.\n- Store data in compliance with applicable data protection legislation (GDPR).\n- Protect your data with appropriate technical and organizational security measures.\n\nYour data will not be shared with third parties without your prior consent unless required by law.",
-      "2. Cybersecurity and NIS2\nEC POWER A/S complies with the NIS2 Directive (EU 2022/2555) and has implemented measures to protect against digital threats.\n\nBy using our systems, you acknowledge that:\n- EC POWER A/S has fulfilled its obligations regarding cybersecurity.\n- You as a customer are also responsible for securing your own devices and following EC POWER's security recommendations.\n- EC POWER A/S cannot be held liable for damages or breaches resulting from issues beyond our control, including failures or vulnerabilities in the customer's own systems.",
-      "3. Your Acceptance\nBy continuing to use EC POWER’s products or services, you confirm:\n- I accept that EC POWER may process my data as described above.\n- I acknowledge EC POWER’s NIS2 compliance.\n- I understand EC POWER cannot be held liable for breaches caused by customer-side issues or non-compliance with guidance."
-    ],
-    "title": "Terms and Conditions",
-    "checkboxLabel": "I have read and agree to the Terms and Conditions",
-    "cancelButton": "Cancel",
-    "acceptButton": "Accept Terms"
+  "termsAndConsent": [
+    "Terms of Use and Consent EC POWER A/S",
+    "By using EC POWER A/S products and services, you as a customer accept the following terms:",
+    "1. Data Processing Consent\nYou agree that EC POWER A/S (CVR: 19228509, Samsvej 25, 8382 Hinnerup) may:\n- Collect and process technical data and contact information for support, troubleshooting, and service improvement.\n- Store data in compliance with applicable data protection legislation (GDPR).\n- Protect your data with appropriate technical and organizational security measures.\n\nYour data will not be shared with third parties without your prior consent unless required by law.",
+    "2. Cybersecurity and NIS2\nEC POWER A/S complies with the NIS2 Directive (EU 2022/2555) and has implemented measures to protect against digital threats.\n\nBy using our systems, you acknowledge that:\n- EC POWER A/S has fulfilled its obligations regarding cybersecurity.\n- You as a customer are also responsible for securing your own devices and following EC POWER's security recommendations.\n- EC POWER A/S cannot be held liable for damages or breaches resulting from issues beyond our control, including failures or vulnerabilities in the customer's own systems.",
+    "3. Your Acceptance\nBy continuing to use EC POWER’s products or services, you confirm:\n- I accept that EC POWER may process my data as described above.\n- I acknowledge EC POWER’s NIS2 compliance.\n- I understand EC POWER cannot be held liable for breaches caused by customer-side issues or non-compliance with guidance."
+  ],
+  "title": "Terms and Conditions",
+  "checkboxLabel": "I have read and agree to the Terms and Conditions",
+  "cancelButton": "Cancel",
+  "acceptButton": "Accept Terms",
+  "model": {
+    "title": "Profile Created Successfully! 🎉",
+    "message": "Registration completed",
+    "primaryButton": "Go to Dashboard"
   }
-  
+}

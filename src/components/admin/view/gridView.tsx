@@ -9,7 +9,6 @@ interface Users {
 
 export default function GridView({ users }: { users: Users[] }) {
   const router = useRouter();
-
   const inactiveUsers = users.filter((user) => user.status !== "Active");
   const activeUsers = users.filter((user) => user.status === "Active");
 
@@ -23,8 +22,7 @@ export default function GridView({ users }: { users: Users[] }) {
               <div
                 key={index}
                 className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white"
-                onClick={() => router.push(`/admin/user/${user.id}`)}
-              >
+                onClick={() => router.push(`/admin/user/${user.id}`)} >
                 <div>
                   <h3 className="text-gray-800 text-sm font-semibold">
                     {user.companyName}
@@ -77,7 +75,6 @@ export default function GridView({ users }: { users: Users[] }) {
         </div>
       )}
 
-      {/* No Data Message */}
       {users.length === 0 && (
         <div className="flex flex-col items-center justify-center py-16">
           <img

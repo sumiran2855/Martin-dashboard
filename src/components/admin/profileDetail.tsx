@@ -10,6 +10,7 @@ export default function profileDetail() {
   const [isOpen, setIsOpen] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const { formData, setFormData, loading } = getProfile();
+  const router = useRouter();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -52,7 +53,6 @@ export default function profileDetail() {
     }
   };
 
-  const router = useRouter();
   return (
     <>
       {loading ? (
@@ -75,7 +75,6 @@ export default function profileDetail() {
                 </button>
               </div>
 
-              {/* Business Information Section */}
               <div className="p-6 border-b">
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
                   Business Information
@@ -152,7 +151,6 @@ export default function profileDetail() {
                 </div>
               </div>
 
-              {/* Contact Person Section */}
               <div className="p-6">
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
                   Contact Person
@@ -235,7 +233,6 @@ export default function profileDetail() {
                 </div>
               </div>
 
-              {/* Save Changes Button */}
               <div className="p-6 border-t">
                 <button
                   className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"

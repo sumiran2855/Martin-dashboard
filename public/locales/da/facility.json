@@ -1,25 +1,10 @@
 {
     "back": "Tilbage",
-    "facilityDetails": "Facilitetsdetaljer",
+    "facilityDetails": "XRGI® systemdetaljer",
     "name": "Navn",
     "address": "Adresse",
     "model": "Model",
     "basicData": "Grunddata",
-    "edit": "Rediger",
-    "serviceCosts": "Driftsomkostninger pr. time",
-    "vatDeduction": "Momsfradragsprocent",
-    "gasSupply": "Gasforsyning",
-    "gasVariableCosts": "Forbrugsafhængige omkostninger, gas",
-    "gasFixedCosts": "Forbrugsuafhængige omkostninger, gas",
-    "annualGasConsumption": "Årligt gasforbrug",
-    "electricityVariableCosts": "Forbrugsafhængige omkostninger, el",
-    "electricityFixedCosts": "Forbrugsuafhængige omkostninger, el",
-    "annualElectricityConsumption": "Årligt elforbrug",
-    "superSaverXConsumption": "SuperSaverX Forbrug",
-    "xrgI": "XRGI",
-    "tariffs": "Priser",
-    "flexPrice": "Flexpris",
-    "vat": "Moms"
-    
+    "edit": "Rediger"
   }
   

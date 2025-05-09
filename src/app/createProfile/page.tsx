@@ -226,7 +226,6 @@ function Dashboard() {
     try {
       const response = await createFacility(token, IdToken, payload);
       console.log("create facility success", response);
-
       await handleCreateProfile(true);
       return true;
     } catch (error) {
@@ -330,7 +329,6 @@ function Dashboard() {
 
   const handleAcceptTerms = async () => {
     setIsTermsOpen(false);
-
     const success = await handleCreateFacility();
     if (success) {
       setStep(3);
@@ -359,23 +357,17 @@ function Dashboard() {
   return (
     <div className="flex bg-gray-50">
       {step === 1 && !isSubscribed && <Sidebar />}
-      <div
-        className={`flex-1 transition-all ${
-          step === 1 ? "pl-[300px]" : "pl-0"
-        } p-10 flex flex-col items-center`}
-      >
+      <div className={`flex-1 transition-all ${ step === 1 ? "pl-[300px]" : "pl-0" } p-10 flex flex-col items-center`} >
         {isSubscribed ? (
           <Modal
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
-            title="Subscription Activated! 🎉"
-            message="Your subscription has been successfully started. You now have
-               access to all premium features."
-            primaryButton="Go to Dashboard"
+            title=""
+            message={term("model.message")}
+            primaryButton={term("model.primaryButton")}
             onPrimaryClick={() => {
               router.push("/dashboard");
-            }}
-          />
+            }} />
         ) : (
           <>
             <Stepper step={step} />
@@ -403,6 +395,7 @@ function Dashboard() {
               )}
               {step === 3 && (
                 <Installation
+                 stepTwoFormData={stepTwoFormData}
                   selectedOption={selectedOption}
                   setSelectedOption={setSelectedOption}
                   partnerDetails={partnerDetails}
@@ -428,7 +421,7 @@ function Dashboard() {
       <TermsModal
         isOpen={isTermsOpen}
         onClose={() => setIsTermsOpen(false)}
-        title="Terms and Conditions"
+        title={term("title")}
         termsContent={term("termsAndConsent", { returnObjects: true }) as string[] }
         onAccept={handleAcceptTerms}
         isChecked={isChecked}
