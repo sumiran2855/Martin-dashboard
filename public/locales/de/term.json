@@ -8,6 +8,7 @@
     ],
     "title": "Allgemeine Geschäftsbedingungen",
     "checkboxLabel": "Ich habe die Bedingungen gelesen und stimme ihnen zu",
+    "checkboxLabel2": "Ich möchte die Allgemeinen Geschäftsbedingungen nicht akzeptieren",
     "cancelButton": "Abbrechen",
     "acceptButton": "Bedingungen akzeptieren",
     "model":{

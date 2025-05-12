@@ -27,12 +27,11 @@ export default function HelpCenterForm() {
 
       await sendQuery(subject, message, token, IdToken);
 
-      alert(t("alertSuccess"));
       setSubject("");
       setMessage("");
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert(t("alertError"));
+      // alert(t("alertError"));
     }
   };
 

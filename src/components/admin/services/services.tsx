@@ -215,10 +215,10 @@ function ServicesPage() {
       {!loading && (
         <div className="flex-1 overflow-auto p-8">
           <h1 className="text-2xl font-medium text-gray-800 mb-2">
-            {t("services.servicesTitle")}
+            Service Contracts
           </h1>
           <p className="text-gray-600 mb-6">
-            {t("services.servicesDescription")}
+            View and manage all XRGI® systems that have as associated service partner
           </p>
 
           <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
@@ -229,7 +229,7 @@ function ServicesPage() {
                   onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
                 >
                   <Filter size={16} className="mr-2" />
-                  <span>{t("sortBy")}</span>
+                  <span>Sort By</span>
                   <ChevronDown size={16} className="ml-2" />
                 </button>
                 {sortDropdownOpen && (
@@ -252,7 +252,7 @@ function ServicesPage() {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder={t("services.searchPlaceholder")}
+                  placeholder="Search services..."
                   className="pl-10 pr-4 py-2 w-96 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}

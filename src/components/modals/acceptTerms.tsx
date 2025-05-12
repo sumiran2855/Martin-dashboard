@@ -94,8 +94,8 @@ const TermsModal: React.FC<TermsModalProps> = ({
               }}
               className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 mt-1"
             />
-            <label htmlFor="skip-terms" className="ml-2 text-sm text-gray-700">
-              I don't want to accept the terms and conditions
+            <label htmlFor="skip-terms" className="text-sm text-gray-700 ml-4">
+              {t("checkboxLabel2")}
             </label>
           </div>
         </div>
@@ -113,7 +113,7 @@ const TermsModal: React.FC<TermsModalProps> = ({
             }`}
             onClick={handleAccept}
             // disabled={!isChecked}
-            disabled={!isChecked && !skipTerms}
+            disabled={!isChecked && skipTerms}
           >
             {t("acceptButton")}
           </button>

@@ -189,7 +189,6 @@ export const sendQuery = async (
     return result.data;
   }
 
-  throw new Error("Failed to send query");
 };
 
 export const sendReply = async (
@@ -212,8 +211,6 @@ export const sendReply = async (
   if (result.success) {
     return result.data;
   }
-
-  throw new Error("Failed to send query");
 };
 
 export const getQuery = async (
@@ -231,7 +228,6 @@ export const getQuery = async (
     return result.data;
   }
 
-  throw new Error("Failed to get query");
 };
 
 export const markAsRead = async (

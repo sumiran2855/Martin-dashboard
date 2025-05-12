@@ -46,7 +46,7 @@ export default function MainContent() {
             setCustomerData([]);
           }
         } catch (error) {
-          console.error("Error fetching customers", error);
+          console.log("Error fetching customers", error);
           setCustomerData([]);
         } finally {
           setLoading(false);

@@ -107,7 +107,6 @@ export default function ContactList() {
       closeReplyModal();
     } catch (error) {
       console.error("Failed to send reply:", error);
-      alert("Failed to send reply.");
     }
   };
 

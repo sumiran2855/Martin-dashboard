@@ -8,6 +8,7 @@
     ],
     "title": "Vilkår og betingelser",
     "checkboxLabel": "Jeg har læst og accepterer vilkårene og betingelserne",
+    "checkboxLabel2":"Jeg ønsker ikke at acceptere vilkårene og betingelserne",
     "cancelButton": "Annuller",
     "acceptButton": "Accepter vilkår",
     "model":{

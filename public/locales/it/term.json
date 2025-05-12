@@ -8,6 +8,7 @@
     ],
     "title": "Termini e condizioni",
     "checkboxLabel": "Ho letto e accetto i termini e le condizioni",
+    "checkboxLabel2":"Non voglio accettare i termini e le condizioni",
     "cancelButton": "Annulla",
     "acceptButton": "Accetta i termini",
     "model":{

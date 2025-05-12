@@ -192,16 +192,16 @@ export default function EditFacilities({
         : null;
 
       const payload = {
-        name: facility?.name,
-        xrgiID: facility?.xrgiID,
-        modelNumber: facility?.modelNumber,
+        name: facility?.name || "",
+        xrgiID: facility?.xrgiID || "",
+        modelNumber: facility?.modelNumber || "",
         location: {
           address: facility?.location?.address || "",
           postalCode: facility?.location?.postalCode || "",
           city: facility?.location?.city || "",
           country: facility?.location?.country || "",
         },
-        serviceProvider: serviceProviderData,
+        serviceProvider: serviceProviderData || "",
         performance_report: {
           annualSavings: facility?.performance_report?.annualSavings || "",
           co2Savings: facility?.performance_report?.co2Savings || "",
@@ -293,7 +293,7 @@ export default function EditFacilities({
                     name="name"
                     placeholder="Name the system"
                     className="p-3 border rounded-lg w-full"
-                    value={facility?.name}
+                    value={facility?.name ?? ""}
                     onChange={handleChange}
                   />
                   <label className="text-gray-500 text-sm mt-1 block ml-3">
@@ -305,7 +305,7 @@ export default function EditFacilities({
                   <div className="relative">
                     <select
                       name="modelNumber"
-                      value={facility?.modelNumber}
+                      value={facility?.modelNumber ?? ""}
                       onChange={handleChange}
                       className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
                     >
@@ -349,7 +349,7 @@ export default function EditFacilities({
                       name="xrgiID"
                       placeholder="Enter XRGI ID number"
                       className="p-3 border border-gray-300 rounded-lg w-full pr-10  focus:ring-2 focus:ring-blue-300"
-                      value={facility?.xrgiID}
+                      value={facility?.xrgiID ?? ""}
                       onChange={handleChange}
                     />
                     <span
@@ -404,7 +404,7 @@ export default function EditFacilities({
                     name="location.address"
                     placeholder="Address"
                     className="p-3 border rounded-lg w-full"
-                    value={facility?.location?.address}
+                    value={facility?.location?.address ?? ""}
                     onChange={handleChange}
                   />
                   <label className="text-gray-500 text-sm mt-1 block ml-3">
@@ -418,7 +418,7 @@ export default function EditFacilities({
                     name="location.postalCode"
                     placeholder="Postal Code"
                     className="p-3 border rounded-lg w-full"
-                    value={facility?.location?.postalCode}
+                    value={facility?.location?.postalCode ?? ""}
                     onChange={handleChange}
                   />
                 </div>
@@ -429,7 +429,7 @@ export default function EditFacilities({
                     name="location.city"
                     placeholder="City"
                     className="p-3 border rounded-lg w-full"
-                    value={facility?.location?.city}
+                    value={facility?.location?.city ?? ""}
                     onChange={handleChange}
                   />
                 </div>
@@ -440,40 +440,40 @@ export default function EditFacilities({
           <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
             <div className="p-6 rounded-lg">
               <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                {t("alreadyHaveContract")}
+                Do you have a service contract for your XRGI® system ?
               </h2>
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <SelectionButton
                   selected={serviceContractChoice === "yes"}
                   onClick={() => handleServiceContractChoice("yes")}
                 >
-                  {t("yes")}
+                  Yes
                 </SelectionButton>
                 <SelectionButton
                   selected={serviceContractChoice === "no"}
                   onClick={() => handleServiceContractChoice("no")}
                 >
-                  {t("no")}
+                  No
                 </SelectionButton>
               </div>
 
               {serviceContractChoice === "no" && (
                 <div className="mt-6">
                   <h2 className="text-lg text-[#082351DE] font-semibold mb-4">
-                    {t("wantContract")}
+                    Are you interested in a service contract with EC POWER?
                   </h2>
                   <div className="flex flex-col sm:flex-row gap-4 mb-6">
                     <SelectionButton
                       selected={serviceContractWantedChoice === "yes"}
                       onClick={() => handleWantServiceContractChoice("yes")}
                     >
-                      {t("yes")}
+                      Yes
                     </SelectionButton>
                     <SelectionButton
                       selected={serviceContractWantedChoice === "no"}
                       onClick={() => handleWantServiceContractChoice("no")}
                     >
-                      {t("no")}
+                      No
                     </SelectionButton>
                   </div>
                 </div>
@@ -486,13 +486,13 @@ export default function EditFacilities({
                       <input
                         type="text"
                         name="serviceProvider.name"
-                        placeholder={t("serviceProviderName")}
+                        placeholder="Name of service provider"
                         className="p-3 border rounded-lg w-full"
                         value={facility?.serviceProvider?.name ?? ""}
                         onChange={handleChange}
                       />
                       <label className="text-gray-500 text-sm mt-1 block ml-3">
-                        {t("enterServiceProviderName")}
+                        Please provide the details of your service partner
                       </label>
                     </div>
 
@@ -500,7 +500,7 @@ export default function EditFacilities({
                       <input
                         type="text"
                         name="serviceProvider.mailAddress"
-                        placeholder={t("serviceProviderEmail")}
+                        placeholder="Email address"
                         className="p-3 border rounded-lg w-full"
                         value={facility?.serviceProvider?.mailAddress ?? ""}
                         onChange={handleChange}
@@ -520,7 +520,7 @@ export default function EditFacilities({
                               className="p-2 text-gray-700 bg-white hover:bg-gray-100"
                               value={country.code}
                             >
-                              {country.flag} {country.code}
+                              {country.flag ?? ""} {country.code ?? ""}
                             </option>
                           ))}
                         </select>
@@ -529,7 +529,7 @@ export default function EditFacilities({
                       <input
                         type="text"
                         name="serviceProvider.phone"
-                        placeholder={t("serviceProviderPhone")}
+                        placeholder="Phone number"
                         className="p-3 w-5/6 border rounded-lg outline-none"
                         value={facility?.serviceProvider?.phone ?? ""}
                         onChange={handleChange}
@@ -635,22 +635,22 @@ export default function EditFacilities({
                         onChange={handleChange}
                       >
                         <option value="">Select a Industry</option>
-                        <option value="manufacturing">Manufacturing</option>
-                        <option value="healthcare">Healthcare</option>
-                        <option value="hospitality">Hospitality</option>
+                          <option value="Hotel">Hotel</option>
+                          <option value="School">School</option>
+                          <option value="Sport">Sport</option>
                       </select>
                     </div>
                     <div>
                       <label className="block text-gray-700 text-sm font-medium mb-1">
-                        {t("emailLabel")}
+                        Recipient Email Address(es)
                         <span className="text-gray-500 text-sm">
-                          {t("emailHint")}
+                          (You can enter multiple addresses separated by commas)
                         </span>
                       </label>
                       <input
                         type="text"
                         name="performance_report.email"
-                        placeholder={t("emailPlaceholder")}
+                        placeholder="e.g. user@example.com, admin@example.com"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
                         value={facility?.performance_report?.email ?? ""}
                         onChange={handleChange}
