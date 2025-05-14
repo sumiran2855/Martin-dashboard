@@ -25,13 +25,21 @@ function AddFacility() {
   const [wantsServiceContract, setWantsServiceContract] = useState(false);
   const [setupSuperSaver, setSetupSuperSaver] = useState(false);
   const [isTermsOpen, setTermsOpen] = useState(false);
+  const [errors, setErrors] = useState({
+    systemName: "",
+    model: "",
+    XRGINumber: "",
+    address: "",
+    postalCode: "",
+    city: "",
+    country: ""
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const {
     stepTwoFormData,
     setStepTwoFormData,
     handleCreateFacility,
-    partnerDetails,
-    setPartnerDetails,
   } = useCreateFacility();
 
   const [selectedModel, setSelectedModel] = useState(
@@ -51,6 +59,10 @@ function AddFacility() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     const { name, value } = e.target;
     setStepTwoFormData((prev: any) => ({ ...prev, [name]: value }));
+    
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,11 +70,57 @@ function AddFacility() {
     if (name === "model") {
       setSelectedModel(value);
       setStepTwoFormData((prev: any) => ({ ...prev, model: value }));
+      if (errors.model) {
+        setErrors(prev => ({ ...prev, model: "" }));
+      }
     }
   };
 
+  const validateForm = () => {
+    setFormSubmitted(true);
+    const newErrors = {
+      systemName: "",
+      model: "",
+      XRGINumber: "",
+      address: "",
+      postalCode: "",
+      city: "",
+      country: ""
+    };
+    
+      if (!stepTwoFormData.systemName?.trim()) {
+        newErrors.systemName = "Please provide the system name.";
+      }
+      if (!selectedModel) {
+        newErrors.model = "Please select a model.";
+      }
+      if (!stepTwoFormData.XRGINumber?.trim()) {
+        newErrors.XRGINumber = "Please enter the XRGI number.";
+      }
+      if (!stepTwoFormData.address?.trim()) {
+        newErrors.address = "Please provide the installation address.";
+      }
+      if (!stepTwoFormData.postalCode?.trim()) {
+        newErrors.postalCode = "Postal code is required.";
+      }
+      if (!stepTwoFormData.city?.trim()) {
+        newErrors.city = "City name is required.";
+      }
+      if (!stepTwoFormData.country?.trim()) {
+        newErrors.country = "Country name is required.";
+      }
+
+    
+    setErrors(newErrors);
+    
+    return !Object.values(newErrors).some(error => error);
+  };
+
   const onSubmit = async () => {
-    setTermsOpen(true);
+    const isValid = validateForm();
+    if (isValid) {
+      setTermsOpen(true);
+    }
   };
 
   const handleAcceptTerms = async () => {
@@ -147,13 +205,17 @@ function AddFacility() {
                       type="text"
                       name="systemName"
                       placeholder={t("nameSystem")}
-                      className="p-3 border rounded-lg w-full"
-                      value={stepTwoFormData.systemName}
+                      className={`p-3 border rounded-lg w-full ${errors.systemName && formSubmitted ? "border-red-500" : ""}`}
+                      value={stepTwoFormData.systemName || ""}
                       onChange={handleChange}
                     />
-                    <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      {t("nameSystemExample")}
-                    </label>
+                    {errors.systemName && formSubmitted ? (
+                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.systemName}</p>
+                    ) : (
+                      <label className="text-gray-500 text-sm mt-1 block ml-3">
+                        {t("nameSystemExample")}
+                      </label>
+                    )}
                   </div>
 
                   <div>
@@ -162,7 +224,7 @@ function AddFacility() {
                         name="model"
                         value={selectedModel}
                         onChange={handleChangeSelect}
-                        className="appearance-none bg-white p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer"
+                        className={`appearance-none bg-white p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer ${errors.model && formSubmitted ? "border-red-500" : "border-gray-300"}`}
                       >
                         <option value="">{t("selectModel")}</option>
                         <option>XRGI® 6 LOWNOX</option>
@@ -189,9 +251,13 @@ function AddFacility() {
                         </svg>
                       </span>
                     </div>
-                    <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      {t("modelNameHint")}
-                    </label>
+                    {errors.model && formSubmitted ? (
+                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.model}</p>
+                    ) : (
+                      <label className="text-gray-500 text-sm mt-1 block ml-3">
+                        {t("modelNameHint")}
+                      </label>
+                    )}
                   </div>
 
                   <div className="md:col-span-1 relative">
@@ -203,8 +269,8 @@ function AddFacility() {
                         type="text"
                         name="XRGINumber"
                         placeholder={t("enterXrgiId")}
-                        className="p-3 border border-gray-300 rounded-lg w-full pr-10  focus:ring-2 focus:ring-blue-300"
-                        value={stepTwoFormData.XRGINumber}
+                        className={`p-3 border rounded-lg w-full pr-10 focus:ring-2 focus:ring-blue-300 ${errors.XRGINumber && formSubmitted ? "border-red-500" : "border-gray-300"}`}
+                        value={stepTwoFormData.XRGINumber || ""}
                         onChange={handleChange}
                       />
                       <span
@@ -234,9 +300,13 @@ function AddFacility() {
                         </svg>
                       </span>
                     </div>
-                    <p className="text-gray-500 text-sm mt-1">
-                      {t("xrgiIdHint")}
-                    </p>
+                    {errors.XRGINumber && formSubmitted ? (
+                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.XRGINumber}</p>
+                    ) : (
+                      <p className="text-gray-500 text-sm mt-1 block ml-3">
+                        {t("xrgiIdHint")}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -257,13 +327,17 @@ function AddFacility() {
                       type="text"
                       name="address"
                       placeholder={t("address")}
-                      className="p-3 border rounded-lg w-full"
-                      value={stepTwoFormData.address}
+                      className={`p-3 border rounded-lg w-full ${errors.address && formSubmitted ? "border-red-500" : ""}`}
+                      value={stepTwoFormData.address || ""}
                       onChange={handleChange}
                     />
-                    <label className="text-gray-500 text-sm mt-1 block ml-3">
-                      {t("addressHint")}
-                    </label>
+                    {errors.address && formSubmitted ? (
+                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.address}</p>
+                    ) : (
+                      <label className="text-gray-500 text-sm mt-1 block ml-3">
+                        {t("addressHint")}
+                      </label>
+                    )}
                   </div>
 
                   <div>
@@ -271,10 +345,13 @@ function AddFacility() {
                       type="text"
                       name="postalCode"
                       placeholder={t("postalCode")}
-                      className="p-3 border rounded-lg w-full"
-                      value={stepTwoFormData.postalCode}
+                      className={`p-3 border rounded-lg w-full ${errors.postalCode && formSubmitted ? "border-red-500" : ""}`}
+                      value={stepTwoFormData.postalCode || ""}
                       onChange={handleChange}
                     />
+                    {errors.postalCode && formSubmitted && (
+                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.postalCode}</p>
+                    )}
                   </div>
 
                   <div className="md:col-span-1">
@@ -282,10 +359,13 @@ function AddFacility() {
                       type="text"
                       name="city"
                       placeholder={t("city")}
-                      className="p-3 border rounded-lg w-full"
-                      value={stepTwoFormData.city}
+                      className={`p-3 border rounded-lg w-full ${errors.city && formSubmitted ? "border-red-500" : ""}`}
+                      value={stepTwoFormData.city || ""}
                       onChange={handleChange}
                     />
+                    {errors.city && formSubmitted && (
+                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.city}</p>
+                    )}
                   </div>
 
                   <div className="md:col-span-1">
@@ -293,10 +373,13 @@ function AddFacility() {
                       type="text"
                       name="country"
                       placeholder={t("country")}
-                      className="p-3 border rounded-lg w-full"
-                      value={stepTwoFormData.country}
+                      className={`p-3 border rounded-lg w-full ${errors.country && formSubmitted ? "border-red-500" : ""}`}
+                      value={stepTwoFormData.country || ""}
                       onChange={handleChange}
                     />
+                    {errors.country && formSubmitted && (
+                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.country}</p>
+                    )}
                   </div>
                 </div>
               </div>

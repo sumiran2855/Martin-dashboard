@@ -8,6 +8,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { getAllUserFacility } from "@/services/facilityServices";
+import React from "react";
 
 interface FacilityDetails {
   name: string;
@@ -58,7 +59,7 @@ interface Users {
   facilities?: FacilityDetails[];
 }
 
-export default function listView({ users }: { users: Users[] }) {
+export default function ListView({ users }: { users: Users[] }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRowId, setExpandedRowId] = useState<number | null>(null);
@@ -169,7 +170,7 @@ export default function listView({ users }: { users: Users[] }) {
             <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Status
             </th>
-            <th className="px-4 md:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Details
             </th>
           </tr>
@@ -177,11 +178,8 @@ export default function listView({ users }: { users: Users[] }) {
         <tbody className="bg-white divide-y divide-gray-200">
           {displayedUsers.length > 0 ? (
             displayedUsers.map((user, index) => (
-              <>
-                <tr
-                  key={`row-${index}`}
-                  className="hover:bg-gray-50 transition"
-                >
+              <React.Fragment key={`user-${user.id || index}`}>
+                <tr className="hover:bg-gray-50 transition">
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap flex items-center space-x-3">
                     <img src="/Box.png" alt="folder" className="w-6 h-6 md:w-7 md:h-7" />
                     <span className="text-gray-800 text-xs md:text-sm">
@@ -227,7 +225,7 @@ export default function listView({ users }: { users: Users[] }) {
                 </tr>
 
                 {expandedRowId === index && (
-                  <tr key={`expanded-${index}`}>
+                  <tr key={`expanded-${user.id || index}`}>
                     <td
                       colSpan={5}
                       className="px-0 py-0 border-b border-gray-200"
@@ -245,7 +243,7 @@ export default function listView({ users }: { users: Users[] }) {
                           <div className="space-y-3">
                             {facilitiesMap[user.id || 0]?.map((facility, facIndex) => (
                               <div
-                                key={facIndex}
+                                key={`facility-${user.id || 0}-${facIndex}`}
                                 className="bg-white rounded-lg shadow-sm border border-gray-100"
                               >
                                 <div 
@@ -391,7 +389,7 @@ export default function listView({ users }: { users: Users[] }) {
                     </td>
                   </tr>
                 )}
-              </>
+              </React.Fragment>
             ))
           ) : (
             <tr>
