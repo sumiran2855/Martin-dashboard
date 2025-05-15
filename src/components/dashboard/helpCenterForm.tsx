@@ -38,7 +38,7 @@ export default function HelpCenterForm() {
 
       await sendQuery(subject, message, token, IdToken);
 
-      showAlert("success", t("failure") || "Your query has been submitted successfully!");
+      showAlert("success", t("success") || "Your query has been submitted successfully!");
       setSubject("");
       setMessage("");
     } catch (error) {
