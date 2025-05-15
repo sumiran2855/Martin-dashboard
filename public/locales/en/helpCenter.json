@@ -12,6 +12,8 @@
       "questionSuperSaver": "Problem with Price Smart",
       "contactEC": "I want to be contacted by EC POWER",
       "otherInquiry": "Other Inquiry"
-    }
+    },
+    "success": "Your query has been submitted successfully!",
+    "failure": "Failed to submit your query. Please try again."
   }
   

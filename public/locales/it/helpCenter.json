@@ -1,17 +1,18 @@
 {
-    "subject": "Oggetto",
-    "selectSubject": "Seleziona un oggetto",
-    "message": "Il tuo messaggio",
-    "placeholder": "Fornisci dettagli sulla tua richiesta...",
-    "sendMessage": "Invia Messaggio",
-    "alertSuccess": "Il tuo messaggio è stato inviato! Ti risponderemo al più presto.",
-    "alertError": "Si è verificato un errore durante l'invio del messaggio. Riprova.",
-    "subjects": {
-      "problemXRGi": "Problema con XRGi",
-      "problemAddingInfo": "Problema nell'aggiunta delle informazioni",
-      "questionSuperSaver": "Problema con Price Smart",
-      "contactEC": "Voglio essere contattato da EC POWER",
-      "otherInquiry": "Altra richiesta"
-    }
-  }
-  
+  "subject": "Oggetto",
+  "selectSubject": "Seleziona un oggetto",
+  "message": "Il tuo messaggio",
+  "placeholder": "Fornisci dettagli sulla tua richiesta...",
+  "sendMessage": "Invia Messaggio",
+  "alertSuccess": "Il tuo messaggio è stato inviato! Ti risponderemo al più presto.",
+  "alertError": "Si è verificato un errore durante l'invio del messaggio. Riprova.",
+  "subjects": {
+    "problemXRGi": "Problema con XRGi",
+    "problemAddingInfo": "Problema nell'aggiunta delle informazioni",
+    "questionSuperSaver": "Problema con Price Smart",
+    "contactEC": "Voglio essere contattato da EC POWER",
+    "otherInquiry": "Altra richiesta"
+  },
+  "success": "La tua richiesta è stata inviata con successo!",
+  "failure": "Invio della richiesta non riuscito. Riprova."
+}

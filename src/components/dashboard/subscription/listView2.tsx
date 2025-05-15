@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight, X } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import React from "react";
 
 interface Facility {
@@ -27,7 +26,6 @@ interface Facility {
 }
 
 export default function ListView2({ facilities }: { facilities: Facility[] }) {
-  const { t } = useTranslation("dashboard");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -62,16 +60,16 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
           <thead>
             <tr className="bg-gray-50">
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t("name")}
+                Name
               </th>
               <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t("xrgiFacility")}
+                XRGi Facility
               </th>
               <th className="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t("model")}
+                Model
               </th>
               <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t("services")}
+                Services
               </th>
               <th className="px-4 py-3 w-12"></th>
             </tr>
@@ -103,8 +101,8 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                       </td>
                       <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
                         {facility.hasServiceContract
-                          ? t("Available")
-                          : t("Unavailable")}
+                          ? "Available"
+                          : "Unavailable"}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <button
@@ -133,24 +131,24 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                                   <h4 className="font-medium text-sm text-gray-700 mb-2">Facility Details</h4>
                                   <div className="flex justify-between text-sm py-1 border-b border-gray-100">
                                     <span className="font-medium text-gray-600">
-                                      {t("xrgiFacility")}:
+                                      XRGi Facility:
                                     </span>
                                     <span>{facility.xrgiID}</span>
                                   </div>
                                   <div className="flex justify-between text-sm py-1 border-b border-gray-100">
                                     <span className="font-medium text-gray-600">
-                                      {t("model")}:
+                                     Model:
                                     </span>
                                     <span>{facility.modelNumber}</span>
                                   </div>
                                   <div className="flex justify-between text-sm py-1">
                                     <span className="font-medium text-gray-600">
-                                      {t("services")}:
+                                      Services:
                                     </span>
                                     <span>
                                       {facility.hasServiceContract
-                                        ? t("Available")
-                                        : t("Unavailable")}
+                                        ? "Available"
+                                        : "Unavailable"}
                                     </span>
                                   </div>
                                 </div>
@@ -213,7 +211,7 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                         />
                       </div>
                     </div>
-                    <p className="text-gray-500">{t("noFacilities")}</p>
+                    <p className="text-gray-500">No registered facilities</p>
                   </div>
                 </td>
               </tr>

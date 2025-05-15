@@ -12,5 +12,7 @@
     "questionSuperSaver": "Problem med Price Smart",
     "contactEC": "Jeg vil gerne kontaktes af EC POWER",
     "otherInquiry": "Anden forespørgsel"
-  }
+  },
+  "success": "Din forespørgsel er blevet sendt!",
+  "failure": "Det lykkedes ikke at sende din forespørgsel. Prøv igen."
 }

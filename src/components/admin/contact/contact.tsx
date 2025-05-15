@@ -19,6 +19,14 @@ export default function ContactList() {
   const [replyModalOpen, setReplyModalOpen] = useState(false);
   const [replyText, setReplyText] = useState("");
   const [currentContact, setCurrentContact] = useState<Contact | null>(null);
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+
+  const showAlert = (type: string, message: string) => {
+    setAlert({ show: true, type, message });
+    setTimeout(() => {
+      setAlert({ show: false, type: "", message: "" });
+    }, 3000);
+  };
 
   useEffect(() => {
     const fetchQueries = async () => {
@@ -30,6 +38,7 @@ export default function ContactList() {
         setContacts(data);
       } catch (err) {
         console.error(err);
+        showAlert("error", "Failed to fetch queries. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -64,8 +73,10 @@ export default function ContactList() {
           contact.id === id ? { ...contact, seen: true } : contact
         )
       );
+      showAlert("success", "Marked as resolved successfully!");
     } catch (err) {
       console.error("Failed to mark as read:", err);
+      showAlert("error", "Failed to mark as resolved. Please try again.");
     }
   };
 
@@ -105,13 +116,28 @@ export default function ContactList() {
       );
 
       closeReplyModal();
+      showAlert("success", "Reply sent successfully!");
     } catch (error) {
       console.error("Failed to send reply:", error);
+      showAlert("error", "Failed to send reply. Please try again.");
     }
   };
 
   return (
     <>
+      {alert.show && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-1/3 min-w-64">
+          <div 
+            className={`mb-4 p-4 rounded-md ${
+              alert.type === "success" 
+                ? "bg-green-100 text-green-800 border border-green-400" 
+                : "bg-red-100 text-red-800 border border-red-400"
+            }`}
+          >
+            {alert.message}
+          </div>
+        </div>
+      )}
       {loading && (
         <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
           <div

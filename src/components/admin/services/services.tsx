@@ -49,6 +49,18 @@ interface Facility {
   };
 }
 
+const statusLabels: Record<string, string> = {
+  All: "All",
+  Active: "Active",
+  Inactive: "Inactive",
+  MissingData: "Data Missing",
+  WithProvider: "With service Provider",
+  WithoutProvider: "Requesting Service Provider",
+  HaveSuperSaverX: "Have SuperSaverX",
+  WantSuperSaverX: "Want SuperSaverX"
+};
+
+
 const statusOptions = ["All", "Active", "Inactive", "MissingData", "WithProvider", "WithoutProvider"];
 
 function ServicesPage() {
@@ -240,7 +252,7 @@ function ServicesPage() {
                         onClick={() => handleStatusSelect(status)}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        {t(`statusOptions.${status}`)}
+                        {statusLabels[status]}
                       </button>
                     ))}
                   </div>

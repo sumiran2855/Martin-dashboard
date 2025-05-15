@@ -309,10 +309,10 @@ function SubscriptionPage() {
         <div className="flex-1 overflow-auto p-8">
           <section className="mb-12">
             <h1 className="text-2xl font-medium text-gray-800 mb-2">
-              SuperSaverX Overview
+              Smart PriceControl Overview
             </h1>
             <p className="text-gray-600 mb-6">
-              View and manage SuperSaverX access for all facilities.
+              View and manage Smart PriceControl access for all facilities.
             </p>
 
             <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
@@ -373,10 +373,10 @@ function SubscriptionPage() {
 
           <section>
             <h2 className="text-2xl font-medium text-gray-800 mb-2">
-              Performance Report Overview
+              EnergyCheck Plus Overview
             </h2>
             <p className="text-gray-600 mb-6">
-              View and manage performance report access for all facilities.
+              View and manage EnergyCheck Plus access for all facilities.
             </p>
 
             <div className="flex justify-between items-center mb-4 flex-wrap gap-2">

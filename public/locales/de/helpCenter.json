@@ -12,5 +12,7 @@
     "questionSuperSaver": "Problem mit Price Smart",
     "contactEC": "Ich möchte von EC POWER kontaktiert werden",
     "otherInquiry": "Andere Anfrage"
-  }
+  },
+  "success": "Ihre Anfrage wurde erfolgreich übermittelt!",
+  "failure": "Ihre Anfrage konnte nicht übermittelt werden. Bitte versuchen Sie es erneut."
 }

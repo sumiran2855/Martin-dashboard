@@ -16,10 +16,21 @@ export default function HelpCenterForm() {
   const { t } = useTranslation("helpCenter");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+
+  const showAlert = (type:any, message:any) => {
+    setAlert({ show: true, type, message });
+    setTimeout(() => {
+      setAlert({ show: false, type: "", message: "" });
+    }, 3000); 
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!subject || !message) return alert(t("alertError"));
+    if (!subject || !message) {
+      showAlert("error", t("alertError"));
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token") || undefined;
@@ -27,17 +38,30 @@ export default function HelpCenterForm() {
 
       await sendQuery(subject, message, token, IdToken);
 
+      showAlert("success", t("failure") || "Your query has been submitted successfully!");
       setSubject("");
       setMessage("");
     } catch (error) {
       console.error("Error submitting form:", error);
-      // alert(t("alertError"));
+      showAlert("error", t("failure") || "Failed to submit your query. Please try again.");
     }
   };
 
   return (
     <div className="flex-1 overflow-auto">
-      <div className="px-10 py-10">
+      <div className="px-4 py-6 md:px-10 md:py-10">
+        {alert.show && (
+          <div 
+            className={`mb-4 p-4 rounded-md ${
+              alert.type === "success" 
+                ? "bg-green-100 text-green-800 border border-green-400" 
+                : "bg-red-100 text-red-800 border border-red-400"
+            }`}
+          >
+            {alert.message}
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label

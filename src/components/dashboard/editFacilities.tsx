@@ -234,7 +234,6 @@ export default function EditFacilities({ facilityId }: { facilityId: string }) {
           : null,
         featureAdded: setupSuperSaver ? true : false,
       };
-      console.log("🚀 ~ handleSave ~ payload:", payload);
 
       const updatedFacility = await apiRequest(
         `create-facility?id=${facilityId}`,

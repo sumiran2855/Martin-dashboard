@@ -72,7 +72,6 @@ export const change_Admin_Password = async (
 
 // verify email
 export const verifyEmail = async (email: string, verificationCode: string) => {
-  console.log("🚀 ~ verifyEmail ~ email:", email);
   return await apiRequest(AUTH_API_ROUTES.VERIFY_EMAIL, "POST", {
     email,
     code: verificationCode,

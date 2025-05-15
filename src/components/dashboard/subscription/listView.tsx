@@ -1,7 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import { AlertCircle, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight, X } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import {
+  AlertCircle,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  X,
+} from "lucide-react";
 
 interface Facility {
   name: string;
@@ -27,7 +34,6 @@ interface Facility {
 }
 
 export default function ListView({ facilities }: { facilities: Facility[] }) {
-  const { t } = useTranslation("dashboard");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -56,16 +62,16 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
           <thead>
             <tr className="bg-gray-50">
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t("name")}
+                Name
               </th>
               <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t("xrgiFacility")}
+                XRGi Facility
               </th>
               <th className="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t("model")}
+                Model
               </th>
               <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t("services")}
+                Services
               </th>
               <th className="px-4 py-3 w-12"></th>
             </tr>
@@ -97,8 +103,8 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                       </td>
                       <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
                         {facility.hasServiceContract
-                          ? t("Available")
-                          : t("Unavailable")}
+                          ? "Available"
+                          : "Unavailable"}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <button
@@ -116,39 +122,43 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                     </tr>
 
                     {expandedRows.includes(absoluteIndex) && (
-                      <tr className="bg-gray-50 border-t border-b border-gray-200" >
+                      <tr className="bg-gray-50 border-t border-b border-gray-200">
                         <td colSpan={5} className="px-0 py-0">
                           <div className="mx-4 sm:mx-6 my-4 bg-white rounded-lg shadow-sm border border-gray-100">
                             <div className="p-4 sm:p-6">
                               <div className="grid grid-cols-1 md:grid-rows-1 gap-6">
                                 <div className="md:hidden space-y-3 p-2 bg-gray-50 rounded-md">
-                                  <h4 className="font-medium text-sm text-gray-700 mb-2">Facility Details</h4>
+                                  <h4 className="font-medium text-sm text-gray-700 mb-2">
+                                    Facility Details
+                                  </h4>
                                   <div className="flex justify-between text-sm py-1 border-b border-gray-100">
                                     <span className="font-medium text-gray-600">
-                                      {t("xrgiFacility")}:
+                                      XRGi Facility:
                                     </span>
                                     <span>{facility.xrgiID}</span>
                                   </div>
                                   <div className="flex justify-between text-sm py-1 border-b border-gray-100">
                                     <span className="font-medium text-gray-600">
-                                      {t("model")}:
+                                      Model:
                                     </span>
                                     <span>{facility.modelNumber}</span>
                                   </div>
                                   <div className="flex justify-between text-sm py-1">
                                     <span className="font-medium text-gray-600">
-                                      {t("services")}:
+                                      Services:
                                     </span>
                                     <span>
                                       {facility.hasServiceContract
-                                        ? t("Available")
-                                        : t("Unavailable")}
+                                        ? "Available"
+                                        : "Unavailable"}
                                     </span>
                                   </div>
                                 </div>
-                                
+
                                 <div className="space-y-5">
-                                  <h4 className="font-medium text-sm text-gray-700 mb-3">Status Overview</h4>
+                                  <h4 className="font-medium text-sm text-gray-700 mb-3">
+                                    Status Overview
+                                  </h4>
 
                                   {/* Supersaver Plan Card */}
                                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
@@ -160,28 +170,42 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                         {facility.featureAdded ? (
                                           hasFeatureDetails(facility) ? (
                                             <div className="flex items-center bg-green-50 text-green-600 px-2 py-1 rounded-full">
-                                              <Check size={14} className="mr-1" />
-                                              <span className="text-xs font-medium">Active</span>
+                                              <Check
+                                                size={14}
+                                                className="mr-1"
+                                              />
+                                              <span className="text-xs font-medium">
+                                                Active
+                                              </span>
                                             </div>
                                           ) : (
                                             <div className="flex items-center bg-yellow-50 text-yellow-600 px-2 py-1 rounded-full">
-                                              <AlertCircle size={14} className="mr-1" />
-                                              <span className="text-xs font-medium">Processing</span>
+                                              <AlertCircle
+                                                size={14}
+                                                className="mr-1"
+                                              />
+                                              <span className="text-xs font-medium">
+                                                Processing
+                                              </span>
                                             </div>
                                           )
                                         ) : (
                                           <div className="flex items-center bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
                                             <X size={14} className="mr-1" />
-                                            <span className="text-xs font-medium">Not Active</span>
+                                            <span className="text-xs font-medium">
+                                              Not Active
+                                            </span>
                                           </div>
                                         )}
                                       </div>
                                     </div>
-                                    {facility.featureAdded && !hasFeatureDetails(facility) && (
-                                      <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
-                                        Requested, but no details available yet
-                                      </div>
-                                    )}
+                                    {facility.featureAdded &&
+                                      !hasFeatureDetails(facility) && (
+                                        <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
+                                          Requested, but no details available
+                                          yet
+                                        </div>
+                                      )}
                                   </div>
                                 </div>
                               </div>
@@ -206,7 +230,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                         />
                       </div>
                     </div>
-                    <p className="text-gray-500">{t("noFacilities")}</p>
+                    <p className="text-gray-500">No registered facilities</p>
                   </div>
                 </td>
               </tr>

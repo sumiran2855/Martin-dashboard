@@ -60,7 +60,7 @@ export const getCustomer = async (token: string, IdToken: string) => {
       result.data;
     return {
       companyName: companyInfo?.name || "",
-      cvrNumber: companyInfo?.cvrNumber || "",
+      cvrNumber: companyInfo?.cvr_number || companyInfo?.cvrNumber || "",
       address: companyInfo?.address || "",
       postal_code: companyInfo?.postal_code || "",
       city: companyInfo?.city || "",
