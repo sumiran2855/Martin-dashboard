@@ -62,11 +62,11 @@ export default function Login() {
 
   const setupAndStoreUserData = async (result:any) => {
     if (result.data.tokens.accessToken) {
-      localStorage.setItem("accessToken", result.data.tokens.accessToken);
+      localStorage.setItem("token", result.data.tokens.accessToken);
     }
     
-    if (result.data.tokens.refreshToken) {
-      localStorage.setItem("refreshToken", result.data.tokens.refreshToken);
+    if (result.data.tokens.idToken) {
+      localStorage.setItem("IdToken", result.data.tokens.idToken);
     }
     
     const journeyStatus = result.data.userData.journeyStatus;
@@ -130,8 +130,10 @@ export default function Login() {
         
         setSuccessMessage("Login successful! Redirecting...");
         
-        const journeyStatus = await setupAndStoreUserData(result);     
-        await redirectUser(result.data.tokens.accessToken, journeyStatus);
+        const journeyStatus = await setupAndStoreUserData(result);
+        const accessToken = localStorage.getItem("token");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await redirectUser(accessToken!, journeyStatus);
       } catch (err) {
         console.error("Login error:", err);
         setError("An unexpected error occurred. Please try again.");
