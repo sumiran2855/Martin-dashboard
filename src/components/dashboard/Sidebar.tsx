@@ -56,8 +56,8 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
   ];
 
   const preferenceItems = [
-    { href: "/settings", label: "settings", icon: "⚙️" },
-    { href: "/helpCenter", label: "helpCenter", icon: "❓" },
+    { href: "/settings", label: "settings", icon: "⚙️",paths:["/settings"] },
+    { href: "/helpCenter", label: "helpCenter", icon: "❓" ,paths:["/helpCenter"]},
   ];
 
   const handleToggle = () => {
@@ -133,8 +133,8 @@ export default function AdminSidebar({ facilityId }: { facilityId: string }) {
                   href={item.href}
                   label={t(item.label)}
                   icon={item.icon}
-                  isActive={pathname === item.href}
-                />
+                  isActive={item.paths.some(path => pathname.startsWith(path))}
+                  />
               ))}
             </div>
           </nav>

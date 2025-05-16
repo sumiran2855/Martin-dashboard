@@ -574,12 +574,13 @@ function AddFacility() {
                           value={stepTwoFormData.industry}
                           onChange={handleChange}
                         >
-                          <option value="" disabled>
-                            Select a Industry
-                          </option>
+                          <option value="">Select a Industry</option>
                           <option value="Hotel">Hotel</option>
                           <option value="School">School</option>
                           <option value="Sport">Sport</option>
+                          <option value="Nursing home">Nursing home</option>
+                          <option value="Industry">Industry</option>
+                          <option value="other">other</option>
                         </select>
                       </div>
 

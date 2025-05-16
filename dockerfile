@@ -21,7 +21,7 @@ ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # Expose the Next.js default port
-EXPOSE 3000
+EXPOSE 3001
 
 # Start Next.js in production mode
 CMD ["npm", "run", "dev"]

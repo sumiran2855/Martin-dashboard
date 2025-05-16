@@ -367,10 +367,10 @@ export default function CreateFacility({
 
       <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
         <h2 className="text-2xl font-semibold text-[#082351DE] px-4 pt-4">
-        {t("energyCheckTitle")}
+          {t("energyCheckTitle")}
         </h2>
         <h2 className="text-xl font-semibold text-[#082351DE] px-4 pb-4">
-        {t("energyCheckSubtitle")}
+          {t("energyCheckSubtitle")}
         </h2>
         <div className="flex items-center space-x-3 pb-4">
           <input
@@ -396,7 +396,7 @@ export default function CreateFacility({
                 {t("facility.performanceTitle")}
               </h2>
               <h2 className="text-lg font-normal mb-4">
-              {t("facility.performanceTitle2")}
+                {t("facility.performanceTitle2")}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -451,12 +451,15 @@ export default function CreateFacility({
                     value={stepTwoFormData.industry}
                     onChange={handleChange}
                   >
-                    <option value="" disabled>
+                    <option value="">
                       {t("facility.industryPlaceholder")}
                     </option>
                     <option value="Hotel">Hotel</option>
                     <option value="School">School</option>
                     <option value="Sport">Sport</option>
+                    <option value="Nursing home">Nursing home</option>
+                    <option value="Industry">Industry</option>
+                    <option value="other">other</option>
                   </select>
                 </div>
                 <div>
