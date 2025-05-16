@@ -29,6 +29,7 @@ export default function Login() {
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [unverifiedEmail, setUnverifiedEmail] = useState("");
   const [hasMounted, setHasMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { t, i18n } = useTranslation("login");
   const validationSchema = Yup.object({
@@ -59,16 +60,35 @@ export default function Login() {
     localStorage.setItem("i18nextLng", lng);
   };
 
+  const setupAndStoreUserData = async (result:any) => {
+    if (result.data.tokens.accessToken) {
+      localStorage.setItem("accessToken", result.data.tokens.accessToken);
+    }
+    
+    if (result.data.tokens.refreshToken) {
+      localStorage.setItem("refreshToken", result.data.tokens.refreshToken);
+    }
+    
+    const journeyStatus = result.data.userData.journeyStatus;
+    localStorage.setItem("journeyStatus", journeyStatus);
+    
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    return journeyStatus;
+  }
+
   const redirectUser = useCallback(
-    (accessToken: string, journeyStatus: string) => {
+    async (accessToken: string, journeyStatus: string) => {
       const decodedToken = decodeAccessToken(accessToken);
-      router.push(
-        decodedToken?.["cognito:groups"]?.includes("ServiceTechnician")
-          ? "/admin"
-          : journeyStatus === "completed"
+      const isServiceTechnician = decodedToken?.["cognito:groups"]?.includes("ServiceTechnician");
+      
+      const redirectPath = isServiceTechnician 
+        ? "/admin" 
+        : journeyStatus === "completed"
           ? "/dashboard"
-          : "/createProfile"
-      );
+          : "/createProfile";
+      
+      router.push(redirectPath);
     },
     [router]
   );
@@ -77,37 +97,47 @@ export default function Login() {
     async (values: LoginValues) => {
       setError("");
       setSuccessMessage("");
+      setIsLoading(true);
 
-      const result = await login(values.email, values.password);
-      if (result?.data?.tokens?.sessionToken) {
-        localStorage.setItem("SessionId", result.data.tokens.sessionToken);
-        localStorage.setItem("email", result.data.userData.email);
-        router.push("/admin/reset-password");
-        return;
-      }
-      if (!result.success) {
+      try {
+        const result = await login(values.email, values.password);
+        if (result?.data?.tokens?.sessionToken) {
+          localStorage.setItem("SessionId", result.data.tokens.sessionToken);
+          localStorage.setItem("email", result.data.userData.email);
+          router.push("/admin/reset-password");
+          return;
+        }
+        if (!result.success) {
         if (
           result.message ===
           "User is not confirmed. Please verify your account."
         ) {
-          setUnverifiedEmail(values.email);
-          setIsOpen(true);
+            setUnverifiedEmail(values.email);
+            setIsOpen(true);
+            return;
+          }
+          setError(result.message || "Invalid email or password.");
           return;
         }
-        setError(result.message || "Invalid email or password.");
-        return;
+
+        if (values.rememberMe) {
+          setCookie("rememberedEmail", values.email, 1);
+          setCookie("rememberedPassword", encryptData(values.password), 1);
+        } else {
+          removeCookie("rememberedEmail");
+          removeCookie("rememberedPassword");
+        }
+        
+        setSuccessMessage("Login successful! Redirecting...");
+        
+        const journeyStatus = await setupAndStoreUserData(result);     
+        await redirectUser(result.data.tokens.accessToken, journeyStatus);
+      } catch (err) {
+        console.error("Login error:", err);
+        setError("An unexpected error occurred. Please try again.");
+      } finally {
+        setIsLoading(false);
       }
-
-      const journeyStatus = result.data.userData.journeyStatus;
-      localStorage.setItem("journeyStatus", journeyStatus);
-      setSuccessMessage("Login successful! Redirecting...");
-
-      values.rememberMe
-        ? (setCookie("rememberedEmail", values.email, 1),
-          setCookie("rememberedPassword", encryptData(values.password), 1))
-        : (removeCookie("rememberedEmail"), removeCookie("rememberedPassword"));
-
-      redirectUser(result.data.tokens.accessToken, journeyStatus);
     },
     [redirectUser]
   );
@@ -178,7 +208,7 @@ export default function Login() {
               <button
                 type="submit"
                 className="w-full bg-blue-900 text-white py-3 rounded-md hover:bg-blue-800 transition cursor-pointer"
-                disabled={!formik.isValid || formik.isSubmitting}
+                disabled={!formik.isValid || formik.isSubmitting || isLoading}
               >
                 {t("login")}
               </button>

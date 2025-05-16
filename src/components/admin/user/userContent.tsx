@@ -5,11 +5,14 @@ import {
   List,
   ChevronDown,
   ArrowLeft,
+  User,
+  Mail,
+  Phone,
+  Building,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import GridView from "@/components/admin/user/view/gridView";
 import ListView from "@/components/admin/user/view/listView";
-import { useRouter } from "next/navigation";
 import { getCustomerById } from "@/services/customerServices";
 import { getAllUserFacility } from "@/services/facilityServices";
 import Link from "next/link";
@@ -98,7 +101,7 @@ export default function MainContent({ userId = [] }: User) {
               }
             })
           );
-          
+
           setuserData(facilitiesArray.flat());
         } catch (error) {
           console.error("Error fetching facilities", error);
@@ -109,10 +112,10 @@ export default function MainContent({ userId = [] }: User) {
         setLoading(false);
       }
     };
-    
+
     fetchFacilities();
   }, [userId]);
-  
+
   const filteredData = userData
     .filter((facility) =>
       facility.name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -135,7 +138,7 @@ export default function MainContent({ userId = [] }: User) {
       )}
       {!loading && (
         <div className="flex-1 overflow-auto">
-          <div className="p-8">
+          <div className="p-4 md:p-8">
             <Link
               href="/admin"
               className="flex items-center gap-2 text-lg font-medium text-blue-600 no-underline transition-all duration-200 hover:text-blue-800 mb-4"
@@ -145,20 +148,85 @@ export default function MainContent({ userId = [] }: User) {
               </div>
               <span className="text-xl">Back</span>
             </Link>
-            <h1 className="text-2xl font-medium text-gray-800 mb-2">
-              {customerData[0]?.companyName.toUpperCase()}
-            </h1>
+
+            {/* Company Details Section */}
+{customerData[0] && (
+              <div className="mb-8 overflow-hidden bg-white rounded-xl shadow-sm border border-gray-100">
+                <div className="px-6 py-4 bg-blue-50 border-b border-gray-100">
+                  <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+                    <Building className="mr-2 text-blue-600" size={22} />
+                    Company Profile
+                  </h2>
+                </div>
+                
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="bg-white p-4 rounded-lg border border-gray-100 hover:border-blue-200 transition-colors duration-200 hover:shadow-md cursor-pointer">
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                          <Building size={16} className="text-blue-600" />
+                        </div>
+                        <p className="text-sm font-medium text-gray-500">Company Name</p>
+                      </div>
+                      <p className="text-lg font-medium text-gray-800 truncate">
+                        {customerData[0]?.companyName || "N/A"}
+                      </p>
+                    </div>
+                    
+                    <div className="bg-white p-4 rounded-lg border border-gray-100 hover:border-blue-200 transition-colors duration-200 hover:shadow-md cursor-pointer">
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                          <User size={16} className="text-indigo-600" />
+                        </div>
+                        <p className="text-sm font-medium text-gray-500">Contact Name</p>
+                      </div>
+                      <p className="text-lg font-medium text-gray-800 truncate">
+                        {customerData[0]?.firstName || ""} {customerData[0]?.lastName || ""}
+                      </p>
+                    </div>
+                    
+                    <div className="bg-white p-4 rounded-lg border border-gray-100 hover:border-blue-200 transition-colors duration-200 hover:shadow-md cursor-pointer">
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                          <Mail size={16} className="text-green-600" />
+                        </div>
+                        <p className="text-sm font-medium text-gray-500">Email Address</p>
+                      </div>
+                      <p className="text-lg font-medium text-gray-800 truncate">
+                        {customerData[0]?.email || "N/A"}
+                      </p>
+                    </div>
+                    
+                    <div className="bg-white p-4 rounded-lg border border-gray-100 hover:border-blue-200 transition-colors duration-200 hover:shadow-md cursor-pointer">
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                          <Phone size={16} className="text-purple-600" />
+                        </div>
+                        <p className="text-sm font-medium text-gray-500">Phone Number</p>
+                      </div>
+                      <p className="text-lg font-medium text-gray-800 truncate">
+                        {customerData[0]?.phone || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* <h1 className="text-xl md:text-2xl font-medium text-gray-800 mb-2">
+              {customerData[0]?.companyName?.toUpperCase() || "Company"}
+            </h1> */}
             <p className="text-gray-600 mb-6">
-              This is an overview of {customerData[0]?.companyName} XRGi
-              facilities. You can manage and monitor all your facilities from
-              this dashboard.
+              This is an overview of{" "}
+              {customerData[0]?.companyName || "the company"} XRGI plants. You
+              can manage and monitor all your plants from this dashboard.
             </p>
 
-            <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
-              <div className="flex items-center space-x-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+              <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
                 <div className="relative">
                   <button
-                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 w-full md:w-auto"
                     onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
                   >
                     <Filter size={16} className="mr-2" />
@@ -166,7 +234,7 @@ export default function MainContent({ userId = [] }: User) {
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                   {sortDropdownOpen && (
-                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md top-[38px]  z-10 w-full">
+                    <div className="absolute left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md top-[38px] z-10 w-full">
                       {statusOptions.map((status) => (
                         <button
                           key={status}
@@ -182,7 +250,7 @@ export default function MainContent({ userId = [] }: User) {
 
                 <div className="relative">
                   <button
-                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+                    className="flex items-center px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 w-full md:w-auto"
                     onClick={() => setIsOpen(!isOpen)}
                   >
                     {view === "list" ? (
@@ -212,12 +280,12 @@ export default function MainContent({ userId = [] }: User) {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="relative">
+              <div className="flex items-center w-full md:w-auto">
+                <div className="relative w-full md:w-auto">
                   <input
                     type="text"
                     placeholder="Search"
-                    className="pl-10 pr-4 py-2 w-96 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="pl-10 pr-4 py-2 w-full md:w-96 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
