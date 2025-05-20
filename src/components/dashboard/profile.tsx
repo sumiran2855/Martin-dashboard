@@ -29,7 +29,7 @@ export default function profileDetail() {
     const payload = {
       companyInfo: {
         name: formData.companyName,
-        cvr_number: formData.cvrNumber,
+        cvrNumber: formData.cvrNumber,
         address: formData.address,
         city: formData.city,
         postal_code: formData.postal_code,

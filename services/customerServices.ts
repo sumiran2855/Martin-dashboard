@@ -103,7 +103,7 @@ export const getCustomerById = async (
       result.data;
     return {
       companyName: companyInfo?.name || "",
-      cvrNumber: companyInfo?.cvr_number || "",
+      cvrNumber: companyInfo?.cvr_number || companyInfo?.cvrNumber || "",
       address: companyInfo?.address || "",
       postal_code: companyInfo?.postal_code || "",
       city: companyInfo?.city || "",
@@ -146,7 +146,7 @@ export const getAllCustomers = async (token: string, IdToken: string) => {
       return {
         id: customer.id || "",
         companyName: companyInfo?.name || "",
-        cvrNumber: companyInfo?.cvr_number || "",
+        cvrNumber: companyInfo?.cvr_number || companyInfo?.cvrNumber || "",
         address: companyInfo?.address || "",
         postal_code: companyInfo?.postal_code || "",
         city: companyInfo?.city || "",
