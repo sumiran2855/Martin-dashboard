@@ -11,6 +11,8 @@ import { InputField } from "@/components/form/InputField";
 import EmailVarification from "@/components/emailVarification";
 import { PasswordField } from "@/components/form/passwordField";
 import { useTranslation } from "react-i18next";
+import Modal from "@/components/modals/modal";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const [error, setError] = useState("");
@@ -18,6 +20,10 @@ export default function Signup() {
   const [countryCode, setCountryCode] = useState("+45");
   const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [email, setEmail] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const router = useRouter();
   const { t } = useTranslation("signup");
   
   const getPhoneValidationSchema = (countryCode: string) => {
@@ -83,11 +89,24 @@ export default function Signup() {
         setError(result.message);
         return;
       }
-
+      setModalTitle(t("emailSentTitle"));
+      setModalMessage(t("emailSentMessage"));
+      setShowModal(true);
+      
       setSuccess(result.message);
       setIsVerificationStep(true);
     },
   });
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleModalPrimaryClick = () => {
+    if (modalTitle === t("emailVerifiedTitle")) {
+      router.push('/')
+    }
+  };
 
   return (
     <div className="flex h-screen max-md:flex-col-reverse max-md:justify-center">
@@ -203,7 +222,19 @@ export default function Signup() {
             </p>
           </>
         ) : (
-          <EmailVarification email={email} />
+          <EmailVarification 
+            email={email} 
+            onVerificationSuccess={() => {
+              setModalTitle(t("emailVerifiedTitle"));
+              setModalMessage(t("emailVerifiedMessage"));
+              setShowModal(true);
+            }}
+            onResendSuccess={() => {
+              setModalTitle(t("emailSentTitle"));
+              setModalMessage(t("emailSentMessage"));
+              setShowModal(true);
+            }}
+          />
         )}
       </div>
 
@@ -218,6 +249,15 @@ export default function Signup() {
           />
         </div>
       </div>
+
+      <Modal
+        isOpen={showModal}
+        onClose={handleModalClose}
+        title={modalTitle}
+        message={modalMessage}
+        primaryButton="OK"
+        onPrimaryClick={handleModalPrimaryClick}
+      />
     </div>
   );
 }

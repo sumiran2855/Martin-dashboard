@@ -49,7 +49,7 @@ interface Facility {
   };
 }
 
-const superSaverOptions = ["All", "Have SuperSaverX", "Want SuperSaverX"];
+const superSaverOptions = ["All", "Have Smart PriceControl", "Want Smart PriceControl"];
 const performanceOptions = ["All", "Want a Report", "Don’t want a report"];
 
 function SubscriptionPage() {
@@ -95,9 +95,9 @@ function SubscriptionPage() {
       .filter((facility) => {
         if (type === "super") {
           switch (filter) {
-            case "Have SuperSaverX":
+            case "Have Smart PriceControl":
               return facility.featureAdded && facility.feature?.method;
-            case "Want SuperSaverX":
+            case "Want Smart PriceControl":
               return facility.featureAdded && !facility.feature?.method;
             default:
               return facility.featureAdded;
@@ -159,8 +159,8 @@ function SubscriptionPage() {
             serviceProvider_Phone: item.serviceProvider?.phone,
             SuperSaverX:
               item.featureAdded && item.feature?.method
-                ? "Has SuperSaverX"
-                : "Wants SuperSaverX",
+                ? "Has Smart PriceControl"
+                : "Wants Smart PriceControl",
             SuperSaverX_method: isLocalPartner
               ? "Local Partner"
               : item.feature?.method,
@@ -190,7 +190,7 @@ function SubscriptionPage() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "SuperSaverX.xlsx");
+      link.setAttribute("download", "Smart_PriceControl.xlsx");
 
       document.body.appendChild(link);
       link.click();
@@ -236,8 +236,8 @@ function SubscriptionPage() {
             serviceProvider_Phone: item.serviceProvider?.phone,
             SuperSaverX:
               item.featureAdded && item.feature?.method
-                ? "Has SuperSaverX"
-                : "Wants SuperSaverX",
+                ? "Has Smart PriceControl"
+                : "Wants Smart PriceControl",
             SuperSaverX_method: isLocalPartner
               ? "Local Partner"
               : item.feature?.method,
@@ -266,7 +266,7 @@ function SubscriptionPage() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "Performance_report.xlsx");
+      link.setAttribute("download", "Health_check.xlsx");
 
       document.body.appendChild(link);
       link.click();
@@ -326,7 +326,7 @@ function SubscriptionPage() {
                   <ChevronDown size={16} className="ml-2" />
                 </button>
                 {superDropdownOpen && (
-                  <div className="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-md z-10">
+                  <div className="absolute left-0 mt-2 w-56 bg-white border rounded-md shadow-md z-10">
                     {superSaverOptions.map((option) => (
                       <button
                         key={option}

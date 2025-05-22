@@ -10,8 +10,9 @@ export const login = async (email: string, password: string) => {
 
   if (result.success) {
     localStorage.clear();
-    return result;
+    localStorage.setItem("userId", result.data.userData.id);
   }
+  return result;
 };
 
 //signup

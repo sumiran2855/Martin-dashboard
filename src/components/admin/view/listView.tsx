@@ -281,7 +281,7 @@ export default function ListView({ users }: { users: Users[] }) {
                                         <div>
                                           <div className="flex items-center justify-between mb-2">
                                             <span className="text-xs md:text-sm font-medium text-gray-700">
-                                              Performance Report
+                                              EnergyCheck Plus
                                             </span>
                                             <div className="flex items-center">
                                               {facility.hasPerformanceReport ? (
@@ -313,7 +313,7 @@ export default function ListView({ users }: { users: Users[] }) {
                                         <div>
                                           <div className="flex items-center justify-between mb-2">
                                             <span className="text-xs md:text-sm font-medium text-gray-700">
-                                              Supersaver Plan
+                                               Smart PriceControl
                                             </span>
                                             <div className="flex items-center">
                                               {facility.featureAdded ? (

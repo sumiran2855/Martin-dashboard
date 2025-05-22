@@ -164,8 +164,8 @@ function ServicesPage() {
             serviceProvider_email: item.serviceProvider?.mailAddress,
             serviceProvider_Phone: item.serviceProvider?.phone,
             SuperSaverX: item.featureAdded && item.feature?.method
-              ? "Has SuperSaverX"
-              : "Wants SuperSaverX",
+              ? "Has Smart PriceControl"
+              : "Wants Smart PriceControl",
             SuperSaverX_method: isLocalPartner
               ? "Local Partner"
               : item.feature?.method,

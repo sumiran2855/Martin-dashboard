@@ -164,7 +164,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                     <div className="flex items-center justify-between mb-3">
                                       <span className="text-sm font-medium text-gray-700">
-                                        Supersaver Plan
+                                       Smart PriceControl
                                       </span>
                                       <div className="flex items-center">
                                         {facility.featureAdded ? (

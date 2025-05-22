@@ -107,7 +107,7 @@ export default function Login() {
           router.push("/admin/reset-password");
           return;
         }
-        if (!result!.success) {
+        if (!result.success) {
         if (
           result!.message ===
           "User is not confirmed. Please verify your account."

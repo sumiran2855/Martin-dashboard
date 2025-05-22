@@ -1,13 +1,25 @@
 import { resendVerificationCode, verifyEmail } from "@/services/authService";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import Modal from "./modals/modal";
 
-export default function emailVarification({ email }: { email: string }) {
+export default function emailVarification({ 
+  email, 
+  onVerificationSuccess,
+  onResendSuccess
+}: { 
+  email: string;
+  onVerificationSuccess?: () => void;
+  onResendSuccess?:() => void;
+}) {
   const { t } = useTranslation("login");
   const [verificationCode, setVerificationCode] = useState("");
   const [resendMessage, setResendMessage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleVerifyCode = async () => {
     setError("");
@@ -18,8 +30,12 @@ export default function emailVarification({ email }: { email: string }) {
       setError(result.message);
       return;
     }
+    
     setSuccess(result.message);
-    setTimeout(() => (window.location.href = "/"), 2000);
+
+    if (onVerificationSuccess) {
+      onVerificationSuccess();
+    }
   };
 
   const handleResendCode = async () => {
@@ -30,7 +46,21 @@ export default function emailVarification({ email }: { email: string }) {
       setError(result.message);
       return;
     }
+    
+    if (onResendSuccess) {
+      onResendSuccess();
+    } 
     setResendMessage(result.message);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleModalPrimaryClick = () => {
+    if (modalTitle === t("emailVerifiedTitle")) {
+      setTimeout(() => (window.location.href = "/"), 500);
+    }
   };
 
   return (
@@ -67,6 +97,15 @@ export default function emailVarification({ email }: { email: string }) {
           {t("ResendCode")}
         </button>
       </p>
+
+      <Modal
+        isOpen={showModal}
+        onClose={handleModalClose}
+        title={modalTitle}
+        message={modalMessage}
+        primaryButton="OK"
+        onPrimaryClick={handleModalPrimaryClick}
+      />
     </>
   );
 }
