@@ -9,12 +9,9 @@ export const login = async (email: string, password: string) => {
   });
 
   if (result.success) {
-    localStorage.setItem("token", result.data.tokens.accessToken);
-    localStorage.setItem("IdToken", result.data.tokens.idToken);
-    localStorage.setItem("userId", result.data.userData.id);
+    localStorage.clear();
+    return result;
   }
-
-  return result;
 };
 
 //signup
