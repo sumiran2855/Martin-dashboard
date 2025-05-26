@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { getAllFacility } from "@/services/facilityServices";
 import { useTranslation } from "react-i18next";
 
-const statusOptions = ["All", "Active", "Data Missing", "Inactive"];
+const statusOptions = ["All", "Active", "Inactive","Data Missing"];
 interface Facility {
   facilityId?: number;
   name?: string;

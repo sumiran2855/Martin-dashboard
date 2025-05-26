@@ -24,6 +24,17 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
   const { t } = useTranslation("dashboard");
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
+  const getFacilityStatus = (facility: Facility): 'Active' | 'Pending' => {
+    if (facility.hasServiceContract &&
+        facility.serviceProvider &&
+        facility.serviceProvider.name &&
+        facility.serviceProvider.mailAddress &&
+        facility.serviceProvider.phone) {
+      return 'Active';
+    }
+    return 'Pending';
+  };
+
   const withServiceProvider = facilities.filter(
     (facility) =>
       facility.hasServiceContract &&
@@ -77,6 +88,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
   const renderSingleCard = (facility: Facility, hasServiceProvider: boolean = false, isExpandedView: boolean = false) => {
     const facilityId = facility.id?.toString() || facility.facilityId || '';
     const isExpanded = expandedCard === facilityId;
+    const currentStatus = getFacilityStatus(facility);
 
     return (
       <div
@@ -93,21 +105,15 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
             <div className="flex items-center space-x-2 mt-2">
               <img
                 src={
-                  facility.status === "Active"
+                  currentStatus === "Active"
                     ? "/Active.png"
-                    : facility.status === "Data Missing"
-                    ? "/Missing.png"
-                    : facility.status === "Inactive"
-                    ? "/Inactive.png"
-                    : facility.status === "Maintenance"
-                    ? "/Maintenance.jpg"
-                    : "/warning.png"
+                    : "/Missing.png"
                 }
-                alt={facility.status}
+                alt={currentStatus}
                 className="w-5 h-5"
               />
               <span className="text-sm text-gray-700">
-                {t(`statusOptions.${facility.status}`)}
+                {t(`statusOptions.${currentStatus}`)}
               </span>
             </div>
           </div>
@@ -150,7 +156,6 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
               </div>
               
               <div className="space-y-3">
-                {/* Provider Name */}
                 <div className="flex items-center text-sm">
                   <User className="w-4 h-4 text-gray-400 mr-3 flex-shrink-0"/>
                   <span className="text-gray-600 font-medium">Provider Name:</span>
@@ -159,7 +164,6 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                   </span>
                 </div>
 
-                {/* Email */}
                 <div className="flex items-center text-sm">
                   <Mail className="w-4 h-4 text-gray-400 mr-3 flex-shrink-0"/>
                   <span className="text-gray-600 font-medium">Email Address:</span>
@@ -171,7 +175,6 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                   </span>
                 </div>
 
-                {/* Phone */}
                 <div className="flex items-center text-sm">
                   <Phone className="w-4 h-4 text-gray-400 mr-3 flex-shrink-0"/>
                   <span className="text-gray-600 font-medium">Phone Number:</span>

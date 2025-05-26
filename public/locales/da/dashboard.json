@@ -15,8 +15,9 @@
     "statusOptions": {
       "All": "Alle",
       "Active": "Aktiv",
-      "Data Missing": "Data mangler",
+      "Pending": "Afventer",
       "Inactive": "Inaktiv",
+      "Data Missing": "Data mangler",
       "Maintenance": "Vedligeholdelse"
     },
     "inactiveFacilities": "Inaktiv",

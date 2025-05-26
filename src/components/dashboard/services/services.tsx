@@ -20,15 +20,26 @@ interface Facility {
   status: string;
 }
 
-const statusOptions = ["All", "Active", "Inactive", "MissingData"];
+const statusOptions = ["All", "Active", "Pending"];
 
-function SubscriptionPage() {
+function ServicePage() {
   const { t } = useTranslation("subscription");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const getFacilityStatus = (facility: Facility): 'Active' | 'Pending' => {
+    if (facility.hasServiceContract &&
+        facility.serviceProvider &&
+        facility.serviceProvider.name &&
+        facility.serviceProvider.mailAddress &&
+        facility.serviceProvider.phone) {
+      return 'Active';
+    }
+    return 'Pending';
+  };
 
   const handleStatusSelect = (status: string) => {
     setSelectedStatus(status);
@@ -63,10 +74,12 @@ function SubscriptionPage() {
     )
     .filter((facility) => {
       if (selectedStatus === "All") return true;
-      if (selectedStatus === "Active") return facility.status === "Active";
-      if (selectedStatus === "Inactive") return facility.status === "Inactive";
-      if (selectedStatus === "MissingData")
-        return facility.status === "Data Missing";
+      
+      const currentStatus = getFacilityStatus(facility);
+      
+      if (selectedStatus === "Active") return currentStatus === "Active";
+      if (selectedStatus === "Pending") return currentStatus === "Pending";
+      
       return false;
     });
 
@@ -140,4 +153,4 @@ function SubscriptionPage() {
   );
 }
 
-export default withAuth(SubscriptionPage);
+export default withAuth(ServicePage);

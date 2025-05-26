@@ -55,6 +55,21 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
     return facility.feature && facility.feature.method;
   };
 
+  const hasPerformanceReportDetails = (facility: Facility) => {
+    return facility.performance_report && 
+           facility.performance_report.annualSavings !== null &&
+           facility.performance_report.co2Savings !== null &&
+           facility.performance_report.industry !== null &&
+           facility.performance_report.operatingHours !== null;
+  };
+
+  const getSubscriptionStatus = (facility: Facility) => {
+    if (facility.hasPerformanceReport && facility.hasServiceContract) {
+      return "Added";
+    }
+    return "Unavailable";
+  };
+
   return (
     <div className="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
@@ -71,7 +86,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                 Model
               </th>
               <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Services
+                Subscription
               </th>
               <th className="px-4 py-3 w-12"></th>
             </tr>
@@ -102,9 +117,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                         {facility.modelNumber}
                       </td>
                       <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                        {facility.hasServiceContract
-                          ? "Available"
-                          : "Unavailable"}
+                        {getSubscriptionStatus(facility)}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <button
@@ -149,7 +162,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                     </span>
                                     <span>
                                       {facility.hasServiceContract
-                                        ? "Available"
+                                        ? "Added"
                                         : "Unavailable"}
                                     </span>
                                   </div>
@@ -160,11 +173,11 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                     Status Overview
                                   </h4>
 
-                                  {/* Supersaver Plan Card */}
+                                  {/* Smart PriceControl Card */}
                                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                     <div className="flex items-center justify-between mb-3">
                                       <span className="text-sm font-medium text-gray-700">
-                                       Smart PriceControl
+                                        Smart PriceControl
                                       </span>
                                       <div className="flex items-center">
                                         {facility.featureAdded ? (
@@ -201,6 +214,54 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                     </div>
                                     {facility.featureAdded &&
                                       !hasFeatureDetails(facility) && (
+                                        <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
+                                          Requested, but no details available
+                                          yet
+                                        </div>
+                                      )}
+                                  </div>
+
+                                  {/* HealthCheck Plus Card */}
+                                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                    <div className="flex items-center justify-between mb-3">
+                                      <span className="text-sm font-medium text-gray-700">
+                                        HealthCheck Plus
+                                      </span>
+                                      <div className="flex items-center">
+                                        {facility.hasPerformanceReport ? (
+                                          hasPerformanceReportDetails(facility) ? (
+                                            <div className="flex items-center bg-green-50 text-green-600 px-2 py-1 rounded-full">
+                                              <Check
+                                                size={14}
+                                                className="mr-1"
+                                              />
+                                              <span className="text-xs font-medium">
+                                                Active
+                                              </span>
+                                            </div>
+                                          ) : (
+                                            <div className="flex items-center bg-yellow-50 text-yellow-600 px-2 py-1 rounded-full">
+                                              <AlertCircle
+                                                size={14}
+                                                className="mr-1"
+                                              />
+                                              <span className="text-xs font-medium">
+                                                Processing
+                                              </span>
+                                            </div>
+                                          )
+                                        ) : (
+                                          <div className="flex items-center bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
+                                            <X size={14} className="mr-1" />
+                                            <span className="text-xs font-medium">
+                                              Not active
+                                            </span>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                    {facility.hasPerformanceReport &&
+                                      !hasPerformanceReportDetails(facility) && (
                                         <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
                                           Requested, but no details available
                                           yet

@@ -7,6 +7,7 @@
       "All": "Tutti",
       "Active": "Attivo",
       "Inactive": "Inattivo",
+      "Pending": "In attesa",
       "MissingData": "Dati mancanti",
       "WithProvider": "Con fornitore di servizio",
       "WithoutProvider": "Richiesta fornitore di servizio",

@@ -15,8 +15,9 @@
   "statusOptions": {
     "All": "Alle",
     "Active": "Aktiv",
-    "Data Missing": "Daten fehlen",
+    "Pending": "Ausstehend",
     "Inactive": "Inaktiv",
+    "Data Missing": "Daten fehlen",
     "Maintenance": "Wartung"
   },
   "inactiveFacilities": "Inaktiv",
