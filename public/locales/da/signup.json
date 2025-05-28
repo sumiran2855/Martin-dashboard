@@ -42,5 +42,8 @@
   "emailSentTitle": "Email sendt",
   "emailSentMessage": "Emailen er sendt! Tjek venligst din email for bekræftelseskoden.",
   "emailVerifiedTitle": "Email bekræftet",
-  "emailVerifiedMessage": "Emailen er bekræftet! Log venligst ind for at fortsætte."
+  "emailVerifiedMessage": "Emailen er bekræftet! Log venligst ind for at fortsætte.",
+  "phoneGermanyDigits": "Telefonnummer skal være mellem 3 og 12 cifre",
+  "phoneItalyDigits": "Telefonnummer skal være mellem 6 og 12 cifre (generelt 10)",
+  "phoneUKDigits": "Telefonnummer skal være mellem 7 og 10 cifre"
 }

@@ -29,5 +29,12 @@
   "Unavailable": "Unavailable",
   "Available": "Available",
   "haveSuperSaverX": "Have SuperSaverX",
-  "wantSuperSaverX": "Want SuperSaverX"
+  "wantSuperSaverX": "Want SuperSaverX",
+  "serviceProviderRequested": "Service Provider Requested",
+  "serviceProviderDetails": "Service Provider Details",
+  "providerName": "Provider Name:",
+  "emailAddress": "Email Address:",
+  "phoneNumber": "Phone Number:",
+  "facilitiesWithService": "Facilities with Service Provider",
+  "facilitiesRequestingServices": "Facilities Requesting Service"
 }

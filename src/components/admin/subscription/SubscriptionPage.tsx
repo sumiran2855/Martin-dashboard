@@ -266,7 +266,7 @@ function SubscriptionPage() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "Health_check.xlsx");
+      link.setAttribute("download", "Energy_check.xlsx");
 
       document.body.appendChild(link);
       link.click();

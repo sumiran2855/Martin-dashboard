@@ -1,23 +1,44 @@
 {
-    "subscriptionTitle": "Abbonamenti",
-    "subscriptionDescription": "Gestisci e monitora tutti i tuoi abbonamenti attivi e inattivi.",
-    "sortBy": "Ordina per",
-    "searchPlaceholder": "Cerca abbonamenti...",
-    "statusOptions": {
-      "All": "Tutti",
-      "Active": "Attivo",
-      "Inactive": "Inattivo",
-      "Pending": "In attesa",
-      "MissingData": "Dati mancanti",
-      "WithProvider": "Con fornitore di servizio",
-      "WithoutProvider": "Richiesta fornitore di servizio",
-      "HaveSuperSaverX": "Possiedi SuperSaverX",
-      "WantSuperSaverX": "Vuoi SuperSaverX"
-    },
-    "services": {
-      "servicesTitle": "Contratti di Servizio",
-      "servicesDescription": "Visualizza e gestisci tutti i sistemi XRGI® che hanno un partner di servizio associato",
-      "searchPlaceholder": "Cerca servizi..."
-    }
-  }
+  "subscriptionTitle": "Abbonamenti",
+  "subscriptionDescription": "Gestisci e monitora tutti i tuoi abbonamenti attivi e inattivi.",
+  "sortBy": "Ordina per",
+  "searchPlaceholder": "Cerca abbonamenti...",
+  "statusOptions": {
+    "All": "Tutti",
+    "Active": "Attivo",
+    "Inactive": "Inattivo",
+    "Pending": "In attesa",
+    "MissingData": "Dati mancanti",
+    "WithProvider": "Con fornitore di servizio",
+    "WithoutProvider": "Richiesta fornitore di servizio",
+    "HaveSuperSaverX": "Possiedi SuperSaverX",
+    "WantSuperSaverX": "Vuoi SuperSaverX"
+  },
+  "services": {
+    "servicesTitle": "Contratti di Servizio",
+    "servicesDescription": "Visualizza e gestisci tutti i sistemi XRGI® che hanno un partner di servizio associato",
+    "searchPlaceholder": "Cerca servizi..."
+  },
+  "tableHeaders": {
+    "name": "Nome",
+    "facility": "Impianto XRGi",
+    "model": "Modello",
+    "subscription": "Abbonamento"
+  },
+  "facilityDetails": "Dettagli impianto",
+    "xrgiFacility": "Impianto XRGi",
+    "model": "Modello",
+    "service": "Servizi",
+    "added": "Aggiunto",
+    "unavailable": "Non aggiunto",
+    "statusOverview": "Panoramica stato",
+    "smartPriceControl": "Controllo intelligente dei prezzi",
+    "energyCheckPlus": "EnergyCheck Plus",
+    "active": "Attivo",
+    "processing": "In elaborazione",
+    "notActive": "Non attivo",
+    "requestPending": "Richiesto, ma nessun dettaglio disponibile al momento",
+    "noRegisteredFacilities": "Nessuna struttura registrata",
+    "rowsPerPage": "Righe per pagina"
   
+}

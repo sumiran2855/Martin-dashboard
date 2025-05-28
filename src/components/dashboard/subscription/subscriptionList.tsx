@@ -9,6 +9,7 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Facility {
   name: string;
@@ -34,6 +35,7 @@ interface Facility {
 }
 
 export default function ListView({ facilities }: { facilities: Facility[] }) {
+  const { t } = useTranslation("subscription");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -56,18 +58,20 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
   };
 
   const hasPerformanceReportDetails = (facility: Facility) => {
-    return facility.performance_report && 
-           facility.performance_report.annualSavings !== null &&
-           facility.performance_report.co2Savings !== null &&
-           facility.performance_report.industry !== null &&
-           facility.performance_report.operatingHours !== null;
+    return (
+      facility.performance_report &&
+      facility.performance_report.annualSavings !== null &&
+      facility.performance_report.co2Savings !== null &&
+      facility.performance_report.industry !== null &&
+      facility.performance_report.operatingHours !== null
+    );
   };
 
   const getSubscriptionStatus = (facility: Facility) => {
     if (facility.hasPerformanceReport && facility.hasServiceContract) {
-      return "Added";
+      return t("added");
     }
-    return "Not Added";
+    return t("unavailable");
   };
 
   return (
@@ -77,16 +81,16 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
           <thead>
             <tr className="bg-gray-50">
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Name
+                {t("tableHeaders.name")}
               </th>
               <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                XRGi Facility
+                {t("tableHeaders.facility")}
               </th>
               <th className="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Model
+                {t("tableHeaders.model")}
               </th>
               <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Subscription
+                {t("tableHeaders.subscription")}
               </th>
               <th className="px-4 py-3 w-12"></th>
             </tr>
@@ -142,42 +146,42 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                               <div className="grid grid-cols-1 md:grid-rows-1 gap-6">
                                 <div className="md:hidden space-y-3 p-2 bg-gray-50 rounded-md">
                                   <h4 className="font-medium text-sm text-gray-700 mb-2">
-                                    Facility Details
+                                    {t("facilityDetails")}:
                                   </h4>
                                   <div className="flex justify-between text-sm py-1 border-b border-gray-100">
                                     <span className="font-medium text-gray-600">
-                                      XRGi Facility:
+                                      {t("xrgiFacility")};
                                     </span>
                                     <span>{facility.xrgiID}</span>
                                   </div>
                                   <div className="flex justify-between text-sm py-1 border-b border-gray-100">
                                     <span className="font-medium text-gray-600">
-                                      Model:
+                                      {t("model")}:
                                     </span>
                                     <span>{facility.modelNumber}</span>
                                   </div>
                                   <div className="flex justify-between text-sm py-1">
                                     <span className="font-medium text-gray-600">
-                                      Services:
+                                      {t("service")}:
                                     </span>
                                     <span>
                                       {facility.hasServiceContract
-                                        ? "Added"
-                                        : "Not added"}
+                                        ? t("added")
+                                        : t("unavailable")}
                                     </span>
                                   </div>
                                 </div>
 
                                 <div className="space-y-5">
                                   <h4 className="font-medium text-sm text-gray-700 mb-3">
-                                    Status Overview
+                                    {t("statusOverview")}
                                   </h4>
 
                                   {/* Smart PriceControl Card */}
                                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                     <div className="flex items-center justify-between mb-3">
                                       <span className="text-sm font-medium text-gray-700">
-                                        Smart PriceControl
+                                        {t("smartPriceControl")}
                                       </span>
                                       <div className="flex items-center">
                                         {facility.featureAdded ? (
@@ -188,7 +192,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                                 className="mr-1"
                                               />
                                               <span className="text-xs font-medium">
-                                                Active
+                                                {t("active")}
                                               </span>
                                             </div>
                                           ) : (
@@ -198,7 +202,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                                 className="mr-1"
                                               />
                                               <span className="text-xs font-medium">
-                                                Processing
+                                                {t("processing")}
                                               </span>
                                             </div>
                                           )
@@ -206,7 +210,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                           <div className="flex items-center bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
                                             <X size={14} className="mr-1" />
                                             <span className="text-xs font-medium">
-                                              Not Active
+                                              {t("notActive")}
                                             </span>
                                           </div>
                                         )}
@@ -215,8 +219,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                     {facility.featureAdded &&
                                       !hasFeatureDetails(facility) && (
                                         <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
-                                          Requested, but no details available
-                                          yet
+                                          {t("requestPending")}
                                         </div>
                                       )}
                                   </div>
@@ -225,18 +228,20 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                     <div className="flex items-center justify-between mb-3">
                                       <span className="text-sm font-medium text-gray-700">
-                                        EnergyCheck Plus
+                                        {t("energyCheckPlus")}
                                       </span>
                                       <div className="flex items-center">
                                         {facility.hasPerformanceReport ? (
-                                          hasPerformanceReportDetails(facility) ? (
+                                          hasPerformanceReportDetails(
+                                            facility
+                                          ) ? (
                                             <div className="flex items-center bg-green-50 text-green-600 px-2 py-1 rounded-full">
                                               <Check
                                                 size={14}
                                                 className="mr-1"
                                               />
                                               <span className="text-xs font-medium">
-                                                Active
+                                                {t("active")}
                                               </span>
                                             </div>
                                           ) : (
@@ -246,7 +251,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                                 className="mr-1"
                                               />
                                               <span className="text-xs font-medium">
-                                                Processing
+                                                {t("processing")}
                                               </span>
                                             </div>
                                           )
@@ -254,17 +259,18 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                           <div className="flex items-center bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
                                             <X size={14} className="mr-1" />
                                             <span className="text-xs font-medium">
-                                              Not active
+                                              {t("notActive")}
                                             </span>
                                           </div>
                                         )}
                                       </div>
                                     </div>
                                     {facility.hasPerformanceReport &&
-                                      !hasPerformanceReportDetails(facility) && (
+                                      !hasPerformanceReportDetails(
+                                        facility
+                                      ) && (
                                         <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
-                                          Requested, but no details available
-                                          yet
+                                          {t("requestPending")}
                                         </div>
                                       )}
                                   </div>
@@ -291,7 +297,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                         />
                       </div>
                     </div>
-                    <p className="text-gray-500">No registered facilities</p>
+                    <p className="text-gray-500">{t("noRegisteredFacilities")}</p>
                   </div>
                 </td>
               </tr>
@@ -302,7 +308,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 py-3 bg-white border-t border-gray-200">
         <div className="flex items-center space-x-3 mb-3 sm:mb-0">
-          <span className="text-sm text-gray-700">Row per Page</span>
+          <span className="text-sm text-gray-700">{t("rowsPerPage")}</span>
           <div className="relative">
             <select
               className="appearance-none bg-white border border-gray-300 text-gray-700 py-1 pl-3 pr-8 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"

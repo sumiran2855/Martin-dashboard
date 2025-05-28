@@ -29,5 +29,12 @@
   "Unavailable": "Nicht verfügbar",
   "Available": "Verfügbar",
   "haveSuperSaverX": "Hat superSaverX",
-  "wantSuperSaverX": "Will superSaverX"
+  "wantSuperSaverX": "Will superSaverX",
+    "serviceProviderRequested": "Dienstleister angefordert",
+  "serviceProviderDetails": "Details zum Dienstleister",
+  "providerName": "Name des Dienstleisters:",
+  "emailAddress": "E-Mail-Adresse:",
+  "phoneNumber": "Telefonnummer:",
+  "facilitiesWithService": "Anlagen mit Dienstleister",
+  "facilitiesRequestingServices": "Anlagen, die Dienstleister anfordern"
 }

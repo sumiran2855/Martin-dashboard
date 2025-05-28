@@ -5,6 +5,13 @@
     "address": "Address",
     "model": "Model",
     "basicData": "Basic Data",
-    "edit": "Edit"
+    "edit": "Edit",
+    "facilityDetail": {
+    "annualSavings": "Annual Savings",
+    "co2Savings": "Annual CO₂ savings",
+    "operatingHours": "Operating hours per year",
+    "industry": "Industry",
+    "email": "E-mail address"
   }
+}
   

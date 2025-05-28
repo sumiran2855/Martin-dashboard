@@ -42,5 +42,8 @@
   "emailSentTitle": "Email Sent Successfully",
   "emailSentMessage": "Email has been sent successfully! Please check your email for verification code.",
   "emailVerifiedTitle": "Email Verified Successfully",
-  "emailVerifiedMessage": "Email has been verified successfully! Please login to continue."
+  "emailVerifiedMessage": "Email has been verified successfully! Please login to continue.",
+  "phoneGermanyDigits": "Phone number must be between 3 and 12 digits",
+  "phoneItalyDigits": "Phone number must be between 6 and 12 digits (generally 10)",
+  "phoneUKDigits": "Phone number must be between 7 and 10 digits"
 }

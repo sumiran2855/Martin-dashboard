@@ -42,5 +42,8 @@
   "emailSentTitle": "E-Mail erfolgreich gesendet",
   "emailSentMessage": "Die E-Mail wurde erfolgreich gesendet! Bitte überprüfen Sie Ihre E-Mails auf den Bestätigungscode.",
   "emailVerifiedTitle": "E-Mail erfolgreich verifiziert",
-  "emailVerifiedMessage": "Die E-Mail wurde erfolgreich verifiziert! Bitte loggen Sie sich ein, um fortzufahren."
+  "emailVerifiedMessage": "Die E-Mail wurde erfolgreich verifiziert! Bitte loggen Sie sich ein, um fortzufahren.",
+  "phoneGermanyDigits": "Telefonnummer muss zwischen 3 und 12 Ziffern haben",
+  "phoneItalyDigits": "Telefonnummer muss zwischen 6 und 12 Ziffern haben (normalerweise 10)",
+  "phoneUKDigits": "Telefonnummer muss zwischen 7 und 10 Ziffern haben"
 }

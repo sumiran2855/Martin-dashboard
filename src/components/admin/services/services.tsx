@@ -3,7 +3,7 @@ import withAuth from "@/auth/authUtils";
 import { ChevronDown, FileDown, Filter, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getAllFacilityForAdmin } from "@/services/facilityServices";
-import GridView from "@/components/dashboard/services/gridView";
+import GridView from "@/components/dashboard/services/adminGridView";
 import {
   exportSuperSaverData,
   getCustomerById,

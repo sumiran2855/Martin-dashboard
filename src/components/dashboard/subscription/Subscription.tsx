@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import withAuth from "@/auth/authUtils";
 import { Search, Filter, List, ChevronDown } from "lucide-react";
-import ListView from "@/components/dashboard/subscription/listView";
+import ListView from "@/components/dashboard/subscription/subscriptionList";
 import { getAllFacility } from "@/services/facilityServices";
 import { useTranslation } from "react-i18next";
 

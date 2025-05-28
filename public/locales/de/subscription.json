@@ -18,5 +18,27 @@
     "servicesTitle": "Serviceverträge",
     "servicesDescription": "Anzeigen und verwalten Sie alle XRGI®-Systeme mit einem zugeordneten Servicepartner",
     "searchPlaceholder": "Services durchsuchen..."
-  }
+  },
+  "tableHeaders": {
+    "name": "Name",
+    "facility": "XRGi-Anlage",
+    "model": "Modell",
+    "subscription": "Abonnement"
+  },
+  "facilityDetails": "Anlagendetails",
+    "xrgiFacility": "XRGi-Anlage",
+    "model": "Modell",
+    "service": "Dienste",
+    "added": "Hinzugefügt",
+    "unavailable": "Nicht hinzugefügt",
+    "statusOverview": "Statusübersicht",
+    "smartPriceControl": "Intelligente Preiskontrolle",
+    "energyCheckPlus": "EnergyCheck Plus",
+    "active": "Aktiv",
+    "processing": "In Bearbeitung",
+    "notActive": "Nicht aktiv",
+    "requestPending": "Angefragt, aber noch keine Details verfügbar",
+    "noRegisteredFacilities": "Keine registrierten Anlagen",
+    "rowsPerPage": "Zeilen pro Seite"
+  
 }

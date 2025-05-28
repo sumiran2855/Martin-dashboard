@@ -5,5 +5,12 @@
   "address": "Adresse",
   "model": "Modell",
   "basicData": "Grunddaten",
-  "edit": "Bearbeiten"
+  "edit": "Bearbeiten",
+  "facilityDetail": {
+    "annualSavings": "Jährliche Einsparungen",
+    "co2Savings": "Jährliche CO₂-Einsparungen",
+    "operatingHours": "Betriebsstunden pro Jahr",
+    "industry": "Branche",
+    "email": "E-Mail-Adresse"
+  }
 }

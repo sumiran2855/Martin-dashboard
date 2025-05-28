@@ -5,6 +5,13 @@
     "address": "Adresse",
     "model": "Model",
     "basicData": "Grunddata",
-    "edit": "Rediger"
+    "edit": "Rediger",
+     "facilityDetail": {
+    "annualSavings": "Årlige besparelser",
+    "co2Savings": "Årlige CO₂-besparelser",
+    "operatingHours": "Driftstimer pr. år",
+    "industry": "Branche",
+    "email": "E-mailadresse"
+  }
   }
   

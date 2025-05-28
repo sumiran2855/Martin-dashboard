@@ -18,5 +18,26 @@
     "servicesTitle": "Service Contracts",
     "servicesDescription": "View and manage all XRGI® systems that have as associated service partner",
     "searchPlaceholder": "Search services..."
-  }
+  },
+  "tableHeaders": {
+    "name": "Name",
+    "facility": "XRGi Facility",
+    "model": "Model",
+    "subscription": "Subscription"
+  },
+  "facilityDetails": "Facility Details",
+    "xrgiFacility": "XRGi Facility",
+    "model": "Model",
+    "service": "Services",
+    "added": "Added",
+    "unavailable": "Not added",
+    "statusOverview": "Status Overview",
+    "smartPriceControl": "Smart PriceControl",
+    "energyCheckPlus": "EnergyCheck Plus",
+    "active": "Active",
+    "processing": "Processing",
+    "notActive": "Not Active",
+    "requestPending": "Requested, but no details available yet",
+    "noRegisteredFacilities": "No registered facilities",
+    "rowsPerPage": "Rows per page"
 }

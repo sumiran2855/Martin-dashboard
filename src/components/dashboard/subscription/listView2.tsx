@@ -101,8 +101,8 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                       </td>
                       <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
                         {facility.hasServiceContract
-                          ? "Available"
-                          : "Unavailable"}
+                          ? "Added"
+                          : "Not Added"}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <button
@@ -147,8 +147,8 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                                     </span>
                                     <span>
                                       {facility.hasServiceContract
-                                        ? "Available"
-                                        : "Unavailable"}
+                                        ? "Added"
+                                        : "Not Added"}
                                     </span>
                                   </div>
                                 </div>

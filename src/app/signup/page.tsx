@@ -26,17 +26,35 @@ export default function Signup() {
   const router = useRouter();
   const { t } = useTranslation("signup");
   
+  // const getPhoneValidationSchema = (countryCode: string) => {
+  //   const phoneValidations: { [key: string]: Yup.StringSchema } = {
+  //     "+91": Yup.string()
+  //       .matches(/^\d{10}$/, t("phone10Digits"))
+  //       .required(t("phoneRequired")),
+  //     "+45": Yup.string()
+  //       .matches(/^\d{8}$/, t("phone8Digits"))
+  //       .required(t("phoneRequired")),
+  //   };
+  //   return phoneValidations[countryCode] || phoneValidations["+91"];
+  // };
+
   const getPhoneValidationSchema = (countryCode: string) => {
-    const phoneValidations: { [key: string]: Yup.StringSchema } = {
-      "+91": Yup.string()
-        .matches(/^\d{10}$/, t("phone10Digits"))
-        .required(t("phoneRequired")),
-      "+45": Yup.string()
-        .matches(/^\d{8}$/, t("phone8Digits"))
-        .required(t("phoneRequired")),
-    };
-    return phoneValidations[countryCode] || phoneValidations["+91"];
+  const phoneValidations: { [key: string]: Yup.StringSchema } = {
+    "+49": Yup.string()
+      .matches(/^\d{3,12}$/, t("phoneGermanyDigits"))
+      .required(t("phoneRequired")),
+    "+39": Yup.string()
+      .matches(/^\d{6,12}$/, t("phoneItalyDigits"))
+      .required(t("phoneRequired")),
+    "+44": Yup.string()
+      .matches(/^\d{7,10}$/, t("phoneUKDigits"))
+      .required(t("phoneRequired")),
+    "+45": Yup.string()
+      .matches(/^\d{8}$/, t("phone8Digits"))
+      .required(t("phoneRequired")),
   };
+  return phoneValidations[countryCode] || phoneValidations["+49"]; 
+};
   const phoneValidationSchema = useMemo(
     () => getPhoneValidationSchema(countryCode),
     [countryCode]

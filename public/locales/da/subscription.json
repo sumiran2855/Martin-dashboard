@@ -18,5 +18,27 @@
     "servicesTitle": "Serviceaftaler",
     "servicesDescription": "Se og administrer alle XRGI®-systemer, der har en tilknyttet servicepartner",
     "searchPlaceholder": "Søg i services..."
-  }
+  },
+  "tableHeaders": {
+    "name": "Navn",
+    "facility": "XRGi-anlæg",
+    "model": "Model",
+    "subscription": "Abonnement"
+  },
+  "facilityDetails": "Anlægsdetaljer",
+    "xrgiFacility": "XRGi-anlæg",
+    "model": "Model",
+    "service": "Tjenester",
+    "added": "Tilføjet",
+    "unavailable": "Ikke tilføjet",
+    "statusOverview": "Statusoversigt",
+    "smartPriceControl": "Smart priskontrol",
+    "energyCheckPlus": "EnergyCheck Plus",
+    "active": "Aktiv",
+    "processing": "Behandler",
+    "notActive": "Ikke aktiv",
+    "requestPending": "Anmodet, men ingen detaljer tilgængelige endnu",
+    "noRegisteredFacilities": "Ingen registrerede anlæg",
+    "rowsPerPage": "Rækker pr. side"
+  
 }

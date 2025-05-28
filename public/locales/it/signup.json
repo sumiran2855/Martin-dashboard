@@ -42,5 +42,8 @@
   "emailSentTitle": "Email inviata con successo",
   "emailSentMessage": "L'email è stata inviata con successo! Controlla la tua email per il codice di verifica.",
   "emailVerifiedTitle": "Email verificata con successo",
-  "emailVerifiedMessage": "L'email è stata verificata con successo! Effettua il login per continuare."
+  "emailVerifiedMessage": "L'email è stata verificata con successo! Effettua il login per continuare.",
+  "phoneGermanyDigits": "Il numero di telefono deve avere tra 3 e 12 cifre",
+  "phoneItalyDigits": "Il numero di telefono deve avere tra 6 e 12 cifre (generalmente 10)",
+  "phoneUKDigits": "Il numero di telefono deve avere tra 7 e 10 cifre"
 }

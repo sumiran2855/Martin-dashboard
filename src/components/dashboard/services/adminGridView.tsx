@@ -19,7 +19,6 @@ interface Facility {
 }
 
 export default function GridView({ facilities }: { facilities: Facility[] }) {
-  const { t } = useTranslation("dashboard");
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
   const getFacilityStatus = (facility: Facility): 'Active' | 'Pending' => {
@@ -111,7 +110,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
                 className="w-5 h-5"
               />
               <span className="text-sm text-gray-700">
-                {t(`statusOptions.${currentStatus}`)}
+               {currentStatus}
               </span>
             </div>
           </div>
@@ -137,7 +136,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
             <div className="flex items-center">
               <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
               <span className="text-xs text-orange-600 font-medium">
-                {t("serviceProviderRequested")}
+                Service Provider Requested
               </span>
             </div>
           </div>
@@ -150,13 +149,13 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
             <div className="border-t border-gray-200 p-6 bg-gradient-to-br from-gray-50 to-white">
               <div className="flex items-center mb-4">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                <h4 className="text-sm font-semibold text-gray-700">{t("serviceProviderDetails")}</h4>
+                <h4 className="text-sm font-semibold text-gray-700">Service Provider Details</h4>
               </div>
               
               <div className="space-y-3">
                 <div className="flex items-center text-sm">
                   <User className="w-4 h-4 text-gray-400 mr-3 flex-shrink-0"/>
-                  <span className="text-gray-600 font-medium">{t("providerName")}</span>
+                  <span className="text-gray-600 font-medium">Provider Name:</span>
                   <span className="ml-2 text-gray-800 font-semibold">
                     {facility.serviceProvider.name}
                   </span>
@@ -164,7 +163,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
 
                 <div className="flex items-center text-sm">
                   <Mail className="w-4 h-4 text-gray-400 mr-3 flex-shrink-0"/>
-                  <span className="text-gray-600 font-medium">{t("emailAddress")}</span>
+                  <span className="text-gray-600 font-medium">Email Address:</span>
                   <span
                     className="ml-2 text-blue-600 hover:text-blue-800 cursor-pointer break-all"
                     onClick={(e) => e.stopPropagation()}
@@ -175,7 +174,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
 
                 <div className="flex items-center text-sm">
                   <Phone className="w-4 h-4 text-gray-400 mr-3 flex-shrink-0"/>
-                  <span className="text-gray-600 font-medium">{t("phoneNumber")}</span>
+                  <span className="text-gray-600 font-medium">Phone Number:</span>
                   <a 
                     href={`tel:${facility.serviceProvider.phone}`}
                     className="ml-2 text-green-600 hover:text-green-800 font-medium cursor-pointer"
@@ -197,7 +196,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
       {withServiceProvider.length > 0 && (
         <div>
           <h2 className="text-gray-600 text-lg font-semibold mb-3">
-            {t("facilitiesWithServices")}
+            XRGI® systems with a service partner
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {renderFacilityCards(withServiceProvider, true)}
@@ -208,7 +207,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
       {requestingServiceProvider.length > 0 && (
         <div>
           <h2 className="text-gray-600 text-lg font-semibold mb-3">
-            {t("facilitiesRequestingService")}
+            XRGI® systems requesting a service contract
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {renderFacilityCards(requestingServiceProvider, false)}
@@ -224,7 +223,7 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
             className="w-48 h-48 md:w-64 md:h-64 object-contain"
           />
           <p className="text-gray-500 text-sm md:text-base mt-2">
-            {t("noFacilities")}
+            No registered facilities
           </p>
         </div>
       )}
