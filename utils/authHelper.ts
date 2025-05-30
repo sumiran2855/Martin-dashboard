@@ -5,7 +5,8 @@ export const apiRequest = async (
   method: string,
   body?: object,
   token?: string,
-  IdToken?: string
+  IdToken?: string,
+  x_api_token?: string
 ) => {
   try {
     const response = await fetch(`${apiUrl}/${endpoint}`, {
@@ -14,6 +15,7 @@ export const apiRequest = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
         "x-id-token": `${IdToken}`,
+        "x-api-token":`${x_api_token}`
       },
       body: body ? JSON.stringify(body) : undefined,
     });

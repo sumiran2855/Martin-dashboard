@@ -1,4 +1,4 @@
-import { ArrowLeft, HelpCircle } from "lucide-react";
+import { ArrowLeft, HelpCircle, Download, Calendar } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,15 +16,42 @@ interface Facility {
     co2Savings: string;
     operatingHours: string;
     industry: string;
-    email:string
+    email: string;
   };
+}
+
+interface HealthCheckData {
+  XRGI_ID: string;
+  health_check_plus: number;
+  createdAt: string;
+  address: string;
+  url: string;
+  annualSavings: string;
+  city: string;
+  service_Provider_Name: string;
+  userId: string;
+  updatedAt: string;
+  service_Provider_Phone: string;
+  service_Provider_MailAddress: string;
+  operatingHours: string;
+  id: string;
+  facilityId: string;
+  postalCode: string;
+}
+
+interface GroupedHealthCheckData {
+  [month: string]: HealthCheckData[];
 }
 
 export default function facilities({ facilityId }: { facilityId: string }) {
   const router = useRouter();
   const { t } = useTranslation("facility");
   const [facility, setFacility] = useState<Facility | null>(null);
+  const [healthCheckData, setHealthCheckData] = useState<HealthCheckData[]>([]);
+  const [groupedHealthCheckData, setGroupedHealthCheckData] =
+    useState<GroupedHealthCheckData>({});
   const [loading, setLoading] = useState(true);
+  const [healthCheckLoading, setHealthCheckLoading] = useState(false);
 
   useEffect(() => {
     async function fetchFacility() {
@@ -57,6 +84,76 @@ export default function facilities({ facilityId }: { facilityId: string }) {
       fetchFacility();
     }
   }, [facilityId]);
+
+  useEffect(() => {
+    async function fetchHealthCheck() {
+      if (!facility?.xrgiID) return;
+      console.log("Fetching health check for XRGI ID:", facility.xrgiID);
+      setHealthCheckLoading(true);
+      const token = localStorage.getItem("token") || "";
+      const IdToken = localStorage.getItem("IdToken") || "";
+      const x_api_token = process.env.NEXT_PUBLIC_X_API_TOKEN || "";
+
+      try {
+        const response = await apiRequest(
+          `get-healthCheck/${facility.xrgiID}`,
+          "GET",
+          undefined,
+          token,
+          IdToken,
+          x_api_token
+        );
+
+        if (response.success && response.data) {
+          const healthCheckArray = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
+          setHealthCheckData(healthCheckArray);
+
+          // Group data by month
+          const grouped = groupDataByMonth(healthCheckArray);
+          setGroupedHealthCheckData(grouped);
+        }
+      } catch (error) {
+        console.error("Error fetching health check details:", error);
+      } finally {
+        setHealthCheckLoading(false);
+      }
+    }
+
+    fetchHealthCheck();
+  }, [facility]);
+
+  const groupDataByMonth = (
+    data: HealthCheckData[]
+  ): GroupedHealthCheckData => {
+    const grouped: GroupedHealthCheckData = {};
+
+    data.forEach((item) => {
+      const date = new Date(item.createdAt);
+      const monthYear = date.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      });
+
+      if (!grouped[monthYear]) {
+        grouped[monthYear] = [];
+      }
+      grouped[monthYear].push(item);
+    });
+
+    return grouped;
+  };
+
+  const handleDownload = (url: string, filename: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const facilityDetails = [
     { label: t("facilityDetail.annualSavings"), value: facility?.performance_report?.annualSavings  
@@ -110,7 +207,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
           </div>
 
           <div className="flex-1 p-6 overflow-auto ml-5">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <div className="bg-white rounded-lg border p-6">
                 <h2 className="text-lg font-medium mb-4">
                   {t("model")} {facility?.modelNumber}
@@ -128,7 +225,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-medium">{t("basicData")}</h2>
                   <button
-                    className="text-blue-600 border border-blue-600 rounded px-3 py-1 text-sm"
+                    className="text-blue-600 border border-blue-600 rounded px-3 py-1 text-sm hover:bg-blue-50 transition"
                     onClick={() =>
                       router.push(
                         `/dashboard/facilities/editFacilities/${facilityId}`
@@ -152,6 +249,160 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* Energy Check Plus Section */}
+            <div className="bg-white rounded-lg border p-6">
+              <div className="flex items-center gap-2 mb-6">
+                <HelpCircle className="text-blue-600" size={24} />
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Energy Check Plus Details
+                </h2>
+              </div>
+
+              {healthCheckLoading ? (
+                <div className="flex justify-center items-center py-8">
+                  <div className="loader animate-spin rounded-full border-4 border-gray-300 border-t-blue-600 h-8 w-8"></div>
+                </div>
+              ) : Object.keys(groupedHealthCheckData).length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <HelpCircle
+                    size={48}
+                    className="mx-auto mb-4 text-gray-300"
+                  />
+                  <p>No Energy Check Plus data available</p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {Object.entries(groupedHealthCheckData)
+                    .sort(
+                      ([a], [b]) =>
+                        new Date(b).getTime() - new Date(a).getTime()
+                    )
+                    .map(([month, data]) => (
+                      <div
+                        key={month}
+                        className="border rounded-lg overflow-hidden"
+                      >
+                        <div className="bg-gray-50 px-4 py-3 border-b">
+                          <div className="flex items-center gap-2">
+                            <Calendar size={20} className="text-blue-600" />
+                            <h3 className="text-lg font-medium text-gray-800">
+                              {month}
+                            </h3>
+                            <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                              {data.length} record{data.length > 1 ? "s" : ""}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Desktop View */}
+                        <div className="hidden md:block">
+                          <div className="overflow-x-auto">
+                            <table className="w-full">
+                              <thead className="bg-gray-50">
+                                <tr>
+                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    XRGI ID
+                                  </th>
+                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Expected  .Annual Savings
+                                  </th>
+                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Monthly Savings
+                                  </th>
+                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Service Provider
+                                  </th>
+                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Report
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody className="bg-white divide-y divide-gray-200">
+                                {data.map((item, index) => (
+                                  <tr key={index} className="hover:bg-gray-50">
+                                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      {item.XRGI_ID}
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      $ {item.annualSavings}
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      $ {item.health_check_plus}
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {item.service_Provider_Name ?? "N/A"}
+                                    </td>
+                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      <button
+                                        onClick={() =>
+                                          handleDownload(
+                                            item.url,
+                                            `health-check-${item.XRGI_ID}.pdf`
+                                          )
+                                        }
+                                        className="inline-flex items-center gap-2 px-3 py-1 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition text-sm"
+                                      >
+                                        <Download size={14} />
+                                        Download PDF
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        {/* Mobile View */}
+                        <div className="md:hidden">
+                          <div className="divide-y divide-gray-200">
+                            {data.map((item, index) => (
+                              <div key={index} className="p-4 space-y-3">
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <div className="text-sm font-medium text-gray-900">
+                                      XRGI ID: {item.XRGI_ID}
+                                    </div>
+                                    <div className="text-sm text-gray-500 mt-1">
+                                      Annual Savings: ${item.annualSavings}
+                                    </div>
+                                  </div>
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    ECP: {item.health_check_plus}
+                                  </span>
+                                </div>
+
+                                <div className="text-sm text-gray-900">
+                                  <span className="text-gray-500">
+                                    Service Provider:
+                                  </span>{" "}
+                                  {item.service_Provider_Name}
+                                </div>
+
+                                <div className="flex justify-end">
+                                  <button
+                                    onClick={() =>
+                                      handleDownload(
+                                        item.url,
+                                        `health-check-${item.XRGI_ID}.pdf`
+                                      )
+                                    }
+                                    className="inline-flex items-center gap-2 px-3 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition text-sm"
+                                  >
+                                    <Download size={14} />
+                                    Download PDF
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
