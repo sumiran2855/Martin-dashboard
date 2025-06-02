@@ -35,6 +35,6 @@
   "providerName": "Provider Name:",
   "emailAddress": "Email Address:",
   "phoneNumber": "Phone Number:",
-  "facilitiesWithService": "Facilities with Service Provider",
-  "facilitiesRequestingServices": "Facilities Requesting Service"
+  "facilitiesWithService": "Facilities with Service contract",
+  "facilitiesRequestingServices": "Facilities Requesting Service contract"
 }

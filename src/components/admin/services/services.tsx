@@ -54,8 +54,8 @@ const statusLabels: Record<string, string> = {
   Active: "Active",
   Inactive: "Inactive",
   MissingData: "Data Missing",
-  WithProvider: "With service Provider",
-  WithoutProvider: "Requesting Service Provider",
+  WithProvider: "With service contract",
+  WithoutProvider: "Requesting Service contract",
   HaveSuperSaverX: "Have SuperSaverX",
   WantSuperSaverX: "Want SuperSaverX"
 };

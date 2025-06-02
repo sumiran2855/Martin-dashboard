@@ -1,4 +1,4 @@
-import { ArrowLeft, HelpCircle, Download, Calendar } from "lucide-react";
+import { ArrowLeft, HelpCircle, Download, Calendar, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,12 +22,13 @@ interface Facility {
 
 interface HealthCheckData {
   XRGI_ID: string;
-  health_check_plus: number;
+  energy_check_plus_saving: number;
   createdAt: string;
   address: string;
   url: string;
   annualSavings: string;
   city: string;
+  runtimeHours: string;
   service_Provider_Name: string;
   userId: string;
   updatedAt: string;
@@ -153,6 +154,11 @@ export default function facilities({ facilityId }: { facilityId: string }) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const isLowRuntimeHours = (runtimeHours: string): boolean => {
+    const hours = parseFloat(runtimeHours);
+    return !isNaN(hours) && hours < 200;
   };
 
   const facilityDetails = [
@@ -296,6 +302,19 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                           </div>
                         </div>
 
+                        {data.some((item) => isLowRuntimeHours(item.runtimeHours)) && (
+                          <div className="bg-orange-50 border-l-4 border-orange-400 p-4">
+                            <div className="flex items-center">
+                              <AlertTriangle className="text-orange-400 mr-3" size={20} />
+                              <div>
+                                <p className="text-sm text-orange-800 font-medium">
+                                  Low runtime hours detected. Please contact your service provider.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
                         {/* Desktop View */}
                         <div className="hidden md:block">
                           <div className="overflow-x-auto">
@@ -306,10 +325,13 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                                     XRGI ID
                                   </th>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Expected  .Annual Savings
+                                    Expected Annual Savings
                                   </th>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Monthly Savings
+                                  </th>
+                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Operational Hours
                                   </th>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Service Provider
@@ -329,7 +351,17 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                                       $ {item.annualSavings}
                                     </td>
                                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                      $ {item.health_check_plus}
+                                      $ {item.energy_check_plus_saving}
+                                    </td>
+                                    <td className={`px-4 py-4 whitespace-nowrap text-sm ${
+                                      isLowRuntimeHours(item.runtimeHours) 
+                                        ? 'text-orange-600 font-medium' 
+                                        : 'text-gray-900'
+                                    }`}>
+                                      {item.runtimeHours ?? "N/A"} hrs
+                                      {isLowRuntimeHours(item.runtimeHours) && (
+                                        <AlertTriangle className="inline ml-1" size={14} />
+                                      )}
                                     </td>
                                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                       {item.service_Provider_Name ?? "N/A"}
@@ -368,9 +400,19 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                                     <div className="text-sm text-gray-500 mt-1">
                                       Annual Savings: ${item.annualSavings}
                                     </div>
+                                    <div className={`text-sm mt-1 ${
+                                      isLowRuntimeHours(item.runtimeHours) 
+                                        ? 'text-orange-600 font-medium' 
+                                        : 'text-gray-500'
+                                    }`}>
+                                      Runtime Hours: {item.runtimeHours ?? "N/A"} hrs
+                                      {isLowRuntimeHours(item.runtimeHours) && (
+                                        <AlertTriangle className="inline ml-1" size={14} />
+                                      )}
+                                    </div>
                                   </div>
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    ECP: {item.health_check_plus}
+                                    ECP: ${item.energy_check_plus_saving}
                                   </span>
                                 </div>
 

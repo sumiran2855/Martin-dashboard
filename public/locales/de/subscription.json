@@ -9,8 +9,8 @@
     "Inactive": "Inaktiv",
     "Pending": "Ausstehend",
     "MissingData": "Fehlende Daten",
-    "WithProvider": "mit Dienstleister",
-    "WithoutProvider": "anfragenden Dienstleister",
+    "WithProvider": "mit Servicevertrag",
+    "WithoutProvider": "Servicevertrag anfordern",
     "HaveSuperSaverX": "hat SuperSaverX",
     "WantSuperSaverX": "will SuperSaverX"
   },

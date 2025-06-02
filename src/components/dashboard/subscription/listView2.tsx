@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight, X } from "lucide-react";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface Facility {
+  id: string;
   name: string;
   xrgiID: string;
   modelNumber: string;
@@ -26,6 +28,7 @@ interface Facility {
 }
 
 export default function ListView2({ facilities }: { facilities: Facility[] }) {
+  const router = useRouter();
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -88,19 +91,19 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                             alt="folder"
                             className="w-6 h-6"
                           />
-                          <span className="text-gray-800 text-sm truncate">
+                          <span className="text-gray-800 text-sm truncate" onClick={() => router.push(`/admin/user/plantDetail/${facility.id}`)}>
                             {facility.name}
                           </span>
                         </div>
                       </td>
-                      <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
+                      <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600" onClick={() => router.push(`/admin/user/plantDetail/${facility.id}`)}>
                         {facility.xrgiID}
                       </td>
                       <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
                         {facility.modelNumber}
                       </td>
                       <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                        {facility.hasServiceContract
+                        {facility.hasPerformanceReport && hasPerformanceReportDetails(facility)
                           ? "Added"
                           : "Not Added"}
                       </td>

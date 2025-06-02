@@ -68,7 +68,7 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
   };
 
   const getSubscriptionStatus = (facility: Facility) => {
-    if (facility.hasPerformanceReport && facility.hasServiceContract) {
+    if (facility.hasPerformanceReport && hasPerformanceReportDetails(facility)) {
       return t("added");
     }
     return t("unavailable");

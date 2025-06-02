@@ -96,7 +96,7 @@ export default function AdminSidebar() {
                 <div className="w-6 h-6 mr-3 flex items-center justify-center">
                   🔧
                 </div>
-                <span className="font-medium">Service</span>
+                <span className="font-medium">Service Contract</span>
               </Link>
 
               <Link

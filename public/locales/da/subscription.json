@@ -9,8 +9,8 @@
     "Inactive": "Inaktiv",
     "Pending": "Afventer",
     "MissingData": "Manglende data",
-    "WithProvider": "tjenesteudbyder",
-    "WithoutProvider": "anmodende tjenesteudbyder",
+    "WithProvider": "servicekontrakt",
+    "WithoutProvider": "anmodende servicekontrakt",
     "HaveSuperSaverX": "har SuperSaverX",
     "WantSuperSaverX": "vil have SuperSaverX"
   },
