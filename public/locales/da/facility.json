@@ -11,7 +11,15 @@
     "co2Savings": "Årlige CO₂-besparelser",
     "operatingHours": "Driftstimer pr. år",
     "industry": "Branche",
-    "email": "E-mailadresse"
+    "email": "E-mailadresse",
+    "warning": "Lav driftstid registreret. Kontakt venligst din serviceudbyder.", 
+    "XRGI®": "XRGI ID",
+    "expectedSavings": "Forventede årlige besparelser",
+    "monthlySavings": "Månedlige besparelser",
+    "operationalHours": "Driftstimer",
+    "serviceProvider": "Serviceudbyder",
+    "report": "Rapport",
+    "downloadReport": "Download PDF"
   }
   }
   

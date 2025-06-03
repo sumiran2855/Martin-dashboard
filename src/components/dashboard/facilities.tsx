@@ -305,10 +305,10 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                         {data.some((item) => isLowRuntimeHours(item.runtimeHours)) && (
                           <div className="bg-orange-50 border-l-4 border-orange-400 p-4">
                             <div className="flex items-center">
-                              <AlertTriangle className="text-orange-400 mr-3" size={20} />
+                              <AlertTriangle className="text-orange-400 mr-3 mb-3" size={20} />
                               <div>
                                 <p className="text-sm text-orange-800 font-medium">
-                                  Low runtime hours detected. Please contact your service provider.
+                                  {t("facilityDetail.warning")}
                                 </p>
                               </div>
                             </div>
@@ -322,22 +322,22 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                               <thead className="bg-gray-50">
                                 <tr>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    XRGI ID
+                                    {t("facilityDetail.XRGI®")}
                                   </th>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Expected Annual Savings
+                                    {t("facilityDetail.expectedSavings")}
                                   </th>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Monthly Savings
+                                    {t("facilityDetail.monthlySavings")}
                                   </th>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Operational Hours
+                                    {t("facilityDetail.operationalHours")}
                                   </th>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Service Provider
+                                    {t("facilityDetail.serviceProvider")}
                                   </th>
                                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Report
+                                    {t("facilityDetail.report")}
                                   </th>
                                 </tr>
                               </thead>
@@ -377,7 +377,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
                                         className="inline-flex items-center gap-2 px-3 py-1 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition text-sm"
                                       >
                                         <Download size={14} />
-                                        Download PDF
+                                        {t("facilityDetail.downloadReport")}
                                       </button>
                                     </td>
                                   </tr>

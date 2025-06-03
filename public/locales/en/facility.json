@@ -1,17 +1,24 @@
 {
-    "back": "Back",
-    "facilityDetails": "XRGI® System Details",
-    "name": "Name",
-    "address": "Address",
-    "model": "Model",
-    "basicData": "Basic Data",
-    "edit": "Edit",
-    "facilityDetail": {
+  "back": "Back",
+  "facilityDetails": "XRGI® System Details",
+  "name": "Name",
+  "address": "Address",
+  "model": "Model",
+  "basicData": "Basic Data",
+  "edit": "Edit",
+  "facilityDetail": {
     "annualSavings": "Annual Savings",
     "co2Savings": "Annual CO₂ savings",
     "operatingHours": "Operating hours per year",
     "industry": "Industry",
-    "email": "E-mail address"
+    "email": "E-mail address",
+    "warning": "Low runtime hours detected. Please contact your service provider.",
+    "XRGI®": "XRGI ID",
+    "expectedSavings": "Expected Annual Savings",
+    "monthlySavings": "Monthly Savings",
+    "operationalHours": "Operating Hours",
+    "serviceProvider": "Service Provider",
+    "report": "Report",
+    "downloadReport": "Download PDF"
   }
 }
-  

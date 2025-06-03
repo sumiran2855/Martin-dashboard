@@ -115,9 +115,9 @@ function SubscriptionPage() {
 
           switch (filter) {
             case "Want a Report":
-              return allNull;
-            case "Don’t want a report":
               return !allNull;
+            case "Don’t want a report":
+              return allNull;
             default:
               return true;
           }

@@ -11,6 +11,7 @@ interface Facility {
   modelNumber?: string;
   status?: string;
   hasServiceContract?: boolean;
+  needServiceContract?: boolean;
   serviceProvider?: {
     name?: string | null;
     mailAddress?: string | null;
@@ -29,6 +30,11 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
         facility.serviceProvider.phone) {
       return 'Active';
     }
+    
+    if (facility.needServiceContract) {
+      return 'Pending';
+    }
+    
     return 'Pending';
   };
 
@@ -48,6 +54,12 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
         (!facility.serviceProvider.name &&
           !facility.serviceProvider.mailAddress &&
           !facility.serviceProvider.phone))
+  );
+
+  const requestingECPowerService = facilities.filter(
+    (facility) =>
+      !facility.hasServiceContract && 
+      facility.needServiceContract === true
   );
 
   const handleCardClick = (facilityId: string) => {
@@ -87,6 +99,26 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
     const isExpanded = expandedCard === facilityId;
     const currentStatus = getFacilityStatus(facility);
 
+    const getStatusConfig = () => {
+      switch (currentStatus) {
+        case 'Active':
+          return {
+            image: '/Active.png',
+            text: 'Active',
+            color: 'text-green-600'
+          };
+        case 'Pending':
+        default:
+          return {
+            image: '/Missing.png',
+            text: 'Pending',
+            color: 'text-orange-600'
+          };
+      }
+    };
+
+    const statusConfig = getStatusConfig();
+
     return (
       <div
         key={`${facilityId}-${isExpandedView ? 'expanded' : 'normal'}`}
@@ -101,16 +133,12 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
             <p className="text-gray-600 text-xs">{facility.xrgiID}</p>
             <div className="flex items-center space-x-2 mt-2">
               <img
-                src={
-                  currentStatus === "Active"
-                    ? "/Active.png"
-                    : "/Missing.png"
-                }
+                src={statusConfig.image}
                 alt={currentStatus}
                 className="w-5 h-5"
               />
-              <span className="text-sm text-gray-700">
-               {currentStatus}
+              <span className={`text-sm ${statusConfig.color}`}>
+                {statusConfig.text}
               </span>
             </div>
           </div>
@@ -211,6 +239,17 @@ export default function GridView({ facilities }: { facilities: Facility[] }) {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {renderFacilityCards(requestingServiceProvider, false)}
+          </div>
+        </div>
+      )}
+
+      {requestingECPowerService.length > 0 && (
+        <div>
+          <h2 className="text-gray-600 text-lg font-semibold mb-3">
+            XRGI® systems requesting service contract
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {renderFacilityCards(requestingECPowerService, false)}
           </div>
         </div>
       )}

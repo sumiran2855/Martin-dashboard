@@ -11,6 +11,14 @@
     "co2Savings": "Jährliche CO₂-Einsparungen",
     "operatingHours": "Betriebsstunden pro Jahr",
     "industry": "Branche",
-    "email": "E-Mail-Adresse"
+    "email": "E-Mail-Adresse",
+    "warning": "Niedrige Betriebsstunden erkannt. Bitte kontaktieren Sie Ihren Serviceanbieter.",
+    "XRGI®": "XRGI ID",
+    "expectedSavings": "Erwartete jährliche Einsparungen",
+    "monthlySavings": "Monatliche Einsparungen",
+    "operationalHours": "Betriebsstunden",
+    "serviceProvider": "Serviceanbieter",
+    "report": "Bericht",
+    "downloadReport": "PDF herunterladen"
   }
 }

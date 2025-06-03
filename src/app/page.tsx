@@ -248,9 +248,9 @@ export default function Login() {
       </div>
 
       <div className="flex w-2/3 items-center justify-center bg-gray-100 relative max-lg:w-2/4 max-md:w-full max-md:h-48">
-        <div className="w-[80%] h-[80%] relative max-md:h-52">
+        <div className="w-[100%] h-[100%] relative max-md:h-52">
           <Image
-            src="/Green Industry.png"
+            src="/ECP_XRGI_installation.jpg"
             alt="Login Illustration"
             layout="fill"
             objectFit="contain"

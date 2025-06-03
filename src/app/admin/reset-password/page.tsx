@@ -85,9 +85,9 @@ export default function ChangeAdminPassword() {
           </form>
         </div>
         <div className="flex w-2/3 items-center justify-center bg-gray-100 relative max-lg:w-2/4 max-md:w-full max-md:h-48">
-          <div className="w-[80%] h-[80%] relative">
+          <div className="w-[100%] h-[100%] relative">
             <Image
-              src="/Green Industry.png"
+              src="/ECP_XRGI_installation.jpg"
               alt="Illustration"
               layout="fill"
               objectFit="contain"

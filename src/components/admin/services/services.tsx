@@ -42,6 +42,7 @@ interface Facility {
   };
 
   hasServiceContract?: boolean;
+  needServiceContract?: boolean;
   serviceProvider?: {
     name?: string;
     mailAddress?: string;
@@ -53,15 +54,15 @@ const statusLabels: Record<string, string> = {
   All: "All",
   Active: "Active",
   Inactive: "Inactive",
-  MissingData: "Data Missing",
+  Pending: "Pending",
   WithProvider: "With service contract",
   WithoutProvider: "Requesting Service contract",
+  RequestingECPower: "Requesting EC POWER service",
   HaveSuperSaverX: "Have SuperSaverX",
   WantSuperSaverX: "Want SuperSaverX"
 };
 
-
-const statusOptions = ["All", "Active", "Inactive", "MissingData", "WithProvider", "WithoutProvider"];
+const statusOptions = ["All", "Active", "Inactive", "Pending", "WithProvider", "WithoutProvider"];
 
 function ServicesPage() {
   const { t } = useTranslation("subscription");
@@ -86,7 +87,7 @@ function ServicesPage() {
         try {
           const data: Facility[] = await getAllFacilityForAdmin(token, IdToken);
           const filteredData = data.filter(
-            (facility) => facility.hasServiceContract === true
+            (facility) => facility.hasServiceContract === true || facility.needServiceContract === true
           );
           setFacilitiesData(filteredData);
         } catch (error) {
@@ -107,8 +108,14 @@ function ServicesPage() {
       if (selectedStatus === "All") return true;
       if (selectedStatus === "Active") return facility.status === "Active";
       if (selectedStatus === "Inactive") return facility.status === "Inactive";
-      if (selectedStatus === "MissingData")
-        return facility.status === "Data Missing";
+      if (selectedStatus === "Pending")
+        return (
+          facility.hasServiceContract &&
+          (!facility.serviceProvider ||
+            (!facility.serviceProvider.name &&
+              !facility.serviceProvider.mailAddress &&
+              !facility.serviceProvider.phone))
+        );
       if (selectedStatus === "WithProvider") {
         return (
           facility.hasServiceContract &&
@@ -120,11 +127,8 @@ function ServicesPage() {
       }
       if (selectedStatus === "WithoutProvider") {
         return (
-          facility.hasServiceContract &&
-          (!facility.serviceProvider ||
-            (!facility.serviceProvider.name &&
-              !facility.serviceProvider.mailAddress &&
-              !facility.serviceProvider.phone))
+          !facility.hasServiceContract && 
+          facility.needServiceContract === true
         );
       }
       return false;
@@ -176,7 +180,7 @@ function ServicesPage() {
             }),
             hasPerformanceReport: item.hasPerformanceReport
             ? "Wants report"
-            : "Don’t want report",
+            : "Don't want report",
             annual_Savings: item.performance_report?.annualSavings,
             co2Savings: item.performance_report?.co2Savings,
             industry: item.performance_report?.industry,
@@ -230,7 +234,7 @@ function ServicesPage() {
             Service Contracts
           </h1>
           <p className="text-gray-600 mb-6">
-            View and manage all XRGI® systems that have as associated service partner
+            View and manage all XRGI® systems that have or are requesting service contracts
           </p>
 
           <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
