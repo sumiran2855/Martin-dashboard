@@ -262,7 +262,7 @@ export default function facilities({ facilityId }: { facilityId: string }) {
               <div className="flex items-center gap-2 mb-6">
                 <HelpCircle className="text-blue-600" size={24} />
                 <h2 className="text-xl font-semibold text-gray-800">
-                  Energy Check Plus Details
+                  EnergyCheck Plus Details
                 </h2>
               </div>
 

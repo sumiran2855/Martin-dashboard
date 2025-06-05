@@ -72,11 +72,12 @@
   "no": "Nej",
   "emailLabel": "Modtagerens e-mailadresse(r)",
   "emailHint": "(Du kan indtaste flere adresser adskilt med komma)",
+  "emailHint2": "Hvis du ikke har tilbuddet, bedes du kontakte din servicepartner",
   "emailPlaceholder": "f.eks. bruger@eksempel.dk, admin@eksempel.dk",
   "Installation": {
     "description": "Vores software bruger elmarkedets realtidspriser (EPEX Day-ahead) til automatisk at pause energiproduktionen, når markedspriserne er nul eller negative",
     "description2": "(Denne softwarefunktion er standard på alle XRGI®-systemer fra april 2025)",
-    "setupTitle": "Venligst installer",
+    "setupTitle": "Venligst Smart PriceControl installer",
     "atService": "Softwaren skal fysisk installeres på dit XRGI®-system af din servicepartner",
     "atService2": "Ved næste besøg på stedet",
     "atService3": "Så hurtigt som muligt"
@@ -93,5 +94,13 @@
     "phoneSupport": "Telefonsupport"
   },
   "energyCheckTitle": "EnergyCheck Plus",
-  "energyCheckSubtitle": "Få en månedlig oversigt over, hvor meget du har sparet med dit XRGI-system"
+  "energyCheckSubtitle": "Få en månedlig oversigt over, hvor meget du har sparet med dit XRGI-system",
+  "option": {
+    "Sport": "Sport",
+    "Industry": "Industri",
+    "Schools": "Skoler",
+    "Hotel": "Hotel",
+    "NursingHome": "Plejehjem",
+    "Other": "Andet"
+  }
 }

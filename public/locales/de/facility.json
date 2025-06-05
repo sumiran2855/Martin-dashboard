@@ -1,10 +1,10 @@
 {
   "back": "Zurück",
-  "facilityDetails": "XRGI® Systemdetails",
+  "facilityDetails": "XRGI®-Anlagendetails",
   "name": "Name",
   "address": "Adresse",
   "model": "Modell",
-  "basicData": "Grunddaten",
+  "basicData": "Basisdaten",
   "edit": "Bearbeiten",
   "facilityDetail": {
     "annualSavings": "Jährliche Einsparungen",

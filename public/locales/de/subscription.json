@@ -1,6 +1,6 @@
 {
-  "subscriptionTitle": "Abonnements",
-  "subscriptionDescription": "Verwalten und überwachen Sie alle Ihre aktiven und inaktiven Abonnements.",
+  "subscriptionTitle": "Anmeldungen",
+  "subscriptionDescription": "Anmeldungen verwalten und uberwachen",
   "sortBy": "Sortieren nach",
   "searchPlaceholder": "Abonnements suchen...",
   "statusOptions": {
@@ -16,14 +16,14 @@
   },
   "services": {
     "servicesTitle": "Serviceverträge",
-    "servicesDescription": "Anzeigen und verwalten Sie alle XRGI®-Systeme mit einem zugeordneten Servicepartner",
+    "servicesDescription": "Serviceverträge anzeigen und überwachen",
     "searchPlaceholder": "Services durchsuchen..."
   },
   "tableHeaders": {
     "name": "Name",
     "facility": "XRGi-Anlage",
     "model": "Modell",
-    "subscription": "Abonnement"
+    "subscription": "Anmeldungen"
   },
   "facilityDetails": "Anlagendetails",
     "xrgiFacility": "XRGi-Anlage",
@@ -32,8 +32,8 @@
     "added": "Hinzugefügt",
     "unavailable": "Nicht hinzugefügt",
     "statusOverview": "Statusübersicht",
-    "smartPriceControl": "Intelligente Preiskontrolle",
-    "energyCheckPlus": "EnergieCheck Plus",
+    "smartPriceControl": "Smart PriceControl",
+    "energyCheckPlus": "EnergyCheck Plus",
     "active": "Aktiv",
     "processing": "In Bearbeitung",
     "notActive": "Nicht aktiv",

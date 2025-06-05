@@ -16,7 +16,7 @@ import TermsModal from "@/components/modals/acceptTerms";
 import { useTranslation } from "react-i18next";
 
 function Dashboard() {
-  const { t: term } = useTranslation("term");
+  const { t: term, i18n } = useTranslation("term");
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -31,7 +31,8 @@ function Dashboard() {
   const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
   const [wantsServiceContract, setWantsServiceContract] = useState(false);
   const [serviceContractChoice, setServiceContractChoice] = useState("");
-  const [serviceContractWantedChoice, setServiceContractWantedChoice] = useState("");
+  const [serviceContractWantedChoice, setServiceContractWantedChoice] =
+    useState("");
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
     mobile: "",
@@ -354,10 +355,55 @@ function Dashboard() {
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem("language", lng);
+    localStorage.setItem("i18nextLng", lng);
+  };
+
+  const languages = [
+    { code: "da", label: "Danish" },
+    { code: "de", label: "German" },
+    { code: "it", label: "Italian" },
+    { code: "en", label: "English" },
+  ];
+
   return (
-    <div className="flex bg-gray-50">
-      {step === 1 && !isSubscribed && <Sidebar />}
-      <div className={`flex-1 transition-all ${ step === 1 ? "pl-[300px]" : "pl-0" } p-10 flex flex-col items-center`} >
+    <div className="flex bg-gray-50 min-h-screen">
+      {step === 1 && !isSubscribed}
+      
+      <div className="fixed top-0 right-0 z-50 p-4">
+        <div className="bg-white rounded-lg shadow-sm border px-4 py-2">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-gray-600 font-medium">Language:</span>
+            <div className="flex items-center gap-2">
+              {languages.map(({ code, label }, index) => (
+                <div key={code} className="flex items-center">
+                  <button
+                    onClick={() => changeLanguage(code)}
+                    className={`text-sm transition-colors duration-200 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded px-2 py-1 ${
+                      i18n.language === code 
+                        ? "font-semibold text-blue-600 bg-blue-50" 
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                  {index < languages.length - 1 && (
+                    <span className="text-gray-300 mx-1">|</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          step === 1 && !isSubscribed ? "pl-[300px]" : "pl-0"
+        } p-10 pt-20 flex flex-col items-center`}
+      >
         {isSubscribed ? (
           <Modal
             isOpen={isOpen}

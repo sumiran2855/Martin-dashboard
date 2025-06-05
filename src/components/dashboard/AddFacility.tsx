@@ -205,12 +205,18 @@ function AddFacility() {
                       type="text"
                       name="systemName"
                       placeholder={t("nameSystem")}
-                      className={`p-3 border rounded-lg w-full ${errors.systemName && formSubmitted ? "border-red-500" : ""}`}
+                      className={`p-3 border rounded-lg w-full ${
+                        errors.systemName && formSubmitted
+                          ? "border-red-500"
+                          : ""
+                      }`}
                       value={stepTwoFormData.systemName || ""}
                       onChange={handleChange}
                     />
                     {errors.systemName && formSubmitted ? (
-                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.systemName}</p>
+                      <p className="text-red-500 text-sm mt-1 ml-3">
+                        {errors.systemName}
+                      </p>
                     ) : (
                       <label className="text-gray-500 text-sm mt-1 block ml-3">
                         {t("nameSystemExample")}
@@ -224,7 +230,11 @@ function AddFacility() {
                         name="model"
                         value={selectedModel}
                         onChange={handleChangeSelect}
-                        className={`appearance-none bg-white p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer ${errors.model && formSubmitted ? "border-red-500" : "border-gray-300"}`}
+                        className={`appearance-none bg-white p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-300 pr-10 cursor-pointer ${
+                          errors.model && formSubmitted
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        }`}
                       >
                         <option value="">{t("selectModel")}</option>
                         <option>XRGI® 6 LOWNOX</option>
@@ -252,7 +262,9 @@ function AddFacility() {
                       </span>
                     </div>
                     {errors.model && formSubmitted ? (
-                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.model}</p>
+                      <p className="text-red-500 text-sm mt-1 ml-3">
+                        {errors.model}
+                      </p>
                     ) : (
                       <label className="text-gray-500 text-sm mt-1 block ml-3">
                         {t("modelNameHint")}
@@ -269,7 +281,11 @@ function AddFacility() {
                         type="text"
                         name="XRGINumber"
                         placeholder={t("enterXrgiId")}
-                        className={`p-3 border rounded-lg w-full pr-10 focus:ring-2 focus:ring-blue-300 ${errors.XRGINumber && formSubmitted ? "border-red-500" : "border-gray-300"}`}
+                        className={`p-3 border rounded-lg w-full pr-10 focus:ring-2 focus:ring-blue-300 ${
+                          errors.XRGINumber && formSubmitted
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        }`}
                         value={stepTwoFormData.XRGINumber || ""}
                         onChange={handleChange}
                       />
@@ -301,7 +317,9 @@ function AddFacility() {
                       </span>
                     </div>
                     {errors.XRGINumber && formSubmitted ? (
-                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.XRGINumber}</p>
+                      <p className="text-red-500 text-sm mt-1 ml-3">
+                        {errors.XRGINumber}
+                      </p>
                     ) : (
                       <p className="text-gray-500 text-sm mt-1 block ml-3">
                         {t("xrgiIdHint")}
@@ -327,12 +345,16 @@ function AddFacility() {
                       type="text"
                       name="address"
                       placeholder={t("address")}
-                      className={`p-3 border rounded-lg w-full ${errors.address && formSubmitted ? "border-red-500" : ""}`}
+                      className={`p-3 border rounded-lg w-full ${
+                        errors.address && formSubmitted ? "border-red-500" : ""
+                      }`}
                       value={stepTwoFormData.address || ""}
                       onChange={handleChange}
                     />
                     {errors.address && formSubmitted ? (
-                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.address}</p>
+                      <p className="text-red-500 text-sm mt-1 ml-3">
+                        {errors.address}
+                      </p>
                     ) : (
                       <label className="text-gray-500 text-sm mt-1 block ml-3">
                         {t("addressHint")}
@@ -345,12 +367,18 @@ function AddFacility() {
                       type="text"
                       name="postalCode"
                       placeholder={t("postalCode")}
-                      className={`p-3 border rounded-lg w-full ${errors.postalCode && formSubmitted ? "border-red-500" : ""}`}
+                      className={`p-3 border rounded-lg w-full ${
+                        errors.postalCode && formSubmitted
+                          ? "border-red-500"
+                          : ""
+                      }`}
                       value={stepTwoFormData.postalCode || ""}
                       onChange={handleChange}
                     />
                     {errors.postalCode && formSubmitted && (
-                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.postalCode}</p>
+                      <p className="text-red-500 text-sm mt-1 ml-3">
+                        {errors.postalCode}
+                      </p>
                     )}
                   </div>
 
@@ -359,12 +387,16 @@ function AddFacility() {
                       type="text"
                       name="city"
                       placeholder={t("city")}
-                      className={`p-3 border rounded-lg w-full ${errors.city && formSubmitted ? "border-red-500" : ""}`}
+                      className={`p-3 border rounded-lg w-full ${
+                        errors.city && formSubmitted ? "border-red-500" : ""
+                      }`}
                       value={stepTwoFormData.city || ""}
                       onChange={handleChange}
                     />
                     {errors.city && formSubmitted && (
-                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.city}</p>
+                      <p className="text-red-500 text-sm mt-1 ml-3">
+                        {errors.city}
+                      </p>
                     )}
                   </div>
 
@@ -373,12 +405,16 @@ function AddFacility() {
                       type="text"
                       name="country"
                       placeholder={t("country")}
-                      className={`p-3 border rounded-lg w-full ${errors.country && formSubmitted ? "border-red-500" : ""}`}
+                      className={`p-3 border rounded-lg w-full ${
+                        errors.country && formSubmitted ? "border-red-500" : ""
+                      }`}
                       value={stepTwoFormData.country || ""}
                       onChange={handleChange}
                     />
                     {errors.country && formSubmitted && (
-                      <p className="text-red-500 text-sm mt-1 ml-3">{errors.country}</p>
+                      <p className="text-red-500 text-sm mt-1 ml-3">
+                        {errors.country}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -492,9 +528,13 @@ function AddFacility() {
               </div>
             </div>
 
-            <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
-              <h2 className="text-2xl font-semibold text-[#082351DE] px-4 pt-4">{t("energyCheckTitle")}</h2>
-              <h2 className="text-xl font-semibold text-[#082351DE] px-4 pb-4">{t("energyCheckSubtitle")}</h2>
+            <div className="bg-white px-6 py-1 rounded-lg mb-2 border border-gray-200 max-md:px-0">
+              <h2 className="text-2xl font-semibold text-[#082351DE] px-4 pt-4">
+                {t("energyCheckTitle")}
+              </h2>
+              <h2 className="text-xl font-semibold text-[#082351DE] px-4 pb-4">
+                {t("energyCheckSubtitle")}
+              </h2>
               <div className="flex items-center space-x-3 pb-4">
                 <input
                   type="checkbox"
@@ -575,12 +615,12 @@ function AddFacility() {
                           onChange={handleChange}
                         >
                           <option value="">Select a Industry</option>
-                          <option value="Hotel">Hotel</option>
-                          <option value="School">School</option>
-                          <option value="Sport">Sport</option>
-                          <option value="Nursing home">Nursing home</option>
-                          <option value="Industry">Industry</option>
-                          <option value="other">other</option>
+                          <option value="Hotel">{t("option.Hotel")}</option>
+                          <option value="School">{t("option.School")}</option>
+                          <option value="Sport">{t("option.Sport")}</option>
+                          <option value="Nursing home">{t("option.NursingHome")}</option>
+                          <option value="Industry">{t("option.Industry")}</option>
+                          <option value="other">{t("option.Other")}</option>
                         </select>
                       </div>
 
@@ -605,6 +645,9 @@ function AddFacility() {
                 </div>
               )}
             </div>
+            <label className="block text-gray-700 text-sm font-medium mb-6 ml-2">
+              {t("emailHint2")}
+            </label>
 
             <div className="bg-white px-6 py-1 rounded-lg mb-6 border border-gray-200 max-md:px-0">
               <div className="flex items-center space-x-3 py-4">
@@ -655,7 +698,7 @@ function AddFacility() {
                 htmlFor="serviceProvider"
                 className="text-[#082351DE] text-lg font-semibold"
               >
-                {t("Installation.setupTitle")} Smart PriceControl
+                {t("Installation.setupTitle")}
               </label>
             </div>
 

@@ -6,7 +6,7 @@ export default function Stepper({ step }: StepperProps) {
   const steps = [
     "Create Profile",
     "Register First XRGI® System",
-    "Finish registeration",
+    "Finish Registration",
   ];
 
   return (

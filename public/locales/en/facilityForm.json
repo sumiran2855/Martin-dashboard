@@ -72,11 +72,12 @@
   "no": "No",
   "emailLabel": "Recipient Email Address(es)",
   "emailHint": "(You can enter multiple addresses separated by commas)",
+  "emailHint2": "If you do not have the offer, please contact your service partner",
   "emailPlaceholder": "e.g. user@example.com, admin@example.com",
   "Installation": {
     "description": "Our software users real time electricity market prices (EPEX Day-ahead) to automatically pause energy production, when the market prices are zero or negative",
     "description2": "(This software feature is standard on all XRGI® systems from April 2025)",
-    "setupTitle": " Please install",
+    "setupTitle": " Please install Smart PriceControl",
     "atService": "The software needs to be physically installed on your XRGI® system by your service partner",
     "atService2": " At next on-site visit",
     "atService3": "As soon as possible"
@@ -93,5 +94,13 @@
     "phoneSupport": "Phone Support"
   },
   "energyCheckTitle": "EnergyCheck Plus",
-  "energyCheckSubtitle": "Get a monthly overview of how much you have saved with your XRGI System"
+  "energyCheckSubtitle": "Get a monthly overview of how much you have saved with your XRGI System",
+  "option":{
+    "Sport": "Sport",
+    "Industry": "Industry",
+    "Hotel": "Hotel",
+    "School": "School",
+    "NursingHome": "Nursing Home",
+    "Other": "Other"
+  }
 }

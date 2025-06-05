@@ -7,9 +7,9 @@
   "alertSuccess": "Ihre Nachricht wurde gesendet! Wir werden uns bald bei Ihnen melden.",
   "alertError": "Es gab einen Fehler beim Senden Ihrer Nachricht. Bitte versuchen Sie es erneut.",
   "subjects": {
-    "problemXRGi": "Problem mit XRGi",
+    "problemXRGi": "Problem mit XRGI®",
     "problemAddingInfo": "Problem beim Hinzufügen von Informationen",
-    "questionSuperSaver": "Problem mit Price Smart",
+    "questionSuperSaver": "Problem mit Smart PriceControl",
     "contactEC": "Ich möchte von EC POWER kontaktiert werden",
     "otherInquiry": "Andere Anfrage"
   },
