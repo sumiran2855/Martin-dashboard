@@ -23,15 +23,15 @@ interface Facility {
     address:string,
     postal_code:string
   }
-  hasPerformanceReport?: boolean;
-  performance_report?: {
+  hasEnergyCheckPlus?: boolean;
+  EnergyCheck_plus?: {
     annualSavings?: number | null;
     co2Savings?: number | null;
     industry?: string | null;
     operatingHours?: number | null;
   };
-  featureAdded?: boolean;
-  feature?: {
+  smartPriceControlAdded?: boolean;
+  smartPriceControl?: {
     method?: string;
     partner_details?: {
       name: string;
@@ -58,8 +58,8 @@ const statusLabels: Record<string, string> = {
   WithProvider: "With service contract",
   WithoutProvider: "Requesting Service contract",
   RequestingECPower: "Requesting EC POWER service",
-  HaveSuperSaverX: "Have SuperSaverX",
-  WantSuperSaverX: "Want SuperSaverX"
+  HaveSmartPriceControl: "Have SmartPriceControl",
+  WantSmartPriceControl: "Want SmartPriceControl"
 };
 
 const statusOptions = ["All", "Active", "Inactive", "Pending", "WithProvider", "WithoutProvider"];
@@ -145,7 +145,7 @@ function ServicesPage() {
       const refinedData = await Promise.all(
         data.map(async (item) => {
           const customer = await getCustomerById(token, IdToken, item.userID!);
-          const isLocalPartner = item.feature?.method === "local_partner";
+          const isLocalPartner = item.smartPriceControl?.method === "local_partner";
 
           return {
             userId: item.userID,
@@ -167,24 +167,24 @@ function ServicesPage() {
             serviceProvider_name: item.serviceProvider?.name,
             serviceProvider_email: item.serviceProvider?.mailAddress,
             serviceProvider_Phone: item.serviceProvider?.phone,
-            SuperSaverX: item.featureAdded && item.feature?.method
+            SmartPriceControl: item.smartPriceControlAdded && item.smartPriceControl?.method
               ? "Has Smart PriceControl"
               : "Wants Smart PriceControl",
-            SuperSaverX_method: isLocalPartner
+            SmartPriceControl_method: isLocalPartner
               ? "Local Partner"
-              : item.feature?.method,
+              : item.smartPriceControl?.method,
             ...(isLocalPartner && {
-              partner_Name: item.feature?.partner_details?.name || "",
-              partner_email: item.feature?.partner_details?.email || "",
-              partner_phone: item.feature?.partner_details?.mobile || "",
+              partner_Name: item.smartPriceControl?.partner_details?.name || "",
+              partner_email: item.smartPriceControl?.partner_details?.email || "",
+              partner_phone: item.smartPriceControl?.partner_details?.mobile || "",
             }),
-            hasPerformanceReport: item.hasPerformanceReport
+            hasEnergyCheckPlus: item.hasEnergyCheckPlus
             ? "Wants report"
             : "Don't want report",
-            annual_Savings: item.performance_report?.annualSavings,
-            co2Savings: item.performance_report?.co2Savings,
-            industry: item.performance_report?.industry,
-            operatingHours: item.performance_report?.operatingHours,
+            annual_Savings: item.EnergyCheck_plus?.annualSavings,
+            co2Savings: item.EnergyCheck_plus?.co2Savings,
+            industry: item.EnergyCheck_plus?.industry,
+            operatingHours: item.EnergyCheck_plus?.operatingHours,
             customer_email: customer?.email || "",
             customer_phone: customer?.phone || "",
           };

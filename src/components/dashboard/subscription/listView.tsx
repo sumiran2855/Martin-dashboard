@@ -10,21 +10,24 @@ import {
   X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { apiRequest } from "@/utils/authHelper";
+import { FACILITY_API_ROUTES } from "@/routes/facilityRoutes";
 
 interface Facility {
   id: string;
   name: string;
   xrgiID: string;
   modelNumber: string;
-  hasPerformanceReport?: boolean;
-  performance_report?: {
+  hasEnergyCheckPlus?: boolean;
+  EnergyCheck_plus?: {
     annualSavings?: number | null;
     co2Savings?: number | null;
     industry?: string | null;
     operatingHours?: number | null;
   };
-  featureAdded?: boolean;
-  feature?: {
+  smartPriceControlAdded?: boolean;
+  installedSmartPriceController?: boolean;
+  smartPriceControl?: {
     method?: string;
   };
   hasServiceContract?: boolean;
@@ -35,16 +38,56 @@ interface Facility {
   };
 }
 
-export default function ListView({ facilities }: { facilities: Facility[] }) {
+const createFacility = async (
+  token: string,
+  IdToken: string,
+  payload: any,
+  id: string
+) => {
+  try {
+      const result = await apiRequest(
+        `${FACILITY_API_ROUTES.CREATE_FACILITY}?id=${id}`,
+        "POST",
+        payload,
+        token,
+        IdToken
+      );
+
+      if (result?.success) {
+        return result.data;
+      }
+
+      throw new Error(" Failed to update facility");
+    } catch (error) {
+      console.error(" Error in createFacility:", error);
+      return null;
+    }
+  };
+
+interface ListViewProps {
+  facilities: Facility[];
+  onFacilityUpdate?: (updatedFacilities: Facility[]) => void;
+  token?: string;
+  IdToken?: string;
+}
+
+export default function ListView({ 
+  facilities, 
+  onFacilityUpdate,
+  token,
+  IdToken 
+}: ListViewProps) {
   const router = useRouter();
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const [loadingStates, setLoadingStates] = useState<{ [key: string]: boolean }>({});
+  const [localFacilities, setLocalFacilities] = useState<Facility[]>(facilities);
 
-  const totalPages = Math.ceil(facilities.length / rowsPerPage);
+  const totalPages = Math.ceil(localFacilities.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const displayedFacilities = facilities.slice(startIndex, endIndex);
+  const displayedFacilities = localFacilities.slice(startIndex, endIndex);
 
   const toggleRowExpansion = (absoluteIndex: number) => {
     setExpandedRows((prevExpandedRows) =>
@@ -54,24 +97,78 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
     );
   };
 
-  const hasFeatureDetails = (facility: Facility) => {
-    return facility.feature && facility.feature.method;
-  };
-
-  const hasPerformanceReportDetails = (facility: Facility) => {
-    return facility.performance_report && 
-           facility.performance_report.annualSavings !== null &&
-           facility.performance_report.co2Savings !== null &&
-           facility.performance_report.industry !== null &&
-           facility.performance_report.operatingHours !== null;
+  const hassmartPriceControlDetails = (facility: Facility) => {
+    return facility.smartPriceControl && facility.smartPriceControl.method;
   };
 
   const getSubscriptionStatus = (facility: Facility) => {
-    if (facility.featureAdded && hasFeatureDetails(facility)) {
+    if (facility.installedSmartPriceController) {
       return "Added";
     }
     return "Not Added";
   };
+
+  const getSmartPriceControlStatus = (facility: Facility) => {
+    if (facility.smartPriceControlAdded) {
+      if (facility.installedSmartPriceController) {
+        return "Installed";
+      } else {
+        return "Wants Smart Pricing";
+      }
+    }
+    return "Not Active";
+  };
+
+  const handleInstallSmartPriceController = async (facilityId: string) => {
+    const token = localStorage.getItem("token");
+    const IdToken = localStorage.getItem("IdToken");
+    if (!token || !IdToken) {
+      console.error("Authentication tokens are required");
+      return;
+    }
+
+    const currentFacility = localFacilities.find(f => f.id === facilityId);
+    if (!currentFacility) {
+      console.error("Facility not found");
+      return;
+    }
+
+    setLoadingStates(prev => ({ ...prev, [facilityId]: true }));
+
+    try {
+      const payload = {
+        ...currentFacility,
+        installedSmartPriceController: true,
+        status: "Active",
+      };
+
+      const result = await createFacility(token, IdToken, payload, facilityId);
+
+      if (result) {
+        const updatedFacilities = localFacilities.map(facility =>
+          facility.id === facilityId
+            ? { ...facility, installedSmartPriceController: true }
+            : facility
+        );
+        
+        setLocalFacilities(updatedFacilities);
+        
+        if (onFacilityUpdate) {
+          onFacilityUpdate(updatedFacilities);
+        }
+      } else {
+        console.error("Failed to update facility");
+      }
+    } catch (error) {
+      console.error("Error updating facility:", error);
+    } finally {
+      setLoadingStates(prev => ({ ...prev, [facilityId]: false }));
+    }
+  };
+
+  React.useEffect(() => {
+    setLocalFacilities(facilities);
+  }, [facilities]);
 
   return (
     <div className="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
@@ -108,12 +205,12 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                             alt="folder"
                             className="w-6 h-6"
                           />
-                          <span className="text-gray-800 text-sm truncate" onClick={() => router.push(`/admin/user/plantDetail/${facility.id}`)}>
+                          <span className="text-gray-800 text-sm truncate cursor-pointer" onClick={() => router.push(`/admin/user/plantDetail/${facility.id}`)}>
                             {facility.name}
                           </span>
                         </div>
                       </td>
-                      <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600" onClick={() => router.push(`/admin/user/plantDetail/${facility.id}`)}>
+                      <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600 cursor-pointer" onClick={() => router.push(`/admin/user/plantDetail/${facility.id}`)}>
                         {facility.xrgiID}
                       </td>
                       <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
@@ -183,25 +280,25 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                         Smart PriceControl
                                       </span>
                                       <div className="flex items-center">
-                                        {facility.featureAdded ? (
-                                          hasFeatureDetails(facility) ? (
+                                        {facility.smartPriceControlAdded ? (
+                                          facility.installedSmartPriceController ? (
                                             <div className="flex items-center bg-green-50 text-green-600 px-2 py-1 rounded-full">
                                               <Check
                                                 size={14}
                                                 className="mr-1"
                                               />
                                               <span className="text-xs font-medium">
-                                                Active
+                                                Installed
                                               </span>
                                             </div>
                                           ) : (
-                                            <div className="flex items-center bg-yellow-50 text-yellow-600 px-2 py-1 rounded-full">
+                                            <div className="flex items-center bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
                                               <AlertCircle
                                                 size={14}
                                                 className="mr-1"
                                               />
                                               <span className="text-xs font-medium">
-                                                Processing
+                                                Wants Smart Pricing
                                               </span>
                                             </div>
                                           )
@@ -215,61 +312,27 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
                                         )}
                                       </div>
                                     </div>
-                                    {facility.featureAdded &&
-                                      !hasFeatureDetails(facility) && (
-                                        <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
-                                          Requested, but no details available
-                                          yet
-                                        </div>
-                                      )}
-                                  </div>
-
-                                  {/* HealthCheck Plus Card */}
-                                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                                    <div className="flex items-center justify-between mb-3">
-                                      <span className="text-sm font-medium text-gray-700">
-                                        EnergyCheck Plus
-                                      </span>
-                                      <div className="flex items-center">
-                                        {facility.hasPerformanceReport ? (
-                                          hasPerformanceReportDetails(facility) ? (
-                                            <div className="flex items-center bg-green-50 text-green-600 px-2 py-1 rounded-full">
-                                              <Check
-                                                size={14}
-                                                className="mr-1"
-                                              />
-                                              <span className="text-xs font-medium">
-                                                Active
-                                              </span>
+                                    {facility.smartPriceControlAdded && !facility.installedSmartPriceController && (
+                                      <div className="flex items-center justify-between bg-blue-50 p-3 rounded">
+                                        <span className="text-xs text-blue-600">
+                                          Customer wants smart pricing installation
+                                        </span>
+                                        <button
+                                          onClick={() => handleInstallSmartPriceController(facility.id)}
+                                          disabled={loadingStates[facility.id]}
+                                          className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200"
+                                        >
+                                          {loadingStates[facility.id] ? (
+                                            <div className="flex items-center">
+                                              <div className="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent mr-1"></div>
+                                              Installing...
                                             </div>
                                           ) : (
-                                            <div className="flex items-center bg-yellow-50 text-yellow-600 px-2 py-1 rounded-full">
-                                              <AlertCircle
-                                                size={14}
-                                                className="mr-1"
-                                              />
-                                              <span className="text-xs font-medium">
-                                                Processing
-                                              </span>
-                                            </div>
-                                          )
-                                        ) : (
-                                          <div className="flex items-center bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
-                                            <X size={14} className="mr-1" />
-                                            <span className="text-xs font-medium">
-                                              Not active
-                                            </span>
-                                          </div>
-                                        )}
+                                            "Mark as Installed"
+                                          )}
+                                        </button>
                                       </div>
-                                    </div>
-                                    {facility.hasPerformanceReport &&
-                                      !hasPerformanceReportDetails(facility) && (
-                                        <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
-                                          Requested, but no details available
-                                          yet
-                                        </div>
-                                      )}
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -327,12 +390,12 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
         </div>
         <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto">
           <span className="text-sm text-gray-700 mr-4">
-            {facilities.length === 0
+            {localFacilities.length === 0
               ? "0-0 of 0"
               : `${startIndex + 1}-${Math.min(
                   endIndex,
-                  facilities.length
-                )} of ${facilities.length}`}
+                  localFacilities.length
+                )} of ${localFacilities.length}`}
           </span>
           <div className="flex">
             <button
@@ -351,11 +414,11 @@ export default function ListView({ facilities }: { facilities: Facility[] }) {
             </button>
             <button
               className={`p-1 rounded-md ${
-                currentPage === totalPages || facilities.length === 0
+                currentPage === totalPages || localFacilities.length === 0
                   ? "text-gray-400 cursor-not-allowed"
                   : "text-gray-600 hover:text-gray-800"
               }`}
-              disabled={currentPage === totalPages || facilities.length === 0}
+              disabled={currentPage === totalPages || localFacilities.length === 0}
               onClick={() => {
                 setCurrentPage((prev) => prev + 1);
                 setExpandedRows([]);

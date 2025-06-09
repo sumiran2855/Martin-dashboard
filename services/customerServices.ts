@@ -22,14 +22,14 @@ export const createProfile = async (
   throw new Error("Failed to create profile");
 };
 
-// create addFeature
-export const addFeature = async (
+// create addsmartPriceControl
+export const addsmartPriceControl = async (
   token: string,
   IdToken: string,
   payload: any
 ) => {
   const result = await apiRequest(
-    CUSTOMER_API_ROUTES.ADD_FEATURE,
+    CUSTOMER_API_ROUTES.ADD_smartPriceControl,
     "POST",
     payload,
     token,
@@ -109,11 +109,11 @@ export const getCustomerById = async (
       city: companyInfo?.city || "",
       email: companyInfo?.email || email || "",
       countryCode: phone_number?.slice(0, 3) || "",
-      phone: companyInfo?.phone.slice(3) || contactPerson?.phone.slice(3) || phone_number.slice(3) || "",
+      phone: companyInfo?.phone?.slice(3) || contactPerson?.phone?.slice(3) || phone_number?.slice(3) || "",
 
       firstName: contactPerson?.firstName || "",
       lastName: contactPerson?.lastName || "",
-      personalPhone: contactPerson?.personalPhone.slice(3) || "",
+      personalPhone: contactPerson?.personalPhone?.slice(3) || "",
       personalEmail: contactPerson?.personalEmail || "",
       status: companyInfo?.status || "Active",
       name: name || "",

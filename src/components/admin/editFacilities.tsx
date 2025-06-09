@@ -25,18 +25,18 @@ interface Facility {
     phone: string;
     countryCode: string;
   };
-  performance_report?: {
+  EnergyCheck_plus?: {
     annualSavings: string;
     co2Savings: string;
     operatingHours: string;
     industry: string;
     email:string;
   };
-  hasPerformanceReport: boolean;
-  featureAdded: boolean;
+  hasEnergyCheckPlus: boolean;
+  smartPriceControlAdded: boolean;
   hasServiceContract: boolean;
   needServiceContract: boolean;
-  feature?: {
+  smartPriceControl?: {
     method: string;
     partner_details?: {
       name: string;
@@ -58,14 +58,14 @@ export default function EditFacilities({
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
-  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
+  const [hasEnergyCheckPlus, sethasEnergyCheckPlus] = useState(false);
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [serviceContractChoice, setServiceContractChoice] = useState("");
   const [serviceContractWantedChoice, setServiceContractWantedChoice] =
     useState("");
   const [setupSuperSaver, setSetupSuperSaver] = useState(
-    facility?.featureAdded || false
+    facility?.smartPriceControlAdded || false
   );
   const [partnerDetails, setPartnerDetails] = useState({
     name: "",
@@ -100,7 +100,7 @@ export default function EditFacilities({
         }
         setFacility(response.data);
         setIsInstalled(response.data?.isInstalled || false);
-        const { serviceProvider, feature } = response.data;
+        const { serviceProvider, smartPriceControl } = response.data;
         if (response.data.hasServiceContract) {
           setHasServiceProvider(true);
           setServiceContractChoice("yes");
@@ -111,20 +111,20 @@ export default function EditFacilities({
           );
         }
 
-        if (response.data.hasPerformanceReport) {
-          setHasPerformanceReport(true);
+        if (response.data.hasEnergyCheckPlus) {
+          sethasEnergyCheckPlus(true);
         }
 
-        if (response.data.featureAdded === true || feature) {
+        if (response.data.smartPriceControlAdded === true || smartPriceControl) {
           setSetupSuperSaver(true);
-          setSelectedOption(feature.method || "");
+          setSelectedOption(smartPriceControl.method || "");
 
-          if (feature.method === "local_partner" && feature.partner_details) {
+          if (smartPriceControl.method === "local_partner" && smartPriceControl.partner_details) {
             setPartnerDetails({
-              name: feature.partner_details.name || "",
-              mobile: feature.partner_details.mobile || "",
-              email: feature.partner_details.email || "",
-              countryCode: feature.partner_details.countryCode || "",
+              name: smartPriceControl.partner_details.name || "",
+              mobile: smartPriceControl.partner_details.mobile || "",
+              email: smartPriceControl.partner_details.email || "",
+              countryCode: smartPriceControl.partner_details.countryCode || "",
             });
           }
         }
@@ -165,7 +165,7 @@ export default function EditFacilities({
     const { name, checked } = e.target;
     setSetupSuperSaver((prev) => !prev);
     if (name === "performanceReport") {
-      setHasPerformanceReport(checked);
+      sethasEnergyCheckPlus(checked);
     }
   };
 
@@ -202,19 +202,19 @@ export default function EditFacilities({
           country: facility?.location?.country || "",
         },
         serviceProvider: serviceProviderData || "",
-        performance_report: {
-          annualSavings: facility?.performance_report?.annualSavings || "",
-          co2Savings: facility?.performance_report?.co2Savings || "",
-          operatingHours: facility?.performance_report?.operatingHours || "",
-          industry: facility?.performance_report?.industry || "",
-          email: facility?.performance_report?.email || "",
+        EnergyCheck_plus: {
+          annualSavings: facility?.EnergyCheck_plus?.annualSavings || "",
+          co2Savings: facility?.EnergyCheck_plus?.co2Savings || "",
+          operatingHours: facility?.EnergyCheck_plus?.operatingHours || "",
+          industry: facility?.EnergyCheck_plus?.industry || "",
+          email: facility?.EnergyCheck_plus?.email || "",
         },
-        hasPerformanceReport,
+        hasEnergyCheckPlus,
         isInstalled,
         needServiceContract,
         DaSigned: true,
         hasServiceContract,
-        feature: setupSuperSaver
+        smartPriceControl: setupSuperSaver
           ? {
               method: selectedOption || "",
               partner_details:
@@ -228,7 +228,7 @@ export default function EditFacilities({
                   : undefined,
             }
           : null,
-        featureAdded: setupSuperSaver ? true : false,
+        smartPriceControlAdded: setupSuperSaver ? true : false,
       };
 
       const updatedFacility = await apiRequest(
@@ -554,7 +554,7 @@ export default function EditFacilities({
                 type="checkbox"
                 id="performanceReport"
                 name="performanceReport"
-                checked={hasPerformanceReport}
+                checked={hasEnergyCheckPlus}
                 onChange={handleCheckboxChange}
                 className="w-5 h-5 cursor-pointer"
               />
@@ -566,7 +566,7 @@ export default function EditFacilities({
               </label>
             </div>
 
-            {hasPerformanceReport && (
+            {hasEnergyCheckPlus && (
               <div className="bg-white px-4 rounded-lg mb-6">
                 <div className="text-[#082351DE] rounded-lg mb-6">
                   <h2 className="text-lg font-normal mb-2">
@@ -584,11 +584,11 @@ export default function EditFacilities({
                       </label>
                       <input
                         type="text"
-                        name="performance_report.annualSavings"
+                        name="EnergyCheck_plus.annualSavings"
                         placeholder="Euro Pr. Year"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2"
                         value={
-                          facility?.performance_report?.annualSavings ?? ""
+                          facility?.EnergyCheck_plus?.annualSavings ?? ""
                         }
                         onChange={handleChange}
                       />
@@ -600,10 +600,10 @@ export default function EditFacilities({
                       </label>
                       <input
                         type="text"
-                        name="performance_report.co2Savings"
+                        name="EnergyCheck_plus.co2Savings"
                         placeholder="Tons Pr. year"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                        value={facility?.performance_report?.co2Savings ?? ""}
+                        value={facility?.EnergyCheck_plus?.co2Savings ?? ""}
                         onChange={handleChange}
                       />
                     </div>
@@ -614,11 +614,11 @@ export default function EditFacilities({
                       </label>
                       <input
                         type="text"
-                        name="performance_report.operatingHours"
+                        name="EnergyCheck_plus.operatingHours"
                         placeholder="0-8763"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
                         value={
-                          facility?.performance_report?.operatingHours ?? ""
+                          facility?.EnergyCheck_plus?.operatingHours ?? ""
                         }
                         onChange={handleChange}
                       />
@@ -629,9 +629,9 @@ export default function EditFacilities({
                         Segment
                       </label>
                       <select
-                        name="performance_report.industry"
+                        name="EnergyCheck_plus.industry"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                        value={facility?.performance_report?.industry ?? ""}
+                        value={facility?.EnergyCheck_plus?.industry ?? ""}
                         onChange={handleChange}
                       >
                           <option value="">Select a Industry</option>
@@ -652,10 +652,10 @@ export default function EditFacilities({
                       </label>
                       <input
                         type="text"
-                        name="performance_report.email"
+                        name="EnergyCheck_plus.email"
                         placeholder="e.g. user@example.com, admin@example.com"
                         className="p-3 border border-gray-300 rounded-lg w-full bg-white focus:ring-2 "
-                        value={facility?.performance_report?.email ?? ""}
+                        value={facility?.EnergyCheck_plus?.email ?? ""}
                         onChange={handleChange}
                       />
                     </div>

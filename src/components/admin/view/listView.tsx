@@ -14,15 +14,15 @@ interface FacilityDetails {
   name: string;
   location: string;
   type: string;
-  hasPerformanceReport?: boolean;
-  performance_report?: {
+  hasEnergyCheckPlus?: boolean;
+  EnergyCheck_plus?: {
     annualSavings?: number | null;
     co2Savings?: number | null;
     industry?: string | null;
     operatingHours?: number | null;
   };
-  featureAdded?: boolean;
-  feature?: {
+  smartPriceControlAdded?: boolean;
+  smartPriceControl?: {
     method?: string;
   };
   hasServiceContract?: boolean;
@@ -39,15 +39,15 @@ interface Users {
   cvrNumber?: string;
   city?: string;
   status?: string;
-  hasPerformanceReport?: boolean;
-  performance_report?: {
+  hasEnergyCheckPlus?: boolean;
+  EnergyCheck_plus?: {
     annualSavings?: number | null;
     co2Savings?: number | null;
     industry?: string | null;
     operatingHours?: number | null;
   };
-  featureAdded?: boolean;
-  feature?: {
+  smartPriceControlAdded?: boolean;
+  smartPriceControl?: {
     method?: string;
   };
   hasServiceContract?: boolean;
@@ -130,18 +130,18 @@ export default function ListView({ users }: { users: Users[] }) {
     }
   };
 
-  const hasPerformanceReportDetails = (facility: FacilityDetails) => {
+  const hasEnergyCheckPlusDetails = (facility: FacilityDetails) => {
     return (
-      facility.performance_report &&
-      (facility.performance_report.annualSavings !== null ||
-        facility.performance_report.co2Savings !== null ||
-        facility.performance_report.industry !== null ||
-        facility.performance_report.operatingHours !== null)
+      facility.EnergyCheck_plus &&
+      (facility.EnergyCheck_plus.annualSavings !== null ||
+        facility.EnergyCheck_plus.co2Savings !== null ||
+        facility.EnergyCheck_plus.industry !== null ||
+        facility.EnergyCheck_plus.operatingHours !== null)
     );
   };
 
-  const hasFeatureDetails = (facility: FacilityDetails) => {
-    return facility.feature && facility.feature.method;
+  const hassmartPriceControlDetails = (facility: FacilityDetails) => {
+    return facility.smartPriceControl && facility.smartPriceControl.method;
   };
 
   const hasServiceContractDetails = (facility: FacilityDetails) => {
@@ -284,8 +284,8 @@ export default function ListView({ users }: { users: Users[] }) {
                                               EnergyCheck Plus
                                             </span>
                                             <div className="flex items-center">
-                                              {facility.hasPerformanceReport ? (
-                                                hasPerformanceReportDetails(facility) ? (
+                                              {facility.hasEnergyCheckPlus ? (
+                                                hasEnergyCheckPlusDetails(facility) ? (
                                                   <Check
                                                     size={16}
                                                     className="text-green-500"
@@ -302,8 +302,8 @@ export default function ListView({ users }: { users: Users[] }) {
                                             </div>
                                           </div>
 
-                                          {facility.hasPerformanceReport &&
-                                            !hasPerformanceReportDetails(facility) && (
+                                          {facility.hasEnergyCheckPlus &&
+                                            !hasEnergyCheckPlusDetails(facility) && (
                                               <div className="text-xs text-yellow-600">
                                                 Requested, but no details available
                                               </div>
@@ -316,8 +316,8 @@ export default function ListView({ users }: { users: Users[] }) {
                                                Smart PriceControl
                                             </span>
                                             <div className="flex items-center">
-                                              {facility.featureAdded ? (
-                                                hasFeatureDetails(facility) ? (
+                                              {facility.smartPriceControlAdded ? (
+                                                hassmartPriceControlDetails(facility) ? (
                                                   <Check
                                                     size={16}
                                                     className="text-green-500"
@@ -334,8 +334,8 @@ export default function ListView({ users }: { users: Users[] }) {
                                             </div>
                                           </div>
 
-                                          {facility.featureAdded &&
-                                            !hasFeatureDetails(facility) && (
+                                          {facility.smartPriceControlAdded &&
+                                            !hassmartPriceControlDetails(facility) && (
                                               <div className="text-xs text-yellow-600">
                                                 Requested, but no details available
                                               </div>

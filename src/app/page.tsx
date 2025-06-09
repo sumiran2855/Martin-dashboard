@@ -253,7 +253,7 @@ export default function Login() {
             src="/ECP_XRGI_installation.jpg"
             alt="Login Illustration"
             layout="fill"
-            objectFit="contain"
+            objectFit="cover"
             className="rounded-lg"
           />
         </div>

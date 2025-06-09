@@ -11,7 +11,7 @@ interface Facility {
   xrgiID?: string;
   modelNumber?: string;
   hasServiceContract?: boolean;
-  featureAdded?: boolean;
+  smartPriceControlAdded?: boolean;
   serviceProvider?: {
     name?: string;
     mailAddress?: string;

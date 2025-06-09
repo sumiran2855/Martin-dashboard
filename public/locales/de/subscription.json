@@ -11,8 +11,8 @@
     "MissingData": "Fehlende Daten",
     "WithProvider": "mit Servicevertrag",
     "WithoutProvider": "Servicevertrag anfordern",
-    "HaveSuperSaverX": "hat SuperSaverX",
-    "WantSuperSaverX": "will SuperSaverX"
+    "HaveSmartPriceControl": "hat SmartPriceControl",
+    "WantSmartPriceControl": "will SmartPriceControl"
   },
   "services": {
     "servicesTitle": "Serviceverträge",

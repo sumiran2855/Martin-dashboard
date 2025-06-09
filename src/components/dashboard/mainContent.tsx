@@ -15,7 +15,7 @@ interface Facility {
   modelNumber?: string;
   status?: string;
   hasServiceContract?: boolean;
-  featureAdded?: boolean;
+  smartPriceControlAdded?: boolean;
   serviceProvider?: {
     name?: string;
     mailAddress?: string;

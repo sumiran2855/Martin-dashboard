@@ -75,7 +75,7 @@
   },
   "Installation": {
     "description": "Our software users real time electricity market prices (EPEX Day-ahead) to automatically pause energy production, when the market prices are zero or negative",
-    "description2": "(This software feature is standard on all XRGI® systems from April 2025)",
+    "description2": "(This software smartPriceControl is standard on all XRGI® systems from April 2025)",
     "setupTitle": " Please install",
     "atService": "The software needs to be physically installed on your XRGI® system by your service partner",
     "atService2": " At next on-site visit",

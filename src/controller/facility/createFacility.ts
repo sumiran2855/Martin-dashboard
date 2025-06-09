@@ -39,7 +39,7 @@ export function useCreateFacility() {
     isInstalled?: boolean,
     hasServiceProvider?: boolean,
     setupSuperSaver?: boolean,
-    hasPerformanceReport?:boolean,
+    hasEnergyCheckPlus?:boolean,
     selectedOption?:string,
     wantsServiceContract?:boolean
   ) => {
@@ -61,19 +61,19 @@ export function useCreateFacility() {
         city: stepTwoFormData.city || "",
         country:stepTwoFormData.country || "",
       },
-      performance_report:{
+      EnergyCheck_plus:{
         annualSavings:stepTwoFormData.annualSavings,
         co2Savings:stepTwoFormData.co2Savings,
         operatingHours:stepTwoFormData.operatingHours,
         industry:stepTwoFormData.industry,
         email:stepTwoFormData.email
       },
-      hasPerformanceReport:hasPerformanceReport || false,
+      hasEnergyCheckPlus:hasEnergyCheckPlus || false,
       isInstalled: isInstalled || false,
       DaSigned: DaSigned || false,
       needServiceContract : wantsServiceContract || false ,
       hasServiceContract : hasServiceProvider || false,
-      feature: setupSuperSaver
+      smartPriceControl: setupSuperSaver
           ? {
               method: selectedOption || "",
               partner_details:
@@ -87,7 +87,7 @@ export function useCreateFacility() {
                   : undefined,
             }
           : null,
-      featureAdded: setupSuperSaver ? true : false,
+      smartPriceControlAdded: setupSuperSaver ? true : false,
     };
 
 

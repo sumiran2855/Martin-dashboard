@@ -11,7 +11,7 @@ interface Facility {
   xrgiID?: string;
   modelNumber?: string;
   hasServiceContract?: boolean;
-  featureAdded?: boolean;
+  smartPriceControlAdded?: boolean;
   serviceProvider?: {
     name?: string;
     mailAddress?: string;
@@ -61,11 +61,11 @@ function SubscriptionPage() {
       if (selectedStatus === "All") return true;
       if (selectedStatus === "Active")
         return (
-          facility.featureAdded === true 
+          facility.smartPriceControlAdded === true 
         );
       if (selectedStatus === "Inactive")
         return (
-          facility.featureAdded === false 
+          facility.smartPriceControlAdded === false 
         );
       return false;
     });

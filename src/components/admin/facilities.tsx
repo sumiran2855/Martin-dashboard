@@ -16,7 +16,7 @@ interface Facility {
     mailAddress: string;
     phone: string;
   };
-  performance_report?: {
+  EnergyCheck_plus?: {
     annualSavings: string;
     co2Savings: string;
     operatingHours: string;
@@ -62,11 +62,11 @@ export default function facilities({ facilityId }: { facilityId: string }) {
   }, [facilityId]);
 
   const facilityDetails = [
-    { label: "Annual Savings", value: facility?.performance_report?.annualSavings  
-      ? facility?.performance_report?.annualSavings ?? "-" : "-" },
-    { label: "Annual CO₂ savings", value: facility?.performance_report?.co2Savings ? `${facility.performance_report.co2Savings}` : "-" },
-    { label: "Operating hours per year", value: facility?.performance_report?.operatingHours ? `${facility.performance_report.operatingHours} hrs` : "-" },
-    { label: "Industry", value: facility?.performance_report?.industry ? `${facility.performance_report.industry}` : "-" },
+    { label: "Annual Savings", value: facility?.EnergyCheck_plus?.annualSavings  
+      ? facility?.EnergyCheck_plus?.annualSavings ?? "-" : "-" },
+    { label: "Annual CO₂ savings", value: facility?.EnergyCheck_plus?.co2Savings ? `${facility.EnergyCheck_plus.co2Savings}` : "-" },
+    { label: "Operating hours per year", value: facility?.EnergyCheck_plus?.operatingHours ? `${facility.EnergyCheck_plus.operatingHours} hrs` : "-" },
+    { label: "Industry", value: facility?.EnergyCheck_plus?.industry ? `${facility.EnergyCheck_plus.industry}` : "-" },
   ];
 
   return (

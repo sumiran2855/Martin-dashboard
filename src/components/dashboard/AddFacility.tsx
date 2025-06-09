@@ -16,7 +16,7 @@ function AddFacility() {
   const [isInstalled, setIsInstalled] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [hasServiceProvider, setHasServiceProvider] = useState(false);
-  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
+  const [hasEnergyCheckPlus, sethasEnergyCheckPlus] = useState(false);
   const [facilityAdded, setFacilityAdded] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [serviceContractChoice, setServiceContractChoice] = useState("");
@@ -132,7 +132,7 @@ function AddFacility() {
     const { name, checked } = e.target;
     setSetupSuperSaver((prev) => !prev);
     if (name === "performanceReport") {
-      setHasPerformanceReport(checked);
+      sethasEnergyCheckPlus(checked);
       setStepTwoFormData((prev: any) => ({
         ...prev,
         performanceReport: checked,
@@ -144,13 +144,13 @@ function AddFacility() {
     setSelectedOption(value);
   };
 
-  const handleAddSuperSaverX = async () => {
+  const handleAddSmartPriceControl = async () => {
     const success = await handleCreateFacility(
       isChecked,
       isInstalled,
       hasServiceProvider,
       setupSuperSaver,
-      hasPerformanceReport,
+      hasEnergyCheckPlus,
       selectedOption,
       wantsServiceContract
     );
@@ -540,7 +540,7 @@ function AddFacility() {
                   type="checkbox"
                   id="performanceReport"
                   name="performanceReport"
-                  checked={hasPerformanceReport}
+                  checked={hasEnergyCheckPlus}
                   onChange={handleCheckboxChange}
                   className="w-5 h-5 cursor-pointer"
                 />
@@ -552,7 +552,7 @@ function AddFacility() {
                 </label>
               </div>
 
-              {hasPerformanceReport && (
+              {hasEnergyCheckPlus && (
                 <div className="bg-white px-4 rounded-lg mb-6">
                   <div className="text-[#082351DE] rounded-lg mb-6">
                     <h2 className="text-lg font-normal mb-2">
@@ -744,10 +744,10 @@ function AddFacility() {
             )}
             <div className="flex gap-4">
               <button
-                onClick={handleAddSuperSaverX}
+                onClick={handleAddSmartPriceControl}
                 className="bg-blue-500 hover:bg-blue-800 text-white px-6 py-3 rounded-md transition ml-auto"
               >
-                {t("addSuperSaverX")}
+                {t("addSmartPriceControl")}
               </button>
             </div>
           </div>

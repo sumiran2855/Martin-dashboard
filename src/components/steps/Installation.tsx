@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-interface AddFeature {
+interface AddsmartPriceControl {
   stepTwoFormData: any;
   selectedOption: string;
   setSelectedOption: (value: string) => void;
@@ -24,7 +24,7 @@ export default function StepThree({
   setPartnerDetails,
   setupSuperSaver,
   setSetupSuperSaver,
-}: AddFeature) {
+}: AddsmartPriceControl) {
   const { t } = useTranslation("CreateProfile");
   const handleCheckboxChange = () => {
     setSetupSuperSaver((prev: any) => !prev);

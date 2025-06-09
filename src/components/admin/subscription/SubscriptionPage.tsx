@@ -23,15 +23,15 @@ interface Facility {
     address: string;
     postal_code: string;
   };
-  hasPerformanceReport?: boolean;
-  performance_report?: {
+  hasEnergyCheckPlus?: boolean;
+  EnergyCheck_plus?: {
     annualSavings?: number | null;
     co2Savings?: number | null;
     industry?: string | null;
     operatingHours?: number | null;
   };
-  featureAdded?: boolean;
-  feature?: {
+  smartPriceControlAdded?: boolean;
+  smartPriceControl?: {
     method?: string;
     partner_details?: {
       name: string;
@@ -96,16 +96,16 @@ function SubscriptionPage() {
         if (type === "super") {
           switch (filter) {
             case "Have Smart PriceControl":
-              return facility.featureAdded && facility.feature?.method;
+              return facility.smartPriceControlAdded && facility.smartPriceControl?.method;
             case "Want Smart PriceControl":
-              return facility.featureAdded && !facility.feature?.method;
+              return facility.smartPriceControlAdded && !facility.smartPriceControl?.method;
             default:
-              return facility.featureAdded;
+              return facility.smartPriceControlAdded;
           }
         } else {
-          if (!facility.hasPerformanceReport) return false;
+          if (!facility.hasEnergyCheckPlus) return false;
 
-          const report = facility.performance_report;
+          const report = facility.EnergyCheck_plus;
           const allNull =
             report &&
             report.annualSavings == null &&
@@ -125,7 +125,7 @@ function SubscriptionPage() {
       });
   };
 
-  const handleExportExcelForSuperSaverX = async (data: Facility[]) => {
+  const handleExportExcelForSmartPriceControl = async (data: Facility[]) => {
     try {
       setIsExporting(true);
       if (!Array.isArray(data)) {
@@ -138,7 +138,7 @@ function SubscriptionPage() {
       const refinedData = await Promise.all(
         data.map(async (item) => {
           const customer = await getCustomerById(token, IdToken, item.userID!);
-          const isLocalPartner = item.feature?.method === "local_partner";
+          const isLocalPartner = item.smartPriceControl?.method === "local_partner";
 
           return {
             userId: item.userID,
@@ -157,25 +157,25 @@ function SubscriptionPage() {
             serviceProvider_name: item.serviceProvider?.name,
             serviceProvider_email: item.serviceProvider?.mailAddress,
             serviceProvider_Phone: item.serviceProvider?.phone,
-            SuperSaverX:
-              item.featureAdded && item.feature?.method
+            SmartPriceControl:
+              item.smartPriceControlAdded && item.smartPriceControl?.method
                 ? "Has Smart PriceControl"
                 : "Wants Smart PriceControl",
-            SuperSaverX_method: isLocalPartner
+            SmartPriceControl_method: isLocalPartner
               ? "Local Partner"
-              : item.feature?.method,
+              : item.smartPriceControl?.method,
             ...(isLocalPartner && {
-              partner_Name: item.feature?.partner_details?.name || "",
-              partner_email: item.feature?.partner_details?.email || "",
-              partner_phone: item.feature?.partner_details?.mobile || "",
+              partner_Name: item.smartPriceControl?.partner_details?.name || "",
+              partner_email: item.smartPriceControl?.partner_details?.email || "",
+              partner_phone: item.smartPriceControl?.partner_details?.mobile || "",
             }),
-            hasPerformanceReport: item.hasPerformanceReport
+            hasEnergyCheckPlus: item.hasEnergyCheckPlus
               ? "Wants report"
               : "Don’t want report",
-            annual_Savings: item.performance_report?.annualSavings,
-            co2Savings: item.performance_report?.co2Savings,
-            industry: item.performance_report?.industry,
-            operatingHours: item.performance_report?.operatingHours,
+            annual_Savings: item.EnergyCheck_plus?.annualSavings,
+            co2Savings: item.EnergyCheck_plus?.co2Savings,
+            industry: item.EnergyCheck_plus?.industry,
+            operatingHours: item.EnergyCheck_plus?.operatingHours,
             customer_email: customer?.email || "",
             customer_phone: customer?.phone || "",
           };
@@ -215,7 +215,7 @@ function SubscriptionPage() {
       const refinedData = await Promise.all(
         data.map(async (item) => {
           const customer = await getCustomerById(token, IdToken, item.userID!);
-          const isLocalPartner = item.feature?.method === "local_partner";
+          const isLocalPartner = item.smartPriceControl?.method === "local_partner";
 
           return {
             userId: item.userID,
@@ -234,25 +234,25 @@ function SubscriptionPage() {
             serviceProvider_name: item.serviceProvider?.name,
             serviceProvider_email: item.serviceProvider?.mailAddress,
             serviceProvider_Phone: item.serviceProvider?.phone,
-            SuperSaverX:
-              item.featureAdded && item.feature?.method
+            SmartPriceControl:
+              item.smartPriceControlAdded && item.smartPriceControl?.method
                 ? "Has Smart PriceControl"
                 : "Wants Smart PriceControl",
-            SuperSaverX_method: isLocalPartner
+            SmartPriceControl_method: isLocalPartner
               ? "Local Partner"
-              : item.feature?.method,
+              : item.smartPriceControl?.method,
             ...(isLocalPartner && {
-              partner_Name: item.feature?.partner_details?.name || "",
-              partner_email: item.feature?.partner_details?.email || "",
-              partner_phone: item.feature?.partner_details?.mobile || "",
+              partner_Name: item.smartPriceControl?.partner_details?.name || "",
+              partner_email: item.smartPriceControl?.partner_details?.email || "",
+              partner_phone: item.smartPriceControl?.partner_details?.mobile || "",
             }),
-            hasPerformanceReport: item.hasPerformanceReport
+            hasEnergyCheckPlus: item.hasEnergyCheckPlus
               ? "Wants report"
               : "Don’t want report",
-            annual_Savings: item.performance_report?.annualSavings,
-            co2Savings: item.performance_report?.co2Savings,
-            industry: item.performance_report?.industry,
-            operatingHours: item.performance_report?.operatingHours,
+            annual_Savings: item.EnergyCheck_plus?.annualSavings,
+            co2Savings: item.EnergyCheck_plus?.co2Savings,
+            industry: item.EnergyCheck_plus?.industry,
+            operatingHours: item.EnergyCheck_plus?.operatingHours,
             customer_email: customer?.email || "",
             customer_phone: customer?.phone || "",
           };
@@ -358,7 +358,7 @@ function SubscriptionPage() {
                 </div>
                 <button
                   onClick={() =>
-                    handleExportExcelForSuperSaverX(superSaverData)
+                    handleExportExcelForSmartPriceControl(superSaverData)
                   }
                   className="flex items-center px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-md"
                 >

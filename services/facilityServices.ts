@@ -95,14 +95,14 @@ export const getFacility = async (token: string, IdToken: string) => {
         city: facilityData.location?.city || "",
       },
 
-      performance_report:{
-        annualSavings: facilityData.performance_report?.annualSavings || "",
-        co2Savings: facilityData.performance_report?.co2Savings || "",
-        operatingHours: facilityData.performance_report?.operatingHours || "",
-        industry: facilityData.performance_report?.industry || "",
-        email: facilityData.performance_report?.email || "",
+      EnergyCheck_plus:{
+        annualSavings: facilityData.EnergyCheck_plus?.annualSavings || "",
+        co2Savings: facilityData.EnergyCheck_plus?.co2Savings || "",
+        operatingHours: facilityData.EnergyCheck_plus?.operatingHours || "",
+        industry: facilityData.EnergyCheck_plus?.industry || "",
+        email: facilityData.EnergyCheck_plus?.email || "",
       },
-      hasPerformanceReport:facilityData.hasPerformanceReport || false,
+      hasEnergyCheckPlus:facilityData.hasEnergyCheckPlus || false,
       serviceProvider: {
         name: facilityData.serviceProvider?.name || "",
         mailAddress: facilityData.serviceProvider?.mailAddress || "",
@@ -111,14 +111,14 @@ export const getFacility = async (token: string, IdToken: string) => {
       },
       hasServiceContract: facilityData.hasServiceContract || false,
       needServiceContract:facilityData.needServiceContract || false,
-      featureAdded: facilityData.featureAdded || false,
-      feature: {
-        method: facilityData.feature?.method || "",
+      smartPriceControlAdded: facilityData.smartPriceControlAdded || false,
+      smartPriceControl: {
+        method: facilityData.smartPriceControl?.method || "",
         partner_details: {
-          name: facilityData.feature?.partner_details?.name || "",
-          mobile: facilityData.feature?.partner_details?.mobile || "",
-          email: facilityData.feature?.partner_details?.email || "",
-          countryCode: facilityData.feature?.partner_details?.countryCode || "",
+          name: facilityData.smartPriceControl?.partner_details?.name || "",
+          mobile: facilityData.smartPriceControl?.partner_details?.mobile || "",
+          email: facilityData.smartPriceControl?.partner_details?.email || "",
+          countryCode: facilityData.smartPriceControl?.partner_details?.countryCode || "",
         },
       },
     };
@@ -166,21 +166,21 @@ export const getAllFacility = async (token: string, IdToken: string) => {
         mailAddress: facilityData.serviceProvider?.mailAddress || "",
         phone: facilityData.serviceProvider?.phone || "",
       },
-      performance_report:{
-        annualSavings: facilityData.performance_report?.annualSavings || "",
-        co2Savings: facilityData.performance_report?.co2Savings || "",
-        operatingHours: facilityData.performance_report?.operatingHours || "",
-        industry: facilityData.performance_report?.industry || "",
+      EnergyCheck_plus:{
+        annualSavings: facilityData.EnergyCheck_plus?.annualSavings || "",
+        co2Savings: facilityData.EnergyCheck_plus?.co2Savings || "",
+        operatingHours: facilityData.EnergyCheck_plus?.operatingHours || "",
+        industry: facilityData.EnergyCheck_plus?.industry || "",
       },
-      hasPerformanceReport:facilityData.hasPerformanceReport || false,
+      hasEnergyCheckPlus:facilityData.hasEnergyCheckPlus || false,
       hasServiceContract: facilityData.hasServiceContract || false,
-      featureAdded: facilityData.featureAdded || false,
-      feature: {
-        method: facilityData.feature?.method || "",
+      smartPriceControlAdded: facilityData.smartPriceControlAdded || false,
+      smartPriceControl: {
+        method: facilityData.smartPriceControl?.method || "",
         partner_details: {
-          name: facilityData.feature?.partner_details?.name || "",
-          mobile: facilityData.feature?.partner_details?.mobile || "",
-          email: facilityData.feature?.partner_details?.email || "",
+          name: facilityData.smartPriceControl?.partner_details?.name || "",
+          mobile: facilityData.smartPriceControl?.partner_details?.mobile || "",
+          email: facilityData.smartPriceControl?.partner_details?.email || "",
         },
       },
     }));
@@ -229,20 +229,20 @@ export const getAllUserFacility = async (
         mailAddress: facilityData?.serviceProvider?.mailAddress || "",
         phone: facilityData?.serviceProvider?.phone || "",
       },
-      performance_report:{
-        annualSavings: facilityData.performance_report?.annualSavings || "",
-        co2Savings: facilityData.performance_report?.co2Savings || "",
-        operatingHours: facilityData.performance_report?.operatingHours || "",
-        industry: facilityData.performance_report?.industry || "",
+      EnergyCheck_plus:{
+        annualSavings: facilityData.EnergyCheck_plus?.annualSavings || "",
+        co2Savings: facilityData.EnergyCheck_plus?.co2Savings || "",
+        operatingHours: facilityData.EnergyCheck_plus?.operatingHours || "",
+        industry: facilityData.EnergyCheck_plus?.industry || "",
       },
-      hasPerformanceReport:facilityData.hasPerformanceReport || false,
-      featureAdded: facilityData.featureAdded || false,
-      feature: {
-        method: facilityData.feature?.method || "",
+      hasEnergyCheckPlus:facilityData.hasEnergyCheckPlus || false,
+      smartPriceControlAdded: facilityData.smartPriceControlAdded || false,
+      smartPriceControl: {
+        method: facilityData.smartPriceControl?.method || "",
         partner_details: {
-          name: facilityData.feature?.partner_details?.name || "",
-          mobile: facilityData.feature?.partner_details?.mobile || "",
-          email: facilityData.feature?.partner_details?.email || "",
+          name: facilityData.smartPriceControl?.partner_details?.name || "",
+          mobile: facilityData.smartPriceControl?.partner_details?.mobile || "",
+          email: facilityData.smartPriceControl?.partner_details?.email || "",
         }
       }
     }));

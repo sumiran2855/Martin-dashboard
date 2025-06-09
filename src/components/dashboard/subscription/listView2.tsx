@@ -8,15 +8,15 @@ interface Facility {
   name: string;
   xrgiID: string;
   modelNumber: string;
-  hasPerformanceReport?: boolean;
-  performance_report?: {
+  hasEnergyCheckPlus?: boolean;
+  EnergyCheck_plus?: {
     annualSavings?: number | null;
     co2Savings?: number | null;
     industry?: string | null;
     operatingHours?: number | null;
   };
-  featureAdded?: boolean;
-  feature?: {
+  smartPriceControlAdded?: boolean;
+  smartPriceControl?: {
     method?: string;
   };
   hasServiceContract?: boolean;
@@ -46,13 +46,13 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
     );
   };
 
-  const hasPerformanceReportDetails = (facility: Facility) => {
+  const hasEnergyCheckPlusDetails = (facility: Facility) => {
     return (
-      facility.performance_report &&
-      (facility.performance_report.annualSavings !== null ||
-        facility.performance_report.co2Savings !== null ||
-        facility.performance_report.industry !== null ||
-        facility.performance_report.operatingHours !== null)
+      facility.EnergyCheck_plus &&
+      (facility.EnergyCheck_plus.annualSavings !== null ||
+        facility.EnergyCheck_plus.co2Savings !== null ||
+        facility.EnergyCheck_plus.industry !== null ||
+        facility.EnergyCheck_plus.operatingHours !== null)
     );
   };
 
@@ -103,7 +103,7 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                         {facility.modelNumber}
                       </td>
                       <td className="hidden sm:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-600">
-                        {facility.hasPerformanceReport && hasPerformanceReportDetails(facility)
+                        {facility.hasEnergyCheckPlus && hasEnergyCheckPlusDetails(facility)
                           ? "Added"
                           : "Not Added"}
                       </td>
@@ -165,8 +165,8 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                                         EnergyCheck Plus
                                       </span>
                                       <div className="flex items-center">
-                                        {facility.hasPerformanceReport ? (
-                                          hasPerformanceReportDetails(facility) ? (
+                                        {facility.hasEnergyCheckPlus ? (
+                                          hasEnergyCheckPlusDetails(facility) ? (
                                             <div className="flex items-center bg-green-50 text-green-600 px-2 py-1 rounded-full">
                                               <Check size={14} className="mr-1" />
                                               <span className="text-xs font-medium">Complete</span>
@@ -185,7 +185,7 @@ export default function ListView2({ facilities }: { facilities: Facility[] }) {
                                         )}
                                       </div>
                                     </div>
-                                    {facility.hasPerformanceReport && !hasPerformanceReportDetails(facility) && (
+                                    {facility.hasEnergyCheckPlus && !hasEnergyCheckPlusDetails(facility) && (
                                       <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
                                         Requested, but no details available yet
                                       </div>

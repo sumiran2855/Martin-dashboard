@@ -10,8 +10,8 @@ interface ValidateFormProps {
   setIsInstalled: React.Dispatch<React.SetStateAction<any>>;
   hasServiceProvider: boolean;
   setHasServiceProvider: React.Dispatch<React.SetStateAction<any>>;
-  hasPerformanceReport: boolean;
-  setHasPerformanceReport: React.Dispatch<React.SetStateAction<any>>;
+  hasEnergyCheckPlus: boolean;
+  sethasEnergyCheckPlus: React.Dispatch<React.SetStateAction<any>>;
   setWantsServiceContract: React.Dispatch<React.SetStateAction<any>>;
   serviceContractChoice: string;
   setServiceContractChoice: React.Dispatch<React.SetStateAction<any>>;
@@ -26,8 +26,8 @@ export default function CreateFacility({
   setIsInstalled,
   hasServiceProvider,
   setHasServiceProvider,
-  hasPerformanceReport,
-  setHasPerformanceReport,
+  hasEnergyCheckPlus,
+  sethasEnergyCheckPlus,
   setWantsServiceContract,
   serviceContractChoice,
   setServiceContractChoice,
@@ -53,7 +53,7 @@ export default function CreateFacility({
   const handleCheckboxChange = (e: any) => {
     const { name, checked } = e.target;
     if (name === "performanceReport") {
-      setHasPerformanceReport(checked);
+      sethasEnergyCheckPlus(checked);
       setStepTwoFormData((prev: any) => ({
         ...prev,
         performanceReport: checked,
@@ -377,7 +377,7 @@ export default function CreateFacility({
             type="checkbox"
             id="performanceReport"
             name="performanceReport"
-            checked={hasPerformanceReport}
+            checked={hasEnergyCheckPlus}
             onChange={handleCheckboxChange}
             className="w-5 h-5 cursor-pointer"
           />
@@ -389,7 +389,7 @@ export default function CreateFacility({
           </label>
         </div>
 
-        {hasPerformanceReport && (
+        {hasEnergyCheckPlus && (
           <div className="bg-white px-4 rounded-lg mb-6">
             <div className="text-[#082351DE] rounded-lg mb-6">
               <h2 className="text-lg font-normal mb-2">

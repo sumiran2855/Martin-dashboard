@@ -28,7 +28,7 @@ function Dashboard() {
   const [facilityMethod, setFacilityMethod] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
-  const [hasPerformanceReport, setHasPerformanceReport] = useState(false);
+  const [hasEnergyCheckPlus, sethasEnergyCheckPlus] = useState(false);
   const [wantsServiceContract, setWantsServiceContract] = useState(false);
   const [serviceContractChoice, setServiceContractChoice] = useState("");
   const [serviceContractWantedChoice, setServiceContractWantedChoice] =
@@ -100,7 +100,7 @@ function Dashboard() {
     operatingHours:"",
     industry:"",
     email:"",
-    hasPerformanceReport:"",
+    hasEnergyCheckPlus:"",
     needServiceContract:"",
     serviceProviderName: "",
     serviceProviderMail: "",
@@ -194,19 +194,19 @@ function Dashboard() {
         phone: stepTwoFormData.serviceProviderPhone,
         countryCode:stepTwoFormData.serviceProviderCountryCode
       } : null,
-      performance_report:{
+      EnergyCheck_plus:{
         annualSavings:stepTwoFormData.annualSavings,
         co2Savings:stepTwoFormData.co2Savings,
         operatingHours:stepTwoFormData.operatingHours,
         industry:stepTwoFormData.industry,
         email:stepTwoFormData.email
       },
-      hasPerformanceReport:hasPerformanceReport,
+      hasEnergyCheckPlus:hasEnergyCheckPlus,
       needServiceContract : wantsServiceContract ,
       isInstalled,
       DaSigned: isChecked,
       hasServiceContract: hasServiceProvider ? true : false,
-      feature:
+      smartPriceControl:
           setupSuperSaver
         ? {
             method: selectedOption || "",
@@ -221,7 +221,7 @@ function Dashboard() {
                 : undefined,
           }
         : null,
-      featureAdded: setupSuperSaver ? true : false,
+      smartPriceControlAdded: setupSuperSaver ? true : false,
     };
 
     try {
@@ -242,8 +242,8 @@ function Dashboard() {
     const { token, IdToken } = auth;
     const splitPhoneNumber = (fullPhoneNumber: string) => {
       if (!fullPhoneNumber) return { phone: "", countryCode: "" };
-      const phone = fullPhoneNumber.slice(-10);
-      const countryCode = fullPhoneNumber.slice(0, -10);
+      const phone = fullPhoneNumber?.slice(-10);
+      const countryCode = fullPhoneNumber?.slice(0, -10);
       return { phone, countryCode };
     };
 
@@ -287,31 +287,31 @@ function Dashboard() {
           address: facilityData.location.address || "",
           postalCode: facilityData.location.postalCode || "",
           city: facilityData.location.city || "",
-          annualSavings: facilityData.performance_report.annualSavings || "",
-          co2Savings: facilityData.performance_report.co2Savings || "",
-          operatingHours: facilityData.performance_report.operatingHours || "",
-          industry: facilityData.performance_report.industry || "",
-          email: facilityData.performance_report.email || "",
-          hasPerformanceReport:facilityData.hasPerformanceReport || false,   
+          annualSavings: facilityData.EnergyCheck_plus.annualSavings || "",
+          co2Savings: facilityData.EnergyCheck_plus.co2Savings || "",
+          operatingHours: facilityData.EnergyCheck_plus.operatingHours || "",
+          industry: facilityData.EnergyCheck_plus.industry || "",
+          email: facilityData.EnergyCheck_plus.email || "",
+          hasEnergyCheckPlus:facilityData.hasEnergyCheckPlus || false,   
           needServiceContract : facilityData.needServiceContract || false,    
           serviceProviderName: facilityData.serviceProvider.name || "",
           serviceProviderMail: facilityData.serviceProvider.mailAddress || "",
           serviceProviderPhone: facilityData.serviceProvider.phone || "",
           serviceProviderCountryCode:facilityData.serviceProvider.countryCode || "",
-          installationMethod: facilityData.feature.method || "",
-          partnerName: facilityData.feature.partner_details.name || "",
-          partnerMobile: facilityData.feature.partner_details.mobile || "",
-          partnerEmail: facilityData.feature.partner_details.email || "",
-          partnerCountryCode:facilityData.feature.partner_details.countryCode || "",
+          installationMethod: facilityData.smartPriceControl.method || "",
+          partnerName: facilityData.smartPriceControl.partner_details.name || "",
+          partnerMobile: facilityData.smartPriceControl.partner_details.mobile || "",
+          partnerEmail: facilityData.smartPriceControl.partner_details.email || "",
+          partnerCountryCode:facilityData.smartPriceControl.partner_details.countryCode || "",
         });
       }
 
       if(facilityData?.isInstalled){
         setIsInstalled(facilityData.isInstalled);
-        setFacilityMethod(facilityData.feature.method);
+        setFacilityMethod(facilityData.smartPriceControl.method);
       }
-      if(facilityData?.featureAdded){
-        setSetupSuperSaver(facilityData.featureAdded);
+      if(facilityData?.smartPriceControlAdded){
+        setSetupSuperSaver(facilityData.smartPriceControlAdded);
       }
 
       const { serviceProvider } = facilityData || {};
@@ -429,8 +429,8 @@ function Dashboard() {
                   setIsInstalled={setIsInstalled}
                   hasServiceProvider={hasServiceProvider}
                   setHasServiceProvider={setHasServiceProvider}
-                  hasPerformanceReport={hasPerformanceReport}
-                  setHasPerformanceReport={setHasPerformanceReport}
+                  hasEnergyCheckPlus={hasEnergyCheckPlus}
+                  sethasEnergyCheckPlus={sethasEnergyCheckPlus}
                   setWantsServiceContract={setWantsServiceContract}
                   setServiceContractChoice={setServiceContractChoice}
                   setServiceContractWantedChoice={setServiceContractWantedChoice}

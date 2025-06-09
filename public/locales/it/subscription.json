@@ -11,8 +11,8 @@
     "MissingData": "Dati mancanti",
     "WithProvider": "con contratto di servizio",
     "WithoutProvider": "Richiedi contratto di servizio",
-    "HaveSuperSaverX": "Possiedi SuperSaverX",
-    "WantSuperSaverX": "Vuoi SuperSaverX"
+    "HaveSmartPriceControl": "Possiedi SmartPriceControl",
+    "WantSmartPriceControl": "Vuoi SmartPriceControl"
   },
   "services": {
     "servicesTitle": "Contratti di Servizio",
