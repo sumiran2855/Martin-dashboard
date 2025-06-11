@@ -13,6 +13,8 @@ RUN npm install
 # Copy the rest of the project files
 COPY . .
 
+RUN apk add --no-cache curl
+
 # Copy environment variables
 # COPY .env.local .env.local
 
