@@ -1,5 +1,5 @@
 import { getQuery, markAsRead, sendReply } from "@/services/customerServices";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface Contact {
   id: string;
@@ -11,7 +11,11 @@ interface Contact {
   seen: boolean;
 }
 
-export default function ContactList() {
+interface ContactListProps {
+  onUnreadCountChange?: (count: number) => void;
+}
+
+export default function ContactList({ onUnreadCountChange }: ContactListProps) {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -28,24 +32,49 @@ export default function ContactList() {
     }, 3000);
   };
 
-  useEffect(() => {
-    const fetchQueries = async () => {
+  const fetchQueries = useCallback(async (showLoadingSpinner = false) => {
+    if (showLoadingSpinner) {
       setLoading(true);
-      try {
-        const token = localStorage.getItem("token") || "";
-        const IdToken = localStorage.getItem("IdToken") || "";
-        const data = await getQuery(token, IdToken);
-        setContacts(data);
-      } catch (err) {
-        console.error(err);
-        showAlert("error", "Failed to fetch queries. Please try again.");
-      } finally {
+    }
+    
+    try {
+      const token = localStorage.getItem("token") || "";
+      const IdToken = localStorage.getItem("IdToken") || "";
+      
+      if (!token || !IdToken) {
+        throw new Error("Missing authentication tokens");
+      }
+      
+      const data = await getQuery(token, IdToken);
+      setContacts(data);
+      
+      const unreadCount = data.filter((contact: Contact) => !contact.seen).length;
+      if (onUnreadCountChange) {
+        onUnreadCountChange(unreadCount);
+      }
+      
+      console.log('Fetched contacts:', data.length, 'Unread:', unreadCount);
+    } catch (err) {
+      console.error('Error fetching contacts:', err);
+      showAlert("error", "Failed to fetch queries. Please try again.");
+    } finally {
+      if (showLoadingSpinner) {
         setLoading(false);
       }
-    };
+    }
+  }, [onUnreadCountChange]);
 
-    fetchQueries();
-  }, []);
+  useEffect(() => {
+    fetchQueries(true);
+  }, [fetchQueries]);
+
+  useEffect(() => {
+    const pollInterval = setInterval(() => {
+      fetchQueries(false);
+    }, 10000);
+
+    return () => clearInterval(pollInterval);
+  }, [fetchQueries]);
 
   const filteredContacts = [...contacts]
     .sort(
@@ -68,12 +97,23 @@ export default function ContactList() {
       const token = localStorage.getItem("token") || "";
       const IdToken = localStorage.getItem("IdToken") || "";
       await markAsRead(id, token, IdToken);
-      setContacts((prevContacts) =>
-        prevContacts.map((contact) =>
-          contact.id === id ? { ...contact, seen: true } : contact
-        )
+      
+      const updatedContacts = contacts.map((contact) =>
+        contact.id === id ? { ...contact, seen: true } : contact
       );
+      setContacts(updatedContacts);
+      
+      const unreadCount = updatedContacts.filter((contact) => !contact.seen).length;
+      if (onUnreadCountChange) {
+        onUnreadCountChange(unreadCount);
+      }
+      
       showAlert("success", "Marked as resolved successfully!");
+      
+      setTimeout(() => {
+        fetchQueries(false);
+      }, 60000);
+      
     } catch (err) {
       console.error("Failed to mark as read:", err);
       showAlert("error", "Failed to mark as resolved. Please try again.");
@@ -107,23 +147,31 @@ export default function ContactList() {
       );
       await markAsRead(currentContact.id, token, IdToken);
 
-      setContacts((prevContacts) =>
-        prevContacts.map((contact) =>
-          contact.id === currentContact.id
-            ? { ...contact, seen: true }
-            : contact
-        )
+      const updatedContacts = contacts.map((contact) =>
+        contact.id === currentContact.id
+          ? { ...contact, seen: true }
+          : contact
       );
+      setContacts(updatedContacts);
+      
+      const unreadCount = updatedContacts.filter((contact) => !contact.seen).length;
+      if (onUnreadCountChange) {
+        onUnreadCountChange(unreadCount);
+      }
 
       closeReplyModal();
       showAlert("success", "Reply sent successfully!");
+      
+      setTimeout(() => {
+        fetchQueries(false);
+      }, 1000);
+      
     } catch (error) {
       console.error("Failed to send reply:", error);
       showAlert("error", "Failed to send reply. Please try again.");
     }
   };
 
-  // Get counts for summary
   const unresolvedCount = contacts.filter(contact => !contact.seen).length;
   const resolvedCount = contacts.filter(contact => contact.seen).length;
 

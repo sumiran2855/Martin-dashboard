@@ -1,11 +1,17 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getProfile } from "@/controller/companyProfile/createProfile";
+import { getQuery } from "@/services/customerServices";
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  unreadCount?: number;
+}
+
+export default function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [internalUnreadCount, setInternalUnreadCount] = useState(0);
   const router = useRouter();
 
   const handleSignOut = () => {
@@ -21,6 +27,31 @@ export default function AdminSidebar() {
   const handleToggle = () => {
     setMenuOpen(!menuOpen);
   };
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      if (unreadCount === 0) {
+        try {
+          const token = localStorage.getItem("token") || "";
+          const IdToken = localStorage.getItem("IdToken") || "";
+          const data = await getQuery(token, IdToken);
+          const unread = data.filter((contact: any) => !contact.seen).length;
+          setInternalUnreadCount(unread);
+        } catch (error) {
+          console.error("Failed to fetch unread count:", error);
+        }
+      }
+    };
+
+    fetchUnreadCount();
+
+    const interval = setInterval(fetchUnreadCount, 30000);
+
+    return () => clearInterval(interval);
+  }, [unreadCount]);
+
+  const displayUnreadCount =
+    unreadCount > 0 ? unreadCount : internalUnreadCount;
 
   return (
     <>
@@ -101,7 +132,7 @@ export default function AdminSidebar() {
 
               <Link
                 href="/admin/contact"
-                className={`flex items-center p-3 rounded-md no-underline ${
+                className={`flex items-center p-3 rounded-md no-underline relative ${
                   isActive("/admin/contact")
                     ? "text-white bg-blue-900"
                     : "text-gray-700 hover:bg-gray-100"
@@ -110,7 +141,14 @@ export default function AdminSidebar() {
                 <div className="w-6 h-6 mr-3 flex items-center justify-center">
                   📩
                 </div>
-                <span className="font-medium">Contact EC Power</span>
+                <span className="font-medium">
+                  Contact EC Power{" "}
+                  {displayUnreadCount > 0 && (
+                    <span className="ml-1">
+                      ( {displayUnreadCount > 99 ? "99+" : displayUnreadCount} )
+                    </span>
+                  )}
+                </span>
               </Link>
             </div>
           </nav>
